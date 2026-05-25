@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { LanguageProvider } from "@/lib/i18n";
+import { RoleProvider } from "@/lib/role";
 
 
 import appCss from "../styles.css?url";
