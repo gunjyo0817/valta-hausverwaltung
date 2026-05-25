@@ -115,8 +115,11 @@ function IntakePage() {
                   </div>
                 </div>
               ))}
+              {typing && <TypingBubble />}
+              {structuring && <StructuringCard />}
               {done && <TicketPreview />}
               <div ref={endRef} />
+
             </div>
           </div>
 
