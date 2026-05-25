@@ -32,27 +32,37 @@ function IntakePage() {
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
   const [done, setDone] = useState(false);
+  const [structuring, setStructuring] = useState(false);
   const [language, setLanguage] = useState<"DE" | "EN">("DE");
   const [apartment, setApartment] = useState("Lindenstraße 22 · WE 14, 3. OG");
+  const [typing, setTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing, structuring]);
 
   const respond = (text: string, photo?: boolean) => {
     if (!text && !photo) return;
     const newUser: Msg = { from: "user", text: photo ? "📎 Foto angehängt" : text, photo };
     const next = flow[step];
-    const newMsgs = [...messages, newUser];
-    if (next) {
-      newMsgs.push({ from: "ai", text: next.ai, chips: next.chips });
-      setStep(step + 1);
-    } else {
-      newMsgs.push({ from: "ai", text: "Vielen Dank. Ich erstelle jetzt ein strukturiertes Ticket für die Hausverwaltung…" });
-      setDone(true);
-    }
-    setMessages(newMsgs);
+    setMessages((m) => [...m, newUser]);
     setInput("");
+    setTyping(true);
+    window.setTimeout(() => {
+      setTyping(false);
+      if (next) {
+        setMessages((m) => [...m, { from: "ai", text: next.ai, chips: next.chips }]);
+        setStep((s) => s + 1);
+      } else {
+        setMessages((m) => [...m, { from: "ai", text: "Vielen Dank. Ich strukturiere Ihre Angaben jetzt zu einem operativen Ticket…" }]);
+        setStructuring(true);
+        window.setTimeout(() => {
+          setStructuring(false);
+          setDone(true);
+        }, 1800);
+      }
+    }, 700);
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
