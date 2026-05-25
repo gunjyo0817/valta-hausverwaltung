@@ -265,4 +265,4 @@ function StructuringCard() {
   );
 }
 
-}
+
