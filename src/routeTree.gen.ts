@@ -9,13 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PropertiesRouteImport } from './routes/properties'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InboxRouteImport } from './routes/inbox'
+import { Route as ContractorsRouteImport } from './routes/contractors'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
+import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
+import { Route as ContractorsIdRouteImport } from './routes/contractors.$id'
 
+const PropertiesRoute = PropertiesRouteImport.update({
+  id: '/properties',
+  path: '/properties',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
@@ -36,6 +45,11 @@ const InboxRoute = InboxRouteImport.update({
   path: '/inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContractorsRoute = ContractorsRouteImport.update({
+  id: '/contractors',
+  path: '/contractors',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -46,64 +60,113 @@ const TicketIdRoute = TicketIdRouteImport.update({
   path: '/ticket/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PropertiesIdRoute = PropertiesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PropertiesRoute,
+} as any)
+const ContractorsIdRoute = ContractorsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ContractorsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contractors': typeof ContractorsRouteWithChildren
   '/inbox': typeof InboxRoute
   '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
+  '/properties': typeof PropertiesRouteWithChildren
+  '/contractors/$id': typeof ContractorsIdRoute
+  '/properties/$id': typeof PropertiesIdRoute
   '/ticket/$id': typeof TicketIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contractors': typeof ContractorsRouteWithChildren
   '/inbox': typeof InboxRoute
   '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
+  '/properties': typeof PropertiesRouteWithChildren
+  '/contractors/$id': typeof ContractorsIdRoute
+  '/properties/$id': typeof PropertiesIdRoute
   '/ticket/$id': typeof TicketIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contractors': typeof ContractorsRouteWithChildren
   '/inbox': typeof InboxRoute
   '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
+  '/properties': typeof PropertiesRouteWithChildren
+  '/contractors/$id': typeof ContractorsIdRoute
+  '/properties/$id': typeof PropertiesIdRoute
   '/ticket/$id': typeof TicketIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/contractors'
     | '/inbox'
     | '/insights'
     | '/intake'
     | '/portal'
+    | '/properties'
+    | '/contractors/$id'
+    | '/properties/$id'
     | '/ticket/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inbox' | '/insights' | '/intake' | '/portal' | '/ticket/$id'
+  to:
+    | '/'
+    | '/contractors'
+    | '/inbox'
+    | '/insights'
+    | '/intake'
+    | '/portal'
+    | '/properties'
+    | '/contractors/$id'
+    | '/properties/$id'
+    | '/ticket/$id'
   id:
     | '__root__'
     | '/'
+    | '/contractors'
     | '/inbox'
     | '/insights'
     | '/intake'
     | '/portal'
+    | '/properties'
+    | '/contractors/$id'
+    | '/properties/$id'
     | '/ticket/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContractorsRoute: typeof ContractorsRouteWithChildren
   InboxRoute: typeof InboxRoute
   InsightsRoute: typeof InsightsRoute
   IntakeRoute: typeof IntakeRoute
   PortalRoute: typeof PortalRoute
+  PropertiesRoute: typeof PropertiesRouteWithChildren
   TicketIdRoute: typeof TicketIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/properties': {
+      id: '/properties'
+      path: '/properties'
+      fullPath: '/properties'
+      preLoaderRoute: typeof PropertiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal': {
       id: '/portal'
       path: '/portal'
@@ -132,6 +195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InboxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contractors': {
+      id: '/contractors'
+      path: '/contractors'
+      fullPath: '/contractors'
+      preLoaderRoute: typeof ContractorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -146,15 +216,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TicketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/properties/$id': {
+      id: '/properties/$id'
+      path: '/$id'
+      fullPath: '/properties/$id'
+      preLoaderRoute: typeof PropertiesIdRouteImport
+      parentRoute: typeof PropertiesRoute
+    }
+    '/contractors/$id': {
+      id: '/contractors/$id'
+      path: '/$id'
+      fullPath: '/contractors/$id'
+      preLoaderRoute: typeof ContractorsIdRouteImport
+      parentRoute: typeof ContractorsRoute
+    }
   }
 }
 
+interface ContractorsRouteChildren {
+  ContractorsIdRoute: typeof ContractorsIdRoute
+}
+
+const ContractorsRouteChildren: ContractorsRouteChildren = {
+  ContractorsIdRoute: ContractorsIdRoute,
+}
+
+const ContractorsRouteWithChildren = ContractorsRoute._addFileChildren(
+  ContractorsRouteChildren,
+)
+
+interface PropertiesRouteChildren {
+  PropertiesIdRoute: typeof PropertiesIdRoute
+}
+
+const PropertiesRouteChildren: PropertiesRouteChildren = {
+  PropertiesIdRoute: PropertiesIdRoute,
+}
+
+const PropertiesRouteWithChildren = PropertiesRoute._addFileChildren(
+  PropertiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContractorsRoute: ContractorsRouteWithChildren,
   InboxRoute: InboxRoute,
   InsightsRoute: InsightsRoute,
   IntakeRoute: IntakeRoute,
   PortalRoute: PortalRoute,
+  PropertiesRoute: PropertiesRouteWithChildren,
   TicketIdRoute: TicketIdRoute,
 }
 export const routeTree = rootRouteImport
