@@ -1,39 +1,52 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Circle, Sparkles, Wrench, MessageSquareText, Image as ImageIcon, Phone, Bell, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/portal")({
   head: () => ({
     meta: [
-      { title: "Mein Anliegen · Valta" },
-      { name: "description", content: "Verfolgen Sie den Status Ihrer Reparaturmeldung – transparent und in Echtzeit." },
+      { title: "My request · Valta" },
+      { name: "description", content: "Track your maintenance request in real time." },
     ],
   }),
   component: PortalPage,
 });
 
-const steps = [
-  { label: "Eingegangen", at: "Heute, 08:42", done: true, ai: true, desc: "Ihre Meldung wurde von Valta erfasst und strukturiert." },
-  { label: "An Hausverwaltung übergeben", at: "Heute, 08:45", done: true, desc: "Priorität: Kritisch. SLA-Frist: 4 Std." },
-  { label: "Handwerker beauftragt", at: "Heute, 09:10", done: true, desc: "Müller Heizung GmbH – ETA 11:00–13:00." },
-  { label: "Techniker unterwegs", at: "ETA 11:00", done: false, current: true, desc: "Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft." },
-  { label: "Reparatur abgeschlossen", at: "geplant heute", done: false, desc: "Bitte bestätigen Sie nach Abschluss die Behebung." },
-];
-
-const updates = [
-  { at: "09:14", from: "Hausverwaltung", text: "Müller Heizung GmbH wurde beauftragt. Voraussichtliche Ankunft 11:00–13:00." },
-  { at: "08:45", from: "Valta AI", text: "Ihr Anliegen wurde als kritisch eingestuft und priorisiert weitergeleitet." },
-  { at: "08:42", from: "Sie", text: "Heizung ausgefallen seit gestern Abend, gesamte Wohnung kalt." },
-];
-
 function PortalPage() {
+  const { t, lang } = useLang();
+
+  const steps = lang === "EN" ? [
+    { label: "Received", at: "Today, 08:42", done: true, ai: true, desc: "Your report was captured and structured by Valta." },
+    { label: "Handed off to property management", at: "Today, 08:45", done: true, desc: "Priority: Critical. SLA: 4 h." },
+    { label: "Contractor dispatched", at: "Today, 09:10", done: true, desc: "Müller Heizung GmbH — ETA 11:00–13:00." },
+    { label: "Technician on the way", at: "ETA 11:00", done: false, current: true, desc: "You'll be notified the moment the technician arrives." },
+    { label: "Repair completed", at: "planned today", done: false, desc: "Please confirm once the issue is resolved." },
+  ] : [
+    { label: "Eingegangen", at: "Heute, 08:42", done: true, ai: true, desc: "Ihre Meldung wurde von Valta erfasst und strukturiert." },
+    { label: "An Hausverwaltung übergeben", at: "Heute, 08:45", done: true, desc: "Priorität: Kritisch. SLA-Frist: 4 Std." },
+    { label: "Handwerker beauftragt", at: "Heute, 09:10", done: true, desc: "Müller Heizung GmbH – ETA 11:00–13:00." },
+    { label: "Techniker unterwegs", at: "ETA 11:00", done: false, current: true, desc: "Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft." },
+    { label: "Reparatur abgeschlossen", at: "geplant heute", done: false, desc: "Bitte bestätigen Sie nach Abschluss die Behebung." },
+  ];
+
+  const updates = lang === "EN" ? [
+    { at: "09:14", from: "Property management", text: "Müller Heizung GmbH has been dispatched. ETA 11:00–13:00." },
+    { at: "08:45", from: "Valta AI", text: "Your request was classified as critical and prioritised." },
+    { at: "08:42", from: "You", text: "Heating down since yesterday evening, the whole apartment is cold." },
+  ] : [
+    { at: "09:14", from: "Hausverwaltung", text: "Müller Heizung GmbH wurde beauftragt. Voraussichtliche Ankunft 11:00–13:00." },
+    { at: "08:45", from: "Valta AI", text: "Ihr Anliegen wurde als kritisch eingestuft und priorisiert weitergeleitet." },
+    { at: "08:42", from: "Sie", text: "Heizung ausgefallen seit gestern Abend, gesamte Wohnung kalt." },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <header className="h-14 border-b border-border glass flex items-center px-4 md:px-8">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm">V</div>
-          <div className="text-sm font-semibold">Mein Anliegen</div>
-        </div>
+          <div className="text-sm font-semibold">{t("portal.title")}</div>
+        </Link>
         <div className="ml-auto text-xs text-muted-foreground">Lindenstraße 22 · WE 14</div>
       </header>
 
@@ -44,24 +57,24 @@ function PortalPage() {
               <Wrench className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-xs text-muted-foreground">Vorgang VLT-2041</div>
-              <h1 className="text-lg font-semibold tracking-tight">Heizung komplett ausgefallen</h1>
-              <p className="text-sm text-muted-foreground mt-1">Wir kümmern uns – ein Techniker ist auf dem Weg.</p>
+              <div className="text-xs text-muted-foreground">{t("portal.case")} VLT-2041</div>
+              <h1 className="text-lg font-semibold tracking-tight">{lang === "EN" ? "Heating completely down" : "Heizung komplett ausgefallen"}</h1>
+              <p className="text-sm text-muted-foreground mt-1">{t("portal.subtitle")}</p>
             </div>
             <span className="text-[11px] rounded-full bg-success/15 text-success-foreground px-2 py-1 font-medium flex items-center gap-1">
-              <Clock className="h-3 w-3" /> In Bearbeitung
+              <Clock className="h-3 w-3" /> {t("portal.in_progress")}
             </span>
           </div>
 
           <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
-            <Stat label="Beauftragter Handwerker" value="Müller Heizung GmbH" />
-            <Stat label="ETA" value="11:00 – 13:00" />
-            <Stat label="Priorität" value="Kritisch" tone="destructive" />
+            <Stat label={t("portal.assigned_contractor")} value="Müller Heizung GmbH" />
+            <Stat label={t("common.eta")} value="11:00 – 13:00" />
+            <Stat label={t("common.priority")} value={t("urgency.critical")} tone="destructive" />
           </div>
         </div>
 
         <section className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
-          <h2 className="text-sm font-semibold mb-4">Fortschritt</h2>
+          <h2 className="text-sm font-semibold mb-4">{t("portal.progress")}</h2>
           <ol className="space-y-1">
             {steps.map((s, i) => (
               <li key={i} className="flex gap-3">
@@ -95,7 +108,7 @@ function PortalPage() {
           <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
             <div className="flex items-center gap-2 mb-3">
               <MessageSquareText className="h-4 w-4 text-primary" />
-              <h2 className="text-sm font-semibold">Updates</h2>
+              <h2 className="text-sm font-semibold">{t("portal.updates")}</h2>
             </div>
             <ul className="space-y-3">
               {updates.map((u, i) => (
@@ -113,7 +126,7 @@ function PortalPage() {
           <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
             <div className="flex items-center gap-2 mb-3">
               <ImageIcon className="h-4 w-4 text-primary" />
-              <h2 className="text-sm font-semibold">Ihre Anhänge</h2>
+              <h2 className="text-sm font-semibold">{t("portal.attachments")}</h2>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {Array.from({ length: 2 }).map((_, i) => (
@@ -122,22 +135,22 @@ function PortalPage() {
                 </div>
               ))}
               <button className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
-                + Foto
+                {t("portal.add_photo")}
               </button>
             </div>
             <div className="mt-4 flex flex-col gap-2">
               <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
-                <Phone className="h-3.5 w-3.5" /> Hausverwaltung kontaktieren
+                <Phone className="h-3.5 w-3.5" /> {t("portal.contact_pm")}
               </button>
               <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
-                <Bell className="h-3.5 w-3.5" /> Benachrichtigungen verwalten
+                <Bell className="h-3.5 w-3.5" /> {t("portal.notifications")}
               </button>
             </div>
           </div>
         </section>
 
         <div className="text-center text-xs text-muted-foreground">
-          <Link to="/intake" className="text-primary hover:underline">Weiteres Anliegen melden</Link> · powered by Valta
+          <Link to="/intake" className="text-primary hover:underline">{t("intake.further")}</Link> · powered by Valta
         </div>
       </div>
     </div>
