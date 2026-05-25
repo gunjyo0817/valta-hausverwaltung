@@ -27,8 +27,8 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
     { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
     { to: "/inbox", label: t("nav.inbox"), icon: Inbox },
     { to: "/insights", label: t("nav.insights"), icon: BarChart3 },
-    { to: "/properties", label: t("nav.properties"), icon: Building2, disabled: true },
-    { to: "/contractors", label: t("nav.contractors"), icon: Users, disabled: true },
+    { to: "/properties", label: t("nav.properties"), icon: Building2 },
+    { to: "/contractors", label: t("nav.contractors"), icon: Users },
   ] as const;
 
   const tenantNav = [
@@ -39,37 +39,31 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   return (
     <div className="flex min-h-screen w-full bg-background text-foreground">
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-border bg-surface">
-        <div className="flex h-16 items-center gap-2 px-5 border-b border-border">
+        <Link to="/" className="flex h-16 items-center gap-2 px-5 border-b border-border hover:bg-accent/40 transition-colors">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">V</div>
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-tight">Valta</div>
-            <div className="text-[11px] text-muted-foreground">Operations Copilot</div>
+            <div className="text-[11px] text-muted-foreground">{t("brand.tagline")}</div>
           </div>
-        </div>
+        </Link>
 
         <div className="px-3 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("nav.section_hv")}</div>
         <nav className="px-2 space-y-0.5">
-          {nav.map((n) => {
-            const disabled = "disabled" in n && n.disabled;
-            return (
-              <Link
-                key={n.to}
-                to={disabled ? "/" : n.to}
-                className={cn(
-                  "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-                  isActive(n.to, "exact" in n ? n.exact : false) && !disabled
-                    ? "bg-accent text-accent-foreground font-medium"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                  disabled && "opacity-50 cursor-not-allowed",
-                )}
-                onClick={(e) => disabled && e.preventDefault()}
-              >
-                <n.icon className="h-4 w-4" />
-                <span>{n.label}</span>
-                {disabled && <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">soon</span>}
-              </Link>
-            );
-          })}
+          {nav.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              className={cn(
+                "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
+                isActive(n.to, "exact" in n ? n.exact : false)
+                  ? "bg-accent text-accent-foreground font-medium"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+              )}
+            >
+              <n.icon className="h-4 w-4" />
+              <span>{n.label}</span>
+            </Link>
+          ))}
         </nav>
 
         <div className="px-3 pt-6 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("nav.tenant_view")}</div>
@@ -94,15 +88,13 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             <div className="flex items-center gap-2 text-xs font-semibold">
               <Sparkles className="h-3.5 w-3.5 text-ai" /> AI Copilot
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">{lang === "DE"
-              ? "Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor."
-              : "Structures requests, prioritises urgency, recommends contractors."}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("shell.copilot_blurb")}</p>
           </div>
           <div className="mt-3 flex items-center gap-2 rounded-md p-2 hover:bg-accent">
             <div className="h-7 w-7 rounded-full bg-primary/15 text-primary text-xs font-semibold flex items-center justify-center">SK</div>
             <div className="leading-tight">
               <div className="text-xs font-medium">Sarah Krüger</div>
-              <div className="text-[11px] text-muted-foreground">Hausverwaltung Berlin GmbH</div>
+              <div className="text-[11px] text-muted-foreground">{t("shell.org")}</div>
             </div>
             <Settings className="ml-auto h-4 w-4 text-muted-foreground" />
           </div>
@@ -116,7 +108,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             {subtitle && <p className="truncate text-xs text-muted-foreground">{subtitle}</p>}
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <div className="hidden md:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64 lg:w-72">
+            <div className="hidden md:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64 lg:w-80">
               <Search className="h-3.5 w-3.5" />
               <input placeholder={t("common.search")} className="w-full bg-transparent outline-none placeholder:text-muted-foreground" />
               <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px]">⌘K</kbd>
