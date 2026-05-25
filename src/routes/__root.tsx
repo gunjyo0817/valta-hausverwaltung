@@ -7,6 +7,8 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { LanguageProvider } from "@/lib/i18n";
+
 
 import appCss from "../styles.css?url";
 
