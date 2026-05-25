@@ -32,27 +32,37 @@ function IntakePage() {
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
   const [done, setDone] = useState(false);
+  const [structuring, setStructuring] = useState(false);
   const [language, setLanguage] = useState<"DE" | "EN">("DE");
   const [apartment, setApartment] = useState("Lindenstraße 22 · WE 14, 3. OG");
+  const [typing, setTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing, structuring]);
 
   const respond = (text: string, photo?: boolean) => {
     if (!text && !photo) return;
     const newUser: Msg = { from: "user", text: photo ? "📎 Foto angehängt" : text, photo };
     const next = flow[step];
-    const newMsgs = [...messages, newUser];
-    if (next) {
-      newMsgs.push({ from: "ai", text: next.ai, chips: next.chips });
-      setStep(step + 1);
-    } else {
-      newMsgs.push({ from: "ai", text: "Vielen Dank. Ich erstelle jetzt ein strukturiertes Ticket für die Hausverwaltung…" });
-      setDone(true);
-    }
-    setMessages(newMsgs);
+    setMessages((m) => [...m, newUser]);
     setInput("");
+    setTyping(true);
+    window.setTimeout(() => {
+      setTyping(false);
+      if (next) {
+        setMessages((m) => [...m, { from: "ai", text: next.ai, chips: next.chips }]);
+        setStep((s) => s + 1);
+      } else {
+        setMessages((m) => [...m, { from: "ai", text: "Vielen Dank. Ich strukturiere Ihre Angaben jetzt zu einem operativen Ticket…" }]);
+        setStructuring(true);
+        window.setTimeout(() => {
+          setStructuring(false);
+          setDone(true);
+        }, 1800);
+      }
+    }, 700);
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -105,8 +115,11 @@ function IntakePage() {
                   </div>
                 </div>
               ))}
+              {typing && <TypingBubble />}
+              {structuring && <StructuringCard />}
               {done && <TicketPreview />}
               <div ref={endRef} />
+
             </div>
           </div>
 
@@ -210,3 +223,46 @@ function Field({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+function TypingBubble() {
+  return (
+    <div className="flex gap-3">
+      <div className="h-8 w-8 shrink-0 rounded-lg ai-gradient flex items-center justify-center">
+        <Sparkles className="h-4 w-4 text-ai" />
+      </div>
+      <div className="rounded-2xl rounded-tl-sm border border-border bg-surface px-3.5 py-3 shadow-soft">
+        <div className="flex gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.3s]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.15s]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StructuringCard() {
+  const steps = [
+    "Kategorie erkannt: Heizung",
+    "Dringlichkeit eingeschätzt: Kritisch",
+    "Zusammenfassung generiert",
+    "Handwerker-Empfehlung vorbereitet",
+  ];
+  return (
+    <div className="mt-2 rounded-2xl border border-border ai-gradient p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex items-center gap-2 text-xs font-semibold">
+        <Sparkles className="h-3.5 w-3.5 text-ai animate-pulse" /> AI strukturiert Ihre Meldung…
+      </div>
+      <ul className="mt-3 space-y-1.5 text-xs">
+        {steps.map((s, i) => (
+          <li key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-left-1" style={{ animationDelay: `${i * 250}ms`, animationFillMode: "backwards" }}>
+            <CheckCircle2 className="h-3.5 w-3.5 text-success" />
+            <span>{s}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
