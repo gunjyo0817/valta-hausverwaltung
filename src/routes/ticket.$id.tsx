@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { getTicket } from "@/lib/mockData";
+import { getProperty } from "@/lib/properties";
 import { AssignContractorModal } from "@/components/AssignContractorModal";
 import {
   ArrowLeft,
@@ -21,6 +22,7 @@ import {
   User,
   HardHat,
   ShieldCheck,
+  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
@@ -29,7 +31,7 @@ export const Route = createFileRoute("/ticket/$id")({
   head: ({ params }) => ({
     meta: [
       { title: `${params.id} · Valta` },
-      { name: "description", content: "AI-strukturiertes Reparatur-Ticket mit Zusammenfassung, Handwerker-Empfehlung und Verlauf." },
+      { name: "description", content: "AI-structured maintenance ticket with summary, contractor recommendation and history." },
     ],
   }),
   component: TicketPage,
@@ -37,78 +39,69 @@ export const Route = createFileRoute("/ticket/$id")({
 
 function TicketPage() {
   const { id } = useParams({ from: "/ticket/$id" });
-  const t = getTicket(id);
-  const { lang, t: tr } = useLang();
+  const tk = getTicket(id);
+  const prop = getProperty(tk.propertyId);
+  const { lang, t } = useLang();
   const [showAssign, setShowAssign] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [translated, setTranslated] = useState(false);
   const [editDraft, setEditDraft] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const draftDE = `Hallo ${t.tenant.name.split(" ")[0]},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
-  const draftEN = `Hi ${t.tenant.name.split(" ")[0]},\n\nthanks for your report. We've dispatched an emergency heating technician — ETA today between 11:00 and 13:00. You'll get an update once the technician is on the way.\n\nBest\nYour property management`;
-  const draft = lang === "EN" ? draftEN : draftDE;
+  const showLang = translated ? (lang === "DE" ? "EN" : "DE") : lang;
+
+  const firstName = tk.tenant.name.split(" ")[0];
+  const draft = lang === "EN"
+    ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
+    : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
 
   return (
-    <AppShell title={`${t.id} · ${t.title}`} subtitle={`${t.tenant.building} · ${t.tenant.apartment}`}>
+    <AppShell title={`${tk.id} · ${tk.title[lang]}`} subtitle={`${tk.tenant.building} · ${tk.tenant.apartment[lang]}`}>
       <div className="p-4 md:p-8">
         <Link to="/inbox" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4">
-          <ArrowLeft className="h-3 w-3" /> {lang === "EN" ? "Back to inbox" : "Zurück zur Inbox"}
+          <ArrowLeft className="h-3 w-3" /> {t("act.back_to_inbox")}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* LEFT */}
           <div className="lg:col-span-2 space-y-6">
             <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
               <div className="flex flex-wrap items-center gap-2">
-                <UrgencyBadge urgency={t.urgency} />
-                <StatusBadge status={t.status} />
-                <AIBadge confidence={t.confidence} />
+                <UrgencyBadge urgency={tk.urgency} />
+                <StatusBadge status={tk.status} />
+                <AIBadge confidence={tk.confidence} />
                 <button onClick={() => setTranslated((v) => !v)} className="ml-auto inline-flex items-center gap-1.5 text-xs border border-border rounded-md px-2 py-1 hover:bg-accent">
-                  <Languages className="h-3.5 w-3.5" /> {translated ? "Original (DE)" : "EN"}
+                  <Languages className="h-3.5 w-3.5" /> {translated ? t("common.show_original") : t("common.show_en")}
                 </button>
               </div>
-              <h2 className="mt-3 text-xl font-semibold tracking-tight">
-                {translated ? "Heating completely down" : t.title}
-              </h2>
+              <h2 className="mt-3 text-xl font-semibold tracking-tight">{tk.title[showLang]}</h2>
               <div className="mt-4 rounded-xl ai-gradient p-4">
                 <div className="flex items-center gap-2 text-xs font-semibold">
-                  <Sparkles className="h-3.5 w-3.5 text-ai" /> {tr("common.summary")}
+                  <Sparkles className="h-3.5 w-3.5 text-ai" /> {t("common.summary")}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed">
-                  {translated
-                    ? "Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended."
-                    : t.summary}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed">{tk.summary[showLang]}</p>
               </div>
-              <p className="mt-4 text-sm text-foreground/80 leading-relaxed">{t.description}</p>
+              <p className="mt-4 text-sm text-foreground/80 leading-relaxed">{tk.description[showLang]}</p>
 
-              {/* Structured metadata */}
               <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-2">
-                <Meta label="Kategorie" value={t.category} />
-                <Meta label="Seit" value={t.createdAt} />
-                <Meta label="Sprache" value={t.tenant.language} />
-                <Meta label="Fotos" value={`${t.photos}`} />
+                <Meta label={t("common.category")} value={tk.category[lang]} />
+                <Meta label={t("common.since")} value={tk.createdAt[lang]} />
+                <Meta label={t("common.language")} value={tk.tenant.language} />
+                <Meta label={t("common.photos")} value={`${tk.photos}`} />
               </div>
             </div>
 
-            {/* Unified timeline */}
             <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
               <div className="flex items-center gap-2 mb-1">
                 <MessageSquareText className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-semibold">{tr("common.timeline")}</h3>
-                <span className="ml-auto text-[11px] text-muted-foreground">
-                  {lang === "EN" ? "All channels consolidated" : "Alle Kanäle zentralisiert"}
-                </span>
+                <h3 className="text-sm font-semibold">{t("common.timeline")}</h3>
+                <span className="ml-auto text-[11px] text-muted-foreground">{t("ticket.all_channels")}</span>
               </div>
-              <p className="text-xs text-muted-foreground mb-4">
-                {lang === "EN" ? "E-mail, SMS, app, phone — unified into one operational thread." : "E-Mail, SMS, App, Telefon – vereint in einem operativen Thread."}
-              </p>
+              <p className="text-xs text-muted-foreground mb-4">{t("common.timeline_sub")}</p>
               <ol className="relative space-y-4 pl-4 before:absolute before:left-1.5 before:top-1 before:bottom-1 before:w-px before:bg-border">
-                {t.history.map((h, i) => (
+                {tk.history.map((h, i) => (
                   <li key={i} className="relative">
                     <span className={cn(
-                      "absolute -left-[14px] top-1 h-3 w-3 rounded-full ring-4 ring-surface flex items-center justify-center",
+                      "absolute -left-[14px] top-1 h-3 w-3 rounded-full ring-4 ring-surface",
                       h.type === "ai" && "bg-ai",
                       h.type === "tenant" && "bg-info",
                       h.type === "manager" && "bg-primary",
@@ -120,12 +113,12 @@ function TicketPage() {
                         h.type === "manager" ? <ShieldCheck className="h-3 w-3 text-primary" /> :
                         <HardHat className="h-3 w-3 text-success" />}
                       <span className="font-medium text-foreground">
-                        {h.type === "ai" ? "Valta AI" : h.type === "tenant" ? t.tenant.name : h.type === "manager" ? "Sarah Krüger" : "Müller Heizung GmbH"}
+                        {h.type === "ai" ? "Valta AI" : h.type === "tenant" ? tk.tenant.name : h.type === "manager" ? "Sarah Krüger" : (tk.contractorName ?? t("common.contractor"))}
                       </span>
                       <span>·</span>
-                      <span>{h.at}</span>
+                      <span>{h.at[lang]}</span>
                     </div>
-                    <p className="mt-1 text-sm leading-snug">{h.text}</p>
+                    <p className="mt-1 text-sm leading-snug">{h.text[lang]}</p>
                   </li>
                 ))}
                 {sent && (
@@ -134,8 +127,8 @@ function TicketPage() {
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       <ShieldCheck className="h-3 w-3 text-primary" />
                       <span className="font-medium text-foreground">Sarah Krüger</span>
-                      <span>·</span><span>jetzt</span>
-                      <span className="rounded bg-ai/10 text-ai px-1.5 py-0.5 text-[10px]">AI-Entwurf freigegeben</span>
+                      <span>·</span><span>{t("common.now")}</span>
+                      <span className="rounded bg-ai/10 text-ai px-1.5 py-0.5 text-[10px]">{t("ticket.draft_approved")}</span>
                     </div>
                     <p className="mt-1 text-sm leading-snug whitespace-pre-line">{draft}</p>
                   </li>
@@ -143,11 +136,11 @@ function TicketPage() {
               </ol>
             </div>
 
-            {t.photos > 0 && (
+            {tk.photos > 0 && (
               <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
-                <h3 className="text-sm font-semibold mb-3">{lang === "EN" ? "Attached photos" : "Angehängte Fotos"}</h3>
+                <h3 className="text-sm font-semibold mb-3">{t("common.attached_photos")}</h3>
                 <div className="grid grid-cols-3 gap-2">
-                  {Array.from({ length: t.photos }).map((_, i) => (
+                  {Array.from({ length: tk.photos }).map((_, i) => (
                     <div key={i} className="aspect-video rounded-lg border border-border bg-muted flex items-center justify-center text-muted-foreground">
                       <ImageIcon className="h-5 w-5" />
                     </div>
@@ -157,21 +150,19 @@ function TicketPage() {
             )}
           </div>
 
-          {/* RIGHT: COPILOT */}
           <aside className="space-y-4 lg:sticky lg:top-20 self-start">
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
               <div className="flex items-center gap-2 text-xs font-semibold">
-                <Sparkles className="h-3.5 w-3.5 text-ai" /> AI Copilot
+                <Sparkles className="h-3.5 w-3.5 text-ai" /> {t("copilot.title")}
                 <span className="ml-auto text-[10px] uppercase tracking-wider bg-muted text-muted-foreground rounded px-1.5 py-0.5">
-                  {lang === "EN" ? "Suggests — you approve" : "Schlägt vor — Sie entscheiden"}
+                  {t("copilot.suggests_approve")}
                 </span>
               </div>
             </div>
 
-            {/* Reply draft */}
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold">{lang === "EN" ? "Reply draft" : "Antwortentwurf"}</span>
+                <span className="text-xs font-semibold">{t("copilot.reply_draft")}</span>
                 <AIBadge confidence={94} />
               </div>
               {editDraft ? (
@@ -185,74 +176,73 @@ function TicketPage() {
                   onClick={() => setSent(true)}
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                 >
-                  <CheckCheck className="h-3.5 w-3.5" /> {sent ? (lang === "EN" ? "Sent" : "Gesendet") : tr("act.approve")}
+                  <CheckCheck className="h-3.5 w-3.5" /> {sent ? t("act.sent") : t("act.approve")}
                 </button>
                 <button onClick={() => setEditDraft((v) => !v)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
-                  <Pencil className="h-3.5 w-3.5" /> {editDraft ? (lang === "EN" ? "Done" : "Fertig") : tr("act.edit")}
+                  <Pencil className="h-3.5 w-3.5" /> {editDraft ? t("act.done") : t("act.edit")}
                 </button>
                 <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
-                  <Send className="h-3.5 w-3.5" /> {tr("act.manual")}
+                  <Send className="h-3.5 w-3.5" /> {t("act.manual")}
                 </button>
               </div>
             </div>
 
-            {/* Missing info / Request */}
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
               <div className="flex items-center gap-2 text-xs font-semibold">
-                <AlertTriangle className="h-3.5 w-3.5 text-warning" /> {lang === "EN" ? "Missing information detected" : "Fehlende Informationen erkannt"}
+                <AlertTriangle className="h-3.5 w-3.5 text-warning" /> {t("copilot.missing_info")}
               </div>
               <ul className="mt-2 space-y-1.5 text-xs text-foreground/80">
                 <li>• {lang === "EN" ? "Exact thermostat model" : "Genauer Thermostat-Typ"}</li>
                 <li>• {lang === "EN" ? "Confirmation: are neighbours affected?" : "Bestätigung: Sind Nachbarn betroffen?"}</li>
               </ul>
               <button onClick={() => setShowInfo(true)} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
-                <MessageSquareText className="h-3.5 w-3.5" /> {tr("act.request_info")}
+                <MessageSquareText className="h-3.5 w-3.5" /> {t("act.request_info")}
               </button>
               {showInfo && (
                 <div className="mt-3 rounded-md bg-success/10 text-success-foreground px-2.5 py-1.5 text-xs">
-                  ✓ {lang === "EN" ? "Auto-message sent to tenant — AI will follow up." : "Auto-Nachricht an Mieter:in gesendet – AI fragt nach."}
+                  ✓ {t("copilot.auto_sent")}
                 </div>
               )}
             </div>
 
-            {/* Urgency reasoning */}
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
               <div className="flex items-center gap-2 text-xs font-semibold">
-                <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> {lang === "EN" ? "Why critical?" : "Begründung Dringlichkeit"}
+                <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> {t("copilot.why_critical")}
               </div>
               <ul className="mt-2 space-y-1.5 text-xs text-foreground/80">
                 <li>• {lang === "EN" ? "Outside temp < 5 °C" : "Außentemperatur < 5 °C"}</li>
                 <li>• {lang === "EN" ? "Entire apartment, not single room" : "Gesamte Wohnung, nicht Einzelraum"}</li>
-                <li>• {lang === "EN" ? "Heating SLA 4h applies" : "SLA Heizung 4 Std. greift"}</li>
+                <li>• {lang === "EN" ? "Heating SLA 4 h applies" : "SLA Heizung 4 Std. greift"}</li>
               </ul>
             </div>
 
-            {/* Contractor recommendation */}
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
               <div className="flex items-center gap-2 text-xs font-semibold">
-                <Wrench className="h-3.5 w-3.5 text-primary" /> {lang === "EN" ? "Recommended contractor" : "Empfohlener Handwerker"}
+                <Wrench className="h-3.5 w-3.5 text-primary" /> {t("inbox.recommended")}
               </div>
-              <div className="mt-2 text-sm font-medium">{t.contractor ?? "Müller Heizung GmbH"}</div>
-              <div className="text-[11px] text-muted-foreground">★ 4.9 · ETA 2 Std. · Top-Match nach Kategorie & Historie</div>
+              <div className="mt-2 text-sm font-medium">{tk.contractorName ?? "Müller Heizung GmbH"}</div>
+              <div className="text-[11px] text-muted-foreground">★ 4.9 · ETA 2 {t("common.hours_short")} · {t("inbox.recommended_basis")}</div>
               <button onClick={() => setShowAssign(true)} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90">
-                <CheckCheck className="h-3.5 w-3.5" /> {tr("act.assign")}
+                <CheckCheck className="h-3.5 w-3.5" /> {t("act.assign")}
               </button>
             </div>
 
-            {/* Tenant info compact */}
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft">
-              <div className="text-xs font-semibold mb-2">{tr("common.tenant")}</div>
-              <div className="text-sm font-medium">{t.tenant.name}</div>
+              <div className="text-xs font-semibold mb-2">{t("common.tenant")}</div>
+              <div className="text-sm font-medium">{tk.tenant.name}</div>
               <div className="mt-2 space-y-1 text-xs text-muted-foreground">
-                <div className="flex items-center gap-2"><MapPin className="h-3 w-3" />{t.tenant.building} · {t.tenant.apartment}</div>
-                <div className="flex items-center gap-2"><Phone className="h-3 w-3" />{t.tenant.phone}</div>
+                <div className="flex items-center gap-2"><MapPin className="h-3 w-3" />{tk.tenant.building} · {tk.tenant.apartment[lang]}</div>
+                <div className="flex items-center gap-2"><Phone className="h-3 w-3" />{tk.tenant.phone}</div>
+                <Link to="/properties/$id" params={{ id: prop.id }} className="flex items-center gap-2 text-primary hover:underline">
+                  <Building2 className="h-3 w-3" />{prop.name}
+                </Link>
               </div>
             </div>
           </aside>
         </div>
       </div>
 
-      {showAssign && <AssignContractorModal category={t.category} onClose={() => setShowAssign(false)} />}
+      {showAssign && <AssignContractorModal category={tk.categoryKey} onClose={() => setShowAssign(false)} />}
     </AppShell>
   );
 }
