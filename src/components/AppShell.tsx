@@ -12,26 +12,29 @@ import {
   Plus,
   MessageSquareText,
   Compass,
+  Languages,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/i18n";
 import type { ReactNode } from "react";
-
-const nav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/inbox", label: "Operations Inbox", icon: Inbox },
-  { to: "/properties", label: "Objekte", icon: Building2, disabled: true },
-  { to: "/contractors", label: "Handwerker", icon: Users, disabled: true },
-  { to: "/analytics", label: "Analytics", icon: BarChart3, disabled: true },
-];
-
-const tenantNav = [
-  { to: "/intake", label: "Tenant Intake", icon: MessageSquareText },
-  { to: "/portal", label: "Tenant Portal", icon: Compass },
-];
 
 export function AppShell({ children, title, subtitle, actions }: { children: ReactNode; title?: string; subtitle?: string; actions?: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (to: string, exact?: boolean) => (exact ? pathname === to : pathname.startsWith(to));
+  const { t, lang, setLang } = useLang();
+
+  const nav = [
+    { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
+    { to: "/inbox", label: t("nav.inbox"), icon: Inbox },
+    { to: "/insights", label: t("nav.insights"), icon: BarChart3 },
+    { to: "/properties", label: t("nav.properties"), icon: Building2, disabled: true },
+    { to: "/contractors", label: t("nav.contractors"), icon: Users, disabled: true },
+  ] as const;
+
+  const tenantNav = [
+    { to: "/intake", label: t("nav.intake"), icon: MessageSquareText },
+    { to: "/portal", label: t("nav.portal"), icon: Compass },
+  ] as const;
 
   return (
     <div className="flex min-h-screen w-full bg-background text-foreground">
@@ -44,29 +47,32 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
           </div>
         </div>
 
-        <div className="px-3 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Hausverwaltung</div>
+        <div className="px-3 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("nav.section_hv")}</div>
         <nav className="px-2 space-y-0.5">
-          {nav.map((n) => (
-            <Link
-              key={n.to}
-              to={n.disabled ? "/" : n.to}
-              className={cn(
-                "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-                isActive(n.to, n.exact) && !n.disabled
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                n.disabled && "opacity-50 cursor-not-allowed",
-              )}
-              onClick={(e) => n.disabled && e.preventDefault()}
-            >
-              <n.icon className="h-4 w-4" />
-              <span>{n.label}</span>
-              {n.disabled && <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">soon</span>}
-            </Link>
-          ))}
+          {nav.map((n) => {
+            const disabled = "disabled" in n && n.disabled;
+            return (
+              <Link
+                key={n.to}
+                to={disabled ? "/" : n.to}
+                className={cn(
+                  "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
+                  isActive(n.to, "exact" in n ? n.exact : false) && !disabled
+                    ? "bg-accent text-accent-foreground font-medium"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  disabled && "opacity-50 cursor-not-allowed",
+                )}
+                onClick={(e) => disabled && e.preventDefault()}
+              >
+                <n.icon className="h-4 w-4" />
+                <span>{n.label}</span>
+                {disabled && <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">soon</span>}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="px-3 pt-6 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Mieter-Sicht (Demo)</div>
+        <div className="px-3 pt-6 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("nav.tenant_view")}</div>
         <nav className="px-2 space-y-0.5">
           {tenantNav.map((n) => (
             <Link
@@ -74,9 +80,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
               to={n.to}
               className={cn(
                 "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-                isActive(n.to)
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                isActive(n.to) ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
               <n.icon className="h-4 w-4" />
@@ -90,7 +94,9 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             <div className="flex items-center gap-2 text-xs font-semibold">
               <Sparkles className="h-3.5 w-3.5 text-ai" /> AI Copilot
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.</p>
+            <p className="mt-1 text-xs text-muted-foreground">{lang === "DE"
+              ? "Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor."
+              : "Structures requests, prioritises urgency, recommends contractors."}</p>
           </div>
           <div className="mt-3 flex items-center gap-2 rounded-md p-2 hover:bg-accent">
             <div className="h-7 w-7 rounded-full bg-primary/15 text-primary text-xs font-semibold flex items-center justify-center">SK</div>
@@ -110,13 +116,18 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             {subtitle && <p className="truncate text-xs text-muted-foreground">{subtitle}</p>}
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <div className="hidden md:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-72">
+            <div className="hidden md:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64 lg:w-72">
               <Search className="h-3.5 w-3.5" />
-              <input
-                placeholder="Tickets, Mieter, Objekte suchen…"
-                className="w-full bg-transparent outline-none placeholder:text-muted-foreground"
-              />
+              <input placeholder={t("common.search")} className="w-full bg-transparent outline-none placeholder:text-muted-foreground" />
               <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px]">⌘K</kbd>
+            </div>
+            <div className="hidden md:flex items-center rounded-md border border-border bg-surface text-[11px] overflow-hidden">
+              <button onClick={() => setLang("DE")} className={cn("px-2 py-1.5 inline-flex items-center gap-1", lang === "DE" ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground hover:bg-accent")}>
+                <Languages className="h-3 w-3" />DE
+              </button>
+              <button onClick={() => setLang("EN")} className={cn("px-2 py-1.5", lang === "EN" ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground hover:bg-accent")}>
+                EN
+              </button>
             </div>
             <button className="relative inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent">
               <Bell className="h-4 w-4" />
@@ -124,7 +135,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             </button>
             {actions ?? (
               <button className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
-                <Plus className="h-3.5 w-3.5" /> Neues Ticket
+                <Plus className="h-3.5 w-3.5" /> {t("act.new_ticket")}
               </button>
             )}
           </div>
