@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { LanguageProvider } from "@/lib/i18n";
+import { RoleProvider } from "@/lib/role";
 
 
 import appCss from "../styles.css?url";
@@ -115,7 +116,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <Outlet />
+        <RoleProvider>
+          <Outlet />
+        </RoleProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );

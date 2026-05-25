@@ -266,6 +266,96 @@ const dict = {
   "portal.add_photo": { DE: "+ Foto", EN: "+ Photo" },
   "portal.contact_pm": { DE: "Hausverwaltung kontaktieren", EN: "Contact property management" },
   "portal.notifications": { DE: "Benachrichtigungen verwalten", EN: "Manage notifications" },
+
+  // Role switcher
+  "role.current_view": { DE: "Aktuelle Sicht", EN: "Current view" },
+  "role.switch": { DE: "Rolle wechseln", EN: "Switch role" },
+  "role.demo_mode": { DE: "Demo-Modus · Rolle umschalten", EN: "Demo mode · switch role" },
+  "role.pm": { DE: "Hausverwaltung", EN: "Property Manager" },
+  "role.tenant": { DE: "Mieter:in", EN: "Tenant" },
+  "role.contractor": { DE: "Handwerker", EN: "Contractor" },
+  "role.owner": { DE: "Eigentümer:in", EN: "Property Owner" },
+  "role.pm_view": { DE: "Hausverwaltungs-Sicht", EN: "Property Manager view" },
+  "role.tenant_view": { DE: "Mieter-Sicht", EN: "Tenant view" },
+  "role.contractor_view": { DE: "Handwerker-Sicht", EN: "Contractor view" },
+  "role.owner_view": { DE: "Eigentümer-Sicht", EN: "Owner view" },
+
+  // Tenant role nav
+  "tnav.report": { DE: "Schaden melden", EN: "Report issue" },
+  "tnav.requests": { DE: "Meine Anfragen", EN: "My requests" },
+  "tnav.messages": { DE: "Nachrichten", EN: "Messages" },
+  "tnav.timeline": { DE: "Verlauf", EN: "Timeline" },
+
+  // Contractor role nav
+  "cnav.jobs": { DE: "Aufträge", EN: "Assigned jobs" },
+  "cnav.schedule": { DE: "Terminplan", EN: "Schedule" },
+  "cnav.messages": { DE: "Nachrichten", EN: "Messages" },
+  "cnav.completed": { DE: "Erledigt", EN: "Completed" },
+
+  // Owner role nav
+  "onav.properties": { DE: "Objekte", EN: "Properties" },
+  "onav.issues": { DE: "Offene Fälle", EN: "Open issues" },
+  "onav.financials": { DE: "Finanzübersicht", EN: "Financials" },
+  "onav.approvals": { DE: "Freigaben", EN: "Approvals" },
+
+  // Tenant dashboard
+  "tdash.title": { DE: "Meine Anfragen", EN: "My requests" },
+  "tdash.sub": { DE: "Wir kümmern uns – transparent und nachvollziehbar.", EN: "We're on it — transparent and traceable." },
+  "tdash.hero_title": { DE: "Etwas in Ihrer Wohnung defekt?", EN: "Something broken in your home?" },
+  "tdash.hero_sub": { DE: "Melden Sie es in 60 Sekunden – Valta strukturiert alles für die Hausverwaltung.", EN: "Report it in 60 seconds — Valta structures everything for property management." },
+  "tdash.new_request": { DE: "Neue Meldung starten", EN: "Start a new report" },
+  "tdash.active": { DE: "Aktive Anfragen", EN: "Active requests" },
+  "tdash.resolved": { DE: "Abgeschlossen", EN: "Resolved" },
+  "tdash.no_active": { DE: "Keine offenen Anfragen – alles in Ordnung.", EN: "No open requests — all good." },
+  "tdash.opened": { DE: "Eingereicht", EN: "Opened" },
+  "tdash.view": { DE: "Status verfolgen", EN: "Track status" },
+
+  // Contractor dashboard
+  "cdash.title": { DE: "Meine Aufträge", EN: "My assigned jobs" },
+  "cdash.sub": { DE: "Nur das Wesentliche – damit Sie schnell loslegen können.", EN: "Only the essentials — so you can get started fast." },
+  "cdash.today": { DE: "Heute", EN: "Today" },
+  "cdash.this_week": { DE: "Diese Woche", EN: "This week" },
+  "cdash.urgent": { DE: "Dringend", EN: "Urgent" },
+  "cdash.address": { DE: "Adresse", EN: "Address" },
+  "cdash.tenant_contact": { DE: "Mieterkontakt", EN: "Tenant contact" },
+  "cdash.notes": { DE: "Reparaturhinweise", EN: "Repair notes" },
+  "cdash.accept": { DE: "Auftrag annehmen", EN: "Accept job" },
+  "cdash.request_info": { DE: "Rückfrage stellen", EN: "Request info" },
+  "cdash.start": { DE: "Arbeit starten", EN: "Mark in progress" },
+  "cdash.complete": { DE: "Als erledigt melden", EN: "Mark completed" },
+  "cdash.directions": { DE: "Route", EN: "Directions" },
+  "cdash.eta": { DE: "Geplant", EN: "Scheduled" },
+  "cdash.kpi_active": { DE: "Aktive Aufträge", EN: "Active jobs" },
+  "cdash.kpi_week": { DE: "Diese Woche fällig", EN: "Due this week" },
+  "cdash.kpi_avg": { DE: "Ø Reaktionszeit", EN: "Avg. response" },
+  "cdash.kpi_rating": { DE: "Bewertung", EN: "Rating" },
+  "cdash.schedule_title": { DE: "Wochenplan", EN: "Weekly schedule" },
+  "cdash.completed_title": { DE: "Abgeschlossene Aufträge", EN: "Completed jobs" },
+  "cdash.messages_title": { DE: "Nachrichten von Hausverwaltungen", EN: "Messages from property managers" },
+
+  // Owner dashboard
+  "odash.title": { DE: "Portfolio-Übersicht", EN: "Portfolio overview" },
+  "odash.sub": { DE: "Transparenz für Eigentümer · zentrale KPIs & Freigaben.", EN: "Transparency for owners — central KPIs and approvals." },
+  "odash.kpi_units": { DE: "Wohneinheiten", EN: "Units" },
+  "odash.kpi_open": { DE: "Offene Fälle", EN: "Open cases" },
+  "odash.kpi_approvals": { DE: "Freigaben offen", EN: "Pending approvals" },
+  "odash.kpi_costs": { DE: "Wartungskosten YTD", EN: "Maintenance YTD" },
+  "odash.health": { DE: "Gebäude-Gesundheit", EN: "Building health" },
+  "odash.health_sub": { DE: "AI-bewertet aus Wartungs- und Ticket-Historie.", EN: "AI-rated from maintenance and ticket history." },
+  "odash.summary": { DE: "AI-Zusammenfassung Portfolio", EN: "AI portfolio summary" },
+  "odash.summary_text": {
+    DE: "3 ungelöste Heizungsfälle im Berliner Objekt deuten auf alternde Anlagen hin. Wartungsaufwand in München −18% MoM. Frankfurter Objekt stabil ohne kritische Vorfälle.",
+    EN: "3 unresolved heating cases at the Berlin property suggest aging equipment. Maintenance load in Munich down 18% MoM. Frankfurt property stable with no critical incidents.",
+  },
+  "odash.approvals_title": { DE: "Ausstehende Freigaben", EN: "Pending approvals" },
+  "odash.approvals_sub": { DE: "Hausverwaltung wartet auf Ihre Entscheidung.", EN: "Property management is awaiting your decision." },
+  "odash.approve": { DE: "Freigeben", EN: "Approve" },
+  "odash.reject": { DE: "Ablehnen", EN: "Decline" },
+  "odash.cost_breakdown": { DE: "Kostenverteilung nach Kategorie", EN: "Cost breakdown by category" },
+  "odash.recent_resolved": { DE: "Zuletzt abgeschlossen", EN: "Recently resolved" },
+  "odash.issues_title": { DE: "Offene Reparaturfälle", EN: "Open maintenance cases" },
+  "odash.financials_title": { DE: "Finanzübersicht", EN: "Financial overview" },
+  "odash.approvals_page": { DE: "Freigaben", EN: "Approvals" },
 } as const;
 
 type Key = keyof typeof dict;
