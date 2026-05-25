@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { tickets, kpis, aiActivity, notifications } from "@/lib/mockData";
+import { useLang } from "@/lib/i18n";
 import {
   Inbox,
   Timer,
@@ -18,28 +19,25 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard · Valta" },
-      { name: "description", content: "Operations Copilot für Hausverwaltungen – KPIs, aktive Tickets und AI-Aktivität auf einen Blick." },
+      { name: "description", content: "Operations Copilot for property management — KPIs, active tickets, and AI activity at a glance." },
     ],
   }),
   component: Dashboard,
 });
 
-const kpiCards = [
-  { label: "Offene Tickets", value: kpis.openTickets, delta: "+3 heute", icon: Inbox, tone: "primary" as const },
-  { label: "Ø Reaktionszeit", value: `${kpis.avgResponseMin} Min.`, delta: "−38% MoM", icon: Timer, tone: "success" as const },
-  { label: "AI-Vorschläge übernommen", value: `${kpis.aiResolved}`, delta: "diese Woche", icon: Sparkles, tone: "ai" as const },
-  { label: "Kritische Fälle", value: kpis.urgent, delta: "Sofort prüfen", icon: AlertTriangle, tone: "destructive" as const },
-  { label: "Wartet auf Handwerker", value: kpis.pendingContractor, delta: "2 überfällig", icon: Wrench, tone: "warning" as const },
-];
-
 function Dashboard() {
+  const { t, lang } = useLang();
+  const kpiCards = [
+    { label: t("kpi.open"), value: kpis.openTickets, delta: t("kpi.open.delta"), icon: Inbox, tone: "primary" as const },
+    { label: t("kpi.response"), value: `${kpis.avgResponseMin} ${t("common.minutes_short")}`, delta: t("kpi.response.delta"), icon: Timer, tone: "success" as const },
+    { label: t("kpi.ai"), value: `${kpis.aiResolved}`, delta: t("kpi.ai.delta"), icon: Sparkles, tone: "ai" as const },
+    { label: t("kpi.urgent"), value: kpis.urgent, delta: t("kpi.urgent.delta"), icon: AlertTriangle, tone: "destructive" as const },
+    { label: t("kpi.pending"), value: kpis.pendingContractor, delta: t("kpi.pending.delta"), icon: Wrench, tone: "warning" as const },
+  ];
+
   return (
-    <AppShell
-      title="Guten Morgen, Sarah"
-      subtitle="Hier ist, was in Ihrem Portfolio heute Aufmerksamkeit braucht."
-    >
+    <AppShell title={t("dash.greeting")} subtitle={t("dash.sub")}>
       <div className="p-4 md:p-8 space-y-6">
-        {/* KPI grid */}
         <section className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           {kpiCards.map((k) => (
             <div key={k.label} className="rounded-xl border border-border bg-surface p-4 shadow-soft hover:shadow-card transition-shadow">
@@ -61,23 +59,22 @@ function Dashboard() {
         </section>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Active tickets */}
           <section className="xl:col-span-2 rounded-xl border border-border bg-surface shadow-soft">
             <header className="flex items-center justify-between p-4 border-b border-border">
               <div>
-                <h2 className="text-sm font-semibold">Aktive Tickets</h2>
-                <p className="text-xs text-muted-foreground">Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.</p>
+                <h2 className="text-sm font-semibold">{t("section.active")}</h2>
+                <p className="text-xs text-muted-foreground">{t("section.active.sub")}</p>
               </div>
               <Link to="/inbox" className="text-xs text-primary inline-flex items-center gap-1 hover:underline">
-                Inbox öffnen <ArrowRight className="h-3 w-3" />
+                {t("section.open_inbox")} <ArrowRight className="h-3 w-3" />
               </Link>
             </header>
             <ul className="divide-y divide-border">
-              {tickets.filter((t) => t.status !== "resolved").map((t) => (
-                <li key={t.id}>
+              {tickets.filter((tk) => tk.status !== "resolved").map((tk) => (
+                <li key={tk.id}>
                   <Link
                     to="/ticket/$id"
-                    params={{ id: t.id }}
+                    params={{ id: tk.id }}
                     className="flex items-center gap-4 p-4 hover:bg-accent/40 transition-colors"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
@@ -85,18 +82,18 @@ function Dashboard() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">{t.id}</span>
-                        <UrgencyBadge urgency={t.urgency} />
-                        <AIBadge confidence={t.confidence} />
+                        <span className="text-xs text-muted-foreground">{tk.id}</span>
+                        <UrgencyBadge urgency={tk.urgency} />
+                        <AIBadge confidence={tk.confidence} />
                       </div>
-                      <div className="mt-1 truncate text-sm font-medium">{t.title}</div>
+                      <div className="mt-1 truncate text-sm font-medium">{tk.title[lang]}</div>
                       <div className="text-xs text-muted-foreground truncate">
-                        {t.tenant.name} · {t.tenant.apartment} · {t.tenant.building}
+                        {tk.tenant.name} · {tk.tenant.apartment[lang]} · {tk.tenant.building}
                       </div>
                     </div>
                     <div className="hidden md:flex flex-col items-end gap-1">
-                      <StatusBadge status={t.status} />
-                      <span className="text-[11px] text-muted-foreground">{t.createdAt}</span>
+                      <StatusBadge status={tk.status} />
+                      <span className="text-[11px] text-muted-foreground">{tk.createdAt[lang]}</span>
                     </div>
                     <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
                   </Link>
@@ -105,20 +102,19 @@ function Dashboard() {
             </ul>
           </section>
 
-          {/* Right column */}
           <section className="space-y-6">
             <div className="rounded-xl border border-border bg-surface shadow-soft">
               <header className="flex items-center gap-2 p-4 border-b border-border">
                 <Sparkles className="h-4 w-4 text-ai" />
-                <h2 className="text-sm font-semibold">AI Assistant · Aktivität</h2>
+                <h2 className="text-sm font-semibold">{t("section.ai_activity")}</h2>
               </header>
               <ul className="p-4 space-y-3">
                 {aiActivity.map((a, i) => (
                   <li key={i} className="flex gap-3">
                     <div className="mt-1 h-2 w-2 rounded-full bg-ai/70" />
                     <div className="min-w-0">
-                      <div className="text-sm leading-snug">{a.text}</div>
-                      <div className="text-[11px] text-muted-foreground">{a.at}</div>
+                      <div className="text-sm leading-snug">{a.text[lang]}</div>
+                      <div className="text-[11px] text-muted-foreground">{a.at[lang]}</div>
                     </div>
                   </li>
                 ))}
@@ -128,13 +124,13 @@ function Dashboard() {
             <div className="rounded-xl border border-border bg-surface shadow-soft">
               <header className="flex items-center gap-2 p-4 border-b border-border">
                 <Bell className="h-4 w-4 text-primary" />
-                <h2 className="text-sm font-semibold">Benachrichtigungen</h2>
+                <h2 className="text-sm font-semibold">{t("section.notifications")}</h2>
               </header>
               <ul className="p-4 space-y-3">
                 {notifications.map((n, i) => (
                   <li key={i} className="flex gap-3 text-sm">
                     <span className="w-12 shrink-0 text-[11px] text-muted-foreground">{n.at}</span>
-                    <span className="leading-snug">{n.text}</span>
+                    <span className="leading-snug">{n.text[lang]}</span>
                   </li>
                 ))}
               </ul>

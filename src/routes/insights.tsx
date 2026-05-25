@@ -1,44 +1,44 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
-import { insights, contractors } from "@/lib/contractors";
+import { insights, allContractors } from "@/lib/contractors";
 import { tickets } from "@/lib/mockData";
+import { useLang } from "@/lib/i18n";
 import { Sparkles, AlertTriangle, TrendingDown, Bot, Clock, Flame, ArrowRight, Wrench } from "lucide-react";
 
 export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
       { title: "AI Insights · Valta" },
-      { name: "description", content: "Operativer Intelligence-Layer für Hausverwaltungen – Trends, Engpässe und Automatisierungsrate." },
+      { name: "description", content: "Operational intelligence layer for property management — trends, bottlenecks and automation rate." },
     ],
   }),
   component: InsightsPage,
 });
 
 function InsightsPage() {
+  const { t, lang } = useLang();
   const max = Math.max(...insights.volumeByCategory.map((c) => c.value));
   const responseMax = Math.max(...insights.responseTrend);
 
   return (
-    <AppShell title="AI Insights" subtitle="Operativer Intelligence-Layer · letzte 90 Tage">
+    <AppShell title={t("ins.title")} subtitle={t("ins.sub")}>
       <div className="p-4 md:p-8 space-y-6">
-        {/* Headline KPIs */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Headline label="AI-Automatisierungsrate" value={`${insights.automationRate}%`} delta="+12% MoM" icon={Bot} tone="ai" />
-          <Headline label="Ø Auflösungszeit" value={`${insights.avgResolutionHours} Std.`} delta="−9 Std. seit Einführung" icon={Clock} tone="success" />
-          <Headline label="SLA-Verletzungen" value={`${insights.slaBreaches}`} delta="diese Woche" icon={AlertTriangle} tone="destructive" />
-          <Headline label="Kritische Hotspots" value="Heizung" delta="34% aller Anfragen" icon={Flame} tone="warning" />
+          <Headline label={t("ins.automation")} value={`${insights.automationRate}%`} delta={t("ins.automation.delta")} icon={Bot} tone="ai" />
+          <Headline label={t("ins.resolution")} value={`${insights.avgResolutionHours} ${t("common.hours_short")}`} delta={t("ins.resolution.delta")} icon={Clock} tone="success" />
+          <Headline label={t("ins.sla")} value={`${insights.slaBreaches}`} delta={t("ins.sla.delta")} icon={AlertTriangle} tone="destructive" />
+          <Headline label={t("ins.hotspot")} value={lang === "EN" ? "Heating" : "Heizung"} delta={t("ins.hotspot.delta")} icon={Flame} tone="warning" />
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Response trend */}
           <section className="lg:col-span-2 rounded-2xl border border-border bg-surface p-5 shadow-soft">
             <header className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-sm font-semibold">Reaktionszeit pro Woche</h2>
-                <p className="text-xs text-muted-foreground">Minuten zwischen Eingang und erster Antwort.</p>
+                <h2 className="text-sm font-semibold">{t("ins.response_per_week")}</h2>
+                <p className="text-xs text-muted-foreground">{t("ins.response_sub")}</p>
               </div>
               <span className="inline-flex items-center gap-1 text-xs text-success">
-                <TrendingDown className="h-3.5 w-3.5" /> −64% seit Q1
+                <TrendingDown className="h-3.5 w-3.5" /> {t("ins.trend_q1")}
               </span>
             </header>
             <div className="h-48 flex items-end gap-1.5">
@@ -51,17 +51,16 @@ function InsightsPage() {
             </div>
           </section>
 
-          {/* Category breakdown */}
           <section className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
             <header className="mb-4">
-              <h2 className="text-sm font-semibold">Häufigste Kategorien</h2>
-              <p className="text-xs text-muted-foreground">Anteil der Tickets pro Kategorie.</p>
+              <h2 className="text-sm font-semibold">{t("ins.categories")}</h2>
+              <p className="text-xs text-muted-foreground">{t("ins.categories_sub")}</p>
             </header>
             <ul className="space-y-2.5">
               {insights.volumeByCategory.map((c) => (
-                <li key={c.label}>
+                <li key={c.label.DE}>
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span>{c.label}</span>
+                    <span>{c.label[lang]}</span>
                     <span className="text-muted-foreground">{c.value}%</span>
                   </div>
                   <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -74,13 +73,12 @@ function InsightsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* At risk */}
           <section className="lg:col-span-2 rounded-2xl border border-border bg-surface shadow-soft">
             <header className="flex items-center gap-2 p-4 border-b border-border">
               <AlertTriangle className="h-4 w-4 text-destructive" />
               <div>
-                <h2 className="text-sm font-semibold">Risiko-Tickets · brauchen Aufmerksamkeit</h2>
-                <p className="text-xs text-muted-foreground">AI-erkannte Eskalations-Kandidaten.</p>
+                <h2 className="text-sm font-semibold">{t("ins.atrisk")}</h2>
+                <p className="text-xs text-muted-foreground">{t("ins.atrisk_sub")}</p>
               </div>
             </header>
             <ul className="divide-y divide-border">
@@ -92,63 +90,62 @@ function InsightsPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-muted-foreground">{r.id}</span>
-                      <span className="rounded-full bg-destructive/10 text-destructive text-[11px] px-2 py-0.5 font-medium">{r.hours} Std. offen</span>
+                      <span className="rounded-full bg-destructive/10 text-destructive text-[11px] px-2 py-0.5 font-medium">{r.hours} {t("ins.atrisk_open")}</span>
                     </div>
-                    <div className="text-sm font-medium mt-0.5">{r.title}</div>
-                    <div className="text-xs text-muted-foreground">{r.reason}</div>
+                    <div className="text-sm font-medium mt-0.5">{r.title[lang]}</div>
+                    <div className="text-xs text-muted-foreground">{r.reason[lang]}</div>
                   </div>
                   <Link to="/inbox" className="text-xs text-primary inline-flex items-center gap-1 hover:underline">
-                    Bearbeiten <ArrowRight className="h-3 w-3" />
+                    {t("ins.atrisk_handle")} <ArrowRight className="h-3 w-3" />
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
 
-          {/* AI automation panel */}
           <section className="rounded-2xl border border-border ai-gradient p-5 shadow-soft">
             <div className="flex items-center gap-2 text-xs font-semibold">
-              <Sparkles className="h-3.5 w-3.5 text-ai" /> AI-Automatisierung
+              <Sparkles className="h-3.5 w-3.5 text-ai" /> {t("ins.ai_panel")}
             </div>
             <div className="mt-3 text-4xl font-semibold tracking-tight">{insights.automationRate}%</div>
-            <p className="text-xs text-muted-foreground mt-1">der AI-Entwürfe wurden ohne Bearbeitung freigegeben.</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("ins.ai_panel_sub")}</p>
             <div className="mt-4 h-2 rounded-full bg-background overflow-hidden">
               <div className="h-full bg-ai transition-all" style={{ width: `${insights.automationRate}%` }} />
             </div>
             <ul className="mt-5 space-y-2 text-xs">
-              <li className="flex justify-between"><span className="text-muted-foreground">Auto-Triage</span><span className="font-medium">92%</span></li>
-              <li className="flex justify-between"><span className="text-muted-foreground">Handwerker-Vorschlag akzeptiert</span><span className="font-medium">81%</span></li>
-              <li className="flex justify-between"><span className="text-muted-foreground">Übersetzungen</span><span className="font-medium">100%</span></li>
-              <li className="flex justify-between"><span className="text-muted-foreground">Duplikate erkannt</span><span className="font-medium">14</span></li>
+              <li className="flex justify-between"><span className="text-muted-foreground">{t("ins.auto_triage")}</span><span className="font-medium">92%</span></li>
+              <li className="flex justify-between"><span className="text-muted-foreground">{t("ins.contractor_accepted")}</span><span className="font-medium">81%</span></li>
+              <li className="flex justify-between"><span className="text-muted-foreground">{t("ins.translations")}</span><span className="font-medium">100%</span></li>
+              <li className="flex justify-between"><span className="text-muted-foreground">{t("ins.duplicates")}</span><span className="font-medium">14</span></li>
             </ul>
           </section>
         </div>
 
-        {/* Contractor performance */}
         <section className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
           <header className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-semibold">Handwerker-Netzwerk · Top-Performer</h2>
-              <p className="text-xs text-muted-foreground">Nach Reaktionszeit und Mieter-Zufriedenheit.</p>
+              <h2 className="text-sm font-semibold">{t("ins.top_performer")}</h2>
+              <p className="text-xs text-muted-foreground">{t("ins.top_performer_sub")}</p>
             </div>
+            <Link to="/contractors" className="text-xs text-primary hover:underline">{t("act.view_all")} →</Link>
           </header>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {Object.values(contractors).flat().filter((c) => c.topMatch).slice(0, 6).map((c) => (
-              <div key={c.id} className="rounded-xl border border-border bg-background p-3 flex items-center gap-3">
+            {allContractors.filter((c) => c.topMatch).slice(0, 6).map((c) => (
+              <Link key={c.id} to="/contractors/$id" params={{ id: c.id }} className="rounded-xl border border-border bg-background p-3 flex items-center gap-3 hover:bg-accent transition-colors">
                 <div className="h-9 w-9 rounded-md bg-accent flex items-center justify-center">
                   <Wrench className="h-4 w-4 text-primary" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-sm font-medium truncate">{c.name}</div>
-                  <div className="text-[11px] text-muted-foreground">★ {c.rating} · {c.reviews} Bew. · {c.city}</div>
+                  <div className="text-[11px] text-muted-foreground">★ {c.rating} · {c.reviews} · {c.city}</div>
                 </div>
-                <span className="text-[10px] uppercase tracking-wider bg-success/15 text-success-foreground rounded px-1.5 py-0.5">ETA {c.etaHours}h</span>
-              </div>
+                <span className="text-[10px] uppercase tracking-wider bg-success/15 text-success-foreground rounded px-1.5 py-0.5">{t("common.eta")} {c.etaHours}{t("common.hours_short")}</span>
+              </Link>
             ))}
           </div>
         </section>
 
-        <p className="text-[11px] text-muted-foreground">Demo-Daten · {tickets.length} aktive Tickets im Bestand</p>
+        <p className="text-[11px] text-muted-foreground">{t("ins.demo_note").replace("{n}", String(tickets.length))}</p>
       </div>
     </AppShell>
   );
