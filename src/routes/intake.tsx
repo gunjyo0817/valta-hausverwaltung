@@ -223,3 +223,46 @@ function Field({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+function TypingBubble() {
+  return (
+    <div className="flex gap-3">
+      <div className="h-8 w-8 shrink-0 rounded-lg ai-gradient flex items-center justify-center">
+        <Sparkles className="h-4 w-4 text-ai" />
+      </div>
+      <div className="rounded-2xl rounded-tl-sm border border-border bg-surface px-3.5 py-3 shadow-soft">
+        <div className="flex gap-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.3s]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:-0.15s]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StructuringCard() {
+  const steps = [
+    "Kategorie erkannt: Heizung",
+    "Dringlichkeit eingeschätzt: Kritisch",
+    "Zusammenfassung generiert",
+    "Handwerker-Empfehlung vorbereitet",
+  ];
+  return (
+    <div className="mt-2 rounded-2xl border border-border ai-gradient p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex items-center gap-2 text-xs font-semibold">
+        <Sparkles className="h-3.5 w-3.5 text-ai animate-pulse" /> AI strukturiert Ihre Meldung…
+      </div>
+      <ul className="mt-3 space-y-1.5 text-xs">
+        {steps.map((s, i) => (
+          <li key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-left-1" style={{ animationDelay: `${i * 250}ms`, animationFillMode: "backwards" }}>
+            <CheckCircle2 className="h-3.5 w-3.5 text-success" />
+            <span>{s}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+}
