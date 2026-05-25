@@ -81,12 +81,12 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
     navigate({ to: ROLE_HOME[r] as any });
   };
 
-  const roleViewLabelKey = {
+  const roleViewLabelKey = ({
     pm: "role.pm_view",
     tenant: "role.tenant_view",
     contractor: "role.contractor_view",
     owner: "role.owner_view",
-  }[role] as const;
+  } as const)[role];
 
   const roles: Role[] = ["pm", "tenant", "contractor", "owner"];
   const roleIcon: Record<Role, any> = { pm: LayoutDashboard, tenant: MessageSquareText, contractor: Wrench, owner: Home };
