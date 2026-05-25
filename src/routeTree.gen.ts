@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
@@ -23,6 +24,11 @@ const PortalRoute = PortalRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InboxRoute = InboxRouteImport.update({
@@ -44,6 +50,7 @@ const TicketIdRoute = TicketIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/inbox': typeof InboxRoute
+  '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/ticket/$id': typeof TicketIdRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/inbox': typeof InboxRoute
+  '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/ticket/$id': typeof TicketIdRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/inbox': typeof InboxRoute
+  '/insights': typeof InsightsRoute
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/ticket/$id': typeof TicketIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inbox' | '/intake' | '/portal' | '/ticket/$id'
+  fullPaths:
+    | '/'
+    | '/inbox'
+    | '/insights'
+    | '/intake'
+    | '/portal'
+    | '/ticket/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inbox' | '/intake' | '/portal' | '/ticket/$id'
-  id: '__root__' | '/' | '/inbox' | '/intake' | '/portal' | '/ticket/$id'
+  to: '/' | '/inbox' | '/insights' | '/intake' | '/portal' | '/ticket/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/inbox'
+    | '/insights'
+    | '/intake'
+    | '/portal'
+    | '/ticket/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InboxRoute: typeof InboxRoute
+  InsightsRoute: typeof InsightsRoute
   IntakeRoute: typeof IntakeRoute
   PortalRoute: typeof PortalRoute
   TicketIdRoute: typeof TicketIdRoute
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inbox': {
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InboxRoute: InboxRoute,
+  InsightsRoute: InsightsRoute,
   IntakeRoute: IntakeRoute,
   PortalRoute: PortalRoute,
   TicketIdRoute: TicketIdRoute,
@@ -129,3 +160,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
