@@ -35,7 +35,7 @@ function OwnerFinancials() {
   return (
     <AppShell title={t("odash.financials_title")} subtitle={t("odash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
-        <div className="grid md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: lang === "EN" ? "Monthly spend" : "Monatlich", value: "€ 4.830", trend: -6, color: "text-success" },
             { label: lang === "EN" ? "YTD spend" : "Wartung YTD", value: "€ 48.230", trend: -12, color: "text-success" },
@@ -105,7 +105,7 @@ function OwnerFinancials() {
             <FileText className="h-4 w-4 text-primary" />
             <h3 className="text-sm font-semibold">{lang === "EN" ? "Recent invoices" : "Aktuelle Rechnungen"}</h3>
           </div>
-          <div className="grid grid-cols-12 px-5 py-2.5 bg-surface-muted text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+          <div className="hidden md:grid grid-cols-12 px-5 py-2.5 bg-surface-muted text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
             <div className="col-span-2">{lang === "EN" ? "Invoice" : "Rechnung"}</div>
             <div className="col-span-2">{lang === "EN" ? "Date" : "Datum"}</div>
             <div className="col-span-3">{t("common.contractor")}</div>
@@ -114,19 +114,42 @@ function OwnerFinancials() {
             <div className="col-span-1 text-right">{t("common.status")}</div>
           </div>
           {invoices.map((inv) => (
-            <div key={inv.id} className="grid grid-cols-12 px-5 py-3 items-center border-b border-border last:border-b-0 hover:bg-accent/30">
-              <div className="col-span-2 text-[11px] font-mono">{inv.id}</div>
-              <div className="col-span-2 text-xs text-muted-foreground">{inv.date}</div>
-              <div className="col-span-3 text-xs">{inv.contractor}</div>
-              <div className="col-span-3 text-xs text-muted-foreground">{inv.property}</div>
-              <div className="col-span-1 text-xs text-right font-semibold tabular-nums">{inv.amount}</div>
-              <div className="col-span-1 flex justify-end">
-                <span className={`text-[10px] font-semibold rounded-full px-2 py-0.5 ${inv.status === "paid" ? "bg-success/15 text-success" : "bg-warning/15 text-warning"}`}>
-                  {inv.status === "paid" ? (lang === "EN" ? "Paid" : "Bezahlt") : (lang === "EN" ? "Pending" : "Offen")}
-                </span>
+            <div key={inv.id}>
+              {/* Desktop row */}
+              <div className="hidden md:grid grid-cols-12 px-5 py-3 items-center border-b border-border last:border-b-0 hover:bg-accent/30">
+                <div className="col-span-2 text-[11px] font-mono">{inv.id}</div>
+                <div className="col-span-2 text-xs text-muted-foreground">{inv.date}</div>
+                <div className="col-span-3 text-xs">{inv.contractor}</div>
+                <div className="col-span-3 text-xs text-muted-foreground">{inv.property}</div>
+                <div className="col-span-1 text-xs text-right font-semibold tabular-nums">{inv.amount}</div>
+                <div className="col-span-1 flex justify-end">
+                  <span className={`text-[10px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap ${inv.status === "paid" ? "bg-success/15 text-success" : "bg-warning/15 text-warning"}`}>
+                    {inv.status === "paid" ? (lang === "EN" ? "Paid" : "Bezahlt") : (lang === "EN" ? "Pending" : "Offen")}
+                  </span>
+                </div>
+              </div>
+              {/* Mobile card */}
+              <div className="md:hidden p-4 border-b border-border last:border-b-0 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-mono text-muted-foreground">{inv.id}</div>
+                    <div className="text-sm font-medium mt-0.5 truncate">{inv.contractor}</div>
+                    <div className="text-xs text-muted-foreground truncate">{inv.property}</div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-sm font-semibold tabular-nums">{inv.amount}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">{inv.date}</div>
+                  </div>
+                </div>
+                <div>
+                  <span className={`inline-block text-[10px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap ${inv.status === "paid" ? "bg-success/15 text-success" : "bg-warning/15 text-warning"}`}>
+                    {inv.status === "paid" ? (lang === "EN" ? "Paid" : "Bezahlt") : (lang === "EN" ? "Pending" : "Offen")}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
+
           <div className="px-5 py-3 flex justify-end border-t border-border bg-surface-muted">
             <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
               <Download className="h-3.5 w-3.5" /> {lang === "EN" ? "Export CSV" : "Als CSV exportieren"}

@@ -49,7 +49,7 @@ function OwnerIssues() {
         </div>
 
         <div className="rounded-xl border border-border bg-surface overflow-hidden">
-          <div className="grid grid-cols-12 px-4 py-2.5 bg-surface-muted text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
+          <div className="hidden md:grid grid-cols-12 px-4 py-2.5 bg-surface-muted text-[10px] font-semibold uppercase tracking-wider text-muted-foreground border-b border-border">
             <div className="col-span-1">ID</div>
             <div className="col-span-3">{t("common.summary")}</div>
             <div className="col-span-2">{t("common.category")}</div>
@@ -59,19 +59,39 @@ function OwnerIssues() {
             <div className="col-span-1 text-right">{lang === "EN" ? "Est. resolution" : "Vorauss. Lösung"}</div>
           </div>
           {filtered.map((tk) => (
-            <Link key={tk.id} to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 border-b border-border last:border-b-0 items-center">
-              <div className="col-span-1 text-[11px] font-mono text-muted-foreground">{tk.id}</div>
-              <div className="col-span-3 min-w-0">
-                <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
-                <div className="text-[11px] text-muted-foreground truncate">{tk.createdAt[lang]} · {tk.contractorName ?? "—"}</div>
+            <Link key={tk.id} to="/ticket/$id" params={{ id: tk.id }} className="block border-b border-border last:border-b-0 hover:bg-accent/30">
+              {/* Desktop row */}
+              <div className="hidden md:grid grid-cols-12 px-4 py-3 items-center">
+                <div className="col-span-1 text-[11px] font-mono text-muted-foreground">{tk.id}</div>
+                <div className="col-span-3 min-w-0">
+                  <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
+                  <div className="text-[11px] text-muted-foreground truncate">{tk.createdAt[lang]} · {tk.contractorName ?? "—"}</div>
+                </div>
+                <div className="col-span-2 text-xs text-muted-foreground">{tk.category[lang]}</div>
+                <div className="col-span-3 text-xs text-muted-foreground truncate flex items-center gap-1"><Building2 className="h-3 w-3" />{tk.tenant.building}</div>
+                <div className="col-span-1"><StatusBadge status={tk.status} /></div>
+                <div className="col-span-1"><UrgencyBadge urgency={tk.urgency} /></div>
+                <div className="col-span-1 text-right text-[11px] text-muted-foreground inline-flex items-center justify-end gap-1"><Clock className="h-3 w-3" />{etaByUrgency[tk.urgency][lang]}</div>
               </div>
-              <div className="col-span-2 text-xs text-muted-foreground">{tk.category[lang]}</div>
-              <div className="col-span-3 text-xs text-muted-foreground truncate flex items-center gap-1"><Building2 className="h-3 w-3" />{tk.tenant.building}</div>
-              <div className="col-span-1"><StatusBadge status={tk.status} /></div>
-              <div className="col-span-1"><UrgencyBadge urgency={tk.urgency} /></div>
-              <div className="col-span-1 text-right text-[11px] text-muted-foreground inline-flex items-center justify-end gap-1"><Clock className="h-3 w-3" />{etaByUrgency[tk.urgency][lang]}</div>
+              {/* Mobile card */}
+              <div className="md:hidden p-4 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[11px] font-mono text-muted-foreground">{tk.id}</div>
+                    <div className="text-sm font-semibold mt-0.5">{tk.title[lang]}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1 truncate"><Building2 className="h-3 w-3 shrink-0" />{tk.tenant.building}</div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <StatusBadge status={tk.status} />
+                  <UrgencyBadge urgency={tk.urgency} />
+                  <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{tk.category[lang]}</span>
+                </div>
+                <div className="text-[11px] text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" />{etaByUrgency[tk.urgency][lang]}</div>
+              </div>
             </Link>
           ))}
+
           {filtered.length === 0 && (
             <div className="p-10 text-center text-sm text-muted-foreground">{t("common.no_results")}</div>
           )}
