@@ -60,7 +60,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
     { to: "/contractors", label: t("nav.contractors"), icon: Users },
   ];
   const tenantNav: NavItem[] = [
-    { to: "/tenant", label: t("tnav.home") || (lang === "EN" ? "Home" : "Start"), icon: Home, exact: true },
+    { to: "/tenant", label: lang === "EN" ? "Home" : "Start", icon: Home, exact: true },
     { to: "/tenant/new-request", label: t("tnav.report"), icon: MessageSquareText },
     { to: "/tenant/tickets", label: t("tnav.requests"), icon: ClipboardList },
   ];
