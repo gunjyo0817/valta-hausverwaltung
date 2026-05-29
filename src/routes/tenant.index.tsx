@@ -9,7 +9,6 @@ export const Route = createFileRoute("/tenant/")({ component: TenantHome });
 
 function TenantHome() {
   const { t, lang } = useLang();
-  // tenant = Anna Becker → her tickets
   const mine = tickets.filter((tk) => tk.tenant.name === "Anna Becker" || tk.propertyId === "p-lindenstr-22").slice(0, 4);
   const active = mine.filter((tk) => tk.status !== "resolved");
   const resolved = mine.filter((tk) => tk.status === "resolved");
@@ -27,10 +26,10 @@ function TenantHome() {
               <h2 className="text-lg font-semibold tracking-tight">{t("tdash.hero_title")}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{t("tdash.hero_sub")}</p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to="/intake" className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition">
+                <Link to="/tenant/new-request" className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition">
                   <MessageSquareText className="h-4 w-4" /> {t("tdash.new_request")}
                 </Link>
-                <Link to="/portal" className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 text-sm hover:bg-accent transition">
+                <Link to="/tenant/tickets" className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 text-sm hover:bg-accent transition">
                   <Clock className="h-4 w-4" /> {t("tnav.timeline")}
                 </Link>
               </div>
@@ -48,7 +47,7 @@ function TenantHome() {
           ) : (
             <div className="space-y-2">
               {active.map((tk) => (
-                <Link key={tk.id} to="/portal" className="block rounded-xl border border-border bg-surface p-4 hover:border-primary/40 hover:shadow-soft transition-all">
+                <Link key={tk.id} to="/tenant/tickets/$id" params={{ id: tk.id }} className="block rounded-xl border border-border bg-surface p-4 hover:border-primary/40 hover:shadow-soft transition-all">
                   <div className="flex items-start gap-3">
                     <div className="h-9 w-9 rounded-lg bg-accent flex items-center justify-center text-muted-foreground">
                       <Camera className="h-4 w-4" />
@@ -80,7 +79,7 @@ function TenantHome() {
             <h3 className="text-sm font-semibold mb-3">{t("tdash.resolved")}</h3>
             <div className="space-y-2">
               {resolved.map((tk) => (
-                <div key={tk.id} className="rounded-xl border border-border bg-surface/50 p-4">
+                <Link key={tk.id} to="/tenant/tickets/$id" params={{ id: tk.id }} className="block rounded-xl border border-border bg-surface/50 p-4 hover:border-primary/30 transition">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
                       <div className="text-sm font-medium truncate">{tk.title[lang]}</div>
@@ -88,7 +87,7 @@ function TenantHome() {
                     </div>
                     <StatusBadge status={tk.status} />
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>

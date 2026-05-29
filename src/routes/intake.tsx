@@ -16,7 +16,7 @@ export const Route = createFileRoute("/intake")({
 
 type Msg = { from: "ai" | "user"; text: string; chips?: string[]; photo?: boolean };
 
-function IntakePage() {
+export function IntakePage() {
   const { t, lang, setLang } = useLang();
 
   const flow: Array<{ ai: string; chips?: string[] }> = lang === "EN"
