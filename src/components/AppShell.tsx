@@ -24,11 +24,13 @@ import {
   AlertOctagon,
   ClipboardList,
   Home,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
 import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
@@ -41,6 +43,11 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const navigate = useNavigate();
   const [roleOpen, setRoleOpen] = useState(false);
   const [newTicketOpen, setNewTicketOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname, role]);
 
   const pmNav: NavItem[] = [
     { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
@@ -154,9 +161,16 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border glass px-4 md:px-8">
+          <button
+            onClick={() => setMobileNavOpen(true)}
+            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent -ml-1"
+            aria-label="Open menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
           <div className="min-w-0">
             <h1 className="truncate text-lg font-semibold tracking-tight">{title}</h1>
-            {subtitle && <p className="truncate text-xs text-muted-foreground">{subtitle}</p>}
+            {subtitle && <p className="truncate text-xs text-muted-foreground hidden sm:block">{subtitle}</p>}
           </div>
           <div className="ml-auto flex items-center gap-2">
             <div className="hidden lg:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64">
@@ -166,7 +180,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             </div>
 
             {/* Role switcher */}
-            <div className="relative">
+            <div className="relative hidden md:block">
               <button
                 onClick={() => setRoleOpen((o) => !o)}
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs hover:bg-accent transition-colors"
@@ -232,6 +246,110 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
         </header>
         <main className="min-w-0 flex-1 animate-in fade-in duration-200" key={role}>{children}</main>
       </div>
+
+      {/* Mobile nav drawer */}
+      {mobileNavOpen && (
+        <div className="md:hidden fixed inset-0 z-50">
+          <div
+            className="absolute inset-0 bg-foreground/40 animate-in fade-in duration-200"
+            onClick={() => setMobileNavOpen(false)}
+          />
+          <aside className="absolute inset-y-0 left-0 w-[82%] max-w-[320px] bg-surface border-r border-border shadow-elegant flex flex-col animate-in slide-in-from-left duration-200">
+            <div className="flex h-16 items-center gap-2 px-5 border-b border-border">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">V</div>
+              <div className="leading-tight">
+                <div className="text-sm font-semibold tracking-tight">Valta</div>
+                <div className="text-[11px] text-muted-foreground">{t("brand.tagline")}</div>
+              </div>
+              <button
+                onClick={() => setMobileNavOpen(false)}
+                className="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent"
+                aria-label="Close menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="px-3 pt-3">
+              <div className={cn("flex items-center gap-2 rounded-lg border border-border px-2.5 py-2 text-xs", meta.color)}>
+                <div className="h-6 w-6 rounded-md bg-background/60 flex items-center justify-center text-[10px] font-semibold">{meta.initials}</div>
+                <div className="leading-tight min-w-0">
+                  <div className="font-semibold truncate">{t(roleViewLabelKey as any)}</div>
+                  <div className="text-[10px] opacity-75 truncate">{meta.person[lang]}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="px-3 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{current.section}</div>
+            <nav className="px-2 space-y-0.5 flex-1 overflow-y-auto">
+              {current.items.map((n) => (
+                <Link
+                  key={n.to}
+                  to={n.to as any}
+                  onClick={() => setMobileNavOpen(false)}
+                  className={cn(
+                    "flex items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm transition-colors",
+                    isActive(n.to, n.exact)
+                      ? "bg-accent text-accent-foreground font-medium"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  )}
+                >
+                  <n.icon className="h-4 w-4" />
+                  <span>{n.label}</span>
+                </Link>
+              ))}
+
+              <div className="pt-4 pb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("role.demo_mode")}</div>
+              {roles.map((r) => {
+                const m = ROLE_META[r];
+                const Icon = roleIcon[r];
+                return (
+                  <button
+                    key={r}
+                    onClick={() => handleRoleSwitch(r)}
+                    className={cn(
+                      "w-full flex items-center gap-2.5 rounded-md px-2.5 py-2.5 text-left text-sm transition-colors",
+                      role === r ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                    )}
+                  >
+                    <div className={cn("h-7 w-7 rounded-md flex items-center justify-center", m.color)}>
+                      <Icon className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-medium">{m.label[lang]}</div>
+                      <div className="text-[10px] text-muted-foreground truncate">{m.person[lang]}</div>
+                    </div>
+                    {role === r && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </button>
+                );
+              })}
+            </nav>
+
+            <div className="border-t border-border p-3 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{t("common.language") || "Language"}</span>
+                <div className="flex items-center rounded-md border border-border bg-background text-[11px] overflow-hidden">
+                  <button onClick={() => setLang("DE")} className={cn("px-3 py-1.5 inline-flex items-center gap-1", lang === "DE" ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground")}>
+                    <Languages className="h-3 w-3" />DE
+                  </button>
+                  <button onClick={() => setLang("EN")} className={cn("px-3 py-1.5", lang === "EN" ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground")}>
+                    EN
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-md p-1">
+                <div className={cn("h-7 w-7 rounded-full text-xs font-semibold flex items-center justify-center", meta.color)}>{meta.initials}</div>
+                <div className="leading-tight min-w-0">
+                  <div className="text-xs font-medium truncate">{meta.person[lang]}</div>
+                  <div className="text-[11px] text-muted-foreground truncate">{meta.org[lang]}</div>
+                </div>
+                <Settings className="ml-auto h-4 w-4 text-muted-foreground" />
+              </div>
+            </div>
+          </aside>
+        </div>
+      )}
+
       <NewTicketModal open={newTicketOpen} onClose={() => setNewTicketOpen(false)} />
     </div>
   );
