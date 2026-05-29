@@ -8,14 +8,6 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/contractor/schedule")({ component: Schedule });
 
-const days = [
-  { de: "Mo", en: "Mon", date: "25.05" },
-  { de: "Di", en: "Tue", date: "26.05" },
-  { de: "Mi", en: "Wed", date: "27.05" },
-  { de: "Do", en: "Thu", date: "28.05" },
-  { de: "Fr", en: "Fri", date: "29.05" },
-];
-
 type Appt = {
   ticketIndex: number;
   day: number;
@@ -24,25 +16,100 @@ type Appt = {
   tenant: string;
 };
 
-const appts: Appt[] = [
-  { ticketIndex: 0, day: 0, start: "09:00", end: "11:00", tenant: "Anna Becker" },
-  { ticketIndex: 1, day: 0, start: "14:00", end: "15:30", tenant: "Mehmet Yilmaz" },
-  { ticketIndex: 2, day: 1, start: "08:30", end: "10:00", tenant: "Sophia Klein" },
-  { ticketIndex: 3, day: 2, start: "11:00", end: "12:30", tenant: "Lukas Wagner" },
-  { ticketIndex: 4, day: 3, start: "09:00", end: "10:30", tenant: "Clara Hoffmann" },
-  { ticketIndex: 0, day: 3, start: "14:00", end: "16:00", tenant: "Anna Becker" },
-  { ticketIndex: 6, day: 4, start: "10:00", end: "11:00", tenant: "Elena Fischer" },
+type WeekDay = { de: string; en: string; date: string };
+
+type Week = {
+  number: number;
+  label: { de: string; en: string };
+  days: WeekDay[];
+  appts: Appt[];
+};
+
+const weeks: Week[] = [
+  {
+    number: 22,
+    label: { de: "25.–29. Mai", en: "May 25–29" },
+    days: [
+      { de: "Mo", en: "Mon", date: "25.05" },
+      { de: "Di", en: "Tue", date: "26.05" },
+      { de: "Mi", en: "Wed", date: "27.05" },
+      { de: "Do", en: "Thu", date: "28.05" },
+      { de: "Fr", en: "Fri", date: "29.05" },
+    ],
+    appts: [
+      { ticketIndex: 0, day: 0, start: "09:00", end: "11:00", tenant: "Anna Becker" },
+      { ticketIndex: 1, day: 0, start: "14:00", end: "15:30", tenant: "Mehmet Yilmaz" },
+      { ticketIndex: 2, day: 1, start: "08:30", end: "10:00", tenant: "Sophia Klein" },
+      { ticketIndex: 3, day: 2, start: "11:00", end: "12:30", tenant: "Lukas Wagner" },
+      { ticketIndex: 4, day: 3, start: "09:00", end: "10:30", tenant: "Clara Hoffmann" },
+      { ticketIndex: 0, day: 3, start: "14:00", end: "16:00", tenant: "Anna Becker" },
+      { ticketIndex: 6, day: 4, start: "10:00", end: "11:00", tenant: "Elena Fischer" },
+    ],
+  },
+  {
+    number: 23,
+    label: { de: "1.–5. Juni", en: "Jun 1–5" },
+    days: [
+      { de: "Mo", en: "Mon", date: "01.06" },
+      { de: "Di", en: "Tue", date: "02.06" },
+      { de: "Mi", en: "Wed", date: "03.06" },
+      { de: "Do", en: "Thu", date: "04.06" },
+      { de: "Fr", en: "Fri", date: "05.06" },
+    ],
+    appts: [
+      { ticketIndex: 2, day: 0, start: "08:00", end: "09:30", tenant: "Sophia Klein" },
+      { ticketIndex: 4, day: 1, start: "10:00", end: "12:00", tenant: "Clara Hoffmann" },
+      { ticketIndex: 1, day: 1, start: "13:30", end: "15:00", tenant: "Mehmet Yilmaz" },
+      { ticketIndex: 6, day: 2, start: "09:30", end: "11:00", tenant: "Elena Fischer" },
+      { ticketIndex: 3, day: 3, start: "14:00", end: "15:30", tenant: "Lukas Wagner" },
+      { ticketIndex: 0, day: 4, start: "08:30", end: "10:30", tenant: "Anna Becker" },
+    ],
+  },
+  {
+    number: 24,
+    label: { de: "8.–12. Juni", en: "Jun 8–12" },
+    days: [
+      { de: "Mo", en: "Mon", date: "08.06" },
+      { de: "Di", en: "Tue", date: "09.06" },
+      { de: "Mi", en: "Wed", date: "10.06" },
+      { de: "Do", en: "Thu", date: "11.06" },
+      { de: "Fr", en: "Fri", date: "12.06" },
+    ],
+    appts: [
+      { ticketIndex: 1, day: 0, start: "09:00", end: "10:30", tenant: "Mehmet Yilmaz" },
+      { ticketIndex: 0, day: 1, start: "11:00", end: "12:30", tenant: "Anna Becker" },
+      { ticketIndex: 4, day: 2, start: "08:30", end: "10:00", tenant: "Clara Hoffmann" },
+      { ticketIndex: 2, day: 2, start: "13:00", end: "14:30", tenant: "Sophia Klein" },
+      { ticketIndex: 6, day: 4, start: "15:00", end: "16:30", tenant: "Elena Fischer" },
+    ],
+  },
 ];
+
+const CURRENT_WEEK_INDEX = 0;
 
 function Schedule() {
   const { t, lang } = useLang();
   const [view, setView] = useState<"today" | "week">("week");
+  const [weekIdx, setWeekIdx] = useState(CURRENT_WEEK_INDEX);
+  const [mobileDay, setMobileDay] = useState(0);
+  const [animKey, setAnimKey] = useState(0);
+
+  const week = weeks[weekIdx];
+  const days = week.days;
+  const appts = week.appts;
 
   const today = appts.filter((a) => a.day === 0);
   const list = view === "today" ? today : appts;
-
-  const [mobileDay, setMobileDay] = useState(0);
   const mobileDayAppts = appts.filter((a) => a.day === mobileDay);
+
+  const changeWeek = (next: number) => {
+    const clamped = Math.max(0, Math.min(weeks.length - 1, next));
+    if (clamped === weekIdx) return;
+    setWeekIdx(clamped);
+    setAnimKey((k) => k + 1);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const isCurrentWeek = weekIdx === CURRENT_WEEK_INDEX;
 
   return (
     <AppShell title={t("cdash.schedule_title")} subtitle={t("cdash.sub")}>
