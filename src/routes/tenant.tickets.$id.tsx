@@ -127,7 +127,7 @@ function TicketTrackingPage() {
               <h2 className="text-sm font-semibold">{t("portal.updates")}</h2>
             </div>
             <ul className="space-y-3">
-              {ticket.history.map((u, i) => (
+              {ticket.history.map((u: typeof ticket.history[number], i: number) => (
                 <li key={i} className="text-sm">
                   <div className="flex items-baseline gap-2">
                     <span className="text-[11px] text-muted-foreground">{u.at[lang]}</span>
