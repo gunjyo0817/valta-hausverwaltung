@@ -18,13 +18,13 @@ function PortalPage() {
 
   const steps = lang === "EN" ? [
     { label: "Received", at: "Today, 08:42", done: true, ai: true, desc: "Your report was captured and structured by Valta." },
-    { label: "Handed off to property management", at: "Today, 08:45", done: true, desc: "Priority: Critical. SLA: 4 h." },
+    { label: "Reviewed by property management", at: "Today, 08:45", done: true, desc: "We confirmed the details and determined the appropriate response." },
     { label: "Contractor dispatched", at: "Today, 09:10", done: true, desc: "Müller Heizung GmbH — ETA 11:00–13:00." },
     { label: "Technician on the way", at: "ETA 11:00", done: false, current: true, desc: "You'll be notified the moment the technician arrives." },
     { label: "Repair completed", at: "planned today", done: false, desc: "Please confirm once the issue is resolved." },
   ] : [
     { label: "Eingegangen", at: "Heute, 08:42", done: true, ai: true, desc: "Ihre Meldung wurde von Valta erfasst und strukturiert." },
-    { label: "An Hausverwaltung übergeben", at: "Heute, 08:45", done: true, desc: "Priorität: Kritisch. SLA-Frist: 4 Std." },
+    { label: "Von Hausverwaltung geprüft", at: "Heute, 08:45", done: true, desc: "Wir haben die Angaben bestätigt und die passende Reaktion festgelegt." },
     { label: "Handwerker beauftragt", at: "Heute, 09:10", done: true, desc: "Müller Heizung GmbH – ETA 11:00–13:00." },
     { label: "Techniker unterwegs", at: "ETA 11:00", done: false, current: true, desc: "Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft." },
     { label: "Reparatur abgeschlossen", at: "geplant heute", done: false, desc: "Bitte bestätigen Sie nach Abschluss die Behebung." },
@@ -32,13 +32,15 @@ function PortalPage() {
 
   const updates = lang === "EN" ? [
     { at: "09:14", from: "Property management", text: "Müller Heizung GmbH has been dispatched. ETA 11:00–13:00." },
-    { at: "08:45", from: "Valta AI", text: "Your request was classified as critical and prioritised." },
+    { at: "08:45", from: "Valta", text: "We are reviewing your report and determining the appropriate response." },
     { at: "08:42", from: "You", text: "Heating down since yesterday evening, the whole apartment is cold." },
   ] : [
     { at: "09:14", from: "Hausverwaltung", text: "Müller Heizung GmbH wurde beauftragt. Voraussichtliche Ankunft 11:00–13:00." },
-    { at: "08:45", from: "Valta AI", text: "Ihr Anliegen wurde als kritisch eingestuft und priorisiert weitergeleitet." },
+    { at: "08:45", from: "Valta", text: "Wir prüfen Ihre Meldung und legen die passende Reaktion fest." },
     { at: "08:42", from: "Sie", text: "Heizung ausgefallen seit gestern Abend, gesamte Wohnung kalt." },
   ];
+
+  const statusLabel = lang === "EN" ? "We're on it" : "Wir kümmern uns";
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,7 +55,7 @@ function PortalPage() {
       <div className="mx-auto max-w-3xl p-4 md:p-8 space-y-6">
         <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
           <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-xl ai-gradient flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center">
               <Wrench className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
@@ -61,17 +63,18 @@ function PortalPage() {
               <h1 className="text-lg font-semibold tracking-tight">{lang === "EN" ? "Heating completely down" : "Heizung komplett ausgefallen"}</h1>
               <p className="text-sm text-muted-foreground mt-1">{t("portal.subtitle")}</p>
             </div>
-            <span className="text-[11px] rounded-full bg-success/15 text-success-foreground px-2 py-1 font-medium flex items-center gap-1">
-              <Clock className="h-3 w-3" /> {t("portal.in_progress")}
+            <span className="text-[11px] rounded-full bg-success/15 text-success px-2 py-1 font-semibold flex items-center gap-1">
+              <Clock className="h-3 w-3" /> {statusLabel}
             </span>
           </div>
 
           <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
             <Stat label={t("portal.assigned_contractor")} value="Müller Heizung GmbH" />
             <Stat label={t("common.eta")} value="11:00 – 13:00" />
-            <Stat label={t("common.priority")} value={t("urgency.critical")} tone="destructive" />
+            <Stat label={lang === "EN" ? "Status" : "Status"} value={lang === "EN" ? "Technician on the way" : "Techniker unterwegs"} />
           </div>
         </div>
+
 
         <section className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
           <h2 className="text-sm font-semibold mb-4">{t("portal.progress")}</h2>
