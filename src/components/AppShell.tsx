@@ -32,6 +32,7 @@ import { useLang } from "@/lib/i18n";
 import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
 import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
+import { NotificationsPanel, useNotificationsUnread } from "./NotificationsPanel";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
 
@@ -44,6 +45,8 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const [roleOpen, setRoleOpen] = useState(false);
   const [newTicketOpen, setNewTicketOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifUnread = useNotificationsUnread();
 
   useEffect(() => {
     setMobileNavOpen(false);
@@ -233,9 +236,13 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
                 EN
               </button>
             </div>
-            <button className="relative inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent">
+            <button onClick={() => setNotifOpen(true)} className="relative inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent" aria-label="Notifications">
               <Bell className="h-4 w-4" />
-              <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-destructive" />
+              {notifUnread > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-semibold flex items-center justify-center">
+                  {notifUnread}
+                </span>
+              )}
             </button>
             {actions ?? (role === "pm" ? (
               <button onClick={() => setNewTicketOpen(true)} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
@@ -351,6 +358,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
       )}
 
       <NewTicketModal open={newTicketOpen} onClose={() => setNewTicketOpen(false)} />
+      <NotificationsPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
     </div>
   );
 }
