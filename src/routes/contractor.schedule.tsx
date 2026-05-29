@@ -121,9 +121,10 @@ function Schedule() {
             <button onClick={() => setView("week")} className={`px-3 py-1.5 font-semibold ${view === "week" ? "bg-primary text-primary-foreground" : "hover:bg-accent"}`}>{t("cdash.this_week")}</button>
           </div>
           <div className="inline-flex items-center gap-1 text-xs text-muted-foreground ml-auto">
-            <button className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border"><ChevronLeft className="h-3.5 w-3.5" /></button>
-            <span className="font-semibold text-foreground px-2">KW 22 · 25.–29. Mai 2026</span>
-            <button className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border"><ChevronRight className="h-3.5 w-3.5" /></button>
+            <button onClick={() => changeWeek(weekIdx - 1)} disabled={weekIdx === 0} className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border disabled:opacity-40"><ChevronLeft className="h-3.5 w-3.5" /></button>
+            <span className="font-semibold text-foreground px-2">KW {week.number} · {week.label[lang === "EN" ? "en" : "de"]} 2026</span>
+            <button onClick={() => changeWeek(weekIdx + 1)} disabled={weekIdx === weeks.length - 1} className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border disabled:opacity-40"><ChevronRight className="h-3.5 w-3.5" /></button>
+            {!isCurrentWeek && <button onClick={() => changeWeek(CURRENT_WEEK_INDEX)} className="ml-1 px-2 py-1 rounded-md border border-border hover:bg-accent text-foreground font-semibold">{lang === "EN" ? "Today" : "Heute"}</button>}
           </div>
         </div>
 
