@@ -44,6 +44,8 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const [roleOpen, setRoleOpen] = useState(false);
   const [newTicketOpen, setNewTicketOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifUnread = useNotificationsUnread();
 
   useEffect(() => {
     setMobileNavOpen(false);
