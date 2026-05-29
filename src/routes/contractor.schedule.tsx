@@ -146,7 +146,51 @@ function Schedule() {
 
         {/* MOBILE: day selector + agenda */}
         <div className="md:hidden space-y-4">
-          <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1">
+          {/* Week navigation */}
+          <div className={`rounded-xl border bg-surface p-2.5 flex items-center gap-2 ${isCurrentWeek ? "border-primary/40 ring-1 ring-primary/20" : "border-border"}`}>
+            <button
+              onClick={() => changeWeek(weekIdx - 1)}
+              disabled={weekIdx === 0}
+              aria-label="Previous week"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="flex-1 text-center min-w-0">
+              <div className="flex items-center justify-center gap-1.5">
+                <span className="text-sm font-semibold truncate">
+                  {lang === "EN" ? "Week" : "KW"} {week.number}
+                </span>
+                {isCurrentWeek && (
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                    {lang === "EN" ? "Now" : "Aktuell"}
+                  </span>
+                )}
+              </div>
+              <div className="text-[11px] text-muted-foreground tabular-nums">
+                {week.label[lang === "EN" ? "en" : "de"]}
+              </div>
+            </div>
+            <button
+              onClick={() => changeWeek(weekIdx + 1)}
+              disabled={weekIdx === weeks.length - 1}
+              aria-label="Next week"
+              className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+          {!isCurrentWeek && (
+            <button
+              onClick={() => changeWeek(CURRENT_WEEK_INDEX)}
+              className="w-full text-xs font-semibold text-primary hover:underline -mt-2"
+            >
+              {lang === "EN" ? "↩ Jump to current week" : "↩ Zur aktuellen Woche"}
+            </button>
+          )}
+
+          <div key={animKey} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 animate-in fade-in slide-in-from-right-2 duration-300">
+
             {days.map((d, i) => {
               const count = appts.filter((a) => a.day === i).length;
               const active = mobileDay === i;
