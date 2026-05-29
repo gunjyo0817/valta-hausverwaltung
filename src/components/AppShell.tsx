@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
 import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
 import { useState, type ReactNode } from "react";
+import { NewTicketModal } from "./NewTicketModal";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
 
@@ -39,6 +40,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const { role, setRole } = useRole();
   const navigate = useNavigate();
   const [roleOpen, setRoleOpen] = useState(false);
+  const [newTicketOpen, setNewTicketOpen] = useState(false);
 
   const pmNav: NavItem[] = [
     { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
@@ -222,7 +224,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
               <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-destructive" />
             </button>
             {actions ?? (role === "pm" ? (
-              <button className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
+              <button onClick={() => setNewTicketOpen(true)} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
                 <Plus className="h-3.5 w-3.5" /> {t("act.new_ticket")}
               </button>
             ) : null)}
@@ -230,6 +232,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
         </header>
         <main className="min-w-0 flex-1 animate-in fade-in duration-200" key={role}>{children}</main>
       </div>
+      <NewTicketModal open={newTicketOpen} onClose={() => setNewTicketOpen(false)} />
     </div>
   );
 }
