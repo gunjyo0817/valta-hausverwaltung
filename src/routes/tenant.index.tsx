@@ -5,7 +5,7 @@ import { tickets } from "@/lib/mockData";
 import { StatusBadge } from "@/components/Badges";
 import { MessageSquareText, ArrowRight, Camera, ShieldCheck, Sparkles, Clock } from "lucide-react";
 
-export const Route = createFileRoute("/tenant")({ component: TenantHome });
+export const Route = createFileRoute("/tenant/")({ component: TenantHome });
 
 function TenantHome() {
   const { t, lang } = useLang();

@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TenantRouteImport } from './routes/tenant'
 import { Route as PropertiesRouteImport } from './routes/properties'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -17,6 +16,7 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as ContractorsRouteImport } from './routes/contractors'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TenantIndexRouteImport } from './routes/tenant.index'
 import { Route as OwnerIndexRouteImport } from './routes/owner.index'
 import { Route as ContractorIndexRouteImport } from './routes/contractor.index'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
@@ -29,11 +29,6 @@ import { Route as ContractorScheduleRouteImport } from './routes/contractor.sche
 import { Route as ContractorMessagesRouteImport } from './routes/contractor.messages'
 import { Route as ContractorCompletedRouteImport } from './routes/contractor.completed'
 
-const TenantRoute = TenantRouteImport.update({
-  id: '/tenant',
-  path: '/tenant',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PropertiesRoute = PropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -67,6 +62,11 @@ const ContractorsRoute = ContractorsRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenantIndexRoute = TenantIndexRouteImport.update({
+  id: '/tenant/',
+  path: '/tenant/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnerIndexRoute = OwnerIndexRouteImport.update({
@@ -133,7 +133,6 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -145,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/ticket/$id': typeof TicketIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
+  '/tenant/': typeof TenantIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -154,7 +154,6 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -166,6 +165,7 @@ export interface FileRoutesByTo {
   '/ticket/$id': typeof TicketIdRoute
   '/contractor': typeof ContractorIndexRoute
   '/owner': typeof OwnerIndexRoute
+  '/tenant': typeof TenantIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -176,7 +176,6 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -188,6 +187,7 @@ export interface FileRoutesById {
   '/ticket/$id': typeof TicketIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
+  '/tenant/': typeof TenantIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,7 +199,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -211,6 +210,7 @@ export interface FileRouteTypes {
     | '/ticket/$id'
     | '/contractor/'
     | '/owner/'
+    | '/tenant/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -220,7 +220,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -232,6 +231,7 @@ export interface FileRouteTypes {
     | '/ticket/$id'
     | '/contractor'
     | '/owner'
+    | '/tenant'
   id:
     | '__root__'
     | '/'
@@ -241,7 +241,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -253,6 +252,7 @@ export interface FileRouteTypes {
     | '/ticket/$id'
     | '/contractor/'
     | '/owner/'
+    | '/tenant/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -263,7 +263,6 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   PortalRoute: typeof PortalRoute
   PropertiesRoute: typeof PropertiesRouteWithChildren
-  TenantRoute: typeof TenantRoute
   ContractorCompletedRoute: typeof ContractorCompletedRoute
   ContractorMessagesRoute: typeof ContractorMessagesRoute
   ContractorScheduleRoute: typeof ContractorScheduleRoute
@@ -273,17 +272,11 @@ export interface RootRouteChildren {
   TicketIdRoute: typeof TicketIdRoute
   ContractorIndexRoute: typeof ContractorIndexRoute
   OwnerIndexRoute: typeof OwnerIndexRoute
+  TenantIndexRoute: typeof TenantIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tenant': {
-      id: '/tenant'
-      path: '/tenant'
-      fullPath: '/tenant'
-      preLoaderRoute: typeof TenantRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/properties': {
       id: '/properties'
       path: '/properties'
@@ -331,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tenant/': {
+      id: '/tenant/'
+      path: '/tenant'
+      fullPath: '/tenant/'
+      preLoaderRoute: typeof TenantIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/owner/': {
@@ -445,7 +445,6 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   PortalRoute: PortalRoute,
   PropertiesRoute: PropertiesRouteWithChildren,
-  TenantRoute: TenantRoute,
   ContractorCompletedRoute: ContractorCompletedRoute,
   ContractorMessagesRoute: ContractorMessagesRoute,
   ContractorScheduleRoute: ContractorScheduleRoute,
@@ -455,7 +454,18 @@ const rootRouteChildren: RootRouteChildren = {
   TicketIdRoute: TicketIdRoute,
   ContractorIndexRoute: ContractorIndexRoute,
   OwnerIndexRoute: OwnerIndexRoute,
+  TenantIndexRoute: TenantIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
