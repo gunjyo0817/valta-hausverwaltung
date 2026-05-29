@@ -100,9 +100,9 @@ const OwnerFinancialsRoute = OwnerFinancialsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnerApprovalsRoute = OwnerApprovalsRouteImport.update({
-  id: '/approvals',
-  path: '/approvals',
-  getParentRoute: () => OwnerRoute,
+  id: '/owner/approvals',
+  path: '/owner/approvals',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ContractorsIdRoute = ContractorsIdRouteImport.update({
   id: '/$id',
@@ -267,6 +267,7 @@ export interface RootRouteChildren {
   ContractorCompletedRoute: typeof ContractorCompletedRoute
   ContractorMessagesRoute: typeof ContractorMessagesRoute
   ContractorScheduleRoute: typeof ContractorScheduleRoute
+  OwnerApprovalsRoute: typeof OwnerApprovalsRoute
   OwnerFinancialsRoute: typeof OwnerFinancialsRoute
   OwnerIssuesRoute: typeof OwnerIssuesRoute
   TicketIdRoute: typeof TicketIdRoute
@@ -376,10 +377,10 @@ declare module '@tanstack/react-router' {
     }
     '/owner/approvals': {
       id: '/owner/approvals'
-      path: '/approvals'
+      path: '/owner/approvals'
       fullPath: '/owner/approvals'
       preLoaderRoute: typeof OwnerApprovalsRouteImport
-      parentRoute: typeof OwnerRoute
+      parentRoute: typeof rootRouteImport
     }
     '/contractors/$id': {
       id: '/contractors/$id'
@@ -448,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContractorCompletedRoute: ContractorCompletedRoute,
   ContractorMessagesRoute: ContractorMessagesRoute,
   ContractorScheduleRoute: ContractorScheduleRoute,
+  OwnerApprovalsRoute: OwnerApprovalsRoute,
   OwnerFinancialsRoute: OwnerFinancialsRoute,
   OwnerIssuesRoute: OwnerIssuesRoute,
   TicketIdRoute: TicketIdRoute,
@@ -457,13 +459,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
