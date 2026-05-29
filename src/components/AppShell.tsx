@@ -180,7 +180,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             </div>
 
             {/* Role switcher */}
-            <div className="relative">
+            <div className="relative hidden md:block">
               <button
                 onClick={() => setRoleOpen((o) => !o)}
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs hover:bg-accent transition-colors"
