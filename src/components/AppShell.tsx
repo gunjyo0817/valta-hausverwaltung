@@ -43,6 +43,11 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const navigate = useNavigate();
   const [roleOpen, setRoleOpen] = useState(false);
   const [newTicketOpen, setNewTicketOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname, role]);
 
   const pmNav: NavItem[] = [
     { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
