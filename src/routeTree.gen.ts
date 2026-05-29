@@ -19,9 +19,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TenantIndexRouteImport } from './routes/tenant.index'
 import { Route as OwnerIndexRouteImport } from './routes/owner.index'
 import { Route as ContractorIndexRouteImport } from './routes/contractor.index'
-import { Route as TicketIdRouteImport } from './routes/ticket.$id'
-import { Route as TenantTicketsRouteImport } from './routes/tenant.tickets'
 import { Route as TenantNewRequestRouteImport } from './routes/tenant.new-request'
+import { Route as TenantTicketsRouteImport } from './routes/tenant.tickets'
+import { Route as TenantTicketsIdRouteImport } from './routes/tenant.tickets.$id'
+import { Route as TicketIdRouteImport } from './routes/ticket.$id'
 import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
 import { Route as OwnerIssuesRouteImport } from './routes/owner.issues'
 import { Route as OwnerFinancialsRouteImport } from './routes/owner.financials'
@@ -30,7 +31,6 @@ import { Route as ContractorsIdRouteImport } from './routes/contractors.$id'
 import { Route as ContractorScheduleRouteImport } from './routes/contractor.schedule'
 import { Route as ContractorMessagesRouteImport } from './routes/contractor.messages'
 import { Route as ContractorCompletedRouteImport } from './routes/contractor.completed'
-import { Route as TenantTicketsIdRouteImport } from './routes/tenant.tickets.$id'
 
 const PropertiesRoute = PropertiesRouteImport.update({
   id: '/properties',
@@ -82,9 +82,9 @@ const ContractorIndexRoute = ContractorIndexRouteImport.update({
   path: '/contractor/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TicketIdRoute = TicketIdRouteImport.update({
-  id: '/ticket/$id',
-  path: '/ticket/$id',
+const TenantNewRequestRoute = TenantNewRequestRouteImport.update({
+  id: '/tenant/new-request',
+  path: '/tenant/new-request',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TenantTicketsRoute = TenantTicketsRouteImport.update({
@@ -92,9 +92,14 @@ const TenantTicketsRoute = TenantTicketsRouteImport.update({
   path: '/tenant/tickets',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TenantNewRequestRoute = TenantNewRequestRouteImport.update({
-  id: '/tenant/new-request',
-  path: '/tenant/new-request',
+const TenantTicketsIdRoute = TenantTicketsIdRouteImport.update({
+  id: '/tenant/tickets/$id',
+  path: '/tenant/tickets/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TicketIdRoute = TicketIdRouteImport.update({
+  id: '/ticket/$id',
+  path: '/ticket/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PropertiesIdRoute = PropertiesIdRouteImport.update({
@@ -137,11 +142,6 @@ const ContractorCompletedRoute = ContractorCompletedRouteImport.update({
   path: '/contractor/completed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TenantTicketsIdRoute = TenantTicketsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => TenantTicketsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -159,13 +159,13 @@ export interface FileRoutesByFullPath {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
-  '/tenant/new-request': typeof TenantNewRequestRoute
-  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
   '/tenant/': typeof TenantIndexRoute
-  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -183,13 +183,13 @@ export interface FileRoutesByTo {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
-  '/tenant/new-request': typeof TenantNewRequestRoute
-  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
   '/contractor': typeof ContractorIndexRoute
   '/owner': typeof OwnerIndexRoute
   '/tenant': typeof TenantIndexRoute
-  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -208,13 +208,13 @@ export interface FileRoutesById {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
-  '/tenant/new-request': typeof TenantNewRequestRoute
-  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
   '/tenant/': typeof TenantIndexRoute
-  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -234,13 +234,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/ticket/$id'
     | '/tenant/new-request'
     | '/tenant/tickets'
-    | '/ticket/$id'
+    | '/tenant/tickets/$id'
     | '/contractor/'
     | '/owner/'
     | '/tenant/'
-    | '/tenant/tickets/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -258,13 +258,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/ticket/$id'
     | '/tenant/new-request'
     | '/tenant/tickets'
-    | '/ticket/$id'
+    | '/tenant/tickets/$id'
     | '/contractor'
     | '/owner'
     | '/tenant'
-    | '/tenant/tickets/$id'
   id:
     | '__root__'
     | '/'
@@ -282,13 +282,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/ticket/$id'
     | '/tenant/new-request'
     | '/tenant/tickets'
-    | '/ticket/$id'
+    | '/tenant/tickets/$id'
     | '/contractor/'
     | '/owner/'
     | '/tenant/'
-    | '/tenant/tickets/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -305,9 +305,10 @@ export interface RootRouteChildren {
   OwnerApprovalsRoute: typeof OwnerApprovalsRoute
   OwnerFinancialsRoute: typeof OwnerFinancialsRoute
   OwnerIssuesRoute: typeof OwnerIssuesRoute
-  TenantNewRequestRoute: typeof TenantNewRequestRoute
-  TenantTicketsRoute: typeof TenantTicketsRouteWithChildren
   TicketIdRoute: typeof TicketIdRoute
+  TenantNewRequestRoute: typeof TenantNewRequestRoute
+  TenantTicketsRoute: typeof TenantTicketsRoute
+  TenantTicketsIdRoute: typeof TenantTicketsIdRoute
   ContractorIndexRoute: typeof ContractorIndexRoute
   OwnerIndexRoute: typeof OwnerIndexRoute
   TenantIndexRoute: typeof TenantIndexRoute
@@ -385,11 +386,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContractorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ticket/$id': {
-      id: '/ticket/$id'
-      path: '/ticket/$id'
-      fullPath: '/ticket/$id'
-      preLoaderRoute: typeof TicketIdRouteImport
+    '/tenant/new-request': {
+      id: '/tenant/new-request'
+      path: '/tenant/new-request'
+      fullPath: '/tenant/new-request'
+      preLoaderRoute: typeof TenantNewRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tenant/tickets': {
@@ -399,11 +400,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TenantTicketsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tenant/new-request': {
-      id: '/tenant/new-request'
-      path: '/tenant/new-request'
-      fullPath: '/tenant/new-request'
-      preLoaderRoute: typeof TenantNewRequestRouteImport
+    '/tenant/tickets/$id': {
+      id: '/tenant/tickets/$id'
+      path: '/tenant/tickets/$id'
+      fullPath: '/tenant/tickets/$id'
+      preLoaderRoute: typeof TenantTicketsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ticket/$id': {
+      id: '/ticket/$id'
+      path: '/ticket/$id'
+      fullPath: '/ticket/$id'
+      preLoaderRoute: typeof TicketIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/properties/$id': {
@@ -462,13 +470,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContractorCompletedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tenant/tickets/$id': {
-      id: '/tenant/tickets/$id'
-      path: '/$id'
-      fullPath: '/tenant/tickets/$id'
-      preLoaderRoute: typeof TenantTicketsIdRouteImport
-      parentRoute: typeof TenantTicketsRoute
-    }
   }
 }
 
@@ -496,18 +497,6 @@ const PropertiesRouteWithChildren = PropertiesRoute._addFileChildren(
   PropertiesRouteChildren,
 )
 
-interface TenantTicketsRouteChildren {
-  TenantTicketsIdRoute: typeof TenantTicketsIdRoute
-}
-
-const TenantTicketsRouteChildren: TenantTicketsRouteChildren = {
-  TenantTicketsIdRoute: TenantTicketsIdRoute,
-}
-
-const TenantTicketsRouteWithChildren = TenantTicketsRoute._addFileChildren(
-  TenantTicketsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContractorsRoute: ContractorsRouteWithChildren,
@@ -522,9 +511,10 @@ const rootRouteChildren: RootRouteChildren = {
   OwnerApprovalsRoute: OwnerApprovalsRoute,
   OwnerFinancialsRoute: OwnerFinancialsRoute,
   OwnerIssuesRoute: OwnerIssuesRoute,
-  TenantNewRequestRoute: TenantNewRequestRoute,
-  TenantTicketsRoute: TenantTicketsRouteWithChildren,
   TicketIdRoute: TicketIdRoute,
+  TenantNewRequestRoute: TenantNewRequestRoute,
+  TenantTicketsRoute: TenantTicketsRoute,
+  TenantTicketsIdRoute: TenantTicketsIdRoute,
   ContractorIndexRoute: ContractorIndexRoute,
   OwnerIndexRoute: OwnerIndexRoute,
   TenantIndexRoute: TenantIndexRoute,
