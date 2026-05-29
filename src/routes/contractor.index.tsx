@@ -5,7 +5,7 @@ import { tickets } from "@/lib/mockData";
 import { UrgencyBadge, StatusBadge } from "@/components/Badges";
 import { MapPin, Phone, Camera, CheckCircle2, MessageSquareText, Wrench, Clock, Star, Briefcase } from "lucide-react";
 
-export const Route = createFileRoute("/contractor")({ component: ContractorJobs });
+export const Route = createFileRoute("/contractor/")({ component: ContractorJobs });
 
 function ContractorJobs() {
   const { t, lang } = useLang();

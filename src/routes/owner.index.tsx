@@ -5,7 +5,7 @@ import { properties } from "@/lib/properties";
 import { tickets } from "@/lib/mockData";
 import { Building2, AlertOctagon, ShieldCheck, Wallet, Sparkles, ArrowRight, TrendingDown, TrendingUp } from "lucide-react";
 
-export const Route = createFileRoute("/owner")({ component: OwnerHome });
+export const Route = createFileRoute("/owner/")({ component: OwnerHome });
 
 function OwnerHome() {
   const { t, lang } = useLang();
