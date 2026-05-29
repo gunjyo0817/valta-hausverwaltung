@@ -24,11 +24,13 @@ import {
   AlertOctagon,
   ClipboardList,
   Home,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
 import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
