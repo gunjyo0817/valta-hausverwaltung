@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TenantRouteImport } from './routes/tenant'
 import { Route as PropertiesRouteImport } from './routes/properties'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -17,9 +16,12 @@ import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as ContractorsRouteImport } from './routes/contractors'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TenantIndexRouteImport } from './routes/tenant.index'
 import { Route as OwnerIndexRouteImport } from './routes/owner.index'
 import { Route as ContractorIndexRouteImport } from './routes/contractor.index'
 import { Route as TicketIdRouteImport } from './routes/ticket.$id'
+import { Route as TenantTicketsRouteImport } from './routes/tenant.tickets'
+import { Route as TenantNewRequestRouteImport } from './routes/tenant.new-request'
 import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
 import { Route as OwnerIssuesRouteImport } from './routes/owner.issues'
 import { Route as OwnerFinancialsRouteImport } from './routes/owner.financials'
@@ -28,12 +30,8 @@ import { Route as ContractorsIdRouteImport } from './routes/contractors.$id'
 import { Route as ContractorScheduleRouteImport } from './routes/contractor.schedule'
 import { Route as ContractorMessagesRouteImport } from './routes/contractor.messages'
 import { Route as ContractorCompletedRouteImport } from './routes/contractor.completed'
+import { Route as TenantTicketsIdRouteImport } from './routes/tenant.tickets.$id'
 
-const TenantRoute = TenantRouteImport.update({
-  id: '/tenant',
-  path: '/tenant',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PropertiesRoute = PropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -69,6 +67,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TenantIndexRoute = TenantIndexRouteImport.update({
+  id: '/tenant/',
+  path: '/tenant/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OwnerIndexRoute = OwnerIndexRouteImport.update({
   id: '/owner/',
   path: '/owner/',
@@ -82,6 +85,16 @@ const ContractorIndexRoute = ContractorIndexRouteImport.update({
 const TicketIdRoute = TicketIdRouteImport.update({
   id: '/ticket/$id',
   path: '/ticket/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenantTicketsRoute = TenantTicketsRouteImport.update({
+  id: '/tenant/tickets',
+  path: '/tenant/tickets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenantNewRequestRoute = TenantNewRequestRouteImport.update({
+  id: '/tenant/new-request',
+  path: '/tenant/new-request',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PropertiesIdRoute = PropertiesIdRouteImport.update({
@@ -124,6 +137,11 @@ const ContractorCompletedRoute = ContractorCompletedRouteImport.update({
   path: '/contractor/completed',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TenantTicketsIdRoute = TenantTicketsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => TenantTicketsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -133,7 +151,6 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -142,9 +159,13 @@ export interface FileRoutesByFullPath {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
+  '/tenant/': typeof TenantIndexRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -154,7 +175,6 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -163,9 +183,13 @@ export interface FileRoutesByTo {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
   '/contractor': typeof ContractorIndexRoute
   '/owner': typeof OwnerIndexRoute
+  '/tenant': typeof TenantIndexRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -176,7 +200,6 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
-  '/tenant': typeof TenantRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -185,9 +208,13 @@ export interface FileRoutesById {
   '/owner/financials': typeof OwnerFinancialsRoute
   '/owner/issues': typeof OwnerIssuesRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/tenant/new-request': typeof TenantNewRequestRoute
+  '/tenant/tickets': typeof TenantTicketsRouteWithChildren
   '/ticket/$id': typeof TicketIdRoute
   '/contractor/': typeof ContractorIndexRoute
   '/owner/': typeof OwnerIndexRoute
+  '/tenant/': typeof TenantIndexRoute
+  '/tenant/tickets/$id': typeof TenantTicketsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,7 +226,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -208,9 +234,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/tenant/new-request'
+    | '/tenant/tickets'
     | '/ticket/$id'
     | '/contractor/'
     | '/owner/'
+    | '/tenant/'
+    | '/tenant/tickets/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -220,7 +250,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -229,9 +258,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/tenant/new-request'
+    | '/tenant/tickets'
     | '/ticket/$id'
     | '/contractor'
     | '/owner'
+    | '/tenant'
+    | '/tenant/tickets/$id'
   id:
     | '__root__'
     | '/'
@@ -241,7 +274,6 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
-    | '/tenant'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -250,9 +282,13 @@ export interface FileRouteTypes {
     | '/owner/financials'
     | '/owner/issues'
     | '/properties/$id'
+    | '/tenant/new-request'
+    | '/tenant/tickets'
     | '/ticket/$id'
     | '/contractor/'
     | '/owner/'
+    | '/tenant/'
+    | '/tenant/tickets/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -263,27 +299,22 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   PortalRoute: typeof PortalRoute
   PropertiesRoute: typeof PropertiesRouteWithChildren
-  TenantRoute: typeof TenantRoute
   ContractorCompletedRoute: typeof ContractorCompletedRoute
   ContractorMessagesRoute: typeof ContractorMessagesRoute
   ContractorScheduleRoute: typeof ContractorScheduleRoute
   OwnerApprovalsRoute: typeof OwnerApprovalsRoute
   OwnerFinancialsRoute: typeof OwnerFinancialsRoute
   OwnerIssuesRoute: typeof OwnerIssuesRoute
+  TenantNewRequestRoute: typeof TenantNewRequestRoute
+  TenantTicketsRoute: typeof TenantTicketsRouteWithChildren
   TicketIdRoute: typeof TicketIdRoute
   ContractorIndexRoute: typeof ContractorIndexRoute
   OwnerIndexRoute: typeof OwnerIndexRoute
+  TenantIndexRoute: typeof TenantIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tenant': {
-      id: '/tenant'
-      path: '/tenant'
-      fullPath: '/tenant'
-      preLoaderRoute: typeof TenantRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/properties': {
       id: '/properties'
       path: '/properties'
@@ -333,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tenant/': {
+      id: '/tenant/'
+      path: '/tenant'
+      fullPath: '/tenant/'
+      preLoaderRoute: typeof TenantIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/owner/': {
       id: '/owner/'
       path: '/owner'
@@ -352,6 +390,20 @@ declare module '@tanstack/react-router' {
       path: '/ticket/$id'
       fullPath: '/ticket/$id'
       preLoaderRoute: typeof TicketIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tenant/tickets': {
+      id: '/tenant/tickets'
+      path: '/tenant/tickets'
+      fullPath: '/tenant/tickets'
+      preLoaderRoute: typeof TenantTicketsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tenant/new-request': {
+      id: '/tenant/new-request'
+      path: '/tenant/new-request'
+      fullPath: '/tenant/new-request'
+      preLoaderRoute: typeof TenantNewRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/properties/$id': {
@@ -410,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContractorCompletedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tenant/tickets/$id': {
+      id: '/tenant/tickets/$id'
+      path: '/$id'
+      fullPath: '/tenant/tickets/$id'
+      preLoaderRoute: typeof TenantTicketsIdRouteImport
+      parentRoute: typeof TenantTicketsRoute
+    }
   }
 }
 
@@ -437,6 +496,18 @@ const PropertiesRouteWithChildren = PropertiesRoute._addFileChildren(
   PropertiesRouteChildren,
 )
 
+interface TenantTicketsRouteChildren {
+  TenantTicketsIdRoute: typeof TenantTicketsIdRoute
+}
+
+const TenantTicketsRouteChildren: TenantTicketsRouteChildren = {
+  TenantTicketsIdRoute: TenantTicketsIdRoute,
+}
+
+const TenantTicketsRouteWithChildren = TenantTicketsRoute._addFileChildren(
+  TenantTicketsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContractorsRoute: ContractorsRouteWithChildren,
@@ -445,16 +516,18 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   PortalRoute: PortalRoute,
   PropertiesRoute: PropertiesRouteWithChildren,
-  TenantRoute: TenantRoute,
   ContractorCompletedRoute: ContractorCompletedRoute,
   ContractorMessagesRoute: ContractorMessagesRoute,
   ContractorScheduleRoute: ContractorScheduleRoute,
   OwnerApprovalsRoute: OwnerApprovalsRoute,
   OwnerFinancialsRoute: OwnerFinancialsRoute,
   OwnerIssuesRoute: OwnerIssuesRoute,
+  TenantNewRequestRoute: TenantNewRequestRoute,
+  TenantTicketsRoute: TenantTicketsRouteWithChildren,
   TicketIdRoute: TicketIdRoute,
   ContractorIndexRoute: ContractorIndexRoute,
   OwnerIndexRoute: OwnerIndexRoute,
+  TenantIndexRoute: TenantIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
