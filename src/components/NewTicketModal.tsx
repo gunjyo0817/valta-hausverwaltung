@@ -254,9 +254,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               <button
                 onClick={() => {
                   onClose();
-                  navigate({ to: "/tickets/$id", params: { id: "VLT-2041" } as any }).catch(() => {
-                    navigate({ to: "/ticket/$id" as any, params: { id: "VLT-2041" } as any });
-                  });
+                  navigate({ to: "/ticket/$id", params: { id: "VLT-2041" } });
                 }}
                 className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 shadow-sm"
               >
