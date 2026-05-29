@@ -32,6 +32,7 @@ import { useLang } from "@/lib/i18n";
 import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
 import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
+import { NotificationsPanel, useNotificationsUnread } from "./NotificationsPanel";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
 
