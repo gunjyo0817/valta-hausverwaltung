@@ -40,6 +40,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const { role, setRole } = useRole();
   const navigate = useNavigate();
   const [roleOpen, setRoleOpen] = useState(false);
+  const [newTicketOpen, setNewTicketOpen] = useState(false);
 
   const pmNav: NavItem[] = [
     { to: "/", label: t("nav.dashboard"), icon: LayoutDashboard, exact: true },
