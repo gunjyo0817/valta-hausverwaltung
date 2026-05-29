@@ -11,7 +11,7 @@ import {
   Sparkles,
   Plus,
   MessageSquareText,
-  Compass,
+  
   Languages,
   ChevronDown,
   Check,
