@@ -24,7 +24,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useLang, pick } from "@/lib/i18n";
 import { properties } from "@/lib/properties";
-import { contractors } from "@/lib/contractors";
+import { allContractors } from "@/lib/contractors";
 import { StatusBadge, UrgencyBadge, AIBadge } from "./Badges";
 import type { Urgency } from "@/lib/mockData";
 
