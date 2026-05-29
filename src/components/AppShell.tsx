@@ -358,6 +358,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
       )}
 
       <NewTicketModal open={newTicketOpen} onClose={() => setNewTicketOpen(false)} />
+      <NotificationsPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
     </div>
   );
 }
