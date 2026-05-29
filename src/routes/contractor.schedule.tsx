@@ -220,7 +220,7 @@ function Schedule() {
             </div>
           )}
 
-          <div className="space-y-3">
+          <div key={`list-${animKey}-${mobileDay}`} className="space-y-3 animate-in fade-in duration-200">
             {mobileDayAppts.map((a, j) => {
               const tk = tickets[a.ticketIndex];
               if (!tk) return null;
