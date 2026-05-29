@@ -232,6 +232,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
         </header>
         <main className="min-w-0 flex-1 animate-in fade-in duration-200" key={role}>{children}</main>
       </div>
+      <NewTicketModal open={newTicketOpen} onClose={() => setNewTicketOpen(false)} />
     </div>
   );
 }
