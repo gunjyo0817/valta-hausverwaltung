@@ -224,7 +224,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
               <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-destructive" />
             </button>
             {actions ?? (role === "pm" ? (
-              <button className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
+              <button onClick={() => setNewTicketOpen(true)} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition">
                 <Plus className="h-3.5 w-3.5" /> {t("act.new_ticket")}
               </button>
             ) : null)}
