@@ -161,9 +161,16 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border glass px-4 md:px-8">
+          <button
+            onClick={() => setMobileNavOpen(true)}
+            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent -ml-1"
+            aria-label="Open menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
           <div className="min-w-0">
             <h1 className="truncate text-lg font-semibold tracking-tight">{title}</h1>
-            {subtitle && <p className="truncate text-xs text-muted-foreground">{subtitle}</p>}
+            {subtitle && <p className="truncate text-xs text-muted-foreground hidden sm:block">{subtitle}</p>}
           </div>
           <div className="ml-auto flex items-center gap-2">
             <div className="hidden lg:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64">
