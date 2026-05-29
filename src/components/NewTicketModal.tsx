@@ -415,7 +415,7 @@ function AiStep({
               label={T("Vorgeschlagener Handwerker", "Suggested contractor")}
               value={draft.contractor}
               onChange={(v) => setDraft({ ...draft, contractor: v })}
-              options={contractors.map((c) => ({ v: c.name, l: c.name }))}
+              options={allContractors.map((c: { id: string; name: string }) => ({ v: c.name, l: c.name }))}
             />
           </div>
 
@@ -459,7 +459,7 @@ function ManualStep({ draft, setDraft, T }: { draft: Draft; setDraft: (d: Draft)
           icon={Tag}
           value={draft.category}
           onChange={(v) => setDraft({ ...draft, category: v })}
-          options={[{ v: "", l: T("— wählen —", "— select —") }, ...(T("DE", "EN") === "EN" ? CATEGORIES_EN : CATEGORIES_DE).map((c) => ({ v: c, l: c }))]}
+          options={[{ v: "", l: T("— wählen —", "— select —") }, ...(T("DE", "EN") === "EN" ? CATEGORIES_EN : CATEGORIES_DE).map((c: { id: string; name: string }) => ({ v: c, l: c }))]}
         />
         <SelectField
           label={T("Priorität", "Priority")}
