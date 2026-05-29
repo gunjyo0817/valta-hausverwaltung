@@ -41,11 +41,14 @@ function Schedule() {
   const today = appts.filter((a) => a.day === 0);
   const list = view === "today" ? today : appts;
 
+  const [mobileDay, setMobileDay] = useState(0);
+  const mobileDayAppts = appts.filter((a) => a.day === mobileDay);
+
   return (
     <AppShell title={t("cdash.schedule_title")} subtitle={t("cdash.sub")}>
-      <div className="p-6 md:p-8 space-y-6">
-        {/* Toolbar */}
-        <div className="flex items-center gap-3 flex-wrap">
+      <div className="p-4 md:p-8 space-y-5 md:space-y-6">
+        {/* Toolbar (desktop only) */}
+        <div className="hidden md:flex items-center gap-3 flex-wrap">
           <div className="inline-flex rounded-md border border-border bg-surface overflow-hidden text-xs">
             <button onClick={() => setView("today")} className={`px-3 py-1.5 font-semibold ${view === "today" ? "bg-primary text-primary-foreground" : "hover:bg-accent"}`}>{t("cdash.today")}</button>
             <button onClick={() => setView("week")} className={`px-3 py-1.5 font-semibold ${view === "week" ? "bg-primary text-primary-foreground" : "hover:bg-accent"}`}>{t("cdash.this_week")}</button>
@@ -65,83 +68,166 @@ function Schedule() {
             { label: lang === "EN" ? "Properties" : "Objekte", value: 5, hint: lang === "EN" ? "covered" : "betreut" },
             { label: lang === "EN" ? "Avg. duration" : "Ø Dauer", value: "1h 25", hint: lang === "EN" ? "per job" : "pro Auftrag" },
           ].map((k) => (
-            <div key={k.label} className="rounded-xl border border-border bg-surface p-4">
-              <div className="text-xs text-muted-foreground">{k.label}</div>
-              <div className="mt-2 text-2xl font-semibold tabular-nums">{k.value}</div>
-              <div className="text-[11px] text-muted-foreground">{k.hint}</div>
+            <div key={k.label} className="rounded-xl border border-border bg-surface p-3 md:p-4">
+              <div className="text-[11px] md:text-xs text-muted-foreground">{k.label}</div>
+              <div className="mt-1 md:mt-2 text-xl md:text-2xl font-semibold tabular-nums">{k.value}</div>
+              <div className="text-[10px] md:text-[11px] text-muted-foreground">{k.hint}</div>
             </div>
           ))}
         </div>
 
-        {view === "week" ? (
-          <div className="rounded-xl border border-border bg-surface overflow-hidden">
-            <div className="grid grid-cols-5 border-b border-border bg-surface-muted">
-              {days.map((d) => (
-                <div key={d.date} className="px-3 py-3 text-center border-r border-border last:border-r-0">
-                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{lang === "DE" ? d.de : d.en}</div>
-                  <div className="text-sm font-semibold">{d.date}</div>
-                </div>
-              ))}
+        {/* MOBILE: day selector + agenda */}
+        <div className="md:hidden space-y-4">
+          <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1">
+            {days.map((d, i) => {
+              const count = appts.filter((a) => a.day === i).length;
+              const active = mobileDay === i;
+              return (
+                <button
+                  key={d.date}
+                  onClick={() => setMobileDay(i)}
+                  className={`shrink-0 min-w-[64px] rounded-lg border px-3 py-2 text-center transition-colors ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface hover:border-primary/40"}`}
+                >
+                  <div className={`text-[10px] uppercase tracking-wider ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{lang === "DE" ? d.de : d.en}</div>
+                  <div className="text-sm font-semibold tabular-nums">{d.date}</div>
+                  <div className={`text-[10px] mt-0.5 ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{count} {lang === "EN" ? "jobs" : "Jobs"}</div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2 text-sm">
+            <Calendar className="h-4 w-4 text-primary" />
+            <span className="font-semibold">{lang === "DE" ? days[mobileDay].de : days[mobileDay].en}, {days[mobileDay].date}</span>
+            <span className="ml-auto text-xs text-muted-foreground">{mobileDayAppts.length} {lang === "EN" ? "appointments" : "Termine"}</span>
+          </div>
+
+          {mobileDayAppts.length === 0 && (
+            <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
+              {lang === "EN" ? "No appointments scheduled." : "Keine Termine geplant."}
             </div>
-            <div className="grid grid-cols-5 min-h-[420px]">
-              {days.map((d, i) => {
-                const dayAppts = appts.filter((a) => a.day === i);
-                return (
-                  <div key={d.date} className="border-r border-border last:border-r-0 p-2 space-y-2">
-                    {dayAppts.length === 0 && (
-                      <div className="text-[11px] text-muted-foreground/60 text-center py-6">—</div>
-                    )}
-                    {dayAppts.map((a, j) => {
-                      const tk = tickets[a.ticketIndex];
-                      if (!tk) return null;
-                      return (
-                        <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="block rounded-lg border border-border bg-surface hover:border-primary/40 hover:shadow-soft transition-all p-2.5">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-[10px] font-mono text-muted-foreground">{tk.id}</span>
-                            <UrgencyBadge urgency={tk.urgency} />
-                          </div>
-                          <div className="mt-1 text-xs font-semibold line-clamp-2">{tk.title[lang]}</div>
-                          <div className="mt-1.5 text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="h-2.5 w-2.5" /> {a.start} – {a.end}</div>
-                          <div className="text-[10px] text-muted-foreground flex items-center gap-1"><MapPin className="h-2.5 w-2.5" /> {tk.tenant.building.split(",")[0]}</div>
-                          <div className="text-[10px] text-muted-foreground flex items-center gap-1 truncate"><User className="h-2.5 w-2.5" /> {a.tenant}</div>
-                        </Link>
-                      );
-                    })}
+          )}
+
+          <div className="space-y-3">
+            {mobileDayAppts.map((a, j) => {
+              const tk = tickets[a.ticketIndex];
+              if (!tk) return null;
+              return (
+                <div key={j} className="rounded-xl border border-border bg-surface p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-2 flex-wrap">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 text-xs">
+                        <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <span className="font-semibold tabular-nums">{a.start} – {a.end}</span>
+                        <span className="text-[10px] font-mono text-muted-foreground">· {tk.id}</span>
+                      </div>
+                      <div className="mt-1.5 text-sm font-semibold">{tk.title[lang]}</div>
+                    </div>
+                    <UrgencyBadge urgency={tk.urgency} />
                   </div>
-                );
-              })}
-            </div>
+
+                  <div className="space-y-1 text-xs text-muted-foreground">
+                    <div className="flex items-start gap-1.5"><MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" /><span>{tk.tenant.building}</span></div>
+                    <div className="flex items-center gap-1.5"><User className="h-3.5 w-3.5 shrink-0" /><span className="text-foreground">{a.tenant}</span></div>
+                    <div className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 shrink-0" /><span>{tk.tenant.phone}</span></div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Link to="/ticket/$id" params={{ id: tk.id }} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">
+                      {lang === "EN" ? "Open job" : "Auftrag öffnen"}
+                    </Link>
+                    <a
+                      href={`https://maps.google.com/?q=${encodeURIComponent(tk.tenant.building)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition"
+                    >
+                      <MapPin className="h-3.5 w-3.5" />
+                      {lang === "EN" ? "Directions" : "Route"}
+                    </a>
+                    <button className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">
+                      {lang === "EN" ? "Mark in progress" : "Starten"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ) : (
-          <div className="rounded-xl border border-border bg-surface overflow-hidden">
-            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-primary" />
-              <div className="text-sm font-semibold">{lang === "EN" ? "Today's appointments" : "Termine heute"}</div>
-              <span className="ml-auto text-xs text-muted-foreground">{today.length} {lang === "EN" ? "appointments" : "Termine"}</span>
-            </div>
-            <div className="divide-y divide-border">
-              {list.map((a, j) => {
-                const tk = tickets[a.ticketIndex];
-                if (!tk) return null;
-                return (
-                  <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 items-center gap-3">
-                    <div className="col-span-2 text-sm font-semibold tabular-nums">{a.start}<span className="text-muted-foreground"> – {a.end}</span></div>
-                    <div className="col-span-5 min-w-0">
-                      <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
-                      <div className="text-[11px] text-muted-foreground truncate flex items-center gap-1"><MapPin className="h-3 w-3" />{tk.tenant.building}</div>
+        </div>
+
+        {/* DESKTOP: week grid / today list */}
+        <div className="hidden md:block">
+          {view === "week" ? (
+            <div className="rounded-xl border border-border bg-surface overflow-hidden">
+              <div className="grid grid-cols-5 border-b border-border bg-surface-muted">
+                {days.map((d) => (
+                  <div key={d.date} className="px-3 py-3 text-center border-r border-border last:border-r-0">
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{lang === "DE" ? d.de : d.en}</div>
+                    <div className="text-sm font-semibold">{d.date}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-5 min-h-[420px]">
+                {days.map((d, i) => {
+                  const dayAppts = appts.filter((a) => a.day === i);
+                  return (
+                    <div key={d.date} className="border-r border-border last:border-r-0 p-2 space-y-2">
+                      {dayAppts.length === 0 && (
+                        <div className="text-[11px] text-muted-foreground/60 text-center py-6">—</div>
+                      )}
+                      {dayAppts.map((a, j) => {
+                        const tk = tickets[a.ticketIndex];
+                        if (!tk) return null;
+                        return (
+                          <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="block rounded-lg border border-border bg-surface hover:border-primary/40 hover:shadow-soft transition-all p-2.5">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-[10px] font-mono text-muted-foreground">{tk.id}</span>
+                              <UrgencyBadge urgency={tk.urgency} />
+                            </div>
+                            <div className="mt-1 text-xs font-semibold line-clamp-2">{tk.title[lang]}</div>
+                            <div className="mt-1.5 text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="h-2.5 w-2.5" /> {a.start} – {a.end}</div>
+                            <div className="text-[10px] text-muted-foreground flex items-center gap-1"><MapPin className="h-2.5 w-2.5" /> {tk.tenant.building.split(",")[0]}</div>
+                            <div className="text-[10px] text-muted-foreground flex items-center gap-1 truncate"><User className="h-2.5 w-2.5" /> {a.tenant}</div>
+                          </Link>
+                        );
+                      })}
                     </div>
-                    <div className="col-span-3 min-w-0">
-                      <div className="text-xs flex items-center gap-1.5"><User className="h-3 w-3 text-muted-foreground" />{a.tenant}</div>
-                      <div className="text-xs flex items-center gap-1.5 text-muted-foreground"><Phone className="h-3 w-3" />{tk.tenant.phone}</div>
-                    </div>
-                    <div className="col-span-2 flex justify-end"><UrgencyBadge urgency={tk.urgency} /></div>
-                  </Link>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="rounded-xl border border-border bg-surface overflow-hidden">
+              <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-primary" />
+                <div className="text-sm font-semibold">{lang === "EN" ? "Today's appointments" : "Termine heute"}</div>
+                <span className="ml-auto text-xs text-muted-foreground">{today.length} {lang === "EN" ? "appointments" : "Termine"}</span>
+              </div>
+              <div className="divide-y divide-border">
+                {list.map((a, j) => {
+                  const tk = tickets[a.ticketIndex];
+                  if (!tk) return null;
+                  return (
+                    <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 items-center gap-3">
+                      <div className="col-span-2 text-sm font-semibold tabular-nums">{a.start}<span className="text-muted-foreground"> – {a.end}</span></div>
+                      <div className="col-span-5 min-w-0">
+                        <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
+                        <div className="text-[11px] text-muted-foreground truncate flex items-center gap-1"><MapPin className="h-3 w-3" />{tk.tenant.building}</div>
+                      </div>
+                      <div className="col-span-3 min-w-0">
+                        <div className="text-xs flex items-center gap-1.5"><User className="h-3 w-3 text-muted-foreground" />{a.tenant}</div>
+                        <div className="text-xs flex items-center gap-1.5 text-muted-foreground"><Phone className="h-3 w-3" />{tk.tenant.phone}</div>
+                      </div>
+                      <div className="col-span-2 flex justify-end"><UrgencyBadge urgency={tk.urgency} /></div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </AppShell>
   );
 }
+
