@@ -35,7 +35,7 @@ function OwnerFinancials() {
   return (
     <AppShell title={t("odash.financials_title")} subtitle={t("odash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
-        <div className="grid md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: lang === "EN" ? "Monthly spend" : "Monatlich", value: "€ 4.830", trend: -6, color: "text-success" },
             { label: lang === "EN" ? "YTD spend" : "Wartung YTD", value: "€ 48.230", trend: -12, color: "text-success" },
