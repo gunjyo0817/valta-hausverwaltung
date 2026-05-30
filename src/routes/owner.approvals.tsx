@@ -142,9 +142,9 @@ function OwnerApprovals() {
               </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
-                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
-                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">{t("odash.reject")}</button>
-                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "clarification_requested", role: "owner" } })} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">
+                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">{t("odash.approve")}</button>
+                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">{t("odash.reject")}</button>
+                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "clarification_requested", role: "owner" } })} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
                   <FileQuestion className="h-3.5 w-3.5" />
                   {lang === "EN" ? "Request clarification" : "Rückfrage senden"}
                 </button>

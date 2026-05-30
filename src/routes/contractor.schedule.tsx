@@ -4,7 +4,7 @@ import { useLang } from "@/lib/i18n";
 import { tickets as mockTickets } from "@/lib/mockData";
 import { UrgencyBadge } from "@/components/Badges";
 import { Calendar, MapPin, Clock, ChevronLeft, ChevronRight, User, Phone } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTickets, useUpdateContractorJob } from "@/lib/api";
 
 export const Route = createFileRoute("/contractor/schedule")({ component: Schedule });
@@ -97,14 +97,23 @@ function Schedule() {
   const [weekIdx, setWeekIdx] = useState(CURRENT_WEEK_INDEX);
   const [mobileDay, setMobileDay] = useState(0);
   const [animKey, setAnimKey] = useState(0);
+  const [startingTicketId, setStartingTicketId] = useState<string | null>(null);
 
   const week = weeks[weekIdx];
   const days = week.days;
   const appts = week.appts;
+  const appointmentTicket = (appt: Appt) => {
+    const scheduledTicket = mockTickets[appt.ticketIndex];
+    if (!scheduledTicket || scheduledTicket.contractorId !== "c1") return undefined;
+    const currentTicket = tickets.find((ticket) => ticket.id === scheduledTicket.id) ?? scheduledTicket;
+    if (currentTicket.contractorId !== "c1" || currentTicket.status === "resolved") return undefined;
+    return currentTicket;
+  };
+  const visibleAppts = useMemo(() => appts.filter((appt) => Boolean(appointmentTicket(appt))), [appts, tickets]);
 
-  const today = appts.filter((a) => a.day === 0);
-  const list = view === "today" ? today : appts;
-  const mobileDayAppts = appts.filter((a) => a.day === mobileDay);
+  const today = visibleAppts.filter((a) => a.day === 0);
+  const list = view === "today" ? today : visibleAppts;
+  const mobileDayAppts = visibleAppts.filter((a) => a.day === mobileDay);
 
   const changeWeek = (next: number) => {
     const clamped = Math.max(0, Math.min(weeks.length - 1, next));
@@ -114,7 +123,16 @@ function Schedule() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const isCurrentWeek = weekIdx === CURRENT_WEEK_INDEX;
-  const startJob = (ticketId: string) => updateJob.mutate({ data: { ticketId, action: "start", role: "contractor" } });
+  const startJob = async (ticketId: string) => {
+    setStartingTicketId(ticketId);
+    try {
+      await updateJob.mutateAsync({ data: { ticketId, action: "start", role: "contractor" } });
+    } catch (error) {
+      console.error("Contractor schedule action failed", error);
+    } finally {
+      setStartingTicketId(null);
+    }
+  };
 
   return (
     <AppShell title={t("cdash.schedule_title")} subtitle={t("cdash.sub")}>
@@ -137,7 +155,7 @@ function Schedule() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: lang === "EN" ? "Today" : "Heute", value: today.length, hint: lang === "EN" ? "appointments" : "Termine" },
-            { label: lang === "EN" ? "This week" : "Diese Woche", value: appts.length, hint: lang === "EN" ? "scheduled" : "geplant" },
+            { label: lang === "EN" ? "This week" : "Diese Woche", value: visibleAppts.length, hint: lang === "EN" ? "scheduled" : "geplant" },
             { label: lang === "EN" ? "Properties" : "Objekte", value: 5, hint: lang === "EN" ? "covered" : "betreut" },
             { label: lang === "EN" ? "Avg. duration" : "Ø Dauer", value: "1h 25", hint: lang === "EN" ? "per job" : "pro Auftrag" },
           ].map((k) => (
@@ -197,7 +215,7 @@ function Schedule() {
           <div key={animKey} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 animate-in fade-in slide-in-from-right-2 duration-300">
 
             {days.map((d, i) => {
-              const count = appts.filter((a) => a.day === i).length;
+              const count = visibleAppts.filter((a) => a.day === i).length;
               const active = mobileDay === i;
               return (
                 <button
@@ -227,7 +245,7 @@ function Schedule() {
 
           <div key={`list-${animKey}-${mobileDay}`} className="space-y-3 animate-in fade-in duration-200">
             {mobileDayAppts.map((a, j) => {
-              const tk = tickets[a.ticketIndex];
+              const tk = appointmentTicket(a);
               if (!tk) return null;
               return (
                 <div key={j} className="rounded-xl border border-border bg-surface p-4 space-y-3">
@@ -262,8 +280,8 @@ function Schedule() {
                       <MapPin className="h-3.5 w-3.5" />
                       {lang === "EN" ? "Directions" : "Route"}
                     </a>
-                    <button onClick={() => startJob(tk.id)} disabled={updateJob.isPending} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
-                      {lang === "EN" ? "Mark in progress" : "Starten"}
+                    <button onClick={() => void startJob(tk.id)} disabled={updateJob.isPending} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
+                      {startingTicketId === tk.id && updateJob.isPending ? t("common.loading") : (lang === "EN" ? "Mark in progress" : "Starten")}
                     </button>
                   </div>
                 </div>
@@ -286,14 +304,14 @@ function Schedule() {
               </div>
               <div className="grid grid-cols-5 min-h-[420px]">
                 {days.map((d, i) => {
-                  const dayAppts = appts.filter((a) => a.day === i);
+                  const dayAppts = visibleAppts.filter((a) => a.day === i);
                   return (
                     <div key={d.date} className="border-r border-border last:border-r-0 p-2 space-y-2">
                       {dayAppts.length === 0 && (
                         <div className="text-[11px] text-muted-foreground/60 text-center py-6">—</div>
                       )}
                       {dayAppts.map((a, j) => {
-                        const tk = tickets[a.ticketIndex];
+                        const tk = appointmentTicket(a);
                         if (!tk) return null;
                         return (
                           <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="block rounded-lg border border-border bg-surface hover:border-primary/40 hover:shadow-soft transition-all p-2.5">
@@ -322,7 +340,7 @@ function Schedule() {
               </div>
               <div className="divide-y divide-border">
                 {list.map((a, j) => {
-                  const tk = tickets[a.ticketIndex];
+                  const tk = appointmentTicket(a);
                   if (!tk) return null;
                   return (
                     <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 items-center gap-3">

@@ -193,6 +193,16 @@ export type AiStructuredIntakeDto = {
   missing: string[];
 };
 
+export type AiIntakeFollowUpDto = {
+  kind: "intake_follow_up";
+  model: string;
+  status: AiSuggestionStatus;
+  question: string;
+  chips: string[];
+  ready: boolean;
+  confidence: number;
+};
+
 export type AiUrgencyDto = {
   kind: "classify_urgency";
   model: string;

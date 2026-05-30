@@ -34,6 +34,20 @@ function OwnerFinancials() {
   const budget = 60000;
   const ytd = 48230;
   const utilization = Math.round((ytd / budget) * 100);
+  const exportCsv = () => {
+    const header = ["Invoice", "Date", "Contractor", "Property", "Amount", "Status"];
+    const rows = invoices.map((inv) => [inv.id, inv.date, inv.contractor, inv.property, inv.amount, inv.status]);
+    const csv = [header, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "valta-invoices.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <AppShell title={t("odash.financials_title")} subtitle={t("odash.sub")}>
@@ -154,7 +168,7 @@ function OwnerFinancials() {
           ))}
 
           <div className="px-5 py-3 flex justify-end border-t border-border bg-surface-muted">
-            <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
+            <button onClick={exportCsv} className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
               <Download className="h-3.5 w-3.5" /> {lang === "EN" ? "Export CSV" : "Als CSV exportieren"}
             </button>
           </div>

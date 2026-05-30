@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef } from "react";
 import { CheckCircle2, Circle, Sparkles, Wrench, MessageSquareText, Image as ImageIcon, Phone, Bell, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
@@ -15,6 +16,11 @@ export const Route = createFileRoute("/portal")({
 
 function PortalPage() {
   const { t, lang } = useLang();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const requestNotificationPermission = () => {
+    if (typeof window === "undefined" || !("Notification" in window)) return;
+    void Notification.requestPermission();
+  };
 
   const steps = lang === "EN" ? [
     { label: "Received", at: "Today, 08:42", done: true, ai: true, desc: "Your report was captured and structured by Valta." },
@@ -137,15 +143,16 @@ function PortalPage() {
                   <ImageIcon className="h-5 w-5" />
                 </div>
               ))}
-              <button className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" />
+              <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
                 {t("portal.add_photo")}
               </button>
             </div>
             <div className="mt-4 flex flex-col gap-2">
-              <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
+              <a href="tel:+493012345678" className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
                 <Phone className="h-3.5 w-3.5" /> {t("portal.contact_pm")}
-              </button>
-              <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
+              </a>
+              <button onClick={requestNotificationPermission} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
                 <Bell className="h-3.5 w-3.5" /> {t("portal.notifications")}
               </button>
             </div>

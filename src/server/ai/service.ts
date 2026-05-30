@@ -5,6 +5,7 @@ import { aiSuggestions } from "@/server/db/schema";
 import { getTicketById } from "@/server/read/queries";
 import type {
   AiContractorSuggestionDto,
+  AiIntakeFollowUpDto,
   AiMissingInfoDto,
   AiReplyDraftDto,
   AiStructuredIntakeDto,
@@ -19,6 +20,7 @@ import {
   classifyUrgencyFallback,
   detectMissingInfoFallback,
   generateReplyDraftFallback,
+  generateIntakeFollowUpFallback,
   generateSummaryFallback,
   structureIntakeFallback,
   suggestContractorFallback,
@@ -33,6 +35,7 @@ type AiSuggestionStatus = z.infer<typeof statusSchema>;
 type AiKind =
   | "structure_intake"
   | "classify_urgency"
+  | "intake_follow_up"
   | "summary"
   | "contractor_suggestion"
   | "reply_draft"
@@ -57,6 +60,13 @@ const structureIntakeSchema = z.object({
   access: z.string().default(""),
   preferred: z.string().default(""),
   missing: z.array(z.string()).default([]),
+});
+
+const intakeFollowUpOutputSchema = z.object({
+  question: z.string().default(""),
+  chips: z.array(z.string()).default([]),
+  ready: z.boolean().default(false),
+  confidence: z.number().int().min(0).max(100).default(80),
 });
 
 const urgencyOutputSchema = z.object({
@@ -102,16 +112,20 @@ async function persistAiSuggestion(input: {
   model: string;
   status: AiSuggestionStatus;
 }) {
-  await db.insert(aiSuggestions).values({
-    id: `ai-suggestion-${crypto.randomUUID()}`,
-    organizationId: ORG_ID,
-    ticketId: input.ticketId ?? null,
-    kind: input.kind,
-    input: input.request,
-    output: input.output,
-    model: input.model,
-    status: input.status,
-  });
+  try {
+    await db.insert(aiSuggestions).values({
+      id: `ai-suggestion-${crypto.randomUUID()}`,
+      organizationId: ORG_ID,
+      ticketId: input.ticketId ?? null,
+      kind: input.kind,
+      input: input.request,
+      output: input.output,
+      model: input.model,
+      status: input.status,
+    });
+  } catch (error) {
+    console.warn("AI suggestion persistence failed", error);
+  }
 }
 
 async function runAi<K extends AiKind, T extends Record<string, unknown>>(input: {
@@ -171,6 +185,18 @@ async function requireTicket(ticketId: string) {
   return ticket;
 }
 
+async function resolveTicket(ticketId: string, ticketContext?: TicketDto) {
+  try {
+    const ticket = await getTicketById(ticketId);
+    if (ticket) return ticket;
+  } catch (error) {
+    if (!ticketContext) throw error;
+    console.warn("Ticket lookup failed; using provided AI ticket context", error);
+  }
+  if (ticketContext) return ticketContext;
+  throw new Error(`Ticket ${ticketId} not found`);
+}
+
 export async function structureIntake(input: { raw: string; language?: Lang }): Promise<AiStructuredIntakeDto> {
   const language = input.language ?? "DE";
   const fallback = structureIntakeFallback(input.raw, language);
@@ -184,22 +210,36 @@ export async function structureIntake(input: { raw: string; language?: Lang }): 
   });
 }
 
-export async function classifyUrgency(input: { text: string; ticketId?: string | null }): Promise<AiUrgencyDto> {
-  const fallback = classifyUrgencyFallback(input.text);
+export async function generateIntakeFollowUp(input: { raw: string; language?: Lang; step?: number }): Promise<AiIntakeFollowUpDto> {
+  const language = input.language ?? "DE";
+  const fallback = generateIntakeFollowUpFallback(input.raw, language, input.step ?? 0);
+  return runAi({
+    kind: "intake_follow_up",
+    request: input,
+    system: "You are a tenant-facing maintenance intake assistant for property management. Ask exactly one useful follow-up question at a time. Return strict JSON only.",
+    prompt: `Return JSON with question, chips, ready, confidence. Use ${language}. Set ready=true only when there is enough information to create a maintenance ticket: issue category, affected location/unit, severity/detail, and access/contact preference.\nConversation:\n${input.raw}`,
+    schema: intakeFollowUpOutputSchema,
+    fallback,
+  });
+}
+
+export async function classifyUrgency(input: { text: string; ticketId?: string | null; language?: Lang }): Promise<AiUrgencyDto> {
+  const language = input.language ?? "EN";
+  const fallback = classifyUrgencyFallback(input.text, language);
   return runAi({
     kind: "classify_urgency",
     ticketId: input.ticketId,
     request: input,
     system: "You classify maintenance-ticket urgency for property management. Return strict JSON only.",
-    prompt: `Return JSON with priority, confidence, reasons.\nText:\n${input.text}`,
+    prompt: `Return JSON with priority, confidence, reasons. Reasons must be in ${language}.\nText:\n${input.text}`,
     schema: urgencyOutputSchema,
     fallback,
   });
 }
 
-export async function generateSummary(input: { ticketId: string; language?: Lang }): Promise<AiSummaryDto> {
+export async function generateSummary(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiSummaryDto> {
   const language = input.language ?? "DE";
-  const ticket = await requireTicket(input.ticketId);
+  const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = generateSummaryFallback(ticket, language);
   return runAi({
     kind: "summary",
@@ -212,22 +252,23 @@ export async function generateSummary(input: { ticketId: string; language?: Lang
   });
 }
 
-export async function suggestContractor(input: { category: string; ticketId?: string | null }): Promise<AiContractorSuggestionDto> {
-  const fallback = suggestContractorFallback(input.category);
+export async function suggestContractor(input: { category: string; ticketId?: string | null; language?: Lang }): Promise<AiContractorSuggestionDto> {
+  const language = input.language ?? "EN";
+  const fallback = suggestContractorFallback(input.category, language);
   return runAi({
     kind: "contractor_suggestion",
     ticketId: input.ticketId,
     request: input,
     system: "You suggest one contractor for a property-management maintenance category using the demo contractor names if possible. Return strict JSON only.",
-    prompt: `Return JSON with contractor, contractorId, confidence, reason.\nCategory: ${input.category}`,
+    prompt: `Return JSON with contractor, contractorId, confidence, reason. Reason must be in ${language}.\nCategory: ${input.category}`,
     schema: contractorOutputSchema,
     fallback,
   });
 }
 
-export async function generateReplyDraft(input: { ticketId: string; language?: Lang }): Promise<AiReplyDraftDto> {
+export async function generateReplyDraft(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiReplyDraftDto> {
   const language = input.language ?? "DE";
-  const ticket = await requireTicket(input.ticketId);
+  const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = generateReplyDraftFallback(ticket, language);
   return runAi({
     kind: "reply_draft",
@@ -240,9 +281,9 @@ export async function generateReplyDraft(input: { ticketId: string; language?: L
   });
 }
 
-export async function detectMissingInfo(input: { ticketId: string; language?: Lang }): Promise<AiMissingInfoDto> {
+export async function detectMissingInfo(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiMissingInfoDto> {
   const language = input.language ?? "DE";
-  const ticket = await requireTicket(input.ticketId);
+  const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = detectMissingInfoFallback(ticket, language);
   return runAi({
     kind: "missing_info",

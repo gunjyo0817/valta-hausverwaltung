@@ -7,10 +7,13 @@ import { getProperty } from "@/lib/properties";
 import {
   useAddDocumentMetadata,
   useApproveTicketReply,
+  useClassifyUrgency,
   useDetectMissingInfo,
   useGenerateReplyDraft,
+  useGenerateSummary,
   useProperty,
   useRequestMissingInfo,
+  useSuggestContractor,
   useTicket,
 } from "@/lib/api";
 import { AssignContractorModal } from "@/components/AssignContractorModal";
@@ -60,29 +63,54 @@ function TicketPage() {
   const [sent, setSent] = useState(false);
   const approveReply = useApproveTicketReply();
   const requestInfo = useRequestMissingInfo();
+  const classifyUrgency = useClassifyUrgency();
   const generateReply = useGenerateReplyDraft();
+  const generateSummary = useGenerateSummary();
   const detectMissing = useDetectMissingInfo();
+  const suggestContractor = useSuggestContractor();
   const addDocument = useAddDocumentMetadata();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const showLang = translated ? (lang === "DE" ? "EN" : "DE") : lang;
+  const defaultMissingInfoText = lang === "EN"
+    ? "Please send the exact thermostat model and confirm whether neighbours are affected."
+    : "Bitte senden Sie den genauen Thermostat-Typ und bestätigen Sie, ob Nachbarn ebenfalls betroffen sind.";
+  const defaultMissingInfoItems = lang === "EN"
+    ? ["Exact thermostat model", "Confirmation: are neighbours affected?"]
+    : ["Genauer Thermostat-Typ", "Bestätigung: Sind Nachbarn betroffen?"];
+  const defaultUrgencyReasons = lang === "EN"
+    ? ["Outside temp < 5 °C", "Entire apartment, not single room", "Heating SLA 4 h applies"]
+    : ["Außentemperatur < 5 °C", "Gesamte Wohnung, nicht Einzelraum", "SLA Heizung 4 Std. greift"];
 
   const firstName = tk.tenant.name.split(" ")[0];
   const draft = lang === "EN"
     ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
     : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
   const [draftText, setDraftText] = useState(draft);
+  const [draftConfidence, setDraftConfidence] = useState(94);
+  const [summaryText, setSummaryText] = useState(tk.summary[showLang]);
+  const [summaryConfidence, setSummaryConfidence] = useState(tk.confidence);
+  const [missingInfoText, setMissingInfoText] = useState(defaultMissingInfoText);
+  const [missingInfoItems, setMissingInfoItems] = useState(defaultMissingInfoItems);
+  const [urgencyReasons, setUrgencyReasons] = useState(defaultUrgencyReasons);
+  const [contractorName, setContractorName] = useState(tk.contractorName ?? "—");
+  const [contractorReason, setContractorReason] = useState(t("inbox.recommended_basis"));
+  const [contractorConfidence, setContractorConfidence] = useState(tk.confidence);
 
   useEffect(() => {
     let cancelled = false;
     setDraftText(draft);
+    setDraftConfidence(94);
     setSent(false);
     setShowInfo(false);
 
     generateReply
-      .mutateAsync({ data: { ticketId: tk.id, language: lang } })
+      .mutateAsync({ data: { ticketId: tk.id, language: lang, ticket: tk } })
       .then((result) => {
-        if (!cancelled) setDraftText(result.text);
+        if (!cancelled) {
+          setDraftText(result.text);
+          setDraftConfidence(result.confidence);
+        }
       })
       .catch(() => {
         if (!cancelled) setDraftText(draft);
@@ -93,9 +121,66 @@ function TicketPage() {
     };
   }, [draft, tk.id, lang]);
 
-  const missingInfoText = lang === "EN"
-    ? "Please send the exact thermostat model and confirm whether neighbours are affected."
-    : "Bitte senden Sie den genauen Thermostat-Typ und bestätigen Sie, ob Nachbarn ebenfalls betroffen sind.";
+  useEffect(() => {
+    let cancelled = false;
+
+    setSummaryText(tk.summary[showLang]);
+    setSummaryConfidence(tk.confidence);
+    setMissingInfoText(defaultMissingInfoText);
+    setMissingInfoItems(defaultMissingInfoItems);
+    setUrgencyReasons(defaultUrgencyReasons);
+    setContractorName(tk.contractorName ?? "—");
+    setContractorReason(t("inbox.recommended_basis"));
+    setContractorConfidence(tk.confidence);
+
+    generateSummary
+      .mutateAsync({ data: { ticketId: tk.id, language: showLang, ticket: tk } })
+      .then((result) => {
+        if (!cancelled) {
+          setSummaryText(result.summary);
+          setSummaryConfidence(result.confidence);
+        }
+      })
+      .catch(() => {});
+
+    detectMissing
+      .mutateAsync({ data: { ticketId: tk.id, language: lang, ticket: tk } })
+      .then((result) => {
+        if (!cancelled) {
+          setMissingInfoText(result.text);
+          setMissingInfoItems(result.items.length > 0 ? result.items : defaultMissingInfoItems);
+        }
+      })
+      .catch(() => {});
+
+    classifyUrgency
+      .mutateAsync({
+        data: {
+          ticketId: tk.id,
+          text: `${tk.title[lang]}\n${tk.summary[lang]}\n${tk.description[lang]}`,
+          language: lang,
+        },
+      })
+      .then((result) => {
+        if (!cancelled) setUrgencyReasons(result.reasons.length > 0 ? result.reasons : defaultUrgencyReasons);
+      })
+      .catch(() => {});
+
+    suggestContractor
+      .mutateAsync({ data: { ticketId: tk.id, category: tk.category[lang], language: lang } })
+      .then((result) => {
+        if (!cancelled) {
+          setContractorName(result.contractor || tk.contractorName || "—");
+          setContractorReason(result.reason || t("inbox.recommended_basis"));
+          setContractorConfidence(result.confidence);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [tk.id, showLang, lang]);
 
   const submitReply = async () => {
     if (sent || approveReply.isPending) return;
@@ -106,8 +191,7 @@ function TicketPage() {
 
   const submitMissingInfoRequest = async () => {
     if (showInfo || requestInfo.isPending || detectMissing.isPending) return;
-    const aiMissingInfo = await detectMissing.mutateAsync({ data: { ticketId: tk.id, language: lang } });
-    await requestInfo.mutateAsync({ data: { ticketId: tk.id, text: aiMissingInfo.text || missingInfoText } });
+    await requestInfo.mutateAsync({ data: { ticketId: tk.id, text: missingInfoText || defaultMissingInfoText } });
     setShowInfo(true);
   };
   const photoAttachments = (tk.attachments?.length ?? 0) > 0
@@ -148,7 +232,7 @@ function TicketPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <UrgencyBadge urgency={tk.urgency} />
                 <StatusBadge status={tk.status} />
-                <AIBadge confidence={tk.confidence} />
+                <AIBadge confidence={summaryConfidence} />
                 <button onClick={() => setTranslated((v) => !v)} className="ml-auto inline-flex items-center gap-1.5 text-xs border border-border rounded-md px-2 py-1 hover:bg-accent">
                   <Languages className="h-3.5 w-3.5" /> {translated ? t("common.show_original") : t("common.show_en")}
                 </button>
@@ -158,7 +242,7 @@ function TicketPage() {
                 <div className="flex items-center gap-2 text-xs font-semibold">
                   <Sparkles className="h-3.5 w-3.5 text-ai" /> {t("common.summary")}
                 </div>
-                <p className="mt-2 text-sm leading-relaxed">{tk.summary[showLang]}</p>
+                <p className="mt-2 text-sm leading-relaxed">{summaryText}</p>
               </div>
               <p className="mt-4 text-sm text-foreground/80 leading-relaxed">{tk.description[showLang]}</p>
 
@@ -232,7 +316,7 @@ function TicketPage() {
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold">{t("copilot.reply_draft")}</span>
-                <AIBadge confidence={94} />
+                <AIBadge confidence={draftConfidence} />
               </div>
               {editDraft ? (
                 <textarea value={draftText} onChange={(event) => setDraftText(event.target.value)} className="w-full h-40 text-sm rounded-md border border-border bg-background p-2 outline-none focus:ring-2 focus:ring-ring" />
@@ -261,10 +345,9 @@ function TicketPage() {
                 <AlertTriangle className="h-3.5 w-3.5 text-warning" /> {t("copilot.missing_info")}
               </div>
               <ul className="mt-2 space-y-1.5 text-xs text-foreground/80">
-                <li>• {lang === "EN" ? "Exact thermostat model" : "Genauer Thermostat-Typ"}</li>
-                <li>• {lang === "EN" ? "Confirmation: are neighbours affected?" : "Bestätigung: Sind Nachbarn betroffen?"}</li>
+                {missingInfoItems.map((item) => <li key={item}>• {item}</li>)}
               </ul>
-              <button disabled={showInfo || requestInfo.isPending} onClick={submitMissingInfoRequest} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
+              <button disabled={showInfo || requestInfo.isPending || detectMissing.isPending} onClick={submitMissingInfoRequest} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
                 <MessageSquareText className="h-3.5 w-3.5" /> {t("act.request_info")}
               </button>
               {showInfo && (
@@ -279,9 +362,7 @@ function TicketPage() {
                 <AlertTriangle className="h-3.5 w-3.5 text-destructive" /> {t("copilot.why_critical")}
               </div>
               <ul className="mt-2 space-y-1.5 text-xs text-foreground/80">
-                <li>• {lang === "EN" ? "Outside temp < 5 °C" : "Außentemperatur < 5 °C"}</li>
-                <li>• {lang === "EN" ? "Entire apartment, not single room" : "Gesamte Wohnung, nicht Einzelraum"}</li>
-                <li>• {lang === "EN" ? "Heating SLA 4 h applies" : "SLA Heizung 4 Std. greift"}</li>
+                {urgencyReasons.map((reason) => <li key={reason}>• {reason}</li>)}
               </ul>
             </div>
 
@@ -289,8 +370,11 @@ function TicketPage() {
               <div className="flex items-center gap-2 text-xs font-semibold">
                 <Wrench className="h-3.5 w-3.5 text-primary" /> {t("inbox.recommended")}
               </div>
-              <div className="mt-2 text-sm font-medium">{tk.contractorName ?? "Müller Heizung GmbH"}</div>
-              <div className="text-[11px] text-muted-foreground">★ 4.9 · ETA 2 {t("common.hours_short")} · {t("inbox.recommended_basis")}</div>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-sm font-medium">{contractorName}</span>
+                <AIBadge confidence={contractorConfidence} />
+              </div>
+              <div className="text-[11px] text-muted-foreground">★ 4.9 · ETA 2 {t("common.hours_short")} · {contractorReason}</div>
               <button onClick={() => setShowAssign(true)} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90">
                 <CheckCheck className="h-3.5 w-3.5" /> {t("act.assign")}
               </button>

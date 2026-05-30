@@ -4,7 +4,14 @@ import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { tickets as mockTickets } from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
-import { useApproveTicketReply, useGenerateReplyDraft, useTickets, type TicketDto } from "@/lib/api";
+import {
+  useApproveTicketReply,
+  useGenerateReplyDraft,
+  useGenerateSummary,
+  useSuggestContractor,
+  useTickets,
+  type TicketDto,
+} from "@/lib/api";
 import {
   Search,
   Filter,
@@ -28,7 +35,7 @@ export const Route = createFileRoute("/inbox")({
   component: InboxPage,
 });
 
-type FilterKey = "all" | "critical" | "new" | "waiting" | "in_progress";
+type FilterKey = "all" | "critical" | "new" | "waiting" | "in_progress" | "resolved";
 
 function InboxPage() {
   const { t, lang } = useLang();
@@ -36,6 +43,8 @@ function InboxPage() {
   const tickets = data ?? mockTickets;
   const [selectedId, setSelectedId] = useState(mockTickets[0].id);
   const [filter, setFilter] = useState<FilterKey>("all");
+  const [query, setQuery] = useState("");
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [translated, setTranslated] = useState(false);
   const [draftEdit, setDraftEdit] = useState(false);
 
@@ -45,15 +54,32 @@ function InboxPage() {
     { key: "new", label: t("filter.new") },
     { key: "waiting", label: t("filter.waiting") },
     { key: "in_progress", label: t("filter.in_progress") },
+    ...(showMoreFilters ? [{ key: "resolved" as const, label: lang === "EN" ? "Resolved" : "Erledigt" }] : []),
   ];
 
   const list = useMemo(() => {
-    if (filter === "all") return tickets;
-    if (filter === "critical") return tickets.filter((tk) => tk.urgency === "critical" || tk.urgency === "high");
-    if (filter === "new") return tickets.filter((tk) => tk.status === "new");
-    if (filter === "waiting") return tickets.filter((tk) => tk.status === "waiting");
-    return tickets.filter((tk) => tk.status === "in_progress");
-  }, [filter, tickets]);
+    const filtered = (() => {
+      if (filter === "all") return tickets;
+      if (filter === "critical") return tickets.filter((tk) => tk.urgency === "critical" || tk.urgency === "high");
+      if (filter === "new") return tickets.filter((tk) => tk.status === "new");
+      if (filter === "waiting") return tickets.filter((tk) => tk.status === "waiting");
+      if (filter === "resolved") return tickets.filter((tk) => tk.status === "resolved");
+      return tickets.filter((tk) => tk.status === "in_progress");
+    })();
+    const term = query.trim().toLowerCase();
+    if (!term) return filtered;
+    return filtered.filter((tk) =>
+      [
+        tk.id,
+        tk.title.DE,
+        tk.title.EN,
+        tk.tenant.name,
+        tk.tenant.building,
+        tk.tenant.apartment.DE,
+        tk.tenant.apartment.EN,
+      ].some((value) => value.toLowerCase().includes(term)),
+    );
+  }, [filter, tickets, query]);
 
   const selected = tickets.find((tk) => tk.id === selectedId) ?? tickets[0];
 
@@ -64,7 +90,7 @@ function InboxPage() {
           <div className="p-3 border-b border-border space-y-2">
             <div className="flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs">
               <Search className="h-3.5 w-3.5 text-muted-foreground" />
-              <input placeholder={t("common.search_tickets")} className="w-full bg-transparent outline-none" />
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("common.search_tickets")} className="w-full bg-transparent outline-none" />
             </div>
             <div className="flex items-center gap-1 overflow-x-auto pb-1">
               {filters.map((f) => (
@@ -79,7 +105,7 @@ function InboxPage() {
                   {f.label}
                 </button>
               ))}
-              <button className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground">
+              <button onClick={() => setShowMoreFilters((value) => !value)} className="ml-auto inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground">
                 <Filter className="h-3 w-3" /> {t("common.more")}
               </button>
             </div>
@@ -131,7 +157,47 @@ function InboxPage() {
 
 function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; translated: boolean; onTranslate: () => void }) {
   const { t, lang } = useLang();
+  const generateSummary = useGenerateSummary();
+  const suggestContractor = useSuggestContractor();
   const showLang = translated ? (lang === "DE" ? "EN" : "DE") : lang;
+  const [summaryText, setSummaryText] = useState(ticket.summary[showLang]);
+  const [summaryConfidence, setSummaryConfidence] = useState(ticket.confidence);
+  const [contractorName, setContractorName] = useState(ticket.contractorName ?? "—");
+  const [contractorReason, setContractorReason] = useState(t("inbox.recommended_basis"));
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setSummaryText(ticket.summary[showLang]);
+    setSummaryConfidence(ticket.confidence);
+    setContractorName(ticket.contractorName ?? "—");
+    setContractorReason(t("inbox.recommended_basis"));
+
+    generateSummary
+      .mutateAsync({ data: { ticketId: ticket.id, language: showLang, ticket } })
+      .then((result) => {
+        if (!cancelled) {
+          setSummaryText(result.summary);
+          setSummaryConfidence(result.confidence);
+        }
+      })
+      .catch(() => {});
+
+    suggestContractor
+      .mutateAsync({ data: { ticketId: ticket.id, category: ticket.category[lang], language: lang } })
+      .then((result) => {
+        if (!cancelled) {
+          setContractorName(result.contractor || ticket.contractorName || "—");
+          setContractorReason(result.reason || t("inbox.recommended_basis"));
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [ticket.id, showLang, lang]);
+
   const photoAttachments = (ticket.attachments?.length ?? 0) > 0
     ? ticket.attachments!
     : Array.from({ length: ticket.photos }).map((_, index) => ({
@@ -153,7 +219,7 @@ function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; 
           <h2 className="text-xl font-semibold tracking-tight">{ticket.title[showLang]}</h2>
           <UrgencyBadge urgency={ticket.urgency} />
           <StatusBadge status={ticket.status} />
-          <AIBadge confidence={ticket.confidence} />
+          <AIBadge confidence={summaryConfidence} />
           <button
             onClick={onTranslate}
             className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent"
@@ -167,14 +233,14 @@ function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; 
         <div className="flex items-center gap-2 text-xs font-semibold text-foreground/80">
           <Sparkles className="h-3.5 w-3.5 text-ai" /> {t("common.summary")}
         </div>
-        <p className="mt-2 text-sm leading-relaxed">{ticket.summary[showLang]}</p>
+        <p className="mt-2 text-sm leading-relaxed">{summaryText}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <InfoCard label={t("common.tenant")} value={ticket.tenant.name} sub={ticket.tenant.phone} />
         <InfoCard label={`${t("common.property")} / ${t("intake.unit")}`} value={ticket.tenant.apartment[lang]} sub={ticket.tenant.building} />
         <InfoCard label={t("common.category")} value={ticket.category[lang]} sub={`${t("common.language")} ${ticket.language}`} />
-        <InfoCard label={t("inbox.recommended")} value={ticket.contractorName ?? "—"} sub={t("inbox.recommended_basis")} />
+        <InfoCard label={t("inbox.recommended")} value={contractorName} sub={contractorReason} />
       </div>
 
       <section>
@@ -238,16 +304,21 @@ function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; 
     ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
     : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
   const [draftText, setDraftText] = useState(draft);
+  const [draftConfidence, setDraftConfidence] = useState(94);
 
   useEffect(() => {
     let cancelled = false;
     setDraftText(draft);
+    setDraftConfidence(94);
     setSent(false);
 
     generateReply
-      .mutateAsync({ data: { ticketId: ticket.id, language: lang } })
+      .mutateAsync({ data: { ticketId: ticket.id, language: lang, ticket } })
       .then((result) => {
-        if (!cancelled) setDraftText(result.text);
+        if (!cancelled) {
+          setDraftText(result.text);
+          setDraftConfidence(result.confidence);
+        }
       })
       .catch(() => {
         if (!cancelled) setDraftText(draft);
@@ -277,7 +348,7 @@ function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; 
       <div className="rounded-xl border border-border bg-background p-3 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold">{t("copilot.reply_draft")}</span>
-          <AIBadge confidence={94} />
+          <AIBadge confidence={draftConfidence} />
         </div>
         {draftEdit ? (
           <textarea value={draftText} onChange={(event) => setDraftText(event.target.value)} className="w-full h-40 text-sm rounded-md border border-border bg-surface p-2 outline-none focus:ring-2 focus:ring-ring" />

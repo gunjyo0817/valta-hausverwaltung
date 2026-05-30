@@ -111,8 +111,8 @@ function OwnerHome() {
                   </div>
                   <p className="mt-1 text-[11px] text-muted-foreground">{a.reason[lang]}</p>
                   <div className="mt-2 flex gap-2">
-                    <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md bg-primary px-2 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
-                    <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md border border-border bg-surface px-2 py-1.5 text-[11px] hover:bg-accent transition">{t("odash.reject")}</button>
+                    <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md bg-primary px-2 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">{t("odash.approve")}</button>
+                    <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md border border-border bg-surface px-2 py-1.5 text-[11px] hover:bg-accent transition disabled:opacity-50">{t("odash.reject")}</button>
                   </div>
                 </div>
               ))}

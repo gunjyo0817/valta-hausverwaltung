@@ -11,6 +11,7 @@ export function AssignContractorModal({ ticketId, category, onClose }: { ticketI
   const [selected, setSelected] = useState<string | null>(list[0]?.id ?? null);
   const [assigned, setAssigned] = useState(false);
   const assignContractor = useAssignContractor();
+  const selectedContractor = list.find((contractor) => contractor.id === selected);
 
   const submitAssignment = async () => {
     if (!selected || assignContractor.isPending) return;
@@ -88,12 +89,12 @@ export function AssignContractorModal({ ticketId, category, onClose }: { ticketI
           <FileText className="h-3.5 w-3.5" /> {lang === "EN" ? "AI generates job summary, attaches photos & address." : "AI erstellt Auftragszusammenfassung, fügt Fotos & Adresse an."}
         </div>
         <div className="flex flex-wrap gap-2">
-          <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
+          <a href={selectedContractor ? `mailto:${selectedContractor.email}?subject=${encodeURIComponent(`Anfrage ${ticketId}`)}` : undefined} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
             <Mail className="h-3.5 w-3.5" /> {t("act.request_quote")}
-          </button>
-          <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
+          </a>
+          <a href={selectedContractor ? `tel:${selectedContractor.phone}` : undefined} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
             <Phone className="h-3.5 w-3.5" /> {t("act.call")}
-          </button>
+          </a>
           <button
             disabled={!selected}
             onClick={submitAssignment}

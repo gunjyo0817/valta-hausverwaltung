@@ -8,6 +8,7 @@ import {
   approveTicketReplyFn,
   createTicketFn,
   detectMissingInfoFn,
+  generateIntakeFollowUpFn,
   generateReplyDraftFn,
   generateSummaryFn,
   getMeFn,
@@ -268,6 +269,12 @@ export function useAddDocumentMetadata() {
 export function useStructureIntake() {
   return useMutation({
     mutationFn: structureIntakeFn,
+  });
+}
+
+export function useGenerateIntakeFollowUp() {
+  return useMutation({
+    mutationFn: generateIntakeFollowUpFn,
   });
 }
 

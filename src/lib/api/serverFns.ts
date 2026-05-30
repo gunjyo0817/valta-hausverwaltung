@@ -5,6 +5,7 @@ import { getDemoUser } from "@/server/auth/demo";
 import {
   classifyUrgency,
   detectMissingInfo,
+  generateIntakeFollowUp,
   generateReplyDraft,
   generateSummary,
   structureIntake,
@@ -142,19 +143,28 @@ const structureIntakeInput = z.object({
   language: aiLanguageInput.optional(),
 });
 
+const intakeFollowUpInput = z.object({
+  raw: z.string().min(1),
+  language: aiLanguageInput.optional(),
+  step: z.number().int().min(0).optional(),
+});
+
 const classifyUrgencyInput = z.object({
   text: z.string().min(1),
   ticketId: z.string().min(1).optional().nullable(),
+  language: aiLanguageInput.optional(),
 });
 
 const aiTicketInput = z.object({
   ticketId: z.string().min(1),
   language: aiLanguageInput.optional(),
+  ticket: z.any().optional(),
 });
 
 const suggestContractorInput = z.object({
   category: z.string().min(1),
   ticketId: z.string().min(1).optional().nullable(),
+  language: aiLanguageInput.optional(),
 });
 
 const translateTextInput = z.object({
@@ -254,6 +264,10 @@ export const addDocumentMetadataFn = createServerFn({ method: "POST" })
 export const structureIntakeFn = createServerFn({ method: "POST" })
   .inputValidator(structureIntakeInput)
   .handler(({ data }) => structureIntake(data));
+
+export const generateIntakeFollowUpFn = createServerFn({ method: "POST" })
+  .inputValidator(intakeFollowUpInput)
+  .handler(({ data }) => generateIntakeFollowUp(data));
 
 export const classifyUrgencyFn = createServerFn({ method: "POST" })
   .inputValidator(classifyUrgencyInput)

@@ -91,6 +91,10 @@ function TicketTrackingPage() {
     });
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
+  const requestNotificationPermission = () => {
+    if (typeof window === "undefined" || !("Notification" in window)) return;
+    void Notification.requestPermission();
+  };
 
   return (
     <AppShell title={ticket.title[lang]} subtitle={`${ticket.id} · ${ticket.category[lang]}`}>
@@ -199,7 +203,7 @@ function TicketTrackingPage() {
               <a href={`tel:${ticket.tenant.phone}`} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
                 <Phone className="h-3.5 w-3.5" /> {t("portal.contact_pm")}
               </a>
-              <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
+              <button onClick={requestNotificationPermission} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">
                 <Bell className="h-3.5 w-3.5" /> {t("portal.notifications")}
               </button>
             </div>

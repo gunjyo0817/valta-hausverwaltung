@@ -132,8 +132,8 @@ function ContractorDetail() {
                 <li className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-muted-foreground" /><span>{c.city}</span></li>
               </ul>
               <div className="mt-4 grid grid-cols-2 gap-2">
-                <button className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"><Phone className="h-3 w-3" />{t("act.call")}</button>
-                <button className="inline-flex items-center justify-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent"><Mail className="h-3 w-3" />{t("act.email")}</button>
+                <a href={`tel:${c.phone}`} className="inline-flex items-center justify-center gap-1 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"><Phone className="h-3 w-3" />{t("act.call")}</a>
+                <a href={`mailto:${c.email}`} className="inline-flex items-center justify-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent"><Mail className="h-3 w-3" />{t("act.email")}</a>
               </div>
             </div>
 

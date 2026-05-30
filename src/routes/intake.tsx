@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { Sparkles, Paperclip, Send, Languages, CheckCircle2, Image as ImageIcon, Building2, ArrowRight, Pencil, ArrowLeft, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
-import { useCreateTicket } from "@/lib/api";
+import {
+  useCreateTicket,
+  useGenerateIntakeFollowUp,
+  useStructureIntake,
+  type AiStructuredIntakeDto,
+  type Urgency,
+} from "@/lib/api";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
@@ -17,25 +23,61 @@ export const Route = createFileRoute("/intake")({
 
 type Msg = { from: "ai" | "user"; text: string; chips?: string[]; photo?: boolean };
 
+type Draft = {
+  title: string;
+  category: string;
+  description: string;
+  apartment: string;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
+  access: string;
+  preferred: string;
+  photos: number;
+  priority: Urgency;
+  contractor: string;
+  confidence: number;
+};
+
+const propertyLabels: Record<string, string> = {
+  "p-lindenstr-22": "Lindenstraße 22",
+  "p-goethestr-8": "Goethestraße 8",
+  "p-parkallee-110": "Parkallee 110",
+  "p-hauptstr-5": "Hauptstraße 5",
+  "p-rosenweg-3": "Rosenweg 3",
+  "p-frankfurter-88": "Frankfurter Allee 88",
+};
+
+function messagesToTranscript(messages: Msg[]) {
+  return messages.map((message) => `${message.from === "ai" ? "Assistant" : "Tenant"}: ${message.text}`).join("\n");
+}
+
+function structuredToDraft(result: AiStructuredIntakeDto, lang: "DE" | "EN", photos: number): Draft {
+  const property = propertyLabels[result.propertyId] ?? propertyLabels["p-lindenstr-22"];
+  const unit = result.unit || (lang === "EN" ? "Unit not provided" : "Wohneinheit fehlt");
+
+  return {
+    title: result.title || (lang === "EN" ? "Maintenance request" : "Schadensmeldung"),
+    category: result.category || (lang === "EN" ? "Other" : "Sonstiges"),
+    description: result.description || (lang === "EN" ? "Tenant reported a maintenance issue." : "Mieter:in hat ein Wartungsproblem gemeldet."),
+    apartment: `${property} · ${unit}`,
+    contactName: result.tenant || "Anna Becker",
+    contactPhone: result.phone || "+49 30 1234567",
+    contactEmail: result.email || "a.becker@example.com",
+    access: result.access || result.preferred || (lang === "EN" ? "Please call before arrival" : "Bitte vor Ankunft anrufen"),
+    preferred: result.preferred,
+    photos,
+    priority: result.priority,
+    contractor: result.contractor,
+    confidence: result.confidence,
+  };
+}
+
 export function IntakePage() {
   const { t, lang, setLang } = useLang();
   const createTicketMutation = useCreateTicket();
-
-  const flow: Array<{ ai: string; chips?: string[] }> = lang === "EN"
-    ? [
-        { ai: "Thanks. Since when has this been happening?", chips: ["Today", "Yesterday evening", "Several days"] },
-        { ai: "Does it affect the whole apartment or only one room?", chips: ["Whole apartment", "One room"] },
-        { ai: "Can you briefly describe how cold it is? Have you checked the thermostat?", chips: ["Very cold", "Bearable"] },
-        { ai: "Would you like to attach a photo of the thermostat or radiator? (optional)", chips: ["Add photo", "Skip"] },
-        { ai: "When may a technician access your home?", chips: ["Any time", "Weekday mornings", "After 5 pm"] },
-      ]
-    : [
-        { ai: "Danke. Seit wann besteht das Problem?", chips: ["Heute", "Gestern Abend", "Seit mehreren Tagen"] },
-        { ai: "Betrifft es die gesamte Wohnung oder nur einen Raum?", chips: ["Gesamte Wohnung", "Nur ein Raum"] },
-        { ai: "Können Sie kurz beschreiben, wie kalt es ist? Haben Sie schon den Thermostat geprüft?", chips: ["Sehr kalt", "Erträglich"] },
-        { ai: "Möchten Sie ein Foto vom Thermostat oder Heizkörper anhängen? (optional)", chips: ["Foto hinzufügen", "Überspringen"] },
-        { ai: "Wann darf ein Techniker bei Ihnen kommen?", chips: ["Jederzeit", "Werktags vormittags", "Nach 17 Uhr"] },
-      ];
+  const followUpMutation = useGenerateIntakeFollowUp();
+  const structureIntakeMutation = useStructureIntake();
 
   const [messages, setMessages] = useState<Msg[]>([{ from: "ai", text: t("intake.greeting") }]);
   const [step, setStep] = useState(0);
@@ -47,7 +89,7 @@ export function IntakePage() {
   const endRef = useRef<HTMLDivElement>(null);
 
   // Editable ticket draft (visible in review step)
-  const [draft, setDraft] = useState({
+  const [draft, setDraft] = useState<Draft>({
     title: lang === "EN" ? "Heating completely down" : "Heizung komplett ausgefallen",
     category: lang === "EN" ? "Heating" : "Heizung",
     description: lang === "EN"
@@ -58,32 +100,51 @@ export function IntakePage() {
     contactPhone: "+49 30 1234567",
     contactEmail: "a.becker@example.com",
     access: lang === "EN" ? "Weekday mornings, please call 30 min before" : "Werktags vormittags, bitte 30 Min vorher anrufen",
+    preferred: lang === "EN" ? "Weekday mornings" : "Werktags vormittags",
     photos: 1,
+    priority: "critical",
+    contractor: "Müller Heizung GmbH",
+    confidence: 94,
   });
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing, structuring, reviewing]);
 
   const photoLabel = lang === "EN" ? "Add photo" : "Foto hinzufügen";
 
-  const respond = (text: string, photo?: boolean) => {
+  const respond = async (text: string, photo?: boolean) => {
     if (!text && !photo) return;
     const newUser: Msg = { from: "user", text: photo ? t("intake.photo_attached") : text, photo };
-    const next = flow[step];
-    setMessages((m) => [...m, newUser]);
+    const nextMessages = [...messages, newUser];
+    setMessages(nextMessages);
     setInput("");
-    if (photo) setDraft((d) => ({ ...d, photos: d.photos + 1 }));
+    const nextPhotoCount = photo ? draft.photos + 1 : draft.photos;
+    if (photo) setDraft((d) => ({ ...d, photos: nextPhotoCount }));
     setTyping(true);
-    window.setTimeout(() => {
+
+    try {
+      const raw = messagesToTranscript(nextMessages);
+      const followUp = await followUpMutation.mutateAsync({ data: { raw, language: lang, step: step + 1 } });
       setTyping(false);
-      if (next) {
-        setMessages((m) => [...m, { from: "ai", text: next.ai, chips: next.chips }]);
-        setStep((s) => s + 1);
-      } else {
+
+      if (followUp.ready || !followUp.question || step >= 5) {
         setMessages((m) => [...m, { from: "ai", text: t("intake.thanks_structuring") }]);
         setStructuring(true);
-        window.setTimeout(() => { setStructuring(false); setReviewing(true); }, 1600);
+        const structured = await structureIntakeMutation.mutateAsync({ data: { raw, language: lang } });
+        setDraft(structuredToDraft(structured, lang, nextPhotoCount));
+        setStructuring(false);
+        setReviewing(true);
+      } else {
+        setMessages((m) => [...m, { from: "ai", text: followUp.question, chips: followUp.chips }]);
+        setStep((s) => s + 1);
       }
-    }, 600);
+    } catch (error) {
+      console.error("Intake assistant failed", error);
+      setTyping(false);
+      setMessages((m) => [...m, { from: "ai", text: t("intake.thanks_structuring") }]);
+      setStructuring(true);
+      setStructuring(false);
+      setReviewing(true);
+    }
   };
 
   const restart = () => {
@@ -91,6 +152,8 @@ export function IntakePage() {
     setStep(0);
     setReviewing(false);
     setSubmitted(false);
+    setStructuring(false);
+    setTyping(false);
   };
 
   const submitTicket = async () => {
@@ -98,14 +161,17 @@ export function IntakePage() {
       data: {
         title: draft.title,
         category: draft.category,
-        priority: "critical",
+        priority: draft.priority,
         tenant: draft.contactName,
-        propertyId: "p-lindenstr-22",
+        propertyId: Object.entries(propertyLabels).find(([, label]) => draft.apartment.includes(label))?.[0] ?? "p-lindenstr-22",
         unit: draft.apartment.split("·").pop()?.trim() ?? draft.apartment,
         phone: draft.contactPhone,
         email: draft.contactEmail,
         description: draft.description,
+        contractor: draft.contractor,
+        confidence: draft.confidence,
         access: draft.access,
+        preferred: draft.preferred,
         photos: draft.photos,
         language: lang,
       },
@@ -155,7 +221,7 @@ export function IntakePage() {
                         {m.chips.map((c) => (
                           <button
                             key={c}
-                            onClick={() => respond(c, c === photoLabel)}
+                            onClick={() => void respond(c, c === photoLabel)}
                             className="text-xs rounded-full border border-border bg-background px-2.5 py-1 hover:bg-accent text-foreground"
                           >
                             {c}
@@ -167,7 +233,7 @@ export function IntakePage() {
                 </div>
               ))}
               {typing && <TypingBubble />}
-              {structuring && <StructuringCard />}
+              {structuring && <StructuringCard draft={draft} />}
               {reviewing && !submitted && (
                 <TicketReview
                   draft={draft}
@@ -186,18 +252,18 @@ export function IntakePage() {
           {!reviewing && !submitted && (
             <div className="border-t border-border bg-surface p-3 md:p-4">
               <div className="mx-auto max-w-2xl flex items-end gap-2 rounded-xl border border-border bg-background p-2">
-                <button className="h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-accent text-muted-foreground">
+                <button onClick={() => void respond("", true)} aria-label={photoLabel} className="h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-accent text-muted-foreground">
                   <Paperclip className="h-4 w-4" />
                 </button>
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); respond(input); }}}
+                  onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void respond(input); }}}
                   placeholder={t("intake.placeholder")}
                   rows={1}
                   className="flex-1 resize-none bg-transparent text-sm outline-none py-1.5"
                 />
-                <button onClick={() => respond(input)} className="h-9 inline-flex items-center gap-1 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
+                <button onClick={() => void respond(input)} className="h-9 inline-flex items-center gap-1 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
                   <Send className="h-3.5 w-3.5" /> {t("intake.send")}
                 </button>
               </div>
@@ -267,12 +333,6 @@ function Stepper({ step, lang }: { step: 1 | 2 | 3 | 4; lang: "DE" | "EN" }) {
     </div>
   );
 }
-
-type Draft = {
-  title: string; category: string; description: string;
-  apartment: string; contactName: string; contactPhone: string; contactEmail: string;
-  access: string; photos: number;
-};
 
 function TicketReview({ draft, setDraft, onBack, onSubmit, submitting, lang }: { draft: Draft; setDraft: (u: (d: Draft) => Draft) => void; onBack: () => void; onSubmit: () => void | Promise<void>; submitting: boolean; lang: "DE" | "EN" }) {
   const [editing, setEditing] = useState(false);
@@ -476,11 +536,11 @@ function TypingBubble() {
   );
 }
 
-function StructuringCard() {
+function StructuringCard({ draft }: { draft: Draft }) {
   const { t, lang } = useLang();
   const steps = lang === "EN"
-    ? ["Category detected: Heating", "Summary generated", "Contact and unit confirmed", "Preparing your review"]
-    : ["Kategorie erkannt: Heizung", "Zusammenfassung erstellt", "Kontakt und Wohnung bestätigt", "Bereite Prüfschritt vor"];
+    ? [`Category detected: ${draft.category}`, "Summary generated", "Contact and unit confirmed", "Preparing your review"]
+    : [`Kategorie erkannt: ${draft.category}`, "Zusammenfassung erstellt", "Kontakt und Wohnung bestätigt", "Bereite Prüfschritt vor"];
   return (
     <div className="mt-2 rounded-2xl border border-border bg-accent/40 p-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex items-center gap-2 text-xs font-semibold">

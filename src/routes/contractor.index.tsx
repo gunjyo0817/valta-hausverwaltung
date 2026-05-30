@@ -5,6 +5,7 @@ import { tickets as mockTickets } from "@/lib/mockData";
 import { UrgencyBadge, StatusBadge } from "@/components/Badges";
 import { MapPin, Phone, Camera, CheckCircle2, MessageSquareText, Wrench, Clock, Star, Briefcase } from "lucide-react";
 import { useTickets, useUpdateContractorJob } from "@/lib/api";
+import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/contractor/")({ component: ContractorJobs });
 
@@ -12,16 +13,28 @@ function ContractorJobs() {
   const { t, lang } = useLang();
   const { data } = useTickets();
   const updateJob = useUpdateContractorJob();
-  // contractor = Müller Heizung (c1) → jobs assigned to them; fall back to a few open jobs
   const tickets = data && data.length > 0 ? data : mockTickets;
-  const jobs = tickets.filter((tk) => tk.contractorId === "c1" || tk.urgency === "critical" || tk.urgency === "high").filter((tk) => tk.status !== "resolved");
+  const [activeAction, setActiveAction] = useState<string | null>(null);
+  const jobs = useMemo(
+    () => tickets.filter((tk) => tk.contractorId === "c1" && tk.status !== "resolved"),
+    [tickets],
+  );
 
-  const act = (ticketId: string, action: "accept" | "start" | "request_info" | "complete") => {
+  const act = async (ticketId: string, action: "accept" | "start" | "request_info" | "complete") => {
     const message = action === "request_info"
       ? (lang === "EN" ? "Please confirm access details and any special instructions." : "Bitte Zugangsdaten und besondere Hinweise bestätigen.")
       : undefined;
-    updateJob.mutate({ data: { ticketId, action, message, role: "contractor" } });
+    const key = `${ticketId}:${action}`;
+    setActiveAction(key);
+    try {
+      await updateJob.mutateAsync({ data: { ticketId, action, message, role: "contractor" } });
+    } catch (error) {
+      console.error("Contractor job action failed", error);
+    } finally {
+      setActiveAction(null);
+    }
   };
+  const isActing = (ticketId: string, action: string) => activeAction === `${ticketId}:${action}` && updateJob.isPending;
 
   const kpi = [
     { label: t("cdash.kpi_active"), value: jobs.length, icon: Briefcase, color: "text-primary bg-primary/10" },
@@ -83,21 +96,21 @@ function ContractorJobs() {
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <button onClick={() => act(tk.id, "accept")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> {t("cdash.accept")}
+                  <button onClick={() => void act(tk.id, "accept")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> {isActing(tk.id, "accept") ? t("common.loading") : t("cdash.accept")}
                   </button>
-                  <button onClick={() => act(tk.id, "start")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
-                    <Wrench className="h-3.5 w-3.5" /> {t("cdash.start")}
+                  <button onClick={() => void act(tk.id, "start")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
+                    <Wrench className="h-3.5 w-3.5" /> {isActing(tk.id, "start") ? t("common.loading") : t("cdash.start")}
                   </button>
-                  <button onClick={() => act(tk.id, "request_info")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
-                    <MessageSquareText className="h-3.5 w-3.5" /> {t("cdash.request_info")}
+                  <button onClick={() => void act(tk.id, "request_info")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
+                    <MessageSquareText className="h-3.5 w-3.5" /> {isActing(tk.id, "request_info") ? t("common.loading") : t("cdash.request_info")}
                   </button>
-                  <button onClick={() => act(tk.id, "complete")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> {lang === "EN" ? "Complete" : "Abschließen"}
+                  <button onClick={() => void act(tk.id, "complete")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> {isActing(tk.id, "complete") ? t("common.loading") : (lang === "EN" ? "Complete" : "Abschließen")}
                   </button>
-                  <button className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition ml-auto">
+                  <a href={`https://maps.google.com/?q=${encodeURIComponent(tk.tenant.building)}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition ml-auto">
                     <MapPin className="h-3.5 w-3.5" /> {t("cdash.directions")}
-                  </button>
+                  </a>
                   <Link to="/ticket/$id" params={{ id: tk.id }} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition">
                     {t("act.open_ticket")}
                   </Link>

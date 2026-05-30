@@ -104,6 +104,10 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
 
   if (input.action === "accept") {
     await upsertAssignment(input.ticketId, contractor.id, "accepted");
+    await db
+      .update(tickets)
+      .set({ status: "contractor_assigned", updatedAt: new Date() })
+      .where(eq(tickets.id, input.ticketId));
     const eventText = `${contractor.name}: Auftrag angenommen.`;
     const ticket = await addTicketEvent({
       ticketId: input.ticketId,
@@ -197,4 +201,3 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
 
   return ticket ?? getTicketById(input.ticketId, { role });
 }
-
