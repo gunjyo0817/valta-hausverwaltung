@@ -3,12 +3,20 @@ import { Sparkles, Wrench, Phone, Mail, FileText, X, CheckCircle2, Star } from "
 import { contractors } from "@/lib/contractors";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
+import { useAssignContractor } from "@/lib/api";
 
-export function AssignContractorModal({ category, onClose }: { category: string; onClose: () => void }) {
+export function AssignContractorModal({ ticketId, category, onClose }: { ticketId: string; category: string; onClose: () => void }) {
   const { t, lang } = useLang();
   const list = contractors[category] ?? contractors["Heating"];
   const [selected, setSelected] = useState<string | null>(list[0]?.id ?? null);
   const [assigned, setAssigned] = useState(false);
+  const assignContractor = useAssignContractor();
+
+  const submitAssignment = async () => {
+    if (!selected || assignContractor.isPending) return;
+    await assignContractor.mutateAsync({ data: { ticketId, contractorId: selected } });
+    setAssigned(true);
+  };
 
   if (assigned) {
     return (
@@ -88,10 +96,10 @@ export function AssignContractorModal({ category, onClose }: { category: string;
           </button>
           <button
             disabled={!selected}
-            onClick={() => setAssigned(true)}
+            onClick={submitAssignment}
             className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            <CheckCircle2 className="h-3.5 w-3.5" /> {t("act.send_summary")}
+            <CheckCircle2 className="h-3.5 w-3.5" /> {assignContractor.isPending ? t("common.loading") : t("act.send_summary")}
           </button>
         </div>
       </footer>

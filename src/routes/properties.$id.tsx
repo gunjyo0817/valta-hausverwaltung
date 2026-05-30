@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { getProperty } from "@/lib/properties";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
 import { useLang } from "@/lib/i18n";
+import { useAddDocumentMetadata, useProperty, useTickets } from "@/lib/api";
 import { ArrowLeft, Building2, MapPin, Users, Sparkles, FileText, Download, MessageSquareText, ArrowUpRight, Wrench, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/properties/$id")({
@@ -18,10 +19,27 @@ export const Route = createFileRoute("/properties/$id")({
 
 function PropertyDetail() {
   const { id } = useParams({ from: "/properties/$id" });
-  const p = getProperty(id);
+  const { data: propertyData } = useProperty(id);
+  const { data: ticketData } = useTickets();
+  const p = propertyData ?? getProperty(id);
+  const tickets = ticketData ?? mockTickets;
   const { t, lang } = useLang();
+  const addDocument = useAddDocumentMetadata();
   const open = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved");
   const all = tickets.filter((tk) => tk.propertyId === p.id);
+  const addPropertyDocumentMetadata = async (files: FileList | null) => {
+    const file = files?.[0];
+    if (!file) return;
+    await addDocument.mutateAsync({
+      data: {
+        scope: "property",
+        targetId: p.id,
+        name: file.name,
+        type: file.type || "document",
+        role: "pm",
+      },
+    });
+  };
 
   return (
     <AppShell title={p.name} subtitle={p.address}>
@@ -34,7 +52,14 @@ function PropertyDetail() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <section className="lg:col-span-2 space-y-6">
-            <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+            <div
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => {
+                event.preventDefault();
+                addPropertyDocumentMetadata(event.dataTransfer.files);
+              }}
+              className="rounded-2xl border border-border bg-surface p-5 shadow-soft"
+            >
               <div className="flex items-start gap-3">
                 <div className="h-12 w-12 rounded-xl bg-accent flex items-center justify-center">
                   <Building2 className="h-6 w-6 text-primary" />
@@ -136,7 +161,9 @@ function PropertyDetail() {
                       <div className="font-medium truncate">{d.name}</div>
                       <div className="text-[11px] text-muted-foreground">{d.type} · {d.updated}</div>
                     </div>
-                    <Download className="h-3.5 w-3.5 text-muted-foreground" />
+                    <a href={d.url ?? "#"} className="inline-flex" aria-label={d.name}>
+                      <Download className="h-3.5 w-3.5 text-muted-foreground" />
+                    </a>
                   </li>
                 ))}
               </ul>

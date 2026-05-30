@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { CheckCircle2, Clock, Star, Briefcase, MapPin, User } from "lucide-react";
+import { useTickets } from "@/lib/api";
 
 export const Route = createFileRoute("/contractor/completed")({ component: Completed });
 
@@ -28,11 +29,25 @@ const jobs: Job[] = [
 
 function Completed() {
   const { t, lang } = useLang();
+  const { data } = useTickets();
+  const completedTickets = (data ?? []).filter((ticket) => ticket.status === "resolved");
+  const displayJobs: Job[] = completedTickets.length > 0
+    ? completedTickets.map((ticket) => ({
+        id: ticket.id,
+        title: ticket.title,
+        category: ticket.category,
+        property: ticket.tenant.building,
+        tenant: ticket.tenant.name,
+        completedAt: { DE: "jetzt", EN: "now" },
+        durationHours: 1.2,
+        rating: 5,
+      }))
+    : jobs;
 
-  const total = jobs.length;
-  const avgHours = (jobs.reduce((s, j) => s + j.durationHours, 0) / total).toFixed(1);
-  const avgRating = (jobs.reduce((s, j) => s + j.rating, 0) / total).toFixed(1);
-  const onTime = Math.round((jobs.filter((j) => j.rating >= 4).length / total) * 100);
+  const total = displayJobs.length;
+  const avgHours = (displayJobs.reduce((s, j) => s + j.durationHours, 0) / total).toFixed(1);
+  const avgRating = (displayJobs.reduce((s, j) => s + j.rating, 0) / total).toFixed(1);
+  const onTime = Math.round((displayJobs.filter((j) => j.rating >= 4).length / total) * 100);
 
   return (
     <AppShell title={t("cdash.completed_title")} subtitle={t("cdash.sub")}>
@@ -66,7 +81,7 @@ function Completed() {
             <div className="col-span-1">{lang === "EN" ? "Rating" : "Bewertung"}</div>
             <div className="col-span-1 text-right">{lang === "EN" ? "Done" : "Erledigt"}</div>
           </div>
-          {jobs.map((j) => (
+          {displayJobs.map((j) => (
             <div key={j.id} className="grid grid-cols-12 px-4 py-3 items-center border-b border-border last:border-b-0 hover:bg-accent/30">
               <div className="col-span-1 text-[11px] font-mono text-muted-foreground">{j.id}</div>
               <div className="col-span-3 min-w-0">

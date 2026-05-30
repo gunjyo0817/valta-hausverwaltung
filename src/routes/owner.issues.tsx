@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
 import { AlertOctagon, Clock, Building2 } from "lucide-react";
 import { useState } from "react";
+import { useTickets } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/issues")({ component: OwnerIssues });
 
@@ -17,6 +18,8 @@ const etaByUrgency: Record<string, { DE: string; EN: string }> = {
 
 function OwnerIssues() {
   const { t, lang } = useLang();
+  const { data: ticketData } = useTickets();
+  const tickets = ticketData && ticketData.length > 0 ? ticketData : mockTickets;
   const open = tickets.filter((tk) => tk.status !== "resolved");
   const [filter, setFilter] = useState<"all" | "critical" | "high" | "medium">("all");
   const filtered = filter === "all" ? open : open.filter((tk) => tk.urgency === filter);

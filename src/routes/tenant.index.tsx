@@ -1,15 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge } from "@/components/Badges";
 import { MessageSquareText, ArrowRight, Camera, ShieldCheck, Sparkles, Clock } from "lucide-react";
+import { useTickets } from "@/lib/api";
+import { isDemoTenantTicket } from "@/lib/tenant-demo";
 
 export const Route = createFileRoute("/tenant/")({ component: TenantHome });
 
 function TenantHome() {
   const { t, lang } = useLang();
-  const mine = tickets.filter((tk) => tk.tenant.name === "Anna Becker" || tk.propertyId === "p-lindenstr-22").slice(0, 4);
+  const { data } = useTickets();
+  const tickets = data && data.length > 0 ? data : mockTickets;
+  const mine = tickets.filter(isDemoTenantTicket).slice(0, 4);
   const active = mine.filter((tk) => tk.status !== "resolved");
   const resolved = mine.filter((tk) => tk.status === "resolved");
 

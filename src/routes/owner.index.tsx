@@ -1,28 +1,47 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { properties } from "@/lib/properties";
-import { tickets } from "@/lib/mockData";
+import { properties as mockProperties } from "@/lib/properties";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { Building2, AlertOctagon, ShieldCheck, Wallet, Sparkles, ArrowRight, TrendingDown, TrendingUp } from "lucide-react";
+import { useApprovals, useProperties, useTickets, useUpdateApprovalDecision } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/")({ component: OwnerHome });
 
 function OwnerHome() {
   const { t, lang } = useLang();
+  const { data: propertyData } = useProperties();
+  const { data: ticketData } = useTickets();
+  const { data: approvalData } = useApprovals();
+  const updateApproval = useUpdateApprovalDecision();
+  const properties = propertyData && propertyData.length > 0 ? propertyData : mockProperties;
+  const tickets = ticketData && ticketData.length > 0 ? ticketData : mockTickets;
   const openCases = tickets.filter((tk) => tk.status !== "resolved").length;
   const totalUnits = properties.reduce((s, p) => s + p.units, 0);
+  const hasApprovalData = Array.isArray(approvalData);
+  const pendingApprovals = approvalData?.filter((approval) => approval.status === "pending");
 
   const kpi = [
     { label: t("odash.kpi_units"), value: totalUnits, sub: `${properties.length} ${t("common.properties")}`, icon: Building2, color: "text-primary bg-primary/10" },
     { label: t("odash.kpi_open"), value: openCases, sub: t("common.critical"), icon: AlertOctagon, color: "text-destructive bg-destructive/10" },
-    { label: t("odash.kpi_approvals"), value: 2, sub: "—", icon: ShieldCheck, color: "text-warning bg-warning/10" },
+    { label: t("odash.kpi_approvals"), value: hasApprovalData ? (pendingApprovals?.length ?? 0) : 2, sub: "—", icon: ShieldCheck, color: "text-warning bg-warning/10" },
     { label: t("odash.kpi_costs"), value: "€ 48.230", sub: "−12% YoY", icon: Wallet, color: "text-success bg-success/10" },
   ];
 
-  const approvals = [
+  const fallbackApprovals = [
     { id: "AP-104", title: { DE: "Heizungsanlage Lindenstr. 22 – Tausch", EN: "Heating system Lindenstr. 22 — replacement" }, amount: "€ 12.400", urgency: "high", reason: { DE: "3 wiederkehrende Ausfälle in 30 Tagen.", EN: "3 recurring failures in 30 days." } },
     { id: "AP-103", title: { DE: "Dachsanierung Parkallee 110", EN: "Roof repair Parkallee 110" }, amount: "€ 8.900", urgency: "medium", reason: { DE: "Angebot von Dachdecker Hansen vorliegend.", EN: "Quote from roofer Hansen available." } },
   ];
+  const approvals =
+    hasApprovalData
+      ? (pendingApprovals ?? []).slice(0, 2).map((approval) => ({
+          id: approval.id,
+          title: approval.title,
+          amount: approval.amount,
+          urgency: approval.urgency,
+          reason: approval.summary,
+        }))
+      : fallbackApprovals;
 
   return (
     <AppShell title={t("odash.title")} subtitle={t("odash.sub")}>
@@ -92,8 +111,8 @@ function OwnerHome() {
                   </div>
                   <p className="mt-1 text-[11px] text-muted-foreground">{a.reason[lang]}</p>
                   <div className="mt-2 flex gap-2">
-                    <button className="flex-1 inline-flex items-center justify-center rounded-md bg-primary px-2 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
-                    <button className="flex-1 inline-flex items-center justify-center rounded-md border border-border bg-surface px-2 py-1.5 text-[11px] hover:bg-accent transition">{t("odash.reject")}</button>
+                    <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md bg-primary px-2 py-1.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
+                    <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="flex-1 inline-flex items-center justify-center rounded-md border border-border bg-surface px-2 py-1.5 text-[11px] hover:bg-accent transition">{t("odash.reject")}</button>
                   </div>
                 </div>
               ))}

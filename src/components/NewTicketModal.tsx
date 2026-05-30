@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang, pick } from "@/lib/i18n";
+import { useCreateTicket } from "@/lib/api";
 import { properties } from "@/lib/properties";
 import { allContractors } from "@/lib/contractors";
 import { StatusBadge, UrgencyBadge, AIBadge } from "./Badges";
@@ -93,7 +94,9 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzed, setAnalyzed] = useState(false);
   const [draft, setDraft] = useState<Draft>(emptyDraft());
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [ticketId, setTicketId] = useState("");
+  const createTicketMutation = useCreateTicket();
 
   useEffect(() => {
     if (!open) {
@@ -104,6 +107,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
         setAnalyzing(false);
         setAnalyzed(false);
         setDraft(emptyDraft());
+        setPhotoFiles([]);
         setTicketId("");
       }, 200);
     }
@@ -138,9 +142,33 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
     }, 1400);
   };
 
-  const createTicket = () => {
-    const id = "VLT-" + Math.floor(2050 + Math.random() * 200);
-    setTicketId(id);
+  const createTicket = async () => {
+    if (!draft.tenant || !draft.propertyId || !draft.description || createTicketMutation.isPending) return;
+
+    const ticket = await createTicketMutation.mutateAsync({
+      data: {
+        category: draft.category,
+        priority: draft.priority,
+        tenant: draft.tenant,
+        propertyId: draft.propertyId,
+        unit: draft.unit,
+        phone: draft.phone,
+        email: draft.email,
+        description: draft.description,
+        contractor: draft.contractor,
+        confidence: draft.confidence,
+        access: draft.access,
+        preferred: draft.preferred,
+        photos: photoFiles.length,
+        attachments: photoFiles.map((file) => ({
+          name: file.name,
+          type: file.type || "image",
+        })),
+        language: lang,
+      },
+    });
+
+    setTicketId(ticket.id);
     setMode("success");
   };
 
@@ -190,7 +218,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               loadSample={() => setRaw(lang === "DE" ? SAMPLE_EMAIL_DE : SAMPLE_EMAIL_EN)}
             />
           )}
-          {mode === "manual" && <ManualStep draft={draft} setDraft={setDraft} T={T} />}
+          {mode === "manual" && <ManualStep draft={draft} setDraft={setDraft} photoFiles={photoFiles} setPhotoFiles={setPhotoFiles} T={T} />}
           {mode === "success" && <SuccessStep ticketId={ticketId} draft={draft} T={T} />}
         </div>
 
@@ -211,13 +239,13 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               </button>
               <button
                 onClick={createTicket}
-                disabled={!analyzed}
+                disabled={!analyzed || createTicketMutation.isPending}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-xs font-medium transition",
-                  analyzed ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm" : "bg-muted text-muted-foreground cursor-not-allowed",
+                  analyzed && !createTicketMutation.isPending ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm" : "bg-muted text-muted-foreground cursor-not-allowed",
                 )}
               >
-                {T("Ticket erstellen", "Create ticket")} <ArrowRight className="h-3.5 w-3.5" />
+                {createTicketMutation.isPending ? T("Erstelle…", "Creating…") : T("Ticket erstellen", "Create ticket")} <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </>
           )}
@@ -228,15 +256,15 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               </button>
               <button
                 onClick={createTicket}
-                disabled={!draft.tenant || !draft.propertyId || !draft.description}
+                disabled={!draft.tenant || !draft.propertyId || !draft.description || createTicketMutation.isPending}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-md px-3.5 py-2 text-xs font-medium transition",
-                  draft.tenant && draft.propertyId && draft.description
+                  draft.tenant && draft.propertyId && draft.description && !createTicketMutation.isPending
                     ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
                     : "bg-muted text-muted-foreground cursor-not-allowed",
                 )}
               >
-                {T("Ticket erstellen", "Create ticket")} <ArrowRight className="h-3.5 w-3.5" />
+                {createTicketMutation.isPending ? T("Erstelle…", "Creating…") : T("Ticket erstellen", "Create ticket")} <ArrowRight className="h-3.5 w-3.5" />
               </button>
             </>
           )}
@@ -254,7 +282,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               <button
                 onClick={() => {
                   onClose();
-                  navigate({ to: "/ticket/$id", params: { id: "VLT-2041" } });
+                  navigate({ to: "/ticket/$id", params: { id: ticketId } });
                 }}
                 className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3.5 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 shadow-sm"
               >
@@ -437,7 +465,19 @@ function AiStep({
   );
 }
 
-function ManualStep({ draft, setDraft, T }: { draft: Draft; setDraft: (d: Draft) => void; T: (de: string, en: string) => string }) {
+function ManualStep({
+  draft,
+  setDraft,
+  photoFiles,
+  setPhotoFiles,
+  T,
+}: {
+  draft: Draft;
+  setDraft: (d: Draft) => void;
+  photoFiles: File[];
+  setPhotoFiles: (files: File[]) => void;
+  T: (de: string, en: string) => string;
+}) {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -489,11 +529,20 @@ function ManualStep({ draft, setDraft, T }: { draft: Draft; setDraft: (d: Draft)
 
       <div>
         <label className="text-[11px] font-medium text-muted-foreground flex items-center gap-1"><Camera className="h-3 w-3" /> {T("Fotos", "Photos")}</label>
-        <div className="mt-1 border border-dashed border-border rounded-lg p-4 flex flex-col items-center justify-center text-center bg-surface/40 hover:bg-surface transition cursor-pointer">
+        <label className="mt-1 border border-dashed border-border rounded-lg p-4 flex flex-col items-center justify-center text-center bg-surface/40 hover:bg-surface transition cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(event) => setPhotoFiles(Array.from(event.target.files ?? []))}
+          />
           <Upload className="h-4 w-4 text-muted-foreground mb-1.5" />
-          <span className="text-xs text-muted-foreground">{T("Fotos hierher ziehen oder klicken zum Auswählen", "Drag photos here or click to select")}</span>
+          <span className="text-xs text-muted-foreground">
+            {photoFiles.length > 0 ? `${photoFiles.length} ${T("Foto(s) ausgewählt", "photo(s) selected")}` : T("Fotos hierher ziehen oder klicken zum Auswählen", "Drag photos here or click to select")}
+          </span>
           <span className="text-[10px] text-muted-foreground mt-0.5">PNG · JPG · HEIC · {T("max. 10 MB", "max. 10 MB")}</span>
-        </div>
+        </label>
       </div>
     </div>
   );

@@ -1,8 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
-import { tickets, kpis, aiActivity, notifications } from "@/lib/mockData";
+import {
+  tickets as mockTickets,
+  kpis as mockKpis,
+  aiActivity as mockAiActivity,
+  notifications as mockNotifications,
+} from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
+import { useDashboardData } from "@/lib/api";
 import {
   Inbox,
   Timer,
@@ -27,6 +33,15 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const { t, lang } = useLang();
+  const { data } = useDashboardData();
+  const kpis = data?.kpis ?? mockKpis;
+  const tickets = data?.activeTickets ?? mockTickets;
+  const aiActivity = data?.aiActivity ?? mockAiActivity;
+  const notifications =
+    data?.notifications.map((notification) => ({
+      at: notification.time[lang],
+      text: notification.title,
+    })) ?? mockNotifications;
   const kpiCards = [
     { label: t("kpi.open"), value: kpis.openTickets, delta: t("kpi.open.delta"), icon: Inbox, tone: "primary" as const },
     { label: t("kpi.response"), value: `${kpis.avgResponseMin} ${t("common.minutes_short")}`, delta: t("kpi.response.delta"), icon: Timer, tone: "success" as const },

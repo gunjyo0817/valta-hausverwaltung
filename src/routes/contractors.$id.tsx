@@ -1,8 +1,9 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { getContractor } from "@/lib/contractors";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
+import { useContractor, useTickets } from "@/lib/api";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
 import { ArrowLeft, Wrench, Star, MapPin, Phone, Mail, Sparkles, ChevronRight, ArrowUpRight, ShieldCheck, Clock } from "lucide-react";
 
@@ -18,7 +19,10 @@ export const Route = createFileRoute("/contractors/$id")({
 
 function ContractorDetail() {
   const { id } = useParams({ from: "/contractors/$id" });
-  const c = getContractor(id);
+  const { data: contractorData } = useContractor(id);
+  const { data: ticketData } = useTickets();
+  const c = contractorData ?? getContractor(id);
+  const tickets = ticketData ?? mockTickets;
   const { t, lang } = useLang();
   const active = tickets.filter((tk) => tk.contractorId === c.id && tk.status !== "resolved");
   const past = tickets.filter((tk) => tk.contractorId === c.id && tk.status === "resolved");

@@ -33,6 +33,7 @@ import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
 import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
 import { NotificationsPanel, useNotificationsUnread } from "./NotificationsPanel";
+import { useMe } from "@/lib/api";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
 
@@ -41,6 +42,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const isActive = (to: string, exact?: boolean) => (exact ? pathname === to : pathname === to || pathname.startsWith(to + "/"));
   const { t, lang, setLang } = useLang();
   const { role, setRole } = useRole();
+  const { data: me } = useMe();
   const navigate = useNavigate();
   const [roleOpen, setRoleOpen] = useState(false);
   const [newTicketOpen, setNewTicketOpen] = useState(false);
@@ -84,7 +86,7 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
     owner: { section: t("role.owner_view"), items: ownerNav },
   };
 
-  const meta = ROLE_META[role];
+  const meta = me?.meta ?? ROLE_META[role];
   const current = navByRole[role];
 
   const handleRoleSwitch = (r: Role) => {

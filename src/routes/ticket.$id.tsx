@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { getTicket } from "@/lib/mockData";
 import { getProperty } from "@/lib/properties";
+import { useAddDocumentMetadata, useApproveTicketReply, useProperty, useRequestMissingInfo, useTicket } from "@/lib/api";
 import { AssignContractorModal } from "@/components/AssignContractorModal";
 import {
   ArrowLeft,
@@ -39,14 +40,20 @@ export const Route = createFileRoute("/ticket/$id")({
 
 function TicketPage() {
   const { id } = useParams({ from: "/ticket/$id" });
-  const tk = getTicket(id);
-  const prop = getProperty(tk.propertyId);
+  const { data: ticketData } = useTicket(id);
+  const tk = ticketData ?? getTicket(id);
+  const { data: propertyData } = useProperty(tk.propertyId);
+  const prop = propertyData ?? getProperty(tk.propertyId);
   const { lang, t } = useLang();
   const [showAssign, setShowAssign] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [translated, setTranslated] = useState(false);
   const [editDraft, setEditDraft] = useState(false);
   const [sent, setSent] = useState(false);
+  const approveReply = useApproveTicketReply();
+  const requestInfo = useRequestMissingInfo();
+  const addDocument = useAddDocumentMetadata();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const showLang = translated ? (lang === "DE" ? "EN" : "DE") : lang;
 
@@ -54,6 +61,54 @@ function TicketPage() {
   const draft = lang === "EN"
     ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
     : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
+  const [draftText, setDraftText] = useState(draft);
+
+  useEffect(() => {
+    setDraftText(draft);
+    setSent(false);
+    setShowInfo(false);
+  }, [draft, tk.id]);
+
+  const missingInfoText = lang === "EN"
+    ? "Please send the exact thermostat model and confirm whether neighbours are affected."
+    : "Bitte senden Sie den genauen Thermostat-Typ und bestätigen Sie, ob Nachbarn ebenfalls betroffen sind.";
+
+  const submitReply = async () => {
+    if (sent || approveReply.isPending) return;
+    await approveReply.mutateAsync({ data: { ticketId: tk.id, text: draftText } });
+    setSent(true);
+    setEditDraft(false);
+  };
+
+  const submitMissingInfoRequest = async () => {
+    if (showInfo || requestInfo.isPending) return;
+    await requestInfo.mutateAsync({ data: { ticketId: tk.id, text: missingInfoText } });
+    setShowInfo(true);
+  };
+  const photoAttachments = (tk.attachments?.length ?? 0) > 0
+    ? tk.attachments!
+    : Array.from({ length: tk.photos }).map((_, index) => ({
+        id: `${tk.id}-placeholder-${index + 1}`,
+        name: `Foto ${index + 1}`,
+        type: "image",
+        updated: tk.createdAt[lang],
+        url: null,
+      }));
+
+  const addAttachmentMetadata = async (files: FileList | null) => {
+    const file = files?.[0];
+    if (!file) return;
+    await addDocument.mutateAsync({
+      data: {
+        scope: "ticket",
+        targetId: tk.id,
+        name: file.name,
+        type: file.type || "image",
+        role: "pm",
+      },
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   return (
     <AppShell title={`${tk.id} · ${tk.title[lang]}`} subtitle={`${tk.tenant.building} · ${tk.tenant.apartment[lang]}`}>
@@ -104,16 +159,16 @@ function TicketPage() {
                       "absolute -left-[14px] top-1 h-3 w-3 rounded-full ring-4 ring-surface",
                       h.type === "ai" && "bg-ai",
                       h.type === "tenant" && "bg-info",
-                      h.type === "manager" && "bg-primary",
+                      (h.type === "manager" || h.type === "system") && "bg-primary",
                       h.type === "contractor" && "bg-success",
                     )} />
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       {h.type === "ai" ? <Bot className="h-3 w-3 text-ai" /> :
                         h.type === "tenant" ? <User className="h-3 w-3 text-info" /> :
-                        h.type === "manager" ? <ShieldCheck className="h-3 w-3 text-primary" /> :
+                        h.type === "manager" || h.type === "system" ? <ShieldCheck className="h-3 w-3 text-primary" /> :
                         <HardHat className="h-3 w-3 text-success" />}
                       <span className="font-medium text-foreground">
-                        {h.type === "ai" ? "Valta AI" : h.type === "tenant" ? tk.tenant.name : h.type === "manager" ? "Sarah Krüger" : (tk.contractorName ?? t("common.contractor"))}
+                        {h.type === "ai" ? "Valta AI" : h.type === "tenant" ? tk.tenant.name : h.type === "manager" || h.type === "system" ? "Sarah Krüger" : (tk.contractorName ?? t("common.contractor"))}
                       </span>
                       <span>·</span>
                       <span>{h.at[lang]}</span>
@@ -121,29 +176,18 @@ function TicketPage() {
                     <p className="mt-1 text-sm leading-snug">{h.text[lang]}</p>
                   </li>
                 ))}
-                {sent && (
-                  <li className="relative">
-                    <span className="absolute -left-[14px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-surface" />
-                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                      <ShieldCheck className="h-3 w-3 text-primary" />
-                      <span className="font-medium text-foreground">Sarah Krüger</span>
-                      <span>·</span><span>{t("common.now")}</span>
-                      <span className="rounded bg-ai/10 text-ai px-1.5 py-0.5 text-[10px]">{t("ticket.draft_approved")}</span>
-                    </div>
-                    <p className="mt-1 text-sm leading-snug whitespace-pre-line">{draft}</p>
-                  </li>
-                )}
               </ol>
             </div>
 
-            {tk.photos > 0 && (
+            {photoAttachments.length > 0 && (
               <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+                <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(event) => addAttachmentMetadata(event.target.files)} />
                 <h3 className="text-sm font-semibold mb-3">{t("common.attached_photos")}</h3>
                 <div className="grid grid-cols-3 gap-2">
-                  {Array.from({ length: tk.photos }).map((_, i) => (
-                    <div key={i} className="aspect-video rounded-lg border border-border bg-muted flex items-center justify-center text-muted-foreground">
+                  {photoAttachments.map((attachment) => (
+                    <button key={attachment.id} onClick={() => attachment.url ? window.open(attachment.url, "_blank", "noopener,noreferrer") : fileInputRef.current?.click()} className="aspect-video rounded-lg border border-border bg-muted flex items-center justify-center text-muted-foreground">
                       <ImageIcon className="h-5 w-5" />
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -166,22 +210,22 @@ function TicketPage() {
                 <AIBadge confidence={94} />
               </div>
               {editDraft ? (
-                <textarea defaultValue={draft} className="w-full h-40 text-sm rounded-md border border-border bg-background p-2 outline-none focus:ring-2 focus:ring-ring" />
+                <textarea value={draftText} onChange={(event) => setDraftText(event.target.value)} className="w-full h-40 text-sm rounded-md border border-border bg-background p-2 outline-none focus:ring-2 focus:ring-ring" />
               ) : (
-                <pre className={cn("whitespace-pre-wrap font-sans text-sm leading-snug text-foreground/90 transition-opacity", sent && "opacity-50")}>{draft}</pre>
+                <pre className={cn("whitespace-pre-wrap font-sans text-sm leading-snug text-foreground/90 transition-opacity", sent && "opacity-50")}>{draftText}</pre>
               )}
               <div className="flex flex-wrap gap-2">
                 <button
-                  disabled={sent}
-                  onClick={() => setSent(true)}
+                  disabled={sent || approveReply.isPending}
+                  onClick={submitReply}
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
                 >
-                  <CheckCheck className="h-3.5 w-3.5" /> {sent ? t("act.sent") : t("act.approve")}
+                  <CheckCheck className="h-3.5 w-3.5" /> {sent ? t("act.sent") : approveReply.isPending ? t("common.loading") : t("act.approve")}
                 </button>
                 <button onClick={() => setEditDraft((v) => !v)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
                   <Pencil className="h-3.5 w-3.5" /> {editDraft ? t("act.done") : t("act.edit")}
                 </button>
-                <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
+                <button disabled={approveReply.isPending} onClick={submitReply} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
                   <Send className="h-3.5 w-3.5" /> {t("act.manual")}
                 </button>
               </div>
@@ -195,7 +239,7 @@ function TicketPage() {
                 <li>• {lang === "EN" ? "Exact thermostat model" : "Genauer Thermostat-Typ"}</li>
                 <li>• {lang === "EN" ? "Confirmation: are neighbours affected?" : "Bestätigung: Sind Nachbarn betroffen?"}</li>
               </ul>
-              <button onClick={() => setShowInfo(true)} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
+              <button disabled={showInfo || requestInfo.isPending} onClick={submitMissingInfoRequest} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
                 <MessageSquareText className="h-3.5 w-3.5" /> {t("act.request_info")}
               </button>
               {showInfo && (
@@ -242,7 +286,7 @@ function TicketPage() {
         </div>
       </div>
 
-      {showAssign && <AssignContractorModal category={tk.categoryKey} onClose={() => setShowAssign(false)} />}
+      {showAssign && <AssignContractorModal ticketId={tk.id} category={tk.categoryKey} onClose={() => setShowAssign(false)} />}
     </AppShell>
   );
 }

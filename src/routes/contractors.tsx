@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { allContractors, type Contractor } from "@/lib/contractors";
+import { allContractors as mockContractors } from "@/lib/contractors";
 import { useLang } from "@/lib/i18n";
+import { useContractors, type ContractorDto } from "@/lib/api";
 import { Search, Wrench, Star, ArrowUpRight, Filter, Sparkles, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +35,8 @@ function specialtyLabel(k: string, lang: "DE" | "EN") {
 
 function ContractorsPage() {
   const { t, lang } = useLang();
+  const { data } = useContractors();
+  const allContractors = data ?? mockContractors;
   const [query, setQuery] = useState("");
   const [spec, setSpec] = useState<string>("all");
   const [avail, setAvail] = useState<"all" | "available" | "unavailable">("all");
@@ -83,7 +86,7 @@ function ContractorsPage() {
   );
 }
 
-function ContractorCard({ c }: { c: Contractor }) {
+function ContractorCard({ c }: { c: ContractorDto }) {
   const { t, lang } = useLang();
   return (
     <Link to="/contractors/$id" params={{ id: c.id }} className="rounded-xl border border-border bg-surface p-4 shadow-soft hover:shadow-card hover:border-primary/30 transition-all group">

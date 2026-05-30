@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { UrgencyBadge } from "@/components/Badges";
 import { Calendar, MapPin, Clock, ChevronLeft, ChevronRight, User, Phone } from "lucide-react";
 import { useState } from "react";
+import { useTickets, useUpdateContractorJob } from "@/lib/api";
 
 export const Route = createFileRoute("/contractor/schedule")({ component: Schedule });
 
@@ -89,6 +90,9 @@ const CURRENT_WEEK_INDEX = 0;
 
 function Schedule() {
   const { t, lang } = useLang();
+  const { data } = useTickets();
+  const updateJob = useUpdateContractorJob();
+  const tickets = data && data.length > 0 ? data : mockTickets;
   const [view, setView] = useState<"today" | "week">("week");
   const [weekIdx, setWeekIdx] = useState(CURRENT_WEEK_INDEX);
   const [mobileDay, setMobileDay] = useState(0);
@@ -110,6 +114,7 @@ function Schedule() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const isCurrentWeek = weekIdx === CURRENT_WEEK_INDEX;
+  const startJob = (ticketId: string) => updateJob.mutate({ data: { ticketId, action: "start", role: "contractor" } });
 
   return (
     <AppShell title={t("cdash.schedule_title")} subtitle={t("cdash.sub")}>
@@ -257,7 +262,7 @@ function Schedule() {
                       <MapPin className="h-3.5 w-3.5" />
                       {lang === "EN" ? "Directions" : "Route"}
                     </a>
-                    <button className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">
+                    <button onClick={() => startJob(tk.id)} disabled={updateJob.isPending} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
                       {lang === "EN" ? "Mark in progress" : "Starten"}
                     </button>
                   </div>

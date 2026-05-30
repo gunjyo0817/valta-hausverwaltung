@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { Sparkles, ShieldCheck, Clock, AlertTriangle, Wallet, FileQuestion } from "lucide-react";
+import { useApprovals, useUpdateApprovalDecision } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/approvals")({ component: OwnerApprovals });
 
@@ -19,7 +20,7 @@ type Approval = {
   urgency: "critical" | "high" | "medium" | "low";
 };
 
-const approvals: Approval[] = [
+const fallbackApprovals: Approval[] = [
   {
     id: "AP-104",
     property: "Lindenstraße 22",
@@ -69,6 +70,25 @@ const riskColor: Record<string, string> = {
 
 function OwnerApprovals() {
   const { t, lang } = useLang();
+  const { data: approvalData } = useApprovals();
+  const updateApproval = useUpdateApprovalDecision();
+  const approvals: Approval[] = approvalData
+    ? approvalData
+        .filter((approval) => approval.status === "pending")
+        .map((approval) => ({
+          id: approval.id,
+          property: approval.property,
+          title: approval.title,
+          summary: approval.summary,
+          contractor: approval.contractor,
+          amount: approval.amount,
+          amountNum: approval.amountNum,
+          timeline: approval.timeline,
+          recommendation: approval.recommendation,
+          risk: approval.risk,
+          urgency: approval.urgency,
+        }))
+    : fallbackApprovals;
   const total = approvals.reduce((s, a) => s + a.amountNum, 0);
   const critical = approvals.filter((a) => a.urgency === "critical").length;
 
@@ -122,9 +142,9 @@ function OwnerApprovals() {
               </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
-                <button className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
-                <button className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">{t("odash.reject")}</button>
-                <button className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">
+                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">{t("odash.approve")}</button>
+                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">{t("odash.reject")}</button>
+                <button onClick={() => updateApproval.mutate({ data: { id: a.id, status: "clarification_requested", role: "owner" } })} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition">
                   <FileQuestion className="h-3.5 w-3.5" />
                   {lang === "EN" ? "Request clarification" : "Rückfrage senden"}
                 </button>

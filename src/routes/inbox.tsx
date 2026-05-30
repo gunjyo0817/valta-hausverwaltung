@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
-import { tickets, type Ticket } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
+import { useApproveTicketReply, useTickets, type TicketDto } from "@/lib/api";
 import {
   Search,
   Filter,
@@ -31,7 +32,9 @@ type FilterKey = "all" | "critical" | "new" | "waiting" | "in_progress";
 
 function InboxPage() {
   const { t, lang } = useLang();
-  const [selectedId, setSelectedId] = useState(tickets[0].id);
+  const { data } = useTickets();
+  const tickets = data ?? mockTickets;
+  const [selectedId, setSelectedId] = useState(mockTickets[0].id);
   const [filter, setFilter] = useState<FilterKey>("all");
   const [translated, setTranslated] = useState(false);
   const [draftEdit, setDraftEdit] = useState(false);
@@ -50,7 +53,7 @@ function InboxPage() {
     if (filter === "new") return tickets.filter((tk) => tk.status === "new");
     if (filter === "waiting") return tickets.filter((tk) => tk.status === "waiting");
     return tickets.filter((tk) => tk.status === "in_progress");
-  }, [filter]);
+  }, [filter, tickets]);
 
   const selected = tickets.find((tk) => tk.id === selectedId) ?? tickets[0];
 
@@ -126,9 +129,18 @@ function InboxPage() {
   );
 }
 
-function TicketDetail({ ticket, translated, onTranslate }: { ticket: Ticket; translated: boolean; onTranslate: () => void }) {
+function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; translated: boolean; onTranslate: () => void }) {
   const { t, lang } = useLang();
   const showLang = translated ? (lang === "DE" ? "EN" : "DE") : lang;
+  const photoAttachments = (ticket.attachments?.length ?? 0) > 0
+    ? ticket.attachments!
+    : Array.from({ length: ticket.photos }).map((_, index) => ({
+        id: `${ticket.id}-placeholder-${index + 1}`,
+        name: `Foto ${index + 1}`,
+        type: "image",
+        updated: ticket.createdAt[lang],
+        url: null,
+      }));
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-3xl">
       <div>
@@ -184,14 +196,14 @@ function TicketDetail({ ticket, translated, onTranslate }: { ticket: Ticket; tra
         </ol>
       </section>
 
-      {ticket.photos > 0 && (
+      {photoAttachments.length > 0 && (
         <section>
-          <h3 className="text-sm font-semibold mb-2">{t("common.attached_photos")} ({ticket.photos})</h3>
+          <h3 className="text-sm font-semibold mb-2">{t("common.attached_photos")} ({photoAttachments.length})</h3>
           <div className="grid grid-cols-3 gap-2">
-            {Array.from({ length: ticket.photos }).map((_, i) => (
-              <div key={i} className="aspect-video rounded-lg border border-border bg-muted flex items-center justify-center text-muted-foreground">
+            {photoAttachments.map((attachment) => (
+              <a key={attachment.id} href={attachment.url ?? undefined} className="aspect-video rounded-lg border border-border bg-muted flex items-center justify-center text-muted-foreground">
                 <ImageIcon className="h-5 w-5" />
-              </div>
+              </a>
             ))}
           </div>
         </section>
@@ -216,12 +228,28 @@ function InfoCard({ label, value, sub }: { label: string; value: string; sub?: s
   );
 }
 
-function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: Ticket; draftEdit: boolean; setDraftEdit: (v: boolean) => void }) {
+function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; draftEdit: boolean; setDraftEdit: (v: boolean) => void }) {
   const { t, lang } = useLang();
+  const approveReply = useApproveTicketReply();
+  const [sent, setSent] = useState(false);
   const firstName = ticket.tenant.name.split(" ")[0];
   const draft = lang === "EN"
     ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
     : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
+  const [draftText, setDraftText] = useState(draft);
+
+  useEffect(() => {
+    setDraftText(draft);
+    setSent(false);
+  }, [draft, ticket.id]);
+
+  const submitReply = async () => {
+    if (sent || approveReply.isPending) return;
+    await approveReply.mutateAsync({ data: { ticketId: ticket.id, text: draftText } });
+    setSent(true);
+    setDraftEdit(false);
+  };
+
   return (
     <div className="p-4 space-y-4">
       <div>
@@ -237,18 +265,18 @@ function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: Ticket; dra
           <AIBadge confidence={94} />
         </div>
         {draftEdit ? (
-          <textarea defaultValue={draft} className="w-full h-40 text-sm rounded-md border border-border bg-surface p-2 outline-none focus:ring-2 focus:ring-ring" />
+          <textarea value={draftText} onChange={(event) => setDraftText(event.target.value)} className="w-full h-40 text-sm rounded-md border border-border bg-surface p-2 outline-none focus:ring-2 focus:ring-ring" />
         ) : (
-          <pre className="whitespace-pre-wrap font-sans text-sm leading-snug text-foreground/90">{draft}</pre>
+          <pre className={cn("whitespace-pre-wrap font-sans text-sm leading-snug text-foreground/90", sent && "opacity-50")}>{draftText}</pre>
         )}
         <div className="flex flex-wrap gap-2">
-          <button className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90">
-            <CheckCheck className="h-3.5 w-3.5" /> {t("act.approve")}
+          <button disabled={sent || approveReply.isPending} onClick={submitReply} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+            <CheckCheck className="h-3.5 w-3.5" /> {sent ? t("act.sent") : approveReply.isPending ? t("common.loading") : t("act.approve")}
           </button>
           <button onClick={() => setDraftEdit(!draftEdit)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
             <Pencil className="h-3.5 w-3.5" /> {draftEdit ? t("act.done") : t("act.edit")}
           </button>
-          <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent">
+          <button disabled={approveReply.isPending} onClick={submitReply} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
             <Send className="h-3.5 w-3.5" /> {t("act.manual")}
           </button>
         </div>

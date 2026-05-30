@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { properties, type Property } from "@/lib/properties";
-import { tickets } from "@/lib/mockData";
+import { properties as mockProperties } from "@/lib/properties";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
+import { useProperties, useTickets, type PropertyDto } from "@/lib/api";
 import { Search, Building2, AlertTriangle, MapPin, Users, Timer, Filter, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/properties")({
   component: PropertiesPage,
 });
 
-function statusStyle(s: Property["status"]) {
+function statusStyle(s: PropertyDto["status"]) {
   if (s === "urgent") return { cls: "bg-destructive/10 text-destructive", dot: "bg-destructive" };
   if (s === "attention") return { cls: "bg-warning/15 text-warning-foreground", dot: "bg-warning" };
   return { cls: "bg-success/15 text-success-foreground", dot: "bg-success" };
@@ -25,10 +26,14 @@ function statusStyle(s: Property["status"]) {
 
 function PropertiesPage() {
   const { t, lang } = useLang();
+  const { data: propertyData } = useProperties();
+  const { data: ticketData } = useTickets();
+  const properties = propertyData ?? mockProperties;
+  const tickets = ticketData ?? mockTickets;
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<"all" | Property["status"]>("all");
+  const [status, setStatus] = useState<"all" | PropertyDto["status"]>("all");
   const [city, setCity] = useState<string>("all");
-  const cities = useMemo(() => Array.from(new Set(properties.map((p) => p.city))), []);
+  const cities = useMemo(() => Array.from(new Set(properties.map((p) => p.city))), [properties]);
 
   const filtered = properties.filter((p) =>
     (status === "all" || p.status === status) &&
@@ -48,7 +53,7 @@ function PropertiesPage() {
           </div>
           <div className="flex items-center gap-2 text-xs">
             <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-            <select value={status} onChange={(e) => setStatus(e.target.value as "all" | Property["status"])} className="rounded-md border border-border bg-surface px-2 py-1.5">
+            <select value={status} onChange={(e) => setStatus(e.target.value as "all" | PropertyDto["status"])} className="rounded-md border border-border bg-surface px-2 py-1.5">
               <option value="all">{t("common.all")} · {t("prop.filter_status")}</option>
               <option value="healthy">{t("common.healthy")}</option>
               <option value="attention">{t("common.attention")}</option>
@@ -86,7 +91,7 @@ function PropertiesPage() {
 
                 <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
                   <Cell icon={Users} label={t("prop.units")} value={String(p.units)} />
-                  <Cell icon={AlertTriangle} label={t("common.open_tickets")} value={String(openTk)} tone={openTk > 0 ? "warning" : undefined} />
+                <Cell icon={AlertTriangle} label={t("common.open_tickets")} value={String(openTk)} tone={openTk > 0 ? "warning" : undefined} />
                   <Cell icon={Timer} label={t("prop.avg_response")} value={`${p.avgResponseMin} ${t("common.minutes_short")}`} />
                 </div>
                 <div className="mt-3 pt-3 border-t border-border text-[11px] text-muted-foreground flex items-center justify-between">

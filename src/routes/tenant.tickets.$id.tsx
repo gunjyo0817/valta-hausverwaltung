@@ -1,10 +1,12 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef } from "react";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { tickets } from "@/lib/mockData";
+import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge } from "@/components/Badges";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, CheckCircle2, Circle, Clock, Image as ImageIcon, MessageSquareText, Phone, Sparkles, Wrench, Bell } from "lucide-react";
+import { useAddDocumentMetadata, useTicket } from "@/lib/api";
 
 export const Route = createFileRoute("/tenant/tickets/$id")({
   head: ({ params }) => ({
@@ -21,17 +23,27 @@ export const Route = createFileRoute("/tenant/tickets/$id")({
       </div>
     </AppShell>
   ),
-  loader: ({ params }) => {
-    const ticket = tickets.find((tk) => tk.id === params.id);
-    if (!ticket) throw notFound();
-    return { ticket };
-  },
   component: TicketTrackingPage,
 });
 
 function TicketTrackingPage() {
-  const { ticket } = Route.useLoaderData();
+  const { id } = Route.useParams();
+  const { data } = useTicket(id);
+  const ticket = data ?? mockTickets.find((tk) => tk.id === id);
   const { t, lang } = useLang();
+  const addDocument = useAddDocumentMetadata();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  if (!ticket) {
+    return (
+      <AppShell title="Not found">
+        <div className="max-w-md mx-auto p-8 text-center">
+          <p className="text-sm text-muted-foreground mb-4">This request does not exist.</p>
+          <Link to="/tenant/tickets" className="text-primary hover:underline text-sm">Back to my requests</Link>
+        </div>
+      </AppShell>
+    );
+  }
 
   // Derive steps from current ticket status
   const order: Record<string, number> = { new: 1, waiting: 2, contractor_assigned: 3, in_progress: 4, resolved: 5 };
@@ -56,6 +68,29 @@ function TicketTrackingPage() {
   const statusLabel = ticket.status === "resolved"
     ? (lang === "EN" ? "Resolved" : "Erledigt")
     : (lang === "EN" ? "We're on it" : "Wir kümmern uns");
+  const attachments = (ticket.attachments?.length ?? 0) > 0
+    ? ticket.attachments!
+    : Array.from({ length: ticket.photos }).map((_, index) => ({
+        id: `${ticket.id}-placeholder-${index + 1}`,
+        name: `Foto ${index + 1}`,
+        type: "image",
+        updated: ticket.createdAt[lang],
+        url: null,
+      }));
+  const addAttachmentMetadata = async (files: FileList | null) => {
+    const file = files?.[0];
+    if (!file) return;
+    await addDocument.mutateAsync({
+      data: {
+        scope: "ticket",
+        targetId: ticket.id,
+        name: file.name,
+        type: file.type || "image",
+        role: "tenant",
+      },
+    });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   return (
     <AppShell title={ticket.title[lang]} subtitle={`${ticket.id} · ${ticket.category[lang]}`}>
@@ -145,12 +180,18 @@ function TicketTrackingPage() {
               <h2 className="text-sm font-semibold">{t("portal.attachments")}</h2>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {Array.from({ length: Math.max(ticket.photos, 1) }).map((_, i) => (
-                <div key={i} className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
+              {attachments.map((attachment) => (
+                <a key={attachment.id} href={attachment.url ?? undefined} className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
+                  <ImageIcon className="h-5 w-5" />
+                </a>
+              ))}
+              {attachments.length === 0 && (
+                <div className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
                   <ImageIcon className="h-5 w-5" />
                 </div>
-              ))}
-              <button className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
+              )}
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(event) => addAttachmentMetadata(event.target.files)} />
+              <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
                 {t("portal.add_photo")}
               </button>
             </div>

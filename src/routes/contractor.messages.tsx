@@ -2,15 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { MessageSquareText, Send, Sparkles, Building2, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAddTicketEvent, useTickets } from "@/lib/api";
 
 export const Route = createFileRoute("/contractor/messages")({ component: Messages });
 
 type Sender = "pm" | "tenant" | "ai" | "me";
 
 type Thread = {
-  id: number;
+  id: string;
   with: string;
   role: { DE: string; EN: string };
   ticket: string;
@@ -23,7 +24,7 @@ type Thread = {
 
 const threads: Thread[] = [
   {
-    id: 1,
+    id: "1",
     with: "Sarah Krüger",
     role: { DE: "Hausverwaltung Berlin", EN: "Property Management Berlin" },
     ticket: "VLT-2041",
@@ -39,7 +40,7 @@ const threads: Thread[] = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     with: "Anna Becker",
     role: { DE: "Mieterin · Lindenstraße 22", EN: "Tenant · Lindenstraße 22" },
     ticket: "VLT-2041",
@@ -53,7 +54,7 @@ const threads: Thread[] = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     with: "Hausverwaltung München",
     role: { DE: "VLT-2039 · Wasserschaden", EN: "VLT-2039 · Water leak" },
     ticket: "VLT-2039",
@@ -62,7 +63,7 @@ const threads: Thread[] = [
     type: "pm",
     preview: { DE: "Rechnung VLT-2010 freigegeben — vielen Dank.", EN: "Invoice VLT-2010 approved — thank you." },
     messages: [
-      { from: "pm", at: "Gestern · 16:40", text: { DE: "Rechnung VLT-2010 freigegeben — vielen Dank für die schnelle Bearbeitung.", EN: "Invoice VLT-2010 approved — thanks for the fast turnaround." } },
+    { from: "pm", at: "Gestern · 16:40", text: { DE: "Rechnung VLT-2010 freigegeben — vielen Dank für die schnelle Bearbeitung.", EN: "Invoice VLT-2010 approved — thanks for the fast turnaround." } },
     ],
   },
 ];
@@ -74,9 +75,55 @@ const quickReplies = {
 
 function Messages() {
   const { t, lang } = useLang();
-  const [activeId, setActiveId] = useState<number>(threads[0]!.id);
+  const { data } = useTickets();
+  const addEvent = useAddTicketEvent();
+  const liveThreads = useMemo<Thread[]>(() => {
+    if (!data || data.length === 0) return threads;
+
+    return data.map((ticket) => {
+      const messages = ticket.history.map((event) => ({
+        from: event.type === "manager" ? "pm" as const : event.type === "contractor" ? "me" as const : event.type === "tenant" ? "tenant" as const : "ai" as const,
+        at: event.at[lang],
+        text: event.text,
+      }));
+      const last = messages[messages.length - 1];
+
+      return {
+        id: ticket.id,
+        with: "Sarah Krüger",
+        role: { DE: `${ticket.id} · ${ticket.category.DE}`, EN: `${ticket.id} · ${ticket.category.EN}` },
+        ticket: ticket.id,
+        unread: 0,
+        lastAt: last?.at ?? ticket.createdAt[lang],
+        preview: last?.text ?? ticket.summary,
+        type: "pm",
+        messages,
+      };
+    });
+  }, [data, lang]);
+  const [activeId, setActiveId] = useState<string>(liveThreads[0]!.id);
   const [draft, setDraft] = useState("");
-  const active = threads.find((th) => th.id === activeId)!;
+  const active = liveThreads.find((th) => th.id === activeId) ?? liveThreads[0]!;
+
+  useEffect(() => {
+    if (!liveThreads.some((thread) => thread.id === activeId)) {
+      setActiveId(liveThreads[0]!.id);
+    }
+  }, [activeId, liveThreads]);
+
+  const sendReply = async () => {
+    if (!draft.trim() || addEvent.isPending) return;
+    await addEvent.mutateAsync({
+      data: {
+        ticketId: active.ticket,
+        type: "contractor",
+        text: draft.trim(),
+        actorName: "Müller Heizung GmbH",
+        role: "contractor",
+      },
+    });
+    setDraft("");
+  };
 
   const senderLabel = (s: Sender) =>
     s === "ai" ? "Valta" : s === "pm" ? (lang === "EN" ? "Property management" : "Hausverwaltung") : s === "tenant" ? (lang === "EN" ? "Tenant" : "Mieter:in") : (lang === "EN" ? "You" : "Sie");
@@ -87,7 +134,7 @@ function Messages() {
         <div className="rounded-xl border border-border bg-surface overflow-hidden grid grid-cols-1 md:grid-cols-[320px_1fr] min-h-[560px]">
           {/* Thread list */}
           <div className="border-r border-border divide-y divide-border overflow-y-auto">
-            {threads.map((th) => (
+            {liveThreads.map((th) => (
               <button
                 key={th.id}
                 onClick={() => setActiveId(th.id)}
@@ -169,7 +216,7 @@ function Messages() {
                   placeholder={lang === "EN" ? "Type a reply…" : "Antwort schreiben…"}
                   className="flex-1 resize-none bg-transparent text-sm outline-none py-1.5"
                 />
-                <button onClick={() => setDraft("")} className="h-9 inline-flex items-center gap-1 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
+                <button onClick={sendReply} disabled={!draft.trim() || addEvent.isPending} className="h-9 inline-flex items-center gap-1 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
                   <Send className="h-3.5 w-3.5" /> {lang === "EN" ? "Send" : "Senden"}
                 </button>
               </div>

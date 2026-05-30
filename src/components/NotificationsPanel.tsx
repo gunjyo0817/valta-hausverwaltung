@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { useMarkAllNotificationsRead, useMarkNotificationRead, useNotifications } from "@/lib/api";
+import { useRole } from "@/lib/role";
 
 type NotifType =
   | "critical"
@@ -29,11 +31,11 @@ type Notif = {
   type: NotifType;
   title: { DE: string; EN: string };
   desc: { DE: string; EN: string };
-  ticketId?: string;
-  context?: string;
+  ticketId?: string | null;
+  context?: string | null;
   time: { DE: string; EN: string };
   unread: boolean;
-  to: { path: string; params?: Record<string, string> };
+  to: { path: string; params?: Record<string, string> | null };
   action: { DE: string; EN: string };
 };
 
@@ -138,9 +140,17 @@ type Filter = "all" | "unread" | "critical" | "approvals";
 
 export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { lang } = useLang();
+  const { role } = useRole();
   const navigate = useNavigate();
+  const { data } = useNotifications();
+  const markOneMutation = useMarkNotificationRead();
+  const markAllMutation = useMarkAllNotificationsRead();
   const [items, setItems] = useState<Notif[]>(seed);
   const [filter, setFilter] = useState<Filter>("all");
+
+  useEffect(() => {
+    if (data) setItems(data);
+  }, [data]);
 
   useEffect(() => {
     if (!open) return;
@@ -161,8 +171,14 @@ export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: 
   if (!open) return null;
 
   const unreadCount = items.filter((n) => n.unread).length;
-  const markAllRead = () => setItems((prev) => prev.map((n) => ({ ...n, unread: false })));
-  const markRead = (id: string) => setItems((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+  const markAllRead = () => {
+    setItems((prev) => prev.map((n) => ({ ...n, unread: false })));
+    markAllMutation.mutate({ data: { role } });
+  };
+  const markRead = (id: string) => {
+    setItems((prev) => prev.map((n) => (n.id === id ? { ...n, unread: false } : n)));
+    markOneMutation.mutate({ data: { id, role } });
+  };
 
   const handleOpen = (n: Notif) => {
     markRead(n.id);
@@ -285,5 +301,6 @@ export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: 
 }
 
 export function useNotificationsUnread() {
-  return seed.filter((n) => n.unread).length;
+  const { data } = useNotifications();
+  return (data ?? seed).filter((n) => n.unread).length;
 }

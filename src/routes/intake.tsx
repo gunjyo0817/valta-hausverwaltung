@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Sparkles, Paperclip, Send, Languages, CheckCircle2, Image as ImageIcon, Building2, ArrowRight, Pencil, ArrowLeft, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
+import { useCreateTicket } from "@/lib/api";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
@@ -18,6 +19,7 @@ type Msg = { from: "ai" | "user"; text: string; chips?: string[]; photo?: boolea
 
 export function IntakePage() {
   const { t, lang, setLang } = useLang();
+  const createTicketMutation = useCreateTicket();
 
   const flow: Array<{ ai: string; chips?: string[] }> = lang === "EN"
     ? [
@@ -91,6 +93,26 @@ export function IntakePage() {
     setSubmitted(false);
   };
 
+  const submitTicket = async () => {
+    await createTicketMutation.mutateAsync({
+      data: {
+        title: draft.title,
+        category: draft.category,
+        priority: "critical",
+        tenant: draft.contactName,
+        propertyId: "p-lindenstr-22",
+        unit: draft.apartment.split("·").pop()?.trim() ?? draft.apartment,
+        phone: draft.contactPhone,
+        email: draft.contactEmail,
+        description: draft.description,
+        access: draft.access,
+        photos: draft.photos,
+        language: lang,
+      },
+    });
+    setSubmitted(true);
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="h-14 border-b border-border glass flex items-center px-4 md:px-8">
@@ -151,7 +173,8 @@ export function IntakePage() {
                   draft={draft}
                   setDraft={setDraft}
                   onBack={() => { setReviewing(false); setMessages((m) => m.slice(0, -1)); setStep((s) => Math.max(0, s - 1)); }}
-                  onSubmit={() => setSubmitted(true)}
+                  onSubmit={submitTicket}
+                  submitting={createTicketMutation.isPending}
                   lang={lang}
                 />
               )}
@@ -251,7 +274,7 @@ type Draft = {
   access: string; photos: number;
 };
 
-function TicketReview({ draft, setDraft, onBack, onSubmit, lang }: { draft: Draft; setDraft: (u: (d: Draft) => Draft) => void; onBack: () => void; onSubmit: () => void; lang: "DE" | "EN" }) {
+function TicketReview({ draft, setDraft, onBack, onSubmit, submitting, lang }: { draft: Draft; setDraft: (u: (d: Draft) => Draft) => void; onBack: () => void; onSubmit: () => void | Promise<void>; submitting: boolean; lang: "DE" | "EN" }) {
   const [editing, setEditing] = useState(false);
   const L = (de: string, en: string) => lang === "EN" ? en : de;
   return (
@@ -372,9 +395,10 @@ function TicketReview({ draft, setDraft, onBack, onSubmit, lang }: { draft: Draf
         </button>
         <button
           onClick={onSubmit}
+          disabled={submitting}
           className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
         >
-          {L("Anfrage absenden", "Submit request")} <ArrowRight className="h-3.5 w-3.5" />
+          {submitting ? L("Sende...", "Submitting...") : L("Anfrage absenden", "Submit request")} <ArrowRight className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>

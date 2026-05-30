@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { Wallet, TrendingDown, TrendingUp, FileText, Download } from "lucide-react";
+import { useInvoices } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/financials")({ component: OwnerFinancials });
 
@@ -17,7 +18,7 @@ const breakdown = [
   { cat: { DE: "Sonstiges", EN: "Other" }, amount: 4930, pct: 11 },
 ];
 
-const invoices = [
+const fallbackInvoices = [
   { id: "INV-2041", date: "24.05.2026", contractor: "Müller Heizung GmbH", property: "Lindenstraße 22", amount: "€ 1.240", status: "paid" },
   { id: "INV-2039", date: "22.05.2026", contractor: "Klempner Schulz & Söhne", property: "Goethestraße 8", amount: "€ 680", status: "paid" },
   { id: "INV-2037", date: "20.05.2026", contractor: "Schindler Service", property: "Parkallee 110", amount: "€ 2.150", status: "pending" },
@@ -27,6 +28,8 @@ const invoices = [
 
 function OwnerFinancials() {
   const { t, lang } = useLang();
+  const { data: invoiceData } = useInvoices();
+  const invoices = Array.isArray(invoiceData) ? invoiceData : fallbackInvoices;
   const max = Math.max(...series);
   const budget = 60000;
   const ytd = 48230;

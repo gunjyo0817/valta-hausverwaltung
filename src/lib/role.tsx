@@ -1,6 +1,13 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Role = "pm" | "tenant" | "contractor" | "owner";
+
+const ROLE_STORAGE_KEY = "valta.demoRole";
+const roles: Role[] = ["pm", "tenant", "contractor", "owner"];
+
+function isRole(value: string | null): value is Role {
+  return roles.includes(value as Role);
+}
 
 export const ROLE_HOME: Record<Role, string> = {
   pm: "/",
@@ -46,7 +53,18 @@ const Ctx = createContext<{ role: Role; setRole: (r: Role) => void }>({
 });
 
 export function RoleProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<Role>("pm");
+  const [role, setRoleState] = useState<Role>("pm");
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(ROLE_STORAGE_KEY);
+    if (isRole(stored)) setRoleState(stored);
+  }, []);
+
+  const setRole = useCallback((nextRole: Role) => {
+    setRoleState(nextRole);
+    window.localStorage.setItem(ROLE_STORAGE_KEY, nextRole);
+  }, []);
+
   return <Ctx.Provider value={{ role, setRole }}>{children}</Ctx.Provider>;
 }
 
