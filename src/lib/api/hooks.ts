@@ -1,11 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  classifyUrgencyFn,
   addTicketEventFn,
   addDocumentMetadataFn,
   assignContractorFn,
   approveTicketReplyFn,
   createTicketFn,
+  detectMissingInfoFn,
+  generateReplyDraftFn,
+  generateSummaryFn,
   getMeFn,
   getContractorByIdFn,
   getDashboardDataFn,
@@ -20,6 +24,9 @@ import {
   markAllNotificationsReadFn,
   markNotificationReadFn,
   requestMissingInfoFn,
+  structureIntakeFn,
+  suggestContractorFn,
+  translateTextFn,
   updateApprovalDecisionFn,
   updateContractorJobFn,
   updateTicketStatusFn,
@@ -255,6 +262,48 @@ export function useAddDocumentMetadata() {
         queryClient.setQueryData(queryKeys.property(role, variables.data.targetId), result as PropertyDto);
       }
     },
+  });
+}
+
+export function useStructureIntake() {
+  return useMutation({
+    mutationFn: structureIntakeFn,
+  });
+}
+
+export function useClassifyUrgency() {
+  return useMutation({
+    mutationFn: classifyUrgencyFn,
+  });
+}
+
+export function useGenerateSummary() {
+  return useMutation({
+    mutationFn: generateSummaryFn,
+  });
+}
+
+export function useSuggestContractor() {
+  return useMutation({
+    mutationFn: suggestContractorFn,
+  });
+}
+
+export function useGenerateReplyDraft() {
+  return useMutation({
+    mutationFn: generateReplyDraftFn,
+  });
+}
+
+export function useDetectMissingInfo() {
+  return useMutation({
+    mutationFn: detectMissingInfoFn,
+  });
+}
+
+export function useTranslateText() {
+  return useMutation({
+    mutationFn: translateTextFn,
   });
 }
 

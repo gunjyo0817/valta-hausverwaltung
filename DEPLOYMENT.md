@@ -17,6 +17,7 @@ Set these in Vercel Project Settings -> Environment Variables for Production and
 | `DATABASE_URL` | Yes | Neon pooled Postgres connection string. Use SSL. |
 | `BLOB_READ_WRITE_TOKEN` | No | Required only when Vercel Blob uploads are wired to binary storage. |
 | `OPENAI_API_KEY` | No | Required only after Sprint 12 AI backend is enabled. |
+| `OPENAI_MODEL` | No | Optional OpenAI model override. Defaults to `gpt-4.1-mini`. |
 
 For local checks:
 
@@ -58,10 +59,11 @@ npm run db:seed
 
 1. Create the Neon database.
 2. Add `DATABASE_URL` to Vercel for Preview and Production.
-3. Optional: create Vercel Blob and add `BLOB_READ_WRITE_TOKEN`.
-4. Deploy once from Vercel or GitHub.
-5. Run migrations and seed against the deployed database.
-6. Redeploy if environment variables changed after the first build.
+3. Add `OPENAI_API_KEY` if Sprint 12 AI generation should call OpenAI instead of deterministic fallbacks.
+4. Optional: create Vercel Blob and add `BLOB_READ_WRITE_TOKEN`.
+5. Deploy once from Vercel or GitHub.
+6. Run migrations and seed against the deployed database.
+7. Redeploy if environment variables changed after the first build.
 
 ## Smoke Test
 

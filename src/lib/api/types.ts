@@ -171,6 +171,81 @@ export type AiActivityDto = {
   text: LocalizedText;
 };
 
+export type AiSuggestionStatus = "generated" | "fallback" | "failed";
+
+export type AiStructuredIntakeDto = {
+  kind: "structure_intake";
+  model: string;
+  status: AiSuggestionStatus;
+  title: string;
+  category: string;
+  priority: Urgency;
+  tenant: string;
+  propertyId: string;
+  unit: string;
+  phone: string;
+  email: string;
+  description: string;
+  contractor: string;
+  confidence: number;
+  access: string;
+  preferred: string;
+  missing: string[];
+};
+
+export type AiUrgencyDto = {
+  kind: "classify_urgency";
+  model: string;
+  status: AiSuggestionStatus;
+  priority: Urgency;
+  confidence: number;
+  reasons: string[];
+};
+
+export type AiSummaryDto = {
+  kind: "summary";
+  model: string;
+  status: AiSuggestionStatus;
+  summary: string;
+  confidence: number;
+};
+
+export type AiContractorSuggestionDto = {
+  kind: "contractor_suggestion";
+  model: string;
+  status: AiSuggestionStatus;
+  contractor: string;
+  contractorId?: string;
+  confidence: number;
+  reason: string;
+};
+
+export type AiReplyDraftDto = {
+  kind: "reply_draft";
+  model: string;
+  status: AiSuggestionStatus;
+  text: string;
+  confidence: number;
+};
+
+export type AiMissingInfoDto = {
+  kind: "missing_info";
+  model: string;
+  status: AiSuggestionStatus;
+  text: string;
+  items: string[];
+  confidence: number;
+};
+
+export type AiTranslationDto = {
+  kind: "translation";
+  model: string;
+  status: AiSuggestionStatus;
+  text: string;
+  to: Lang;
+  confidence: number;
+};
+
 export type DashboardDto = {
   kpis: {
     openTickets: number;

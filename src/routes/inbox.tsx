@@ -4,7 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { tickets as mockTickets } from "@/lib/mockData";
 import { useLang } from "@/lib/i18n";
-import { useApproveTicketReply, useTickets, type TicketDto } from "@/lib/api";
+import { useApproveTicketReply, useGenerateReplyDraft, useTickets, type TicketDto } from "@/lib/api";
 import {
   Search,
   Filter,
@@ -231,6 +231,7 @@ function InfoCard({ label, value, sub }: { label: string; value: string; sub?: s
 function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; draftEdit: boolean; setDraftEdit: (v: boolean) => void }) {
   const { t, lang } = useLang();
   const approveReply = useApproveTicketReply();
+  const generateReply = useGenerateReplyDraft();
   const [sent, setSent] = useState(false);
   const firstName = ticket.tenant.name.split(" ")[0];
   const draft = lang === "EN"
@@ -239,9 +240,23 @@ function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; 
   const [draftText, setDraftText] = useState(draft);
 
   useEffect(() => {
+    let cancelled = false;
     setDraftText(draft);
     setSent(false);
-  }, [draft, ticket.id]);
+
+    generateReply
+      .mutateAsync({ data: { ticketId: ticket.id, language: lang } })
+      .then((result) => {
+        if (!cancelled) setDraftText(result.text);
+      })
+      .catch(() => {
+        if (!cancelled) setDraftText(draft);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [draft, ticket.id, lang]);
 
   const submitReply = async () => {
     if (sent || approveReply.isPending) return;

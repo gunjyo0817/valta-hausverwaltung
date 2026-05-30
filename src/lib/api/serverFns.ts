@@ -3,6 +3,15 @@ import { z } from "zod";
 
 import { getDemoUser } from "@/server/auth/demo";
 import {
+  classifyUrgency,
+  detectMissingInfo,
+  generateReplyDraft,
+  generateSummary,
+  structureIntake,
+  suggestContractor,
+  translateText,
+} from "@/server/ai/service";
+import {
   getContractorById,
   getDashboardData,
   getPropertyById,
@@ -126,6 +135,34 @@ const addDocumentMetadataInput = z.object({
   role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
 });
 
+const aiLanguageInput = z.enum(["DE", "EN"]);
+
+const structureIntakeInput = z.object({
+  raw: z.string().min(1),
+  language: aiLanguageInput.optional(),
+});
+
+const classifyUrgencyInput = z.object({
+  text: z.string().min(1),
+  ticketId: z.string().min(1).optional().nullable(),
+});
+
+const aiTicketInput = z.object({
+  ticketId: z.string().min(1),
+  language: aiLanguageInput.optional(),
+});
+
+const suggestContractorInput = z.object({
+  category: z.string().min(1),
+  ticketId: z.string().min(1).optional().nullable(),
+});
+
+const translateTextInput = z.object({
+  text: z.string().min(1),
+  from: aiLanguageInput.optional(),
+  to: aiLanguageInput,
+});
+
 export const getMeFn = createServerFn({ method: "GET" })
   .inputValidator(roleInput)
   .handler(({ data }) => getDemoUser(data));
@@ -213,3 +250,31 @@ export const updateApprovalDecisionFn = createServerFn({ method: "POST" })
 export const addDocumentMetadataFn = createServerFn({ method: "POST" })
   .inputValidator(addDocumentMetadataInput)
   .handler(({ data }) => addDocumentMetadata(data));
+
+export const structureIntakeFn = createServerFn({ method: "POST" })
+  .inputValidator(structureIntakeInput)
+  .handler(({ data }) => structureIntake(data));
+
+export const classifyUrgencyFn = createServerFn({ method: "POST" })
+  .inputValidator(classifyUrgencyInput)
+  .handler(({ data }) => classifyUrgency(data));
+
+export const generateSummaryFn = createServerFn({ method: "POST" })
+  .inputValidator(aiTicketInput)
+  .handler(({ data }) => generateSummary(data));
+
+export const suggestContractorFn = createServerFn({ method: "POST" })
+  .inputValidator(suggestContractorInput)
+  .handler(({ data }) => suggestContractor(data));
+
+export const generateReplyDraftFn = createServerFn({ method: "POST" })
+  .inputValidator(aiTicketInput)
+  .handler(({ data }) => generateReplyDraft(data));
+
+export const detectMissingInfoFn = createServerFn({ method: "POST" })
+  .inputValidator(aiTicketInput)
+  .handler(({ data }) => detectMissingInfo(data));
+
+export const translateTextFn = createServerFn({ method: "POST" })
+  .inputValidator(translateTextInput)
+  .handler(({ data }) => translateText(data));

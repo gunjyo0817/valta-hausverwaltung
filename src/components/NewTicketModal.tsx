@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang, pick } from "@/lib/i18n";
-import { useCreateTicket } from "@/lib/api";
+import { useCreateTicket, useStructureIntake } from "@/lib/api";
 import { properties } from "@/lib/properties";
 import { allContractors } from "@/lib/contractors";
 import { StatusBadge, UrgencyBadge, AIBadge } from "./Badges";
@@ -97,6 +97,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [ticketId, setTicketId] = useState("");
   const createTicketMutation = useCreateTicket();
+  const structureIntakeMutation = useStructureIntake();
 
   useEffect(() => {
     if (!open) {
@@ -117,29 +118,33 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
 
   const T = (de: string, en: string) => pick(de, en, lang);
 
-  const analyze = () => {
+  const analyze = async () => {
     setAnalyzing(true);
-    setTimeout(() => {
-      setDraft({
-        category: T("Heizung", "Heating"),
-        priority: "critical",
-        tenant: "Anna Becker",
-        propertyId: "p-lindenstr-22",
-        unit: T("WE 14, 3. OG", "Unit 14, 3rd floor"),
-        phone: "+49 30 1234567",
-        email: "anna.becker@example.de",
-        description: T(
-          "Heizung seit gestern Abend komplett ausgefallen, kalt trotz voller Reglerstellung. Mieterin werktags ab 16 Uhr erreichbar.",
-          "Heating completely down since yesterday evening, cold despite max setting. Tenant reachable weekdays from 4 pm.",
-        ),
-        contractor: "Müller Heizung GmbH",
-        confidence: 96,
-        access: T("Mieterin zuhause ab 16 Uhr", "Tenant home from 4 pm"),
-        preferred: T("Heute 16–19 Uhr", "Today 4–7 pm"),
+    try {
+      const result = await structureIntakeMutation.mutateAsync({
+        data: {
+          raw,
+          language: lang,
+        },
       });
-      setAnalyzing(false);
+      setDraft({
+        category: result.category,
+        priority: result.priority,
+        tenant: result.tenant,
+        propertyId: result.propertyId,
+        unit: result.unit,
+        phone: result.phone,
+        email: result.email,
+        description: result.description,
+        contractor: result.contractor,
+        confidence: result.confidence,
+        access: result.access,
+        preferred: result.preferred,
+      });
       setAnalyzed(true);
-    }, 1400);
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const createTicket = async () => {

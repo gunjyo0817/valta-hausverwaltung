@@ -1,6 +1,7 @@
 import { db } from "../src/server/db/client";
 import {
   aiActivities,
+  aiSuggestions,
   approvals,
   contractors as contractorsTable,
   documents,
@@ -249,6 +250,7 @@ const ownerInvoices = [
 
 async function resetDatabase() {
   await db.delete(notificationsTable);
+  await db.delete(aiSuggestions);
   await db.delete(aiActivities);
   await db.delete(approvals);
   await db.delete(invoices);

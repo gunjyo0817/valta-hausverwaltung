@@ -4,7 +4,15 @@ import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { getTicket } from "@/lib/mockData";
 import { getProperty } from "@/lib/properties";
-import { useAddDocumentMetadata, useApproveTicketReply, useProperty, useRequestMissingInfo, useTicket } from "@/lib/api";
+import {
+  useAddDocumentMetadata,
+  useApproveTicketReply,
+  useDetectMissingInfo,
+  useGenerateReplyDraft,
+  useProperty,
+  useRequestMissingInfo,
+  useTicket,
+} from "@/lib/api";
 import { AssignContractorModal } from "@/components/AssignContractorModal";
 import {
   ArrowLeft,
@@ -52,6 +60,8 @@ function TicketPage() {
   const [sent, setSent] = useState(false);
   const approveReply = useApproveTicketReply();
   const requestInfo = useRequestMissingInfo();
+  const generateReply = useGenerateReplyDraft();
+  const detectMissing = useDetectMissingInfo();
   const addDocument = useAddDocumentMetadata();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,10 +74,24 @@ function TicketPage() {
   const [draftText, setDraftText] = useState(draft);
 
   useEffect(() => {
+    let cancelled = false;
     setDraftText(draft);
     setSent(false);
     setShowInfo(false);
-  }, [draft, tk.id]);
+
+    generateReply
+      .mutateAsync({ data: { ticketId: tk.id, language: lang } })
+      .then((result) => {
+        if (!cancelled) setDraftText(result.text);
+      })
+      .catch(() => {
+        if (!cancelled) setDraftText(draft);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [draft, tk.id, lang]);
 
   const missingInfoText = lang === "EN"
     ? "Please send the exact thermostat model and confirm whether neighbours are affected."
@@ -81,8 +105,9 @@ function TicketPage() {
   };
 
   const submitMissingInfoRequest = async () => {
-    if (showInfo || requestInfo.isPending) return;
-    await requestInfo.mutateAsync({ data: { ticketId: tk.id, text: missingInfoText } });
+    if (showInfo || requestInfo.isPending || detectMissing.isPending) return;
+    const aiMissingInfo = await detectMissing.mutateAsync({ data: { ticketId: tk.id, language: lang } });
+    await requestInfo.mutateAsync({ data: { ticketId: tk.id, text: aiMissingInfo.text || missingInfoText } });
     setShowInfo(true);
   };
   const photoAttachments = (tk.attachments?.length ?? 0) > 0

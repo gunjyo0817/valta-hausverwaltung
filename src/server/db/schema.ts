@@ -261,6 +261,20 @@ export const aiActivities = pgTable("ai_activities", {
   ...timestamps,
 });
 
+export const aiSuggestions = pgTable("ai_suggestions", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id")
+    .references(() => organizations.id)
+    .notNull(),
+  ticketId: text("ticket_id").references(() => tickets.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(),
+  input: jsonb("input").$type<Record<string, unknown>>().notNull().default({}),
+  output: jsonb("output").$type<Record<string, unknown>>().notNull().default({}),
+  model: text("model").notNull(),
+  status: text("status").notNull(),
+  ...timestamps,
+});
+
 export const approvals = pgTable("approvals", {
   id: text("id").primaryKey(),
   organizationId: text("organization_id")
