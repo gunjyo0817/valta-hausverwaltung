@@ -11,6 +11,7 @@ import type {
   TicketDto,
   Urgency,
 } from "@/lib/api/types";
+import { buildReplyDraft } from "@/lib/ticketCopy";
 
 function normalize(value: string) {
   return value
@@ -139,9 +140,13 @@ export function structureIntakeFallback(raw: string, language: Lang): Omit<AiStr
   const category = detectCategory(raw, language);
   const urgency = classifyUrgencyFallback(raw, language);
   const contractor = suggestContractorFallback(category, language);
-  const isAnnaSample = normalize(raw).includes("anna becker") && normalize(raw).includes("linden");
+  const normalized = normalize(raw);
+  const isAnnaHeatingSample =
+    normalized.includes("anna becker") &&
+    normalized.includes("linden") &&
+    (category === "Heizung" || category === "Heating" || normalized.includes("heiz") || normalized.includes("heat"));
 
-  if (isAnnaSample) {
+  if (isAnnaHeatingSample) {
     return {
       title: language === "EN" ? "Heating cold since last night" : "Heizung kalt seit gestern Abend",
       category,
@@ -165,7 +170,7 @@ export function structureIntakeFallback(raw: string, language: Lang): Omit<AiStr
   const email = firstMatch(raw, /([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i);
   const phone = firstMatch(raw, /(\+?\d[\d\s()./-]{6,}\d)/);
   const tenant = firstMatch(raw, /(?:Viele Gr[üu]ße|Best|Regards|Name:)\s*\n?([A-ZÄÖÜ][\wÄÖÜäöüß.-]+(?:\s+[A-ZÄÖÜ][\wÄÖÜäöüß.-]+)+)/i) || "Unbekannte:r Mieter:in";
-  const unit = firstMatch(raw, /\b((?:WE|Unit)\s*\d+[^),\n]*)/i);
+  const unit = firstMatch(raw, /\b((?:WE|Unit)\s*\d+(?:\s*,?\s*\d+\.\s*OG)?)/i);
 
   return {
     title: category,
@@ -272,11 +277,8 @@ export function generateSummaryFallback(ticket: TicketDto, language: Lang): Omit
 }
 
 export function generateReplyDraftFallback(ticket: TicketDto, language: Lang): Omit<AiReplyDraftDto, "kind" | "model" | "status"> {
-  const firstName = ticket.tenant.name.split(" ")[0];
   return {
-    text: language === "EN"
-      ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician - ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
-      : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt - ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`,
+    text: buildReplyDraft(ticket, language),
     confidence: 94,
   };
 }

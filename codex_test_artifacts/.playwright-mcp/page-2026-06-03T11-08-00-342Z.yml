@@ -1,0 +1,251 @@
+- generic [ref=e2055]:
+  - complementary [ref=e2056]:
+    - link "V Valta Operations Copilot" [ref=e2057] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e2058]: V
+      - generic [ref=e2059]:
+        - generic [ref=e2060]: Valta
+        - generic [ref=e2061]: Operations Copilot
+    - generic [ref=e2063]:
+      - generic [ref=e2064]: SK
+      - generic [ref=e2065]:
+        - generic [ref=e2066]: Property Manager view
+        - generic [ref=e2067]: Sarah Krüger
+    - generic [ref=e2068]: Property management
+    - navigation [ref=e2069]:
+      - link "Dashboard" [ref=e2070] [cursor=pointer]:
+        - /url: /
+        - img [ref=e2071]
+        - generic [ref=e2076]: Dashboard
+      - link "Operations Inbox" [ref=e2077] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e2078]
+        - generic [ref=e2081]: Operations Inbox
+      - link "AI Insights" [ref=e2082] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e2083]
+        - generic [ref=e2085]: AI Insights
+      - link "Properties" [ref=e2086] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e2087]
+        - generic [ref=e2091]: Properties
+      - link "Contractors" [ref=e2092] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e2093]
+        - generic [ref=e2098]: Contractors
+    - generic [ref=e2099]:
+      - generic [ref=e2100]:
+        - generic [ref=e2101]:
+          - img [ref=e2102]
+          - text: AI Copilot
+        - paragraph [ref=e2105]: Structures requests, prioritises urgency, recommends contractors.
+      - link "SK Sarah Krüger Berlin Property Mgmt." [ref=e2106] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e2107]: SK
+        - generic [ref=e2108]:
+          - generic [ref=e2109]: Sarah Krüger
+          - generic [ref=e2110]: Berlin Property Mgmt.
+        - img [ref=e2111]
+  - generic [ref=e2114]:
+    - banner [ref=e2115]:
+      - generic [ref=e2116]:
+        - heading "VLT-2041 · Heating completely down" [level=1] [ref=e2117]
+        - paragraph [ref=e2118]: Lindenstraße 22, Berlin · Unit 14, 3rd floor
+      - generic [ref=e2119]:
+        - generic [ref=e2120]:
+          - img [ref=e2121]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e2124]
+          - generic [ref=e2125]: ⌘K
+        - 'button "Current view: Property Manager" [ref=e2127]':
+          - generic [ref=e2128]: "Current view:"
+          - generic [ref=e2129]: Property Manager
+          - img [ref=e2130]
+        - generic [ref=e2132]:
+          - button "DE" [ref=e2133]:
+            - img [ref=e2134]
+            - text: DE
+          - button "EN" [ref=e2138]
+        - button "Notifications" [ref=e2139]:
+          - img [ref=e2140]
+          - generic [ref=e2143]: "3"
+        - button "New ticket" [ref=e2144]:
+          - img [ref=e2145]
+          - text: New ticket
+    - main [ref=e2146]:
+      - generic [ref=e2147]:
+        - link "Back to inbox" [ref=e2148] [cursor=pointer]:
+          - /url: /inbox
+          - img [ref=e2149]
+          - text: Back to inbox
+        - generic [ref=e2151]:
+          - generic [ref=e2152]:
+            - generic [ref=e2153]:
+              - generic [ref=e2154]:
+                - generic [ref=e2155]: Critical
+                - generic [ref=e2156]: New
+                - generic [ref=e2158]:
+                  - img [ref=e2159]
+                  - text: AI · 96%
+                - button "Translated" [ref=e2162]:
+                  - img [ref=e2163]
+                  - text: Translated
+              - heading "Heating completely down" [level=2] [ref=e2167]
+              - generic [ref=e2168]:
+                - generic [ref=e2169]:
+                  - img [ref=e2170]
+                  - text: AI summary
+                  - button "Regenerate" [ref=e2173]:
+                    - img [ref=e2174]
+                    - text: Regenerate
+                - paragraph [ref=e2179]: Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended.
+              - paragraph [ref=e2180]: The heating in the whole apartment has been out since about 7 pm. Thermostats don't respond, radiators are cold. It's very cold inside.
+              - generic [ref=e2181]:
+                - generic [ref=e2182]:
+                  - generic [ref=e2183]: Category
+                  - generic [ref=e2184]: Heating
+                - generic [ref=e2185]:
+                  - generic [ref=e2186]: Since
+                  - generic [ref=e2187]: 1 h ago
+                - generic [ref=e2188]:
+                  - generic [ref=e2189]: Language
+                  - generic [ref=e2190]: DE
+                - generic [ref=e2191]:
+                  - generic [ref=e2192]: ETA
+                  - generic [ref=e2193]: Tue, Jun 2 · 09:00
+            - generic [ref=e2194]:
+              - generic [ref=e2195]:
+                - img [ref=e2196]
+                - heading "Communication timeline" [level=3] [ref=e2198]
+                - generic [ref=e2199]: All channels consolidated
+              - paragraph [ref=e2200]: Email, SMS, app, phone — unified into one operational thread.
+              - list [ref=e2201]:
+                - listitem [ref=e2202]:
+                  - generic [ref=e2204]:
+                    - img [ref=e2205]
+                    - generic [ref=e2208]: Anna Becker
+                    - generic [ref=e2209]: ·
+                    - generic [ref=e2210]: 08:42
+                  - paragraph [ref=e2211]: Heating is dead, it's very cold.
+                - listitem [ref=e2212]:
+                  - generic [ref=e2214]:
+                    - img [ref=e2215]
+                    - generic [ref=e2218]: Valta AI
+                    - generic [ref=e2219]: ·
+                    - generic [ref=e2220]: 08:42
+                  - paragraph [ref=e2221]: Since when has this been happening? Does it affect all rooms?
+                - listitem [ref=e2222]:
+                  - generic [ref=e2224]:
+                    - img [ref=e2225]
+                    - generic [ref=e2228]: Anna Becker
+                    - generic [ref=e2229]: ·
+                    - generic [ref=e2230]: 08:44
+                  - paragraph [ref=e2231]: Since yesterday evening, all rooms.
+                - listitem [ref=e2232]:
+                  - generic [ref=e2234]:
+                    - img [ref=e2235]
+                    - generic [ref=e2238]: Valta AI
+                    - generic [ref=e2239]: ·
+                    - generic [ref=e2240]: 08:45
+                  - paragraph [ref=e2241]: "Ticket created — priority: critical. Recommendation: emergency heating service."
+            - generic [ref=e2242]:
+              - generic [ref=e2243]:
+                - heading "Attached photos" [level=3] [ref=e2244]
+                - button "Upload" [ref=e2245]:
+                  - img [ref=e2246]
+                  - text: Upload
+              - generic [ref=e2250]:
+                - img [ref=e2252]
+                - img [ref=e2257]
+          - complementary [ref=e2261]:
+            - generic [ref=e2263]:
+              - img [ref=e2264]
+              - text: AI Copilot
+              - generic [ref=e2267]: Suggests — you approve
+            - generic [ref=e2268]:
+              - generic [ref=e2269]:
+                - generic [ref=e2270]: Reply draft
+                - generic [ref=e2271]:
+                  - generic [ref=e2272]:
+                    - img [ref=e2273]
+                    - text: AI · 94%
+                  - button "Regenerate" [ref=e2276]:
+                    - img [ref=e2277]
+                    - text: Regenerate
+              - generic [ref=e2282]: Hi Anna, thanks for your report. We've dispatched an emergency technician - ETA today between 11:00 and 13:00. You'll get an update once they're on the way. Best Your property management
+              - generic [ref=e2283]:
+                - button "Approve & send" [ref=e2284]:
+                  - img [ref=e2285]
+                  - text: Approve & send
+                - button "Edit" [ref=e2288]:
+                  - img [ref=e2289]
+                  - text: Edit
+                - button "Send manually" [ref=e2292]:
+                  - img [ref=e2293]
+                  - text: Send manually
+            - generic [ref=e2296]:
+              - generic [ref=e2297]:
+                - img [ref=e2298]
+                - text: Missing information detected
+                - button "Regenerate" [ref=e2300]:
+                  - img [ref=e2301]
+                  - text: Regenerate
+              - list [ref=e2306]:
+                - listitem [ref=e2307]: • Exact thermostat model
+                - listitem [ref=e2308]: "• Confirmation: are neighbours affected?"
+              - button "Request more info" [ref=e2309]:
+                - img [ref=e2310]
+                - text: Request more info
+            - generic [ref=e2312]:
+              - generic [ref=e2313]:
+                - img [ref=e2314]
+                - text: Why critical?
+              - list [ref=e2316]:
+                - listitem [ref=e2317]: • Complete outage or urgent wording detected
+            - generic [ref=e2318]:
+              - generic [ref=e2319]:
+                - img [ref=e2320]
+                - text: Recommended contractor
+                - button "Regenerate" [ref=e2322]:
+                  - img [ref=e2323]
+                  - text: Regenerate
+              - generic [ref=e2328]:
+                - generic [ref=e2329]: Müller Heizung GmbH
+                - generic [ref=e2330]:
+                  - img [ref=e2331]
+                  - text: AI · 94%
+              - generic [ref=e2334]: ★ 4.9 · ETA 2 h · Preferred Berlin heating partner with fastest emergency ETA.
+              - button "Assign contractor" [ref=e2335]:
+                - img [ref=e2336]
+                - text: Assign contractor
+            - generic [ref=e2339]:
+              - generic [ref=e2340]:
+                - generic [ref=e2341]: Manual status
+                - generic [ref=e2342]: New
+              - textbox "Optional internal note" [ref=e2344]
+              - generic [ref=e2345]:
+                - button "Request info" [ref=e2346]:
+                  - img [ref=e2347]
+                  - text: Request info
+                - button "Contractor assigned" [ref=e2350]:
+                  - img [ref=e2351]
+                  - text: Contractor assigned
+                - button "In progress" [ref=e2354]:
+                  - img [ref=e2355]
+                  - text: In progress
+                - button "Mark resolved" [ref=e2358]:
+                  - img [ref=e2359]
+                  - text: Mark resolved
+            - generic [ref=e2362]:
+              - generic [ref=e2363]: Tenant
+              - generic [ref=e2364]: Anna Becker
+              - generic [ref=e2365]:
+                - generic [ref=e2366]:
+                  - img [ref=e2367]
+                  - text: Lindenstraße 22, Berlin · Unit 14, 3rd floor
+                - generic [ref=e2370]:
+                  - img [ref=e2371]
+                  - text: +49 30 1234567
+                - link "Lindenstraße 22" [ref=e2373] [cursor=pointer]:
+                  - /url: /properties/p-lindenstr-22
+                  - img [ref=e2374]
+                  - text: Lindenstraße 22

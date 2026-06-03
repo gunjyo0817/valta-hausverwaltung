@@ -1,0 +1,101 @@
+- generic [ref=e1626]:
+  - complementary [ref=e1627]:
+    - link "V Valta Operations Copilot" [ref=e1628] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e1629]: V
+      - generic [ref=e1630]:
+        - generic [ref=e1631]: Valta
+        - generic [ref=e1632]: Operations Copilot
+    - generic [ref=e1634]:
+      - generic [ref=e1635]: MH
+      - generic [ref=e1636]:
+        - generic [ref=e1637]: Handwerker-Sicht
+        - generic [ref=e1638]: Thomas Müller
+    - generic [ref=e1639]: Handwerker-Sicht
+    - navigation [ref=e1640]:
+      - link "Aufträge" [ref=e1641] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e1642]
+        - generic [ref=e1645]: Aufträge
+      - link "Terminplan" [ref=e1646] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e1647]
+        - generic [ref=e1649]: Terminplan
+      - link "Nachrichten" [ref=e1650] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e1651]
+        - generic [ref=e1653]: Nachrichten
+      - link "Erledigt" [ref=e1654] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e1655]
+        - generic [ref=e1658]: Erledigt
+    - generic [ref=e1659]:
+      - generic [ref=e1660]:
+        - generic [ref=e1661]:
+          - img [ref=e1662]
+          - text: AI Copilot
+        - paragraph [ref=e1665]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e1666] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1667]: MH
+        - generic [ref=e1668]:
+          - generic [ref=e1669]: Thomas Müller
+          - generic [ref=e1670]: Müller Heizung GmbH
+        - img [ref=e1671]
+  - generic [ref=e1674]:
+    - banner [ref=e1675]:
+      - generic [ref=e1676]:
+        - heading "Abgeschlossene Aufträge" [level=1] [ref=e1677]
+        - paragraph [ref=e1678]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e1679]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e1681]':
+          - generic [ref=e1682]: "Aktuelle Sicht:"
+          - generic [ref=e1683]: Handwerker
+          - img [ref=e1684]
+        - generic [ref=e1686]:
+          - button "DE" [ref=e1687]:
+            - img [ref=e1688]
+            - text: DE
+          - button "EN" [ref=e1692]
+        - button "Notifications" [ref=e1693]:
+          - img [ref=e1694]
+    - main [ref=e1697]:
+      - generic [ref=e1698]:
+        - generic [ref=e1699]:
+          - generic [ref=e1700]:
+            - generic [ref=e1701]:
+              - img [ref=e1703]
+              - generic [ref=e1706]: Insgesamt erledigt
+            - generic [ref=e1707]: "0"
+          - generic [ref=e1708]:
+            - generic [ref=e1709]:
+              - img [ref=e1711]
+              - generic [ref=e1714]: Ø Dauer
+            - generic [ref=e1715]: 0.0 h
+          - generic [ref=e1716]:
+            - generic [ref=e1717]:
+              - img [ref=e1719]
+              - generic [ref=e1721]: Ø Bewertung
+            - generic [ref=e1722]: "0.0"
+          - generic [ref=e1723]:
+            - generic [ref=e1724]:
+              - img [ref=e1726]
+              - generic [ref=e1729]: Termintreue
+            - generic [ref=e1730]: 0%
+        - generic [ref=e1731]:
+          - generic [ref=e1732]:
+            - generic [ref=e1733]: ID
+            - generic [ref=e1734]: Reparatur
+            - generic [ref=e1735]: Kategorie
+            - generic [ref=e1736]: Objekt
+            - generic [ref=e1737]: Dauer
+            - generic [ref=e1738]: Bewertung
+            - generic [ref=e1739]: Erledigt
+          - generic [ref=e1741]:
+            - img [ref=e1743]
+            - generic [ref=e1747]: Keine abgeschlossenen Auftraege
+            - paragraph [ref=e1748]: Es gibt keine erledigten Ticket-Datensaetze fuer diesen Handwerker. Lade Mock-Daten im Adminbereich neu, um abgeschlossene Auftraege wiederherzustellen.
+            - link "Demo-Daten-Admin oeffnen" [ref=e1749] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e1750]
+              - text: Demo-Daten-Admin oeffnen

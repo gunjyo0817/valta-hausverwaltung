@@ -1,0 +1,6 @@
+"Invoice","Date","Contractor","Property","Amount","Status"
+"INV-2041","24.05.2026","Müller Heizung GmbH","Lindenstraße 22","€ 1.240","paid"
+"INV-2039","22.05.2026","Klempner Schulz & Söhne","Goethestraße 8","€ 680","paid"
+"INV-2037","20.05.2026","Schindler Service","Parkallee 110","€ 2.150","pending"
+"INV-2030","18.05.2026","Gutachter Bauer","Rosenweg 3","€ 890","pending"
+"INV-2025","15.05.2026","Hausmeister Krüger","Lindenstraße 22","€ 120","paid"

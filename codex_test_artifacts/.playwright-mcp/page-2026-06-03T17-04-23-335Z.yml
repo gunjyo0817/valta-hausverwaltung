@@ -1,0 +1,93 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: SK
+      - generic [ref=e12]:
+        - generic [ref=e13]: Hausverwaltungs-Sicht
+        - generic [ref=e14]: Sarah Krüger
+    - generic [ref=e15]: Hausverwaltung
+    - navigation [ref=e16]:
+      - link "Dashboard" [ref=e17] [cursor=pointer]:
+        - /url: /
+        - img [ref=e18]
+        - generic [ref=e23]: Dashboard
+      - link "Operations Inbox" [ref=e24] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e25]
+        - generic [ref=e28]: Operations Inbox
+      - link "AI Insights" [ref=e29] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e30]
+        - generic [ref=e32]: AI Insights
+      - link "Objekte" [ref=e33] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e34]
+        - generic [ref=e38]: Objekte
+      - link "Handwerker" [ref=e39] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e40]
+        - generic [ref=e45]: Handwerker
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e53] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: SK
+        - generic [ref=e55]:
+          - generic [ref=e56]: Sarah Krüger
+          - generic [ref=e57]: Hausverwaltung Berlin GmbH
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Handwerker" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Ihr Partner-Netzwerk · 0 Firmen
+      - generic [ref=e66]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e68]':
+          - generic [ref=e69]: "Aktuelle Sicht:"
+          - generic [ref=e70]: Hausverwaltung
+          - img [ref=e71]
+        - generic [ref=e73]:
+          - button "DE" [ref=e74]:
+            - img [ref=e75]
+            - text: DE
+          - button "EN" [ref=e79]
+        - button "Notifications" [ref=e80]:
+          - img [ref=e81]
+        - button "Neues Ticket" [ref=e84]:
+          - img [ref=e85]
+          - text: Neues Ticket
+    - main [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - img [ref=e90]
+            - textbox "Handwerker durchsuchen…" [ref=e93]
+          - generic [ref=e94]:
+            - img [ref=e95]
+            - combobox [ref=e97]:
+              - option "Alle · Gewerk" [selected]
+              - option "Heizung"
+              - option "Klempner"
+              - option "Elektriker"
+              - option "Aufzug-Service"
+              - option "Internet-Provider"
+              - option "Reinigung"
+              - option "Gutachter"
+              - option "Notfall"
+            - combobox [ref=e98]:
+              - option "Alle · Verfügbarkeit" [selected]
+              - option "Verfügbar"
+              - option "Nicht verfügbar"
+        - generic [ref=e99]:
+          - generic [ref=e100]: Keine Treffer
+          - generic [ref=e101]: Passen Sie Suche oder Filter an.

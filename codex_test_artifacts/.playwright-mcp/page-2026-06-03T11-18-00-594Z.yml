@@ -1,0 +1,125 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: AB
+      - generic [ref=e12]:
+        - generic [ref=e13]: Mieter-Sicht
+        - generic [ref=e14]: Anna Becker
+    - generic [ref=e15]: Mieter-Sicht
+    - navigation [ref=e119]:
+      - link "Start" [ref=e120] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e121]
+        - generic [ref=e124]: Start
+      - link "Schaden melden" [ref=e125] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e126]
+        - generic [ref=e128]: Schaden melden
+      - link "Meine Anfragen" [ref=e129] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e130]
+        - generic [ref=e133]: Meine Anfragen
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e134] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: AB
+        - generic [ref=e55]:
+          - generic [ref=e56]: Anna Becker
+          - generic [ref=e57]: Lindenstraße 22, WE 14
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Meine Anfragen" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Wir kümmern uns – transparent und nachvollziehbar.
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - img [ref=e68]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e71]
+          - generic [ref=e72]: ⌘K
+        - generic [ref=e73]:
+          - 'button "Aktuelle Sicht: Mieter:in" [active] [ref=e135]':
+            - generic [ref=e75]: "Aktuelle Sicht:"
+            - generic [ref=e76]: Mieter:in
+            - img [ref=e77]
+          - generic [ref=e137]:
+            - generic [ref=e139]: Demo-Modus · Rolle umschalten
+            - button "Hausverwaltung Sarah Krüger" [ref=e140]:
+              - img [ref=e142]
+              - generic [ref=e147]:
+                - generic [ref=e148]: Hausverwaltung
+                - generic [ref=e149]: Sarah Krüger
+            - button "Mieter:in Anna Becker" [ref=e150]:
+              - img [ref=e152]
+              - generic [ref=e154]:
+                - generic [ref=e155]: Mieter:in
+                - generic [ref=e156]: Anna Becker
+              - img [ref=e157]
+            - button "Handwerker Thomas Müller" [ref=e159]:
+              - img [ref=e161]
+              - generic [ref=e163]:
+                - generic [ref=e164]: Handwerker
+                - generic [ref=e165]: Thomas Müller
+            - button "Eigentümer:in Dr. Karl Reichmann" [ref=e166]:
+              - img [ref=e168]
+              - generic [ref=e171]:
+                - generic [ref=e172]: Eigentümer:in
+                - generic [ref=e173]: Dr. Karl Reichmann
+        - generic [ref=e79]:
+          - button "DE" [ref=e80]:
+            - img [ref=e81]
+            - text: DE
+          - button "EN" [ref=e85]
+        - button "Notifications" [ref=e86]:
+          - img [ref=e87]
+          - generic [ref=e174]: "3"
+    - main [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e178]:
+          - img [ref=e180]
+          - generic [ref=e183]:
+            - heading "Etwas in Ihrer Wohnung defekt?" [level=2] [ref=e184]
+            - paragraph [ref=e185]: Melden Sie es in 60 Sekunden – Valta strukturiert alles für die Hausverwaltung.
+            - generic [ref=e186]:
+              - link "Neue Meldung starten" [ref=e187] [cursor=pointer]:
+                - /url: /tenant/new-request
+                - img [ref=e188]
+                - text: Neue Meldung starten
+              - link "Verlauf" [ref=e190] [cursor=pointer]:
+                - /url: /tenant/tickets
+                - img [ref=e191]
+                - text: Verlauf
+        - generic [ref=e194]:
+          - heading "Aktive Anfragen · 1" [level=3] [ref=e195]:
+            - text: Aktive Anfragen
+            - generic [ref=e196]: · 1
+          - link "Heizung komplett ausgefallen VLT-2041 · Eingereicht vor 1 Std. Handwerker vergeben Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen. Müller Heizung GmbH Status verfolgen" [ref=e198] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+            - generic [ref=e199]:
+              - img [ref=e201]
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: Heizung komplett ausgefallen
+                    - generic [ref=e208]: VLT-2041 · Eingereicht vor 1 Std.
+                  - generic [ref=e209]: Handwerker vergeben
+                - paragraph [ref=e211]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+                - generic [ref=e212]:
+                  - generic [ref=e213]: Müller Heizung GmbH
+                  - generic [ref=e214]:
+                    - text: Status verfolgen
+                    - img [ref=e215]
+        - generic [ref=e217]:
+          - img [ref=e218]
+          - text: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.

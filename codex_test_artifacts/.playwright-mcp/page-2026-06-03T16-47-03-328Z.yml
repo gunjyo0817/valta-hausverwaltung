@@ -1,0 +1,164 @@
+- generic [ref=e793]:
+  - complementary [ref=e794]:
+    - link "V Valta Operations Copilot" [ref=e795] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e796]: V
+      - generic [ref=e797]:
+        - generic [ref=e798]: Valta
+        - generic [ref=e799]: Operations Copilot
+    - generic [ref=e801]:
+      - generic [ref=e802]: MH
+      - generic [ref=e803]:
+        - generic [ref=e804]: Handwerker-Sicht
+        - generic [ref=e805]: Thomas Müller
+    - generic [ref=e806]: Handwerker-Sicht
+    - navigation [ref=e807]:
+      - link "Aufträge" [ref=e808] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e809]
+        - generic [ref=e812]: Aufträge
+      - link "Terminplan" [ref=e813] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e814]
+        - generic [ref=e816]: Terminplan
+      - link "Nachrichten" [ref=e817] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e818]
+        - generic [ref=e820]: Nachrichten
+      - link "Erledigt" [ref=e821] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e822]
+        - generic [ref=e825]: Erledigt
+    - generic [ref=e826]:
+      - generic [ref=e827]:
+        - generic [ref=e828]:
+          - img [ref=e829]
+          - text: AI Copilot
+        - paragraph [ref=e832]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e833] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e834]: MH
+        - generic [ref=e835]:
+          - generic [ref=e836]: Thomas Müller
+          - generic [ref=e837]: Müller Heizung GmbH
+        - img [ref=e838]
+  - generic [ref=e841]:
+    - banner [ref=e842]:
+      - generic [ref=e843]:
+        - heading "Nachrichten von Hausverwaltungen" [level=1] [ref=e844]
+        - paragraph [ref=e845]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e846]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e848]':
+          - generic [ref=e849]: "Aktuelle Sicht:"
+          - generic [ref=e850]: Handwerker
+          - img [ref=e851]
+        - generic [ref=e853]:
+          - button "DE" [ref=e854]:
+            - img [ref=e855]
+            - text: DE
+          - button "EN" [ref=e859]
+        - button "Notifications" [ref=e860]:
+          - img [ref=e861]
+    - main [ref=e864]:
+      - generic [ref=e866]:
+        - 'button "Sarah Krüger jetzt VLT-2041 · Heizung Zustellung: In-App an Hausverwaltung gesendet. Handwerker-Nachricht im Ticket erfasst. VLT-2041" [ref=e868]':
+          - generic [ref=e869]:
+            - img [ref=e871]
+            - generic [ref=e875]:
+              - generic [ref=e876]:
+                - generic [ref=e877]: Sarah Krüger
+                - generic [ref=e878]: jetzt
+              - generic [ref=e879]: VLT-2041 · Heizung
+              - generic [ref=e880]: "Zustellung: In-App an Hausverwaltung gesendet. Handwerker-Nachricht im Ticket erfasst."
+              - generic [ref=e882]: VLT-2041
+        - generic [ref=e883]:
+          - generic [ref=e884]:
+            - generic [ref=e885]:
+              - generic [ref=e886]: Sarah Krüger
+              - generic [ref=e887]: VLT-2041 · Heizung · VLT-2041
+            - generic [ref=e888]:
+              - img [ref=e889]
+              - text: Vereinter Thread
+          - generic [ref=e891]:
+            - generic [ref=e892]:
+              - generic [ref=e893]: M
+              - generic [ref=e894]:
+                - generic [ref=e895]: Mieter:in · 08:42
+                - generic [ref=e896]: Heizung geht nicht mehr, sehr kalt.
+            - generic [ref=e897]:
+              - img [ref=e899]
+              - generic [ref=e902]:
+                - generic [ref=e903]: Valta · 08:42
+                - generic [ref=e904]: Seit wann besteht das Problem? Betrifft es alle Räume?
+            - generic [ref=e905]:
+              - generic [ref=e906]: M
+              - generic [ref=e907]:
+                - generic [ref=e908]: Mieter:in · 08:44
+                - generic [ref=e909]: Seit gestern Abend, alle Räume.
+            - generic [ref=e910]:
+              - img [ref=e912]
+              - generic [ref=e915]:
+                - generic [ref=e916]: Valta · 08:45
+                - generic [ref=e917]: "Ticket erstellt – Priorität: Kritisch. Empfehlung: Heizungsnotdienst."
+            - generic [ref=e918]:
+              - generic [ref=e919]: HV
+              - generic [ref=e920]:
+                - generic [ref=e921]: Hausverwaltung · jetzt
+                - generic [ref=e922]: Hallo Anna, vielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt - ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist. Beste Grüße Ihre Hausverwaltung
+            - generic [ref=e923]:
+              - generic [ref=e924]: DEL
+              - generic [ref=e925]:
+                - generic [ref=e926]: Zustellung · jetzt
+                - generic [ref=e927]: "Zustellung: E-Mail an Mieter:in gesendet. Antwort der Hausverwaltung wurde zugestellt."
+            - generic [ref=e928]:
+              - generic [ref=e929]: DEL
+              - generic [ref=e930]:
+                - generic [ref=e931]: Zustellung · jetzt
+                - generic [ref=e932]: "Zustellung: In-App an Mieter:in gesendet und gelesen. Antwort im Mieterportal verfuegbar."
+            - generic [ref=e933]:
+              - generic [ref=e934]: HV
+              - generic [ref=e935]:
+                - generic [ref=e936]: Hausverwaltung · jetzt
+                - generic [ref=e937]: Bitte senden Sie den genauen Thermostat-Typ und bestätigen Sie, ob Nachbarn ebenfalls betroffen sind.
+            - generic [ref=e938]:
+              - generic [ref=e939]: DEL
+              - generic [ref=e940]:
+                - generic [ref=e941]: Zustellung · jetzt
+                - generic [ref=e942]: "Zustellung: E-Mail an Mieter:in gesendet. Rueckfrage mit fehlenden Angaben wurde zugestellt."
+            - generic [ref=e943]:
+              - generic [ref=e944]: DEL
+              - generic [ref=e945]:
+                - generic [ref=e946]: Zustellung · jetzt
+                - generic [ref=e947]: "Zustellung: SMS an Mieter:in gesendet. SMS-Hinweis zur Rueckfrage wurde versendet."
+            - generic [ref=e948]:
+              - generic [ref=e949]: DEL
+              - generic [ref=e950]:
+                - generic [ref=e951]: Zustellung · jetzt
+                - generic [ref=e952]: "Termin geplant: Mi., 03.06., 20:00."
+            - generic [ref=e954]:
+              - generic [ref=e955]: Sie · jetzt
+              - generic [ref=e956]: "Müller Heizung GmbH: Arbeiten gestartet."
+            - generic [ref=e957]:
+              - generic [ref=e958]: DEL
+              - generic [ref=e959]:
+                - generic [ref=e960]: Zustellung · jetzt
+                - generic [ref=e961]: "Zustellung: In-App an Hausverwaltung gesendet. Handwerker-Nachricht im Ticket erfasst."
+            - generic [ref=e975]:
+              - generic [ref=e976]: Sie · jetzt
+              - generic [ref=e977]: Abschluss geprüft, Anlage läuft wieder stabil.
+            - generic [ref=e978]:
+              - generic [ref=e979]: DEL
+              - generic [ref=e980]:
+                - generic [ref=e981]: Zustellung · jetzt
+                - generic [ref=e982]: "Zustellung: In-App an Hausverwaltung gesendet. Handwerker-Nachricht im Ticket erfasst."
+          - generic [ref=e962]:
+            - generic [ref=e963]:
+              - button "Bin in 30 Minuten vor Ort." [ref=e964]
+              - button "Termin bestätigt." [ref=e965]
+              - button "Bitte Zugang sicherstellen." [ref=e966]
+              - button "Ersatzteil wird bestellt." [ref=e967]
+            - generic [ref=e968]:
+              - textbox "Antwort schreiben…" [ref=e969]
+              - button "Senden" [disabled] [ref=e970]:
+                - img [ref=e971]
+                - text: Senden

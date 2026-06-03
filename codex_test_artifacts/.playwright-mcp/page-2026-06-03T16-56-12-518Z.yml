@@ -1,0 +1,52 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "V Valta · Schaden melden" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: V
+      - generic [ref=e6]: Valta · Schaden melden
+    - generic [ref=e7]:
+      - button "DE" [ref=e8]:
+        - img [ref=e9]
+        - text: DE
+      - link "Status verfolgen →" [ref=e13] [cursor=pointer]:
+        - /url: /portal
+  - generic [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e20]:
+        - generic [ref=e21]: ✓
+        - generic [ref=e22]: Schaden melden
+      - generic [ref=e25]:
+        - generic [ref=e26]: ✓
+        - generic [ref=e27]: AI strukturiert
+      - generic [ref=e30]:
+        - generic [ref=e31]: ✓
+        - generic [ref=e32]: Prüfen & anpassen
+      - generic [ref=e35]:
+        - generic [ref=e36]: "4"
+        - generic [ref=e37]: Eingereicht
+    - generic [ref=e38]:
+      - img [ref=e40]
+      - generic [ref=e43]: Hallo 👋 Ich bin Valta, der digitale Assistent Ihrer Hausverwaltung. Was möchten Sie melden?
+    - generic [ref=e56]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+    - generic [ref=e57]:
+      - img [ref=e59]
+      - generic [ref=e62]: Läuft aktuell noch Wasser aus, und wo genau tritt es aus?
+    - generic [ref=e69]: Läuft noch
+    - generic [ref=e70]:
+      - img [ref=e72]
+      - generic [ref=e75]: Möchten Sie ein Foto anhängen, damit die Hausverwaltung es schneller einschätzen kann?
+    - generic [ref=e80]: Überspringen
+    - generic [ref=e81]:
+      - img [ref=e83]
+      - generic [ref=e86]: Vielen Dank. Ich strukturiere Ihre Angaben jetzt zu einem operativen Ticket…
+    - generic [ref=e162]:
+      - generic [ref=e163]:
+        - img [ref=e164]
+        - generic [ref=e167]: Ihre Meldung ist eingegangen
+        - generic [ref=e168]: Eingereicht
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: Wir prüfen Ihre Meldung und legen die passende Reaktion fest. Sie erhalten in Kürze ein Update mit den nächsten Schritten.
+        - generic [ref=e171]:
+          - link "Status verfolgen →" [ref=e172] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2050
+          - button "Weiteres Anliegen melden" [ref=e173]

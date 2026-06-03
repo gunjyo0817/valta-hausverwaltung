@@ -1,0 +1,122 @@
+- generic [ref=e690]:
+  - complementary [ref=e691]:
+    - link "V Valta Operations Copilot" [ref=e692] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e693]: V
+      - generic [ref=e694]:
+        - generic [ref=e695]: Valta
+        - generic [ref=e696]: Operations Copilot
+    - generic [ref=e698]:
+      - generic [ref=e699]: SK
+      - generic [ref=e700]:
+        - generic [ref=e701]: Hausverwaltungs-Sicht
+        - generic [ref=e702]: Sarah Krüger
+    - generic [ref=e703]: Hausverwaltung
+    - navigation [ref=e704]:
+      - link "Dashboard" [ref=e705] [cursor=pointer]:
+        - /url: /
+        - img [ref=e706]
+        - generic [ref=e711]: Dashboard
+      - link "Operations Inbox" [ref=e712] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e713]
+        - generic [ref=e716]: Operations Inbox
+      - link "AI Insights" [ref=e717] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e718]
+        - generic [ref=e720]: AI Insights
+      - link "Objekte" [ref=e721] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e722]
+        - generic [ref=e726]: Objekte
+      - link "Handwerker" [ref=e727] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e728]
+        - generic [ref=e733]: Handwerker
+    - generic [ref=e734]:
+      - generic [ref=e735]:
+        - generic [ref=e736]:
+          - img [ref=e737]
+          - text: AI Copilot
+        - paragraph [ref=e740]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e741] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e742]: SK
+        - generic [ref=e743]:
+          - generic [ref=e744]: Sarah Krüger
+          - generic [ref=e745]: Hausverwaltung Berlin GmbH
+        - img [ref=e746]
+  - generic [ref=e749]:
+    - banner [ref=e750]:
+      - generic [ref=e751]:
+        - heading "Handwerker" [level=1] [ref=e752]
+        - paragraph [ref=e753]: Ihr Partner-Netzwerk · 0 Firmen
+      - generic [ref=e754]:
+        - generic [ref=e755]:
+          - 'button "Aktuelle Sicht: Hausverwaltung" [active] [ref=e756]':
+            - generic [ref=e757]: "Aktuelle Sicht:"
+            - generic [ref=e758]: Hausverwaltung
+            - img [ref=e759]
+          - generic [ref=e800]:
+            - generic [ref=e802]: Demo-Modus · Rolle umschalten
+            - button "Hausverwaltung Sarah Krüger" [ref=e803]:
+              - img [ref=e805]
+              - generic [ref=e810]:
+                - generic [ref=e811]: Hausverwaltung
+                - generic [ref=e812]: Sarah Krüger
+              - img [ref=e813]
+            - button "Mieter:in Anna Becker" [ref=e815]:
+              - img [ref=e817]
+              - generic [ref=e819]:
+                - generic [ref=e820]: Mieter:in
+                - generic [ref=e821]: Anna Becker
+            - button "Handwerker Thomas Müller" [ref=e822]:
+              - img [ref=e824]
+              - generic [ref=e826]:
+                - generic [ref=e827]: Handwerker
+                - generic [ref=e828]: Thomas Müller
+            - button "Eigentümer:in Dr. Karl Reichmann" [ref=e829]:
+              - img [ref=e831]
+              - generic [ref=e834]:
+                - generic [ref=e835]: Eigentümer:in
+                - generic [ref=e836]: Dr. Karl Reichmann
+        - generic [ref=e761]:
+          - button "DE" [ref=e762]:
+            - img [ref=e763]
+            - text: DE
+          - button "EN" [ref=e767]
+        - button "Notifications" [ref=e768]:
+          - img [ref=e769]
+        - button "Neues Ticket" [ref=e772]:
+          - img [ref=e773]
+          - text: Neues Ticket
+    - main [ref=e774]:
+      - generic [ref=e775]:
+        - generic [ref=e776]:
+          - generic [ref=e777]:
+            - img [ref=e778]
+            - textbox "Handwerker durchsuchen…" [ref=e781]
+          - generic [ref=e782]:
+            - img [ref=e783]
+            - combobox [ref=e785]:
+              - option "Alle · Gewerk" [selected]
+              - option "Heizung"
+              - option "Klempner"
+              - option "Elektriker"
+              - option "Aufzug-Service"
+              - option "Internet-Provider"
+              - option "Reinigung"
+              - option "Gutachter"
+              - option "Notfall"
+            - combobox [ref=e786]:
+              - option "Alle · Verfügbarkeit" [selected]
+              - option "Verfügbar"
+              - option "Nicht verfügbar"
+        - generic [ref=e787]:
+          - img [ref=e789]
+          - generic [ref=e793]: Keine Handwerker in der Datenbank
+          - paragraph [ref=e794]: Die Demo-Handwerker wurden geleert. Lade Mock-Daten im Adminbereich neu, um das Verzeichnis wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e795] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e796]
+            - text: Demo-Daten-Admin oeffnen

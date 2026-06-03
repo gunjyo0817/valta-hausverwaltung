@@ -1,0 +1,106 @@
+- generic [ref=e174]:
+  - complementary [ref=e175]:
+    - link "V Valta Operations Copilot" [ref=e176] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e177]: V
+      - generic [ref=e178]:
+        - generic [ref=e179]: Valta
+        - generic [ref=e180]: Operations Copilot
+    - generic [ref=e182]:
+      - generic [ref=e183]: AB
+      - generic [ref=e184]:
+        - generic [ref=e185]: Mieter-Sicht
+        - generic [ref=e186]: Anna Becker
+    - generic [ref=e187]: Mieter-Sicht
+    - navigation [ref=e188]:
+      - link "Start" [ref=e189] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e190]
+        - generic [ref=e193]: Start
+      - link "Schaden melden" [ref=e194] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e195]
+        - generic [ref=e197]: Schaden melden
+      - link "Meine Anfragen" [ref=e198] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e199]
+        - generic [ref=e202]: Meine Anfragen
+    - generic [ref=e203]:
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - img [ref=e206]
+          - text: AI Copilot
+        - paragraph [ref=e209]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e210] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e211]: AB
+        - generic [ref=e212]:
+          - generic [ref=e213]: Anna Becker
+          - generic [ref=e214]: Lindenstraße 22, WE 14
+        - img [ref=e215]
+  - generic [ref=e218]:
+    - banner [ref=e219]:
+      - generic [ref=e220]:
+        - heading "Meine Anfragen" [level=1] [ref=e221]
+        - paragraph [ref=e222]: Alle Anfragen an einem Ort
+      - generic [ref=e223]:
+        - 'button "Aktuelle Sicht: Mieter:in" [ref=e225]':
+          - generic [ref=e226]: "Aktuelle Sicht:"
+          - generic [ref=e227]: Mieter:in
+          - img [ref=e228]
+        - generic [ref=e230]:
+          - button "DE" [ref=e231]:
+            - img [ref=e232]
+            - text: DE
+          - button "EN" [ref=e236]
+        - button "Notifications" [ref=e237]:
+          - img [ref=e238]
+        - link "Neue Anfrage" [ref=e241] [cursor=pointer]:
+          - /url: /tenant/new-request
+          - img [ref=e242]
+          - text: Neue Anfrage
+    - main [ref=e244]:
+      - generic [ref=e245]:
+        - generic [ref=e246]:
+          - button "Alle 2" [ref=e247]:
+            - text: Alle
+            - generic [ref=e248]: "2"
+          - button "Aktiv 2" [ref=e249]:
+            - text: Aktiv
+            - generic [ref=e250]: "2"
+          - button "Erledigt 0" [ref=e251]:
+            - text: Erledigt
+            - generic [ref=e252]: "0"
+        - generic [ref=e253]:
+          - link "Wasserleck in der Wohnung VLT-2050 · jetzt · Wasserschaden Neu Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567. Klempner Schulz & Söhne Verfolgen" [ref=e254] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2050
+            - generic [ref=e255]:
+              - img [ref=e257]
+              - generic [ref=e260]:
+                - generic [ref=e261]:
+                  - generic [ref=e262]:
+                    - generic [ref=e263]: Wasserleck in der Wohnung
+                    - generic [ref=e264]: VLT-2050 · jetzt · Wasserschaden
+                  - generic [ref=e265]: Neu
+                - paragraph [ref=e267]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+                - generic [ref=e268]:
+                  - generic [ref=e269]: Klempner Schulz & Söhne
+                  - generic [ref=e270]:
+                    - text: Verfolgen
+                    - img [ref=e271]
+          - link "Heizung komplett ausgefallen VLT-2041 · vor 1 Std. · Heizung Neu Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen. Müller Heizung GmbH Verfolgen" [ref=e273] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+            - generic [ref=e274]:
+              - img [ref=e276]
+              - generic [ref=e279]:
+                - generic [ref=e280]:
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: Heizung komplett ausgefallen
+                    - generic [ref=e283]: VLT-2041 · vor 1 Std. · Heizung
+                  - generic [ref=e284]: Neu
+                - paragraph [ref=e286]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+                - generic [ref=e287]:
+                  - generic [ref=e288]: Müller Heizung GmbH
+                  - generic [ref=e289]:
+                    - text: Verfolgen
+                    - img [ref=e290]

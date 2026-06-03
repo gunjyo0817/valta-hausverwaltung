@@ -1,0 +1,121 @@
+- generic [ref=e1382]:
+  - complementary [ref=e1383]:
+    - link "V Valta Operations Copilot" [ref=e1384] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e1385]: V
+      - generic [ref=e1386]:
+        - generic [ref=e1387]: Valta
+        - generic [ref=e1388]: Operations Copilot
+    - generic [ref=e1390]:
+      - generic [ref=e1391]: MH
+      - generic [ref=e1392]:
+        - generic [ref=e1393]: Handwerker-Sicht
+        - generic [ref=e1394]: Thomas Müller
+    - generic [ref=e1395]: Handwerker-Sicht
+    - navigation [ref=e1396]:
+      - link "Aufträge" [ref=e1397] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e1398]
+        - generic [ref=e1401]: Aufträge
+      - link "Terminplan" [ref=e1402] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e1403]
+        - generic [ref=e1405]: Terminplan
+      - link "Nachrichten" [ref=e1406] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e1407]
+        - generic [ref=e1409]: Nachrichten
+      - link "Erledigt" [ref=e1410] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e1411]
+        - generic [ref=e1414]: Erledigt
+    - generic [ref=e1415]:
+      - generic [ref=e1416]:
+        - generic [ref=e1417]:
+          - img [ref=e1418]
+          - text: AI Copilot
+        - paragraph [ref=e1421]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e1422] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1423]: MH
+        - generic [ref=e1424]:
+          - generic [ref=e1425]: Thomas Müller
+          - generic [ref=e1426]: Müller Heizung GmbH
+        - img [ref=e1427]
+  - generic [ref=e1430]:
+    - banner [ref=e1431]:
+      - generic [ref=e1432]:
+        - heading "Wochenplan" [level=1] [ref=e1433]
+        - paragraph [ref=e1434]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e1435]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e1437]':
+          - generic [ref=e1438]: "Aktuelle Sicht:"
+          - generic [ref=e1439]: Handwerker
+          - img [ref=e1440]
+        - generic [ref=e1442]:
+          - button "DE" [ref=e1443]:
+            - img [ref=e1444]
+            - text: DE
+          - button "EN" [ref=e1448]
+        - button "Notifications" [ref=e1449]:
+          - img [ref=e1450]
+    - main [ref=e1453]:
+      - generic [ref=e1454]:
+        - generic [ref=e1455]:
+          - img [ref=e1457]
+          - generic [ref=e1461]: Keine geplanten Auftraege
+          - paragraph [ref=e1462]: Fuer diesen Demo-Handwerker gibt es keine aktiven geplanten Auftraege. Lade Mock-Daten im Adminbereich neu, um Termine wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e1463] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e1464]
+            - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e1467]:
+          - generic [ref=e1468]:
+            - button "Heute" [ref=e1469]
+            - button "Diese Woche" [ref=e1470]
+          - generic [ref=e1471]:
+            - button [disabled] [ref=e1472]:
+              - img [ref=e1473]
+            - generic [ref=e1475]: KW 23
+            - button [disabled] [ref=e1476]:
+              - img [ref=e1477]
+        - generic [ref=e1479]:
+          - generic [ref=e1480]:
+            - generic [ref=e1481]: Heute
+            - generic [ref=e1482]: "0"
+            - generic [ref=e1483]: Termine
+          - generic [ref=e1484]:
+            - generic [ref=e1485]: Diese Woche
+            - generic [ref=e1486]: "0"
+            - generic [ref=e1487]: geplant
+          - generic [ref=e1488]:
+            - generic [ref=e1489]: Objekte
+            - generic [ref=e1490]: "0"
+            - generic [ref=e1491]: betreut
+          - generic [ref=e1492]:
+            - generic [ref=e1493]: Durchschn. Dauer
+            - generic [ref=e1494]: 1h 30
+            - generic [ref=e1495]: pro Auftrag
+        - generic [ref=e1497]:
+          - generic [ref=e1498]:
+            - generic [ref=e1499]:
+              - generic [ref=e1500]: Mo
+              - generic [ref=e1501]: 01.06.
+            - generic [ref=e1502]:
+              - generic [ref=e1503]: Di
+              - generic [ref=e1504]: 02.06.
+            - generic [ref=e1505]:
+              - generic [ref=e1506]: Mi
+              - generic [ref=e1507]: 03.06.
+            - generic [ref=e1508]:
+              - generic [ref=e1509]: Do
+              - generic [ref=e1510]: 04.06.
+            - generic [ref=e1511]:
+              - generic [ref=e1512]: Fr
+              - generic [ref=e1513]: 05.06.
+          - generic [ref=e1514]:
+            - generic [ref=e1516]: "-"
+            - generic [ref=e1518]: "-"
+            - generic [ref=e1520]: "-"
+            - generic [ref=e1522]: "-"
+            - generic [ref=e1524]: "-"

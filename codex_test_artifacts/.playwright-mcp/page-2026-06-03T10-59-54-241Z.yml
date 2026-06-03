@@ -1,0 +1,277 @@
+- generic [ref=e227]:
+  - complementary [ref=e228]:
+    - link "V Valta Operations Copilot" [ref=e229] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e230]: V
+      - generic [ref=e231]:
+        - generic [ref=e232]: Valta
+        - generic [ref=e233]: Operations Copilot
+    - generic [ref=e235]:
+      - generic [ref=e236]: SK
+      - generic [ref=e237]:
+        - generic [ref=e238]: Hausverwaltungs-Sicht
+        - generic [ref=e239]: Sarah Krüger
+    - generic [ref=e240]: Hausverwaltung
+    - navigation [ref=e241]:
+      - link "Dashboard" [ref=e242] [cursor=pointer]:
+        - /url: /
+        - img [ref=e243]
+        - generic [ref=e248]: Dashboard
+      - link "Operations Inbox" [ref=e249] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e250]
+        - generic [ref=e253]: Operations Inbox
+      - link "AI Insights" [ref=e254] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e255]
+        - generic [ref=e257]: AI Insights
+      - link "Objekte" [ref=e258] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e259]
+        - generic [ref=e263]: Objekte
+      - link "Handwerker" [ref=e264] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e265]
+        - generic [ref=e270]: Handwerker
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - generic [ref=e273]:
+          - img [ref=e274]
+          - text: AI Copilot
+        - paragraph [ref=e277]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e278] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e279]: SK
+        - generic [ref=e280]:
+          - generic [ref=e281]: Sarah Krüger
+          - generic [ref=e282]: Hausverwaltung Berlin GmbH
+        - img [ref=e283]
+  - generic [ref=e286]:
+    - banner [ref=e287]:
+      - generic [ref=e288]:
+        - heading "Guten Morgen, Sarah" [level=1] [ref=e289]
+        - paragraph [ref=e290]: Hier ist, was in Ihrem Portfolio heute Aufmerksamkeit braucht.
+      - generic [ref=e291]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e293]':
+          - generic [ref=e294]: "Aktuelle Sicht:"
+          - generic [ref=e295]: Hausverwaltung
+          - img [ref=e296]
+        - generic [ref=e298]:
+          - button "DE" [ref=e299]:
+            - img [ref=e300]
+            - text: DE
+          - button "EN" [ref=e304]
+        - button "Notifications" [ref=e305]:
+          - img [ref=e306]
+          - generic [ref=e309]: "3"
+        - button "Neues Ticket" [ref=e310]:
+          - img [ref=e311]
+          - text: Neues Ticket
+    - main [ref=e312]:
+      - generic [ref=e313]:
+        - generic [ref=e314]:
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - generic [ref=e317]: Offene Tickets
+              - img [ref=e318]
+            - generic [ref=e321]: "6"
+            - generic [ref=e322]:
+              - img [ref=e323]
+              - text: +3 heute
+          - generic [ref=e326]:
+            - generic [ref=e327]:
+              - generic [ref=e328]: Ø Reaktionszeit
+              - img [ref=e329]
+            - generic [ref=e332]: 14 Min.
+            - generic [ref=e333]:
+              - img [ref=e334]
+              - text: −38% MoM
+          - generic [ref=e337]:
+            - generic [ref=e338]:
+              - generic [ref=e339]: AI-Vorschläge übernommen
+              - img [ref=e340]
+            - generic [ref=e343]: "11"
+            - generic [ref=e344]:
+              - img [ref=e345]
+              - text: diese Woche
+          - generic [ref=e348]:
+            - generic [ref=e349]:
+              - generic [ref=e350]: Kritische Fälle
+              - img [ref=e351]
+            - generic [ref=e353]: "3"
+            - generic [ref=e354]:
+              - img [ref=e355]
+              - text: Sofort prüfen
+          - generic [ref=e358]:
+            - generic [ref=e359]:
+              - generic [ref=e360]: Wartet auf Handwerker
+              - img [ref=e361]
+            - generic [ref=e363]: "1"
+            - generic [ref=e364]:
+              - img [ref=e365]
+              - text: 2 überfällig
+        - generic [ref=e368]:
+          - generic [ref=e369]:
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - heading "Aktive Tickets" [level=2] [ref=e372]
+                - paragraph [ref=e373]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+              - link "Inbox öffnen" [ref=e374] [cursor=pointer]:
+                - /url: /inbox
+                - text: Inbox öffnen
+                - img [ref=e375]
+            - list [ref=e377]:
+              - listitem [ref=e378]:
+                - link "VLT-2041 Kritisch AI · 96% Heizung komplett ausgefallen Anna Becker · WE 14, 3. OG · Lindenstraße 22, Berlin Neu vor 1 Std." [ref=e379] [cursor=pointer]:
+                  - /url: /ticket/VLT-2041
+                  - img [ref=e381]
+                  - generic [ref=e383]:
+                    - generic [ref=e384]:
+                      - generic [ref=e385]: VLT-2041
+                      - generic [ref=e386]: Kritisch
+                      - generic [ref=e387]:
+                        - img [ref=e388]
+                        - text: AI · 96%
+                    - generic [ref=e391]: Heizung komplett ausgefallen
+                    - generic [ref=e392]: Anna Becker · WE 14, 3. OG · Lindenstraße 22, Berlin
+                  - generic [ref=e393]:
+                    - generic [ref=e394]: Neu
+                    - generic [ref=e396]: vor 1 Std.
+                  - img [ref=e397]
+              - listitem [ref=e400]:
+                - link "VLT-2039 Hoch AI · 89% Wasserschaden Küche Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München In Bearbeitung vor 4 Std." [ref=e401] [cursor=pointer]:
+                  - /url: /ticket/VLT-2039
+                  - img [ref=e403]
+                  - generic [ref=e405]:
+                    - generic [ref=e406]:
+                      - generic [ref=e407]: VLT-2039
+                      - generic [ref=e408]: Hoch
+                      - generic [ref=e409]:
+                        - img [ref=e410]
+                        - text: AI · 89%
+                    - generic [ref=e413]: Wasserschaden Küche
+                    - generic [ref=e414]: Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München
+                  - generic [ref=e415]:
+                    - generic [ref=e416]: In Bearbeitung
+                    - generic [ref=e418]: vor 4 Std.
+                  - img [ref=e419]
+              - listitem [ref=e422]:
+                - link "VLT-2037 Hoch AI · 92% Aufzug außer Betrieb Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg Handwerker vergeben vor 8 Std." [ref=e423] [cursor=pointer]:
+                  - /url: /ticket/VLT-2037
+                  - img [ref=e425]
+                  - generic [ref=e427]:
+                    - generic [ref=e428]:
+                      - generic [ref=e429]: VLT-2037
+                      - generic [ref=e430]: Hoch
+                      - generic [ref=e431]:
+                        - img [ref=e432]
+                        - text: AI · 92%
+                    - generic [ref=e435]: Aufzug außer Betrieb
+                    - generic [ref=e436]: Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg
+                  - generic [ref=e437]:
+                    - generic [ref=e438]: Handwerker vergeben
+                    - generic [ref=e440]: vor 8 Std.
+                  - img [ref=e441]
+              - listitem [ref=e444]:
+                - link "VLT-2034 Mittel AI · 74% Internetausfall im gesamten Haus Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln Wartet auf Info gestern" [ref=e445] [cursor=pointer]:
+                  - /url: /ticket/VLT-2034
+                  - img [ref=e447]
+                  - generic [ref=e449]:
+                    - generic [ref=e450]:
+                      - generic [ref=e451]: VLT-2034
+                      - generic [ref=e452]: Mittel
+                      - generic [ref=e453]:
+                        - img [ref=e454]
+                        - text: AI · 74%
+                    - generic [ref=e457]: Internetausfall im gesamten Haus
+                    - generic [ref=e458]: Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln
+                  - generic [ref=e459]:
+                    - generic [ref=e460]: Wartet auf Info
+                    - generic [ref=e462]: gestern
+                  - img [ref=e463]
+              - listitem [ref=e466]:
+                - link "VLT-2030 Mittel AI · 81% Schimmel im Schlafzimmer Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig Wartet auf Info vor 2 Tagen" [ref=e467] [cursor=pointer]:
+                  - /url: /ticket/VLT-2030
+                  - img [ref=e469]
+                  - generic [ref=e471]:
+                    - generic [ref=e472]:
+                      - generic [ref=e473]: VLT-2030
+                      - generic [ref=e474]: Mittel
+                      - generic [ref=e475]:
+                        - img [ref=e476]
+                        - text: AI · 81%
+                    - generic [ref=e479]: Schimmel im Schlafzimmer
+                    - generic [ref=e480]: Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig
+                  - generic [ref=e481]:
+                    - generic [ref=e482]: Wartet auf Info
+                    - generic [ref=e484]: vor 2 Tagen
+                  - img [ref=e485]
+              - listitem [ref=e488]:
+                - link "VLT-2022 Niedrig AI · 84% Steckdose im Bad funktioniert nicht Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt Neu vor 2 Std." [ref=e489] [cursor=pointer]:
+                  - /url: /ticket/VLT-2022
+                  - img [ref=e491]
+                  - generic [ref=e493]:
+                    - generic [ref=e494]:
+                      - generic [ref=e495]: VLT-2022
+                      - generic [ref=e496]: Niedrig
+                      - generic [ref=e497]:
+                        - img [ref=e498]
+                        - text: AI · 84%
+                    - generic [ref=e501]: Steckdose im Bad funktioniert nicht
+                    - generic [ref=e502]: Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt
+                  - generic [ref=e503]:
+                    - generic [ref=e504]: Neu
+                    - generic [ref=e506]: vor 2 Std.
+                  - img [ref=e507]
+          - generic [ref=e510]:
+            - generic [ref=e511]:
+              - generic [ref=e512]:
+                - img [ref=e513]
+                - heading "AI Assistant · Aktivität" [level=2] [ref=e516]
+              - list [ref=e517]:
+                - listitem [ref=e518]:
+                  - generic [ref=e520]:
+                    - generic [ref=e521]: Ticket VLT-2041 als kritisch eingestuft (Heizungsausfall, < 5 °C).
+                    - generic [ref=e522]: vor 2 Min.
+                - listitem [ref=e523]:
+                  - generic [ref=e525]:
+                    - generic [ref=e526]: Antwortentwurf für VLT-2039 erstellt.
+                    - generic [ref=e527]: vor 8 Min.
+                - listitem [ref=e528]:
+                  - generic [ref=e530]:
+                    - generic [ref=e531]: Kontraktor 'Schulz & Söhne' für Wasserschaden vorgeschlagen.
+                    - generic [ref=e532]: vor 14 Min.
+                - listitem [ref=e533]:
+                  - generic [ref=e535]:
+                    - generic [ref=e536]: 3 doppelte Tickets zu Internetausfall zusammengeführt.
+                    - generic [ref=e537]: vor 22 Min.
+                - listitem [ref=e538]:
+                  - generic [ref=e540]:
+                    - generic [ref=e541]: Übersetzung EN → DE für 2 Anfragen.
+                    - generic [ref=e542]: vor 41 Min.
+            - generic [ref=e543]:
+              - generic [ref=e544]:
+                - img [ref=e545]
+                - heading "Benachrichtigungen" [level=2] [ref=e548]
+              - list [ref=e549]:
+                - listitem [ref=e550]:
+                  - generic [ref=e551]: vor 4 Min.
+                  - generic [ref=e552]: "Neuer kritischer Fall: Heizungsausfall"
+                - listitem [ref=e553]:
+                  - generic [ref=e554]: vor 18 Min.
+                  - generic [ref=e555]: Mieter hat 2 Fotos hochgeladen
+                - listitem [ref=e556]:
+                  - generic [ref=e557]: vor 1 Std.
+                  - generic [ref=e558]: Eigentümer-Freigabe erforderlich
+                - listitem [ref=e559]:
+                  - generic [ref=e560]: vor 2 Std.
+                  - generic [ref=e561]: Handwerker hat Termin bestätigt
+                - listitem [ref=e562]:
+                  - generic [ref=e563]: vor 3 Std.
+                  - generic [ref=e564]: Ticket-Status geändert
+                - listitem [ref=e565]:
+                  - generic [ref=e566]: vor 5 Std.
+                  - generic [ref=e567]: Fehlende Informationen
+                - listitem [ref=e568]:
+                  - generic [ref=e569]: gestern
+                  - generic [ref=e570]: KI-Empfehlung verfügbar

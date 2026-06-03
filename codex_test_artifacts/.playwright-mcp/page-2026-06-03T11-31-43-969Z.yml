@@ -1,0 +1,135 @@
+- generic [ref=e600]:
+  - complementary [ref=e601]:
+    - link "V Valta Operations Copilot" [ref=e602] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e603]: V
+      - generic [ref=e604]:
+        - generic [ref=e605]: Valta
+        - generic [ref=e606]: Operations Copilot
+    - generic [ref=e608]:
+      - generic [ref=e609]: KR
+      - generic [ref=e610]:
+        - generic [ref=e611]: Eigentümer-Sicht
+        - generic [ref=e612]: Dr. Karl Reichmann
+    - generic [ref=e613]: Eigentümer-Sicht
+    - navigation [ref=e614]:
+      - link "Objekte" [ref=e615] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e616]
+        - generic [ref=e619]: Objekte
+      - link "Offene Fälle" [ref=e620] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e621]
+        - generic [ref=e623]: Offene Fälle
+      - link "Finanzübersicht" [ref=e624] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e625]
+        - generic [ref=e628]: Finanzübersicht
+      - link "Freigaben" [ref=e629] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e630]
+        - generic [ref=e633]: Freigaben
+    - generic [ref=e634]:
+      - generic [ref=e635]:
+        - generic [ref=e636]:
+          - img [ref=e637]
+          - text: AI Copilot
+        - paragraph [ref=e640]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e641] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e642]: KR
+        - generic [ref=e643]:
+          - generic [ref=e644]: Dr. Karl Reichmann
+          - generic [ref=e645]: Reichmann Immobilien KG
+        - img [ref=e646]
+  - generic [ref=e649]:
+    - banner [ref=e650]:
+      - generic [ref=e651]:
+        - heading "Portfolio-Übersicht" [level=1] [ref=e652]
+        - paragraph [ref=e653]: Transparenz für Eigentümer · zentrale KPIs & Freigaben.
+      - generic [ref=e654]:
+        - generic [ref=e655]:
+          - img [ref=e656]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e659]
+          - generic [ref=e660]: ⌘K
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e662]':
+          - generic [ref=e663]: "Aktuelle Sicht:"
+          - generic [ref=e664]: Eigentümer:in
+          - img [ref=e665]
+        - generic [ref=e667]:
+          - button "DE" [ref=e668]:
+            - img [ref=e669]
+            - text: DE
+          - button "EN" [ref=e673]
+        - button "Notifications" [ref=e674]:
+          - img [ref=e675]
+    - main [ref=e678]:
+      - generic [ref=e679]:
+        - generic [ref=e680]:
+          - generic [ref=e681]:
+            - generic [ref=e682]:
+              - img [ref=e684]
+              - generic [ref=e688]: Wohneinheiten
+            - generic [ref=e689]: "0"
+            - generic [ref=e690]: 0 Objekte
+          - generic [ref=e691]:
+            - generic [ref=e692]:
+              - img [ref=e694]
+              - generic [ref=e696]: Offene Fälle
+            - generic [ref=e697]: "0"
+            - generic [ref=e698]: Kritisch
+          - generic [ref=e699]:
+            - generic [ref=e700]:
+              - img [ref=e702]
+              - generic [ref=e705]: Freigaben offen
+            - generic [ref=e706]: "0"
+            - generic [ref=e707]: —
+          - generic [ref=e708]:
+            - generic [ref=e709]:
+              - img [ref=e711]
+              - generic [ref=e714]: Wartungskosten YTD
+            - generic [ref=e715]: € 0
+            - generic [ref=e716]: 0% Budget
+        - generic [ref=e718]:
+          - img [ref=e720]
+          - generic [ref=e723]:
+            - generic [ref=e724]: AI-Zusammenfassung Portfolio
+            - paragraph [ref=e725]: 3 ungelöste Heizungsfälle im Berliner Objekt deuten auf alternde Anlagen hin. Wartungsaufwand in München −18% MoM. Frankfurter Objekt stabil ohne kritische Vorfälle.
+        - generic [ref=e726]:
+          - generic [ref=e727]:
+            - generic [ref=e728]:
+              - heading "Gebäude-Gesundheit" [level=3] [ref=e729]
+              - link "Offene Fälle" [ref=e730] [cursor=pointer]:
+                - /url: /owner/issues
+                - text: Offene Fälle
+                - img [ref=e731]
+            - paragraph [ref=e733]: AI-bewertet aus Wartungs- und Ticket-Historie.
+            - generic [ref=e735]:
+              - img [ref=e737]
+              - generic [ref=e741]: Keine Objekte
+              - paragraph [ref=e742]: Es gibt keine Objekt-Datensaetze fuer diese Zusammenfassung. Lade Mock-Daten im Adminbereich neu, um Portfolio-Daten wiederherzustellen.
+              - link "Demo-Daten-Admin oeffnen" [ref=e743] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e744]
+                - text: Demo-Daten-Admin oeffnen
+          - generic [ref=e747]:
+            - heading "Ausstehende Freigaben" [level=3] [ref=e748]
+            - paragraph [ref=e749]: Hausverwaltung wartet auf Ihre Entscheidung.
+            - generic [ref=e751]:
+              - img [ref=e753]
+              - generic [ref=e757]: Keine Freigaben
+              - paragraph [ref=e758]: Es gibt keine offenen Freigabe-Datensaetze.
+              - link "Demo-Daten-Admin oeffnen" [ref=e759] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e760]
+                - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e763]:
+          - heading "Kostenverteilung nach Kategorie" [level=3] [ref=e764]
+          - generic [ref=e766]:
+            - img [ref=e768]
+            - generic [ref=e772]: Keine Kostenkategorien
+            - paragraph [ref=e773]: Es gibt keine Rechnungen fuer diese Zusammenfassung.
+            - link "Demo-Daten-Admin oeffnen" [ref=e774] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e775]
+              - text: Demo-Daten-Admin oeffnen

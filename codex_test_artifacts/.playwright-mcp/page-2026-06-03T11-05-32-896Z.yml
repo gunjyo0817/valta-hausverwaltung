@@ -1,0 +1,281 @@
+- generic [ref=e1291]:
+  - complementary [ref=e1292]:
+    - link "V Valta Operations Copilot" [ref=e1293] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e1294]: V
+      - generic [ref=e1295]:
+        - generic [ref=e1296]: Valta
+        - generic [ref=e1297]: Operations Copilot
+    - generic [ref=e1299]:
+      - generic [ref=e1300]: SK
+      - generic [ref=e1301]:
+        - generic [ref=e1302]: Property Manager view
+        - generic [ref=e1303]: Sarah Krüger
+    - generic [ref=e1304]: Property management
+    - navigation [ref=e1305]:
+      - link "Dashboard" [ref=e1306] [cursor=pointer]:
+        - /url: /
+        - img [ref=e1307]
+        - generic [ref=e1312]: Dashboard
+      - link "Operations Inbox" [ref=e1313] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e1314]
+        - generic [ref=e1317]: Operations Inbox
+      - link "AI Insights" [ref=e1318] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e1319]
+        - generic [ref=e1321]: AI Insights
+      - link "Properties" [ref=e1322] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e1323]
+        - generic [ref=e1327]: Properties
+      - link "Contractors" [ref=e1328] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e1329]
+        - generic [ref=e1334]: Contractors
+    - generic [ref=e1335]:
+      - generic [ref=e1336]:
+        - generic [ref=e1337]:
+          - img [ref=e1338]
+          - text: AI Copilot
+        - paragraph [ref=e1341]: Structures requests, prioritises urgency, recommends contractors.
+      - link "SK Sarah Krüger Berlin Property Mgmt." [ref=e1342] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1343]: SK
+        - generic [ref=e1344]:
+          - generic [ref=e1345]: Sarah Krüger
+          - generic [ref=e1346]: Berlin Property Mgmt.
+        - img [ref=e1347]
+  - generic [ref=e1350]:
+    - banner [ref=e1351]:
+      - generic [ref=e1352]:
+        - heading "Good morning, Sarah" [level=1] [ref=e1353]
+        - paragraph [ref=e1354]: Here's what needs your attention across the portfolio today.
+      - generic [ref=e1355]:
+        - generic [ref=e1356]:
+          - img [ref=e1357]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e1360]
+          - generic [ref=e1361]: ⌘K
+        - 'button "Current view: Property Manager" [ref=e1363]':
+          - generic [ref=e1364]: "Current view:"
+          - generic [ref=e1365]: Property Manager
+          - img [ref=e1366]
+        - generic [ref=e1368]:
+          - button "DE" [ref=e1369]:
+            - img [ref=e1370]
+            - text: DE
+          - button "EN" [ref=e1374]
+        - button "Notifications" [ref=e1375]:
+          - img [ref=e1376]
+          - generic [ref=e1379]: "3"
+        - button "New ticket" [ref=e1380]:
+          - img [ref=e1381]
+          - text: New ticket
+    - main [ref=e1382]:
+      - generic [ref=e1383]:
+        - generic [ref=e1384]:
+          - generic [ref=e1385]:
+            - generic [ref=e1386]:
+              - generic [ref=e1387]: Open tickets
+              - img [ref=e1388]
+            - generic [ref=e1391]: "6"
+            - generic [ref=e1392]:
+              - img [ref=e1393]
+              - text: +3 today
+          - generic [ref=e1396]:
+            - generic [ref=e1397]:
+              - generic [ref=e1398]: Avg. response time
+              - img [ref=e1399]
+            - generic [ref=e1402]: 14 min
+            - generic [ref=e1403]:
+              - img [ref=e1404]
+              - text: −38% MoM
+          - generic [ref=e1407]:
+            - generic [ref=e1408]:
+              - generic [ref=e1409]: AI suggestions accepted
+              - img [ref=e1410]
+            - generic [ref=e1413]: "11"
+            - generic [ref=e1414]:
+              - img [ref=e1415]
+              - text: this week
+          - generic [ref=e1418]:
+            - generic [ref=e1419]:
+              - generic [ref=e1420]: Critical cases
+              - img [ref=e1421]
+            - generic [ref=e1423]: "3"
+            - generic [ref=e1424]:
+              - img [ref=e1425]
+              - text: Review now
+          - generic [ref=e1428]:
+            - generic [ref=e1429]:
+              - generic [ref=e1430]: Awaiting contractor
+              - img [ref=e1431]
+            - generic [ref=e1433]: "1"
+            - generic [ref=e1434]:
+              - img [ref=e1435]
+              - text: 2 overdue
+        - generic [ref=e1438]:
+          - generic [ref=e1439]:
+            - generic [ref=e1440]:
+              - generic [ref=e1441]:
+                - heading "Active tickets" [level=2] [ref=e1442]
+                - paragraph [ref=e1443]: Sorted by urgency — Copilot triages in real time.
+              - link "Open inbox" [ref=e1444] [cursor=pointer]:
+                - /url: /inbox
+                - text: Open inbox
+                - img [ref=e1445]
+            - list [ref=e1447]:
+              - listitem [ref=e1448]:
+                - link "VLT-2041 Critical AI · 96% Heating completely down Anna Becker · Unit 14, 3rd floor · Lindenstraße 22, Berlin New 1 h ago" [ref=e1449] [cursor=pointer]:
+                  - /url: /ticket/VLT-2041
+                  - img [ref=e1451]
+                  - generic [ref=e1453]:
+                    - generic [ref=e1454]:
+                      - generic [ref=e1455]: VLT-2041
+                      - generic [ref=e1456]: Critical
+                      - generic [ref=e1457]:
+                        - img [ref=e1458]
+                        - text: AI · 96%
+                    - generic [ref=e1461]: Heating completely down
+                    - generic [ref=e1462]: Anna Becker · Unit 14, 3rd floor · Lindenstraße 22, Berlin
+                  - generic [ref=e1463]:
+                    - generic [ref=e1464]: New
+                    - generic [ref=e1466]: 1 h ago
+                  - img [ref=e1467]
+              - listitem [ref=e1470]:
+                - link "VLT-2039 High AI · 89% Water leak in kitchen Mehmet Yilmaz · Unit 4, ground floor · Goethestraße 8, München In progress 4 h ago" [ref=e1471] [cursor=pointer]:
+                  - /url: /ticket/VLT-2039
+                  - img [ref=e1473]
+                  - generic [ref=e1475]:
+                    - generic [ref=e1476]:
+                      - generic [ref=e1477]: VLT-2039
+                      - generic [ref=e1478]: High
+                      - generic [ref=e1479]:
+                        - img [ref=e1480]
+                        - text: AI · 89%
+                    - generic [ref=e1483]: Water leak in kitchen
+                    - generic [ref=e1484]: Mehmet Yilmaz · Unit 4, ground floor · Goethestraße 8, München
+                  - generic [ref=e1485]:
+                    - generic [ref=e1486]: In progress
+                    - generic [ref=e1488]: 4 h ago
+                  - img [ref=e1489]
+              - listitem [ref=e1492]:
+                - link "VLT-2037 High AI · 92% Elevator out of service Sophia Klein · Unit 22, 6th floor · Parkallee 110, Hamburg Contractor assigned 8 h ago" [ref=e1493] [cursor=pointer]:
+                  - /url: /ticket/VLT-2037
+                  - img [ref=e1495]
+                  - generic [ref=e1497]:
+                    - generic [ref=e1498]:
+                      - generic [ref=e1499]: VLT-2037
+                      - generic [ref=e1500]: High
+                      - generic [ref=e1501]:
+                        - img [ref=e1502]
+                        - text: AI · 92%
+                    - generic [ref=e1505]: Elevator out of service
+                    - generic [ref=e1506]: Sophia Klein · Unit 22, 6th floor · Parkallee 110, Hamburg
+                  - generic [ref=e1507]:
+                    - generic [ref=e1508]: Contractor assigned
+                    - generic [ref=e1510]: 8 h ago
+                  - img [ref=e1511]
+              - listitem [ref=e1514]:
+                - link "VLT-2034 Medium AI · 74% Internet outage building-wide Lukas Wagner · Unit 9, 2nd floor · Hauptstraße 5, Köln Waiting on info yesterday" [ref=e1515] [cursor=pointer]:
+                  - /url: /ticket/VLT-2034
+                  - img [ref=e1517]
+                  - generic [ref=e1519]:
+                    - generic [ref=e1520]:
+                      - generic [ref=e1521]: VLT-2034
+                      - generic [ref=e1522]: Medium
+                      - generic [ref=e1523]:
+                        - img [ref=e1524]
+                        - text: AI · 74%
+                    - generic [ref=e1527]: Internet outage building-wide
+                    - generic [ref=e1528]: Lukas Wagner · Unit 9, 2nd floor · Hauptstraße 5, Köln
+                  - generic [ref=e1529]:
+                    - generic [ref=e1530]: Waiting on info
+                    - generic [ref=e1532]: yesterday
+                  - img [ref=e1533]
+              - listitem [ref=e1536]:
+                - link "VLT-2030 Medium AI · 81% Mould in bedroom Clara Hoffmann · Unit 7, 1st floor · Rosenweg 3, Leipzig Waiting on info 2 days ago" [ref=e1537] [cursor=pointer]:
+                  - /url: /ticket/VLT-2030
+                  - img [ref=e1539]
+                  - generic [ref=e1541]:
+                    - generic [ref=e1542]:
+                      - generic [ref=e1543]: VLT-2030
+                      - generic [ref=e1544]: Medium
+                      - generic [ref=e1545]:
+                        - img [ref=e1546]
+                        - text: AI · 81%
+                    - generic [ref=e1549]: Mould in bedroom
+                    - generic [ref=e1550]: Clara Hoffmann · Unit 7, 1st floor · Rosenweg 3, Leipzig
+                  - generic [ref=e1551]:
+                    - generic [ref=e1552]: Waiting on info
+                    - generic [ref=e1554]: 2 days ago
+                  - img [ref=e1555]
+              - listitem [ref=e1558]:
+                - link "VLT-2022 Low AI · 84% Bathroom socket dead Elena Fischer · Unit 3, 1st floor · Frankfurter Allee 88, Frankfurt New 2 h ago" [ref=e1559] [cursor=pointer]:
+                  - /url: /ticket/VLT-2022
+                  - img [ref=e1561]
+                  - generic [ref=e1563]:
+                    - generic [ref=e1564]:
+                      - generic [ref=e1565]: VLT-2022
+                      - generic [ref=e1566]: Low
+                      - generic [ref=e1567]:
+                        - img [ref=e1568]
+                        - text: AI · 84%
+                    - generic [ref=e1571]: Bathroom socket dead
+                    - generic [ref=e1572]: Elena Fischer · Unit 3, 1st floor · Frankfurter Allee 88, Frankfurt
+                  - generic [ref=e1573]:
+                    - generic [ref=e1574]: New
+                    - generic [ref=e1576]: 2 h ago
+                  - img [ref=e1577]
+          - generic [ref=e1580]:
+            - generic [ref=e1581]:
+              - generic [ref=e1582]:
+                - img [ref=e1583]
+                - heading "AI Assistant · activity" [level=2] [ref=e1586]
+              - list [ref=e1587]:
+                - listitem [ref=e1588]:
+                  - generic [ref=e1590]:
+                    - generic [ref=e1591]: Classified VLT-2041 as critical (heating failure, < 5 °C).
+                    - generic [ref=e1592]: 2 min ago
+                - listitem [ref=e1593]:
+                  - generic [ref=e1595]:
+                    - generic [ref=e1596]: Drafted reply for VLT-2039.
+                    - generic [ref=e1597]: 8 min ago
+                - listitem [ref=e1598]:
+                  - generic [ref=e1600]:
+                    - generic [ref=e1601]: Suggested 'Schulz & Söhne' for the water leak.
+                    - generic [ref=e1602]: 14 min ago
+                - listitem [ref=e1603]:
+                  - generic [ref=e1605]:
+                    - generic [ref=e1606]: Merged 3 duplicate tickets about the internet outage.
+                    - generic [ref=e1607]: 22 min ago
+                - listitem [ref=e1608]:
+                  - generic [ref=e1610]:
+                    - generic [ref=e1611]: Translated 2 requests EN → DE.
+                    - generic [ref=e1612]: 41 min ago
+            - generic [ref=e1613]:
+              - generic [ref=e1614]:
+                - img [ref=e1615]
+                - heading "Notifications" [level=2] [ref=e1618]
+              - list [ref=e1619]:
+                - listitem [ref=e1620]:
+                  - generic [ref=e1621]: 4 min ago
+                  - generic [ref=e1622]: "New critical case: Heating failure"
+                - listitem [ref=e1623]:
+                  - generic [ref=e1624]: 18 min ago
+                  - generic [ref=e1625]: Tenant uploaded 2 photos
+                - listitem [ref=e1626]:
+                  - generic [ref=e1627]: 1 h ago
+                  - generic [ref=e1628]: Owner approval needed
+                - listitem [ref=e1629]:
+                  - generic [ref=e1630]: 2 h ago
+                  - generic [ref=e1631]: Contractor confirmed appointment
+                - listitem [ref=e1632]:
+                  - generic [ref=e1633]: 3 h ago
+                  - generic [ref=e1634]: Ticket status changed
+                - listitem [ref=e1635]:
+                  - generic [ref=e1636]: 5 h ago
+                  - generic [ref=e1637]: Missing information
+                - listitem [ref=e1638]:
+                  - generic [ref=e1639]: yesterday
+                  - generic [ref=e1640]: AI suggestion ready

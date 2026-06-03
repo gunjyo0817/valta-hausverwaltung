@@ -24,6 +24,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { buildReplyDraft } from "@/lib/ticketCopy";
 
 export const Route = createFileRoute("/inbox")({
   head: () => ({
@@ -356,10 +357,7 @@ function CopilotPanel({ ticket, draftEdit, setDraftEdit }: { ticket: TicketDto; 
   const approveReply = useApproveTicketReply();
   const generateReply = useGenerateReplyDraft();
   const [sent, setSent] = useState(false);
-  const firstName = ticket.tenant.name.split(" ")[0];
-  const draft = lang === "EN"
-    ? `Hi ${firstName},\n\nthanks for your report. We've dispatched an emergency technician — ETA today between 11:00 and 13:00. You'll get an update once they're on the way.\n\nBest\nYour property management`
-    : `Hallo ${firstName},\n\nvielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt – ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist.\n\nBeste Grüße\nIhre Hausverwaltung`;
+  const draft = buildReplyDraft(ticket, lang);
   const [draftText, setDraftText] = useState(draft);
   const [draftConfidence, setDraftConfidence] = useState(94);
 

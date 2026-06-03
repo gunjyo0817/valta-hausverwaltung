@@ -7,6 +7,7 @@ import {
   useCreateTicket,
   useGenerateIntakeFollowUp,
   useStructureIntake,
+  type TicketDto,
   type AiStructuredIntakeDto,
   type Urgency,
 } from "@/lib/api";
@@ -53,18 +54,73 @@ function messagesToTranscript(messages: Msg[]) {
   return messages.map((message) => `${message.from === "ai" ? "Assistant" : "Tenant"}: ${message.text}`).join("\n");
 }
 
+function normalizedText(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function isUnknownTenantName(value: string) {
+  const normalized = normalizedText(value);
+  return !normalized || normalized.includes("unbekannt") || normalized.includes("unknown");
+}
+
+function cleanIssueDescription(value: string, lang: "DE" | "EN") {
+  const tenantLines = value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => /^Tenant:/i.test(line))
+    .map((line) => line.replace(/^Tenant:\s*/i, "").trim())
+    .filter((line) => line && !/^(foto|photo|bild|image|anhang|attached)/i.test(line));
+  const source = tenantLines.length > 0 ? tenantLines.join(" ") : value;
+  const cleaned = source.replace(/\s+/g, " ").trim();
+  return cleaned || (lang === "EN" ? "Tenant reported a maintenance issue." : "Mieter:in hat ein Wartungsproblem gemeldet.");
+}
+
+function inferTitle(category: string, description: string, lang: "DE" | "EN") {
+  const normalized = normalizedText(`${category} ${description}`);
+  if (normalized.includes("wasser") || normalized.includes("leak") || normalized.includes("sanitar")) {
+    return lang === "EN" ? "Water leak in apartment" : "Wasserleck in der Wohnung";
+  }
+  if (normalized.includes("heiz") || normalized.includes("heat")) {
+    return lang === "EN" ? "Heating issue in apartment" : "Heizungsproblem in der Wohnung";
+  }
+  if (normalized.includes("schimmel") || normalized.includes("mould") || normalized.includes("mold")) {
+    return lang === "EN" ? "Mould report in apartment" : "Schimmelmeldung in der Wohnung";
+  }
+  if (normalized.includes("strom") || normalized.includes("elektr") || normalized.includes("power")) {
+    return lang === "EN" ? "Electrical issue in apartment" : "Elektrikproblem in der Wohnung";
+  }
+  if (normalized.includes("aufzug") || normalized.includes("elevator")) {
+    return lang === "EN" ? "Elevator issue reported" : "Aufzugsproblem gemeldet";
+  }
+  return lang === "EN" ? "Maintenance request" : "Schadensmeldung";
+}
+
+function cleanUnit(value: string, propertyId: string, lang: "DE" | "EN") {
+  const match = value.match(/\b((?:WE|Unit)\s*\d+(?:\s*,?\s*\d+\.\s*OG)?)/i);
+  if (match?.[1]) return match[1].trim();
+  if (value.trim() && !/(ich bin|i am|erreichbar|reachable|bitte|please)/i.test(value)) return value.trim();
+  return propertyId === "p-lindenstr-22" ? "WE 14, 3. OG" : lang === "EN" ? "Unit not provided" : "Wohneinheit fehlt";
+}
+
 function structuredToDraft(result: AiStructuredIntakeDto, lang: "DE" | "EN", photos: number): Draft {
-  const property = propertyLabels[result.propertyId] ?? propertyLabels["p-lindenstr-22"];
-  const unit = result.unit || (lang === "EN" ? "Unit not provided" : "Wohneinheit fehlt");
+  const propertyId = result.propertyId || "p-lindenstr-22";
+  const property = propertyLabels[propertyId] ?? propertyLabels["p-lindenstr-22"];
+  const unit = cleanUnit(result.unit, propertyId, lang);
+  const description = cleanIssueDescription(result.description, lang);
+  const usefulTitle = result.title && normalizedText(result.title) !== normalizedText(result.category);
+  const tenantName = isUnknownTenantName(result.tenant) && propertyId === "p-lindenstr-22" ? "Anna Becker" : result.tenant || "Anna Becker";
 
   return {
-    title: result.title || (lang === "EN" ? "Maintenance request" : "Schadensmeldung"),
+    title: usefulTitle ? result.title : inferTitle(result.category, description, lang),
     category: result.category || (lang === "EN" ? "Other" : "Sonstiges"),
-    description: result.description || (lang === "EN" ? "Tenant reported a maintenance issue." : "Mieter:in hat ein Wartungsproblem gemeldet."),
+    description,
     apartment: `${property} · ${unit}`,
-    contactName: result.tenant || "Anna Becker",
-    contactPhone: result.phone || "+49 30 1234567",
-    contactEmail: result.email || "a.becker@example.com",
+    contactName: tenantName,
+    contactPhone: result.phone || (tenantName === "Anna Becker" ? "+49 30 1234567" : ""),
+    contactEmail: result.email || (tenantName === "Anna Becker" ? "anna.becker@example.de" : ""),
     access: result.access || result.preferred || (lang === "EN" ? "Please call before arrival" : "Bitte vor Ankunft anrufen"),
     preferred: result.preferred,
     photos,
@@ -85,6 +141,7 @@ export function IntakePage() {
   const [input, setInput] = useState("");
   const [reviewing, setReviewing] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedTicket, setSubmittedTicket] = useState<TicketDto | null>(null);
   const [structuring, setStructuring] = useState(false);
   const [typing, setTyping] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<DemoUploadedFile[]>([]);
@@ -182,6 +239,7 @@ export function IntakePage() {
     setStep(0);
     setReviewing(false);
     setSubmitted(false);
+    setSubmittedTicket(null);
     setStructuring(false);
     setTyping(false);
     setUploadedFiles([]);
@@ -189,7 +247,7 @@ export function IntakePage() {
   };
 
   const submitTicket = async () => {
-    await createTicketMutation.mutateAsync({
+    const ticket = await createTicketMutation.mutateAsync({
       data: {
         title: draft.title,
         category: draft.category,
@@ -213,6 +271,7 @@ export function IntakePage() {
         language: lang,
       },
     });
+    setSubmittedTicket(ticket);
     setSubmitted(true);
   };
 
@@ -286,7 +345,7 @@ export function IntakePage() {
                   onRemovePhoto={removeIntakePhoto}
                 />
               )}
-              {submitted && <SubmittedCard onAnother={restart} />}
+              {submitted && <SubmittedCard ticketId={submittedTicket?.id} onAnother={restart} />}
               <div ref={endRef} />
             </div>
           </div>
@@ -558,7 +617,7 @@ function Editable({ label, value, editing, onChange, textarea }: { label: string
   );
 }
 
-function SubmittedCard({ onAnother }: { onAnother: () => void }) {
+function SubmittedCard({ ticketId, onAnother }: { ticketId?: string; onAnother: () => void }) {
   const { t, lang } = useLang();
   return (
     <div className="mt-2 rounded-2xl border border-border bg-surface overflow-hidden">
@@ -574,9 +633,15 @@ function SubmittedCard({ onAnother }: { onAnother: () => void }) {
             : "Wir prüfen Ihre Meldung und legen die passende Reaktion fest. Sie erhalten in Kürze ein Update mit den nächsten Schritten."}
         </p>
         <div className="flex flex-wrap gap-2 pt-1">
-          <Link to="/portal" className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
-            {t("intake.track")}
-          </Link>
+          {ticketId ? (
+            <Link to="/tenant/tickets/$id" params={{ id: ticketId }} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
+              {t("intake.track")}
+            </Link>
+          ) : (
+            <Link to="/tenant/tickets" className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
+              {t("intake.track")}
+            </Link>
+          )}
           <button onClick={onAnother} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs font-semibold hover:bg-accent">
             {t("intake.further")}
           </button>

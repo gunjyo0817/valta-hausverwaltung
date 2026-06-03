@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { DataErrorState, EmptyDataState } from "@/components/DataState";
@@ -34,7 +34,15 @@ function specialtyLabel(k: string, lang: "DE" | "EN") {
 }
 
 function ContractorsPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/contractors" && pathname.startsWith("/contractors/")) return <Outlet />;
+
+  return <ContractorsListPage />;
+}
+
+function ContractorsListPage() {
   const { t, lang } = useLang();
+
   const [query, setQuery] = useState("");
   const [spec, setSpec] = useState<string>("all");
   const [avail, setAvail] = useState<"all" | "available" | "unavailable">("all");

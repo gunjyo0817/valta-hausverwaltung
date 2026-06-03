@@ -1,0 +1,120 @@
+- generic [ref=e439]:
+  - complementary [ref=e440]:
+    - link "V Valta Operations Copilot" [ref=e441] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e442]: V
+      - generic [ref=e443]:
+        - generic [ref=e444]: Valta
+        - generic [ref=e445]: Operations Copilot
+    - generic [ref=e447]:
+      - generic [ref=e448]: MH
+      - generic [ref=e449]:
+        - generic [ref=e450]: Handwerker-Sicht
+        - generic [ref=e451]: Thomas Müller
+    - generic [ref=e452]: Handwerker-Sicht
+    - navigation [ref=e453]:
+      - link "Aufträge" [ref=e454] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e455]
+        - generic [ref=e458]: Aufträge
+      - link "Terminplan" [ref=e459] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e460]
+        - generic [ref=e462]: Terminplan
+      - link "Nachrichten" [ref=e463] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e464]
+        - generic [ref=e466]: Nachrichten
+      - link "Erledigt" [ref=e467] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e468]
+        - generic [ref=e471]: Erledigt
+    - generic [ref=e472]:
+      - generic [ref=e473]:
+        - generic [ref=e474]:
+          - img [ref=e475]
+          - text: AI Copilot
+        - paragraph [ref=e478]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e479] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e480]: MH
+        - generic [ref=e481]:
+          - generic [ref=e482]: Thomas Müller
+          - generic [ref=e483]: Müller Heizung GmbH
+        - img [ref=e484]
+  - generic [ref=e487]:
+    - banner [ref=e488]:
+      - generic [ref=e489]:
+        - heading "Meine Aufträge" [level=1] [ref=e490]
+        - paragraph [ref=e491]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e492]:
+        - generic [ref=e493]:
+          - img [ref=e494]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e497]
+          - generic [ref=e498]: ⌘K
+        - generic [ref=e499]:
+          - 'button "Aktuelle Sicht: Handwerker" [active] [ref=e500]':
+            - generic [ref=e501]: "Aktuelle Sicht:"
+            - generic [ref=e502]: Handwerker
+            - img [ref=e503]
+          - generic [ref=e563]:
+            - generic [ref=e565]: Demo-Modus · Rolle umschalten
+            - button "Hausverwaltung Sarah Krüger" [ref=e566]:
+              - img [ref=e568]
+              - generic [ref=e573]:
+                - generic [ref=e574]: Hausverwaltung
+                - generic [ref=e575]: Sarah Krüger
+            - button "Mieter:in Anna Becker" [ref=e576]:
+              - img [ref=e578]
+              - generic [ref=e580]:
+                - generic [ref=e581]: Mieter:in
+                - generic [ref=e582]: Anna Becker
+            - button "Handwerker Thomas Müller" [ref=e583]:
+              - img [ref=e585]
+              - generic [ref=e587]:
+                - generic [ref=e588]: Handwerker
+                - generic [ref=e589]: Thomas Müller
+              - img [ref=e590]
+            - button "Eigentümer:in Dr. Karl Reichmann" [ref=e592]:
+              - img [ref=e594]
+              - generic [ref=e597]:
+                - generic [ref=e598]: Eigentümer:in
+                - generic [ref=e599]: Dr. Karl Reichmann
+        - generic [ref=e505]:
+          - button "DE" [ref=e506]:
+            - img [ref=e507]
+            - text: DE
+          - button "EN" [ref=e511]
+        - button "Notifications" [ref=e512]:
+          - img [ref=e513]
+    - main [ref=e516]:
+      - generic [ref=e517]:
+        - generic [ref=e518]:
+          - generic [ref=e519]:
+            - generic [ref=e520]:
+              - img [ref=e522]
+              - generic [ref=e525]: Aktive Aufträge
+            - generic [ref=e526]: "0"
+          - generic [ref=e527]:
+            - generic [ref=e528]:
+              - img [ref=e530]
+              - generic [ref=e533]: Diese Woche fällig
+            - generic [ref=e534]: "5"
+          - generic [ref=e535]:
+            - generic [ref=e536]:
+              - img [ref=e538]
+              - generic [ref=e540]: Ø Reaktionszeit
+            - generic [ref=e541]: 2.1h
+          - generic [ref=e542]:
+            - generic [ref=e543]:
+              - img [ref=e545]
+              - generic [ref=e547]: Bewertung
+            - generic [ref=e548]: "4.9"
+        - generic [ref=e550]:
+          - img [ref=e552]
+          - generic [ref=e556]: Keine aktiven Handwerker-Auftraege
+          - paragraph [ref=e557]: Diesem Demo-Handwerker sind keine aktiven Auftraege zugewiesen. Lade Mock-Daten im Adminbereich neu, um Auftraege wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e558] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e559]
+            - text: Demo-Daten-Admin oeffnen

@@ -1,0 +1,478 @@
+- generic [ref=e3932]:
+  - complementary [ref=e3933]:
+    - link "V Valta Operations Copilot" [ref=e3934] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e3935]: V
+      - generic [ref=e3936]:
+        - generic [ref=e3937]: Valta
+        - generic [ref=e3938]: Operations Copilot
+    - generic [ref=e3940]:
+      - generic [ref=e3941]: SK
+      - generic [ref=e3942]:
+        - generic [ref=e3943]: Hausverwaltungs-Sicht
+        - generic [ref=e3944]: Sarah Krüger
+    - generic [ref=e3945]: Hausverwaltung
+    - navigation [ref=e3946]:
+      - link "Dashboard" [ref=e3947] [cursor=pointer]:
+        - /url: /
+        - img [ref=e3948]
+        - generic [ref=e3953]: Dashboard
+      - link "Operations Inbox" [ref=e3954] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e3955]
+        - generic [ref=e3958]: Operations Inbox
+      - link "AI Insights" [ref=e3959] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e3960]
+        - generic [ref=e3962]: AI Insights
+      - link "Objekte" [ref=e3963] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e3964]
+        - generic [ref=e3968]: Objekte
+      - link "Handwerker" [ref=e3969] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e3970]
+        - generic [ref=e3975]: Handwerker
+    - generic [ref=e3976]:
+      - generic [ref=e3977]:
+        - generic [ref=e3978]:
+          - img [ref=e3979]
+          - text: AI Copilot
+        - paragraph [ref=e3982]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e3983] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e3984]: SK
+        - generic [ref=e3985]:
+          - generic [ref=e3986]: Sarah Krüger
+          - generic [ref=e3987]: Hausverwaltung Berlin GmbH
+        - img [ref=e3988]
+  - generic [ref=e3991]:
+    - banner [ref=e3992]:
+      - generic [ref=e3993]:
+        - heading "Guten Morgen, Sarah" [level=1] [ref=e3994]
+        - paragraph [ref=e3995]: Hier ist, was in Ihrem Portfolio heute Aufmerksamkeit braucht.
+      - generic [ref=e3996]:
+        - generic [ref=e3997]:
+          - img [ref=e3998]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e4001]
+          - generic [ref=e4002]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e4004]':
+          - generic [ref=e4005]: "Aktuelle Sicht:"
+          - generic [ref=e4006]: Hausverwaltung
+          - img [ref=e4007]
+        - generic [ref=e4009]:
+          - button "DE" [ref=e4010]:
+            - img [ref=e4011]
+            - text: DE
+          - button "EN" [ref=e4015]
+        - button "Notifications" [active] [ref=e4016]:
+          - img [ref=e4017]
+          - generic [ref=e4020]: "9"
+        - button "Neues Ticket" [ref=e4021]:
+          - img [ref=e4022]
+          - text: Neues Ticket
+    - main [ref=e4023]:
+      - generic [ref=e4024]:
+        - generic [ref=e4025]:
+          - generic [ref=e4026]:
+            - generic [ref=e4027]:
+              - generic [ref=e4028]: Offene Tickets
+              - img [ref=e4029]
+            - generic [ref=e4032]: "6"
+            - generic [ref=e4033]:
+              - img [ref=e4034]
+              - text: +3 heute
+          - generic [ref=e4037]:
+            - generic [ref=e4038]:
+              - generic [ref=e4039]: Ø Reaktionszeit
+              - img [ref=e4040]
+            - generic [ref=e4043]: 14 Min.
+            - generic [ref=e4044]:
+              - img [ref=e4045]
+              - text: −38% MoM
+          - generic [ref=e4048]:
+            - generic [ref=e4049]:
+              - generic [ref=e4050]: AI-Vorschläge übernommen
+              - img [ref=e4051]
+            - generic [ref=e4054]: "13"
+            - generic [ref=e4055]:
+              - img [ref=e4056]
+              - text: diese Woche
+          - generic [ref=e4059]:
+            - generic [ref=e4060]:
+              - generic [ref=e4061]: Kritische Fälle
+              - img [ref=e4062]
+            - generic [ref=e4064]: "2"
+            - generic [ref=e4065]:
+              - img [ref=e4066]
+              - text: Sofort prüfen
+          - generic [ref=e4069]:
+            - generic [ref=e4070]:
+              - generic [ref=e4071]: Wartet auf Handwerker
+              - img [ref=e4072]
+            - generic [ref=e4074]: "1"
+            - generic [ref=e4075]:
+              - img [ref=e4076]
+              - text: 2 überfällig
+        - generic [ref=e4079]:
+          - generic [ref=e4080]:
+            - generic [ref=e4081]:
+              - generic [ref=e4082]:
+                - heading "Aktive Tickets" [level=2] [ref=e4083]
+                - paragraph [ref=e4084]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+              - link "Inbox öffnen" [ref=e4085] [cursor=pointer]:
+                - /url: /inbox
+                - text: Inbox öffnen
+                - img [ref=e4086]
+            - list [ref=e4088]:
+              - listitem [ref=e4089]:
+                - link "VLT-2050 Niedrig AI · 74% Sanitär Unbekannte:r Mieter:in · WE 14 · Lindenstraße 22 Neu jetzt" [ref=e4090] [cursor=pointer]:
+                  - /url: /ticket/VLT-2050
+                  - img [ref=e4092]
+                  - generic [ref=e4094]:
+                    - generic [ref=e4095]:
+                      - generic [ref=e4096]: VLT-2050
+                      - generic [ref=e4097]: Niedrig
+                      - generic [ref=e4098]:
+                        - img [ref=e4099]
+                        - text: AI · 74%
+                    - generic [ref=e4102]: Sanitär
+                    - generic [ref=e4103]: Unbekannte:r Mieter:in · WE 14 · Lindenstraße 22
+                  - generic [ref=e4104]:
+                    - generic [ref=e4105]: Neu
+                    - generic [ref=e4107]: jetzt
+                  - img [ref=e4108]
+              - listitem [ref=e4111]:
+                - link "VLT-2039 Hoch AI · 89% Wasserschaden Küche Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München In Bearbeitung vor 4 Std." [ref=e4112] [cursor=pointer]:
+                  - /url: /ticket/VLT-2039
+                  - img [ref=e4114]
+                  - generic [ref=e4116]:
+                    - generic [ref=e4117]:
+                      - generic [ref=e4118]: VLT-2039
+                      - generic [ref=e4119]: Hoch
+                      - generic [ref=e4120]:
+                        - img [ref=e4121]
+                        - text: AI · 89%
+                    - generic [ref=e4124]: Wasserschaden Küche
+                    - generic [ref=e4125]: Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München
+                  - generic [ref=e4126]:
+                    - generic [ref=e4127]: In Bearbeitung
+                    - generic [ref=e4129]: vor 4 Std.
+                  - img [ref=e4130]
+              - listitem [ref=e4133]:
+                - link "VLT-2037 Hoch AI · 92% Aufzug außer Betrieb Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg Handwerker vergeben vor 8 Std." [ref=e4134] [cursor=pointer]:
+                  - /url: /ticket/VLT-2037
+                  - img [ref=e4136]
+                  - generic [ref=e4138]:
+                    - generic [ref=e4139]:
+                      - generic [ref=e4140]: VLT-2037
+                      - generic [ref=e4141]: Hoch
+                      - generic [ref=e4142]:
+                        - img [ref=e4143]
+                        - text: AI · 92%
+                    - generic [ref=e4146]: Aufzug außer Betrieb
+                    - generic [ref=e4147]: Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg
+                  - generic [ref=e4148]:
+                    - generic [ref=e4149]: Handwerker vergeben
+                    - generic [ref=e4151]: vor 8 Std.
+                  - img [ref=e4152]
+              - listitem [ref=e4155]:
+                - link "VLT-2034 Mittel AI · 74% Internetausfall im gesamten Haus Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln Wartet auf Info gestern" [ref=e4156] [cursor=pointer]:
+                  - /url: /ticket/VLT-2034
+                  - img [ref=e4158]
+                  - generic [ref=e4160]:
+                    - generic [ref=e4161]:
+                      - generic [ref=e4162]: VLT-2034
+                      - generic [ref=e4163]: Mittel
+                      - generic [ref=e4164]:
+                        - img [ref=e4165]
+                        - text: AI · 74%
+                    - generic [ref=e4168]: Internetausfall im gesamten Haus
+                    - generic [ref=e4169]: Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln
+                  - generic [ref=e4170]:
+                    - generic [ref=e4171]: Wartet auf Info
+                    - generic [ref=e4173]: gestern
+                  - img [ref=e4174]
+              - listitem [ref=e4177]:
+                - link "VLT-2030 Mittel AI · 81% Schimmel im Schlafzimmer Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig Wartet auf Info vor 2 Tagen" [ref=e4178] [cursor=pointer]:
+                  - /url: /ticket/VLT-2030
+                  - img [ref=e4180]
+                  - generic [ref=e4182]:
+                    - generic [ref=e4183]:
+                      - generic [ref=e4184]: VLT-2030
+                      - generic [ref=e4185]: Mittel
+                      - generic [ref=e4186]:
+                        - img [ref=e4187]
+                        - text: AI · 81%
+                    - generic [ref=e4190]: Schimmel im Schlafzimmer
+                    - generic [ref=e4191]: Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig
+                  - generic [ref=e4192]:
+                    - generic [ref=e4193]: Wartet auf Info
+                    - generic [ref=e4195]: vor 2 Tagen
+                  - img [ref=e4196]
+              - listitem [ref=e4199]:
+                - link "VLT-2022 Niedrig AI · 84% Steckdose im Bad funktioniert nicht Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt Neu vor 2 Std." [ref=e4200] [cursor=pointer]:
+                  - /url: /ticket/VLT-2022
+                  - img [ref=e4202]
+                  - generic [ref=e4204]:
+                    - generic [ref=e4205]:
+                      - generic [ref=e4206]: VLT-2022
+                      - generic [ref=e4207]: Niedrig
+                      - generic [ref=e4208]:
+                        - img [ref=e4209]
+                        - text: AI · 84%
+                    - generic [ref=e4212]: Steckdose im Bad funktioniert nicht
+                    - generic [ref=e4213]: Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt
+                  - generic [ref=e4214]:
+                    - generic [ref=e4215]: Neu
+                    - generic [ref=e4217]: vor 2 Std.
+                  - img [ref=e4218]
+          - generic [ref=e4221]:
+            - generic [ref=e4222]:
+              - generic [ref=e4223]:
+                - img [ref=e4224]
+                - heading "AI Assistant · Aktivität" [level=2] [ref=e4227]
+              - list [ref=e4228]:
+                - listitem [ref=e4229]:
+                  - generic [ref=e4231]:
+                    - generic [ref=e4232]: Ticket VLT-2041 als kritisch eingestuft (Heizungsausfall, < 5 °C).
+                    - generic [ref=e4233]: vor 2 Min.
+                - listitem [ref=e4234]:
+                  - generic [ref=e4236]:
+                    - generic [ref=e4237]: Antwortentwurf für VLT-2039 erstellt.
+                    - generic [ref=e4238]: vor 8 Min.
+                - listitem [ref=e4239]:
+                  - generic [ref=e4241]:
+                    - generic [ref=e4242]: Kontraktor 'Schulz & Söhne' für Wasserschaden vorgeschlagen.
+                    - generic [ref=e4243]: vor 14 Min.
+                - listitem [ref=e4244]:
+                  - generic [ref=e4246]:
+                    - generic [ref=e4247]: 3 doppelte Tickets zu Internetausfall zusammengeführt.
+                    - generic [ref=e4248]: vor 22 Min.
+                - listitem [ref=e4249]:
+                  - generic [ref=e4251]:
+                    - generic [ref=e4252]: Übersetzung EN → DE für 2 Anfragen.
+                    - generic [ref=e4253]: vor 41 Min.
+                - listitem [ref=e4254]:
+                  - generic [ref=e4256]:
+                    - generic [ref=e4257]: "Eigentümerentscheidung: AP-105 freigegeben."
+                    - generic [ref=e4258]: jetzt
+                - listitem [ref=e4259]:
+                  - generic [ref=e4261]:
+                    - generic [ref=e4262]: "Eigentümerentscheidung: AP-104 mit Rückfrage markiert. Rückfrage: Bitte reichen Sie eine kurze Wirtschaftlichkeitsrechnung gegen Reparatur und ein zweites Vergleichsangebot nach."
+                    - generic [ref=e4263]: jetzt
+            - generic [ref=e4264]:
+              - generic [ref=e4265]:
+                - img [ref=e4266]
+                - heading "Benachrichtigungen" [level=2] [ref=e4269]
+              - list [ref=e4270]:
+                - listitem [ref=e4271]:
+                  - generic [ref=e4272]: jetzt
+                  - generic [ref=e4273]: Eigentümerentscheidung erhalten
+                - listitem [ref=e4274]:
+                  - generic [ref=e4275]: jetzt
+                  - generic [ref=e4276]: Eigentümerentscheidung erhalten
+                - listitem [ref=e4277]:
+                  - generic [ref=e4278]: jetzt
+                  - generic [ref=e4279]: Auftrag abgeschlossen
+                - listitem [ref=e4280]:
+                  - generic [ref=e4281]: jetzt
+                  - generic [ref=e4282]: Neuer Anhang
+                - listitem [ref=e4283]:
+                  - generic [ref=e4284]: jetzt
+                  - generic [ref=e4285]: Arbeiten gestartet
+                - listitem [ref=e4286]:
+                  - generic [ref=e4287]: jetzt
+                  - generic [ref=e4288]: Handwerker hat Auftrag angenommen
+                - listitem [ref=e4289]:
+                  - generic [ref=e4290]: vor 4 Min.
+                  - generic [ref=e4291]: "Neuer kritischer Fall: Heizungsausfall"
+                - listitem [ref=e4292]:
+                  - generic [ref=e4293]: gestern
+                  - generic [ref=e4294]: KI-Empfehlung verfügbar
+                - listitem [ref=e4295]:
+                  - generic [ref=e4296]: vor 18 Min.
+                  - generic [ref=e4297]: Mieter hat 2 Fotos hochgeladen
+                - listitem [ref=e4298]:
+                  - generic [ref=e4299]: vor 1 Std.
+                  - generic [ref=e4300]: Eigentümer-Freigabe erforderlich
+                - listitem [ref=e4301]:
+                  - generic [ref=e4302]: vor 2 Std.
+                  - generic [ref=e4303]: Handwerker hat Termin bestätigt
+                - listitem [ref=e4304]:
+                  - generic [ref=e4305]: vor 3 Std.
+                  - generic [ref=e4306]: Ticket-Status geändert
+                - listitem [ref=e4307]:
+                  - generic [ref=e4308]: vor 5 Std.
+                  - generic [ref=e4309]: Fehlende Informationen
+  - complementary [ref=e4312]:
+    - generic [ref=e4313]:
+      - img [ref=e4314]
+      - generic [ref=e4317]: Benachrichtigungen
+      - generic [ref=e4318]: 9 neu
+      - button "Alle gelesen" [ref=e4319]:
+        - img [ref=e4320]
+        - text: Alle gelesen
+      - button [ref=e4323]:
+        - img [ref=e4324]
+    - generic [ref=e4327]:
+      - button "Alle 13" [ref=e4328]:
+        - text: Alle
+        - generic [ref=e4329]: "13"
+      - button "Ungelesen 9" [ref=e4330]:
+        - text: Ungelesen
+        - generic [ref=e4331]: "9"
+      - button "Kritisch 1" [ref=e4332]:
+        - text: Kritisch
+        - generic [ref=e4333]: "1"
+      - button "Freigaben 2" [ref=e4334]:
+        - text: Freigaben
+        - generic [ref=e4335]: "2"
+    - generic [ref=e4336]:
+      - generic [ref=e4337]:
+        - img [ref=e4339]
+        - generic [ref=e4342]:
+          - generic [ref=e4344]: Eigentümerentscheidung erhalten
+          - generic [ref=e4346]: "AP-104 wurde mit Rückfrage markiert. Rückfrage: Bitte reichen Sie eine kurze Wirtschaftlichkeitsrechnung gegen Reparatur und ein zweites Vergleichsangebot nach."
+          - generic [ref=e4347]:
+            - generic [ref=e4348]: AP-104
+            - generic [ref=e4349]: ·
+            - generic [ref=e4350]: € 12.400
+          - generic [ref=e4351]:
+            - generic [ref=e4352]: jetzt
+            - button "Freigaben ansehen" [ref=e4353]
+      - generic [ref=e4354]:
+        - img [ref=e4356]
+        - generic [ref=e4359]:
+          - generic [ref=e4361]: Eigentümerentscheidung erhalten
+          - generic [ref=e4363]: AP-105 wurde freigegeben.
+          - generic [ref=e4364]:
+            - generic [ref=e4365]: AP-105
+            - generic [ref=e4366]: ·
+            - generic [ref=e4367]: € 5.700
+          - generic [ref=e4368]:
+            - generic [ref=e4369]: jetzt
+            - button "Freigaben ansehen" [ref=e4370]
+      - generic [ref=e4371]:
+        - img [ref=e4373]
+        - generic [ref=e4378]:
+          - generic [ref=e4380]: Auftrag abgeschlossen
+          - generic [ref=e4382]: "Heizung gestartet und Anlage entlueftet. Vorlauf wieder warm, Mieterin informiert. Rechnung/Referenz: PW-REF-2041 Abschlussfoto: audit-contractor-completed.png"
+          - generic [ref=e4384]: VLT-2041
+          - generic [ref=e4385]:
+            - generic [ref=e4386]: jetzt
+            - button "Ticket öffnen" [ref=e4387]
+      - generic [ref=e4388]:
+        - img [ref=e4390]
+        - generic [ref=e4394]:
+          - generic [ref=e4396]: Neuer Anhang
+          - generic [ref=e4398]: audit-contractor-completed.png
+          - generic [ref=e4399]:
+            - generic [ref=e4400]: VLT-2041
+            - generic [ref=e4401]: ·
+            - generic [ref=e4402]: Lindenstraße 22, Berlin
+          - generic [ref=e4403]:
+            - generic [ref=e4404]: jetzt
+            - button "Anhang ansehen" [ref=e4405]
+      - generic [ref=e4406]:
+        - img [ref=e4408]
+        - generic [ref=e4413]:
+          - generic [ref=e4415]: Arbeiten gestartet
+          - generic [ref=e4417]: "Müller Heizung GmbH: Arbeiten gestartet."
+          - generic [ref=e4419]: VLT-2041
+          - generic [ref=e4420]:
+            - generic [ref=e4421]: jetzt
+            - button "Ticket öffnen" [ref=e4422]
+      - generic [ref=e4423]:
+        - img [ref=e4425]
+        - generic [ref=e4428]:
+          - generic [ref=e4430]: Handwerker hat Auftrag angenommen
+          - generic [ref=e4432]: "Müller Heizung GmbH: Auftrag angenommen."
+          - generic [ref=e4434]: VLT-2041
+          - generic [ref=e4435]:
+            - generic [ref=e4436]: jetzt
+            - button "Ticket öffnen" [ref=e4437]
+      - generic [ref=e4438]:
+        - img [ref=e4440]
+        - generic [ref=e4442]:
+          - generic [ref=e4444]: "Neuer kritischer Fall: Heizungsausfall"
+          - generic [ref=e4446]: Komplettausfall der Zentralheizung gemeldet.
+          - generic [ref=e4447]:
+            - generic [ref=e4448]: VLT-2041
+            - generic [ref=e4449]: ·
+            - generic [ref=e4450]: Lindenstraße 22
+          - generic [ref=e4451]:
+            - generic [ref=e4452]: vor 4 Min.
+            - button "Ticket öffnen" [ref=e4453]
+      - generic [ref=e4454]:
+        - img [ref=e4456]
+        - generic [ref=e4459]:
+          - generic [ref=e4461]: KI-Empfehlung verfügbar
+          - generic [ref=e4462]: 3 ähnliche Fälle deuten auf Ventildefekt hin.
+          - generic [ref=e4463]:
+            - generic [ref=e4464]: VLT-2039
+            - generic [ref=e4465]: ·
+            - generic [ref=e4466]: Goethestraße 8
+          - generic [ref=e4467]:
+            - generic [ref=e4468]: gestern
+            - button "Einsicht öffnen" [ref=e4469]
+      - generic [ref=e4470]:
+        - img [ref=e4472]
+        - generic [ref=e4476]:
+          - generic [ref=e4478]: Mieter hat 2 Fotos hochgeladen
+          - generic [ref=e4480]: Wasserschaden in der Küche
+          - generic [ref=e4481]:
+            - generic [ref=e4482]: VLT-2039
+            - generic [ref=e4483]: ·
+            - generic [ref=e4484]: Goethestraße 8
+          - generic [ref=e4485]:
+            - generic [ref=e4486]: vor 18 Min.
+            - button "Fotos prüfen" [ref=e4487]
+      - generic [ref=e4488]:
+        - img [ref=e4490]
+        - generic [ref=e4493]:
+          - generic [ref=e4495]: Eigentümer-Freigabe erforderlich
+          - generic [ref=e4497]: Heizungsaustausch · € 12.400
+          - generic [ref=e4498]:
+            - generic [ref=e4499]: AP-104
+            - generic [ref=e4500]: ·
+            - generic [ref=e4501]: Lindenstraße 22
+          - generic [ref=e4502]:
+            - generic [ref=e4503]: vor 1 Std.
+            - button "Freigabe prüfen" [ref=e4504]
+      - generic [ref=e4505]:
+        - img [ref=e4507]
+        - generic [ref=e4510]:
+          - generic [ref=e4512]: Handwerker hat Termin bestätigt
+          - generic [ref=e4513]: Müller Heizung GmbH · Heute 14:00
+          - generic [ref=e4514]:
+            - generic [ref=e4515]: VLT-2037
+            - generic [ref=e4516]: ·
+            - generic [ref=e4517]: Parkallee 110
+          - generic [ref=e4518]:
+            - generic [ref=e4519]: vor 2 Std.
+            - button "Plan ansehen" [ref=e4520]
+      - generic [ref=e4521]:
+        - img [ref=e4523]
+        - generic [ref=e4528]:
+          - generic [ref=e4530]: Ticket-Status geändert
+          - generic [ref=e4531]: In Bearbeitung -> Wartet auf Mieter
+          - generic [ref=e4532]:
+            - generic [ref=e4533]: VLT-2030
+            - generic [ref=e4534]: ·
+            - generic [ref=e4535]: Rosenweg 3
+          - generic [ref=e4536]:
+            - generic [ref=e4537]: vor 3 Std.
+            - button "Ticket öffnen" [ref=e4538]
+      - generic [ref=e4539]:
+        - img [ref=e4541]
+        - generic [ref=e4544]:
+          - generic [ref=e4546]: Fehlende Informationen
+          - generic [ref=e4547]: Mieter-Telefonnummer benötigt für Terminabstimmung.
+          - generic [ref=e4548]:
+            - generic [ref=e4549]: VLT-2025
+            - generic [ref=e4550]: ·
+            - generic [ref=e4551]: Lindenstraße 22
+          - generic [ref=e4552]:
+            - generic [ref=e4553]: vor 5 Std.
+            - button "Ergänzen" [ref=e4554]

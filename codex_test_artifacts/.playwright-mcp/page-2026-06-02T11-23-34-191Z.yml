@@ -1,0 +1,81 @@
+- generic [ref=e1136]:
+  - complementary [ref=e1137]:
+    - link "V Valta Operations Copilot" [ref=e1138] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e1139]: V
+      - generic [ref=e1140]:
+        - generic [ref=e1141]: Valta
+        - generic [ref=e1142]: Operations Copilot
+    - generic [ref=e1144]:
+      - generic [ref=e1145]: AB
+      - generic [ref=e1146]:
+        - generic [ref=e1147]: Mieter-Sicht
+        - generic [ref=e1148]: Anna Becker
+    - generic [ref=e1149]: Mieter-Sicht
+    - navigation [ref=e1150]:
+      - link "Start" [ref=e1151] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e1152]
+        - generic [ref=e1155]: Start
+      - link "Schaden melden" [ref=e1156] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e1157]
+        - generic [ref=e1159]: Schaden melden
+      - link "Meine Anfragen" [ref=e1160] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e1161]
+        - generic [ref=e1164]: Meine Anfragen
+    - generic [ref=e1165]:
+      - generic [ref=e1166]:
+        - generic [ref=e1167]:
+          - img [ref=e1168]
+          - text: AI Copilot
+        - paragraph [ref=e1171]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e1172] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1173]: AB
+        - generic [ref=e1174]:
+          - generic [ref=e1175]: Anna Becker
+          - generic [ref=e1176]: Lindenstraße 22, WE 14
+        - img [ref=e1177]
+  - generic [ref=e1180]:
+    - banner [ref=e1181]:
+      - generic [ref=e1182]:
+        - heading "Meine Anfragen" [level=1] [ref=e1183]
+        - paragraph [ref=e1184]: Alle Anfragen an einem Ort
+      - generic [ref=e1185]:
+        - 'button "Aktuelle Sicht: Mieter:in" [ref=e1187]':
+          - generic [ref=e1188]: "Aktuelle Sicht:"
+          - generic [ref=e1189]: Mieter:in
+          - img [ref=e1190]
+        - generic [ref=e1192]:
+          - button "DE" [ref=e1193]:
+            - img [ref=e1194]
+            - text: DE
+          - button "EN" [ref=e1198]
+        - button "Notifications" [ref=e1199]:
+          - img [ref=e1200]
+        - link "Neue Anfrage" [ref=e1203] [cursor=pointer]:
+          - /url: /tenant/new-request
+          - img [ref=e1204]
+          - text: Neue Anfrage
+    - main [ref=e1206]:
+      - generic [ref=e1207]:
+        - generic [ref=e1208]:
+          - button "Alle 0" [ref=e1209]:
+            - text: Alle
+            - generic [ref=e1210]: "0"
+          - button "Aktiv 0" [ref=e1211]:
+            - text: Aktiv
+            - generic [ref=e1212]: "0"
+          - button "Erledigt 0" [ref=e1213]:
+            - text: Erledigt
+            - generic [ref=e1214]: "0"
+        - generic [ref=e1215]:
+          - img [ref=e1217]
+          - generic [ref=e1221]: Keine Mieteranfragen
+          - paragraph [ref=e1222]: Die Demo-Datenbank enthaelt keine Mieter-Tickets. Lade Mock-Daten im Adminbereich neu, um die Mieter-Timeline wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e1223] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e1224]
+            - text: Demo-Daten-Admin oeffnen

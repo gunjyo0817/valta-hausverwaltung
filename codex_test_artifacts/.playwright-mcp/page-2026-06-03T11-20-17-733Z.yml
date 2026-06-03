@@ -1,0 +1,125 @@
+- generic [ref=e406]:
+  - complementary [ref=e407]:
+    - link "V Valta Operations Copilot" [ref=e408] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e409]: V
+      - generic [ref=e410]:
+        - generic [ref=e411]: Valta
+        - generic [ref=e412]: Operations Copilot
+    - generic [ref=e414]:
+      - generic [ref=e415]: MH
+      - generic [ref=e416]:
+        - generic [ref=e417]: Handwerker-Sicht
+        - generic [ref=e418]: Thomas Müller
+    - generic [ref=e419]: Handwerker-Sicht
+    - navigation [ref=e420]:
+      - link "Aufträge" [ref=e421] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e422]
+        - generic [ref=e425]: Aufträge
+      - link "Terminplan" [ref=e426] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e427]
+        - generic [ref=e429]: Terminplan
+      - link "Nachrichten" [ref=e430] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e431]
+        - generic [ref=e433]: Nachrichten
+      - link "Erledigt" [ref=e434] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e435]
+        - generic [ref=e438]: Erledigt
+    - generic [ref=e439]:
+      - generic [ref=e440]:
+        - generic [ref=e441]:
+          - img [ref=e442]
+          - text: AI Copilot
+        - paragraph [ref=e445]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e446] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e447]: MH
+        - generic [ref=e448]:
+          - generic [ref=e449]: Thomas Müller
+          - generic [ref=e450]: Müller Heizung GmbH
+        - img [ref=e451]
+  - generic [ref=e454]:
+    - banner [ref=e455]:
+      - generic [ref=e456]:
+        - heading "Wochenplan" [level=1] [ref=e457]
+        - paragraph [ref=e458]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e459]:
+        - generic [ref=e460]:
+          - img [ref=e461]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e464]
+          - generic [ref=e465]: ⌘K
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e467]':
+          - generic [ref=e468]: "Aktuelle Sicht:"
+          - generic [ref=e469]: Handwerker
+          - img [ref=e470]
+        - generic [ref=e472]:
+          - button "DE" [ref=e473]:
+            - img [ref=e474]
+            - text: DE
+          - button "EN" [ref=e478]
+        - button "Notifications" [ref=e479]:
+          - img [ref=e480]
+    - main [ref=e483]:
+      - generic [ref=e484]:
+        - generic [ref=e485]:
+          - img [ref=e487]
+          - generic [ref=e491]: Keine geplanten Auftraege
+          - paragraph [ref=e492]: Fuer diesen Demo-Handwerker gibt es keine aktiven geplanten Auftraege. Lade Mock-Daten im Adminbereich neu, um Termine wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e493] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e494]
+            - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e497]:
+          - generic [ref=e498]:
+            - button "Heute" [ref=e499]
+            - button "Diese Woche" [ref=e500]
+          - generic [ref=e501]:
+            - button [disabled] [ref=e502]:
+              - img [ref=e503]
+            - generic [ref=e505]: KW 23
+            - button [disabled] [ref=e506]:
+              - img [ref=e507]
+        - generic [ref=e509]:
+          - generic [ref=e510]:
+            - generic [ref=e511]: Heute
+            - generic [ref=e512]: "0"
+            - generic [ref=e513]: Termine
+          - generic [ref=e514]:
+            - generic [ref=e515]: Diese Woche
+            - generic [ref=e516]: "0"
+            - generic [ref=e517]: geplant
+          - generic [ref=e518]:
+            - generic [ref=e519]: Objekte
+            - generic [ref=e520]: "0"
+            - generic [ref=e521]: betreut
+          - generic [ref=e522]:
+            - generic [ref=e523]: Durchschn. Dauer
+            - generic [ref=e524]: 1h 30
+            - generic [ref=e525]: pro Auftrag
+        - generic [ref=e527]:
+          - generic [ref=e528]:
+            - generic [ref=e529]:
+              - generic [ref=e530]: Mo
+              - generic [ref=e531]: 01.06.
+            - generic [ref=e532]:
+              - generic [ref=e533]: Di
+              - generic [ref=e534]: 02.06.
+            - generic [ref=e535]:
+              - generic [ref=e536]: Mi
+              - generic [ref=e537]: 03.06.
+            - generic [ref=e538]:
+              - generic [ref=e539]: Do
+              - generic [ref=e540]: 04.06.
+            - generic [ref=e541]:
+              - generic [ref=e542]: Fr
+              - generic [ref=e543]: 05.06.
+          - generic [ref=e544]:
+            - generic [ref=e546]: "-"
+            - generic [ref=e548]: "-"
+            - generic [ref=e550]: "-"
+            - generic [ref=e552]: "-"
+            - generic [ref=e554]: "-"

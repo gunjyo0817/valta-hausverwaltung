@@ -1,0 +1,158 @@
+- generic [ref=e841]:
+  - complementary [ref=e842]:
+    - link "V Valta Operations Copilot" [ref=e843] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e844]: V
+      - generic [ref=e845]:
+        - generic [ref=e846]: Valta
+        - generic [ref=e847]: Operations Copilot
+    - generic [ref=e849]:
+      - generic [ref=e850]: MH
+      - generic [ref=e851]:
+        - generic [ref=e852]: Contractor view
+        - generic [ref=e853]: Thomas Müller
+    - generic [ref=e854]: Contractor view
+    - navigation [ref=e855]:
+      - link "Assigned jobs" [ref=e856] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e857]
+        - generic [ref=e860]: Assigned jobs
+      - link "Schedule" [ref=e861] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e862]
+        - generic [ref=e864]: Schedule
+      - link "Messages" [ref=e865] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e866]
+        - generic [ref=e868]: Messages
+      - link "Completed" [ref=e869] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e870]
+        - generic [ref=e873]: Completed
+    - generic [ref=e874]:
+      - generic [ref=e875]:
+        - generic [ref=e876]:
+          - img [ref=e877]
+          - text: AI Copilot
+        - paragraph [ref=e880]: Structures requests, prioritises urgency, recommends contractors.
+      - link "MH Thomas Müller Müller Heating Ltd." [ref=e881] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e882]: MH
+        - generic [ref=e883]:
+          - generic [ref=e884]: Thomas Müller
+          - generic [ref=e885]: Müller Heating Ltd.
+        - img [ref=e886]
+  - generic [ref=e889]:
+    - banner [ref=e890]:
+      - generic [ref=e891]:
+        - heading "My assigned jobs" [level=1] [ref=e892]
+        - paragraph [ref=e893]: Only the essentials — so you can get started fast.
+      - generic [ref=e894]:
+        - generic [ref=e895]:
+          - img [ref=e896]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e899]
+          - generic [ref=e900]: ⌘K
+        - generic [ref=e901]:
+          - 'button "Current view: Contractor" [active] [ref=e902]':
+            - generic [ref=e903]: "Current view:"
+            - generic [ref=e904]: Contractor
+            - img [ref=e905]
+          - generic [ref=e1004]:
+            - generic [ref=e1006]: Demo mode · switch role
+            - button "Property Manager Sarah Krüger" [ref=e1007]:
+              - img [ref=e1009]
+              - generic [ref=e1014]:
+                - generic [ref=e1015]: Property Manager
+                - generic [ref=e1016]: Sarah Krüger
+            - button "Tenant Anna Becker" [ref=e1017]:
+              - img [ref=e1019]
+              - generic [ref=e1021]:
+                - generic [ref=e1022]: Tenant
+                - generic [ref=e1023]: Anna Becker
+            - button "Contractor Thomas Müller" [ref=e1024]:
+              - img [ref=e1026]
+              - generic [ref=e1028]:
+                - generic [ref=e1029]: Contractor
+                - generic [ref=e1030]: Thomas Müller
+              - img [ref=e1031]
+            - button "Property Owner Dr. Karl Reichmann" [ref=e1033]:
+              - img [ref=e1035]
+              - generic [ref=e1038]:
+                - generic [ref=e1039]: Property Owner
+                - generic [ref=e1040]: Dr. Karl Reichmann
+        - generic [ref=e907]:
+          - button "DE" [ref=e908]:
+            - img [ref=e909]
+            - text: DE
+          - button "EN" [ref=e913]
+        - button "Notifications" [ref=e914]:
+          - img [ref=e915]
+    - main [ref=e918]:
+      - generic [ref=e919]:
+        - generic [ref=e920]:
+          - generic [ref=e921]:
+            - generic [ref=e922]:
+              - img [ref=e924]
+              - generic [ref=e927]: Active jobs
+            - generic [ref=e928]: "1"
+          - generic [ref=e929]:
+            - generic [ref=e930]:
+              - img [ref=e932]
+              - generic [ref=e935]: Due this week
+            - generic [ref=e936]: "5"
+          - generic [ref=e937]:
+            - generic [ref=e938]:
+              - img [ref=e940]
+              - generic [ref=e942]: Avg. response
+            - generic [ref=e943]: 2.1h
+          - generic [ref=e944]:
+            - generic [ref=e945]:
+              - img [ref=e947]
+              - generic [ref=e949]: Rating
+            - generic [ref=e950]: "4.9"
+        - generic [ref=e953]:
+          - generic [ref=e954]:
+            - generic [ref=e955]:
+              - generic [ref=e956]:
+                - generic [ref=e957]: VLT-2041
+                - generic [ref=e958]: Critical
+                - generic [ref=e959]: New
+              - heading "Heating completely down" [level=3] [ref=e961]
+              - generic [ref=e962]:
+                - img [ref=e963]
+                - text: Lindenstraße 22, Berlin · Unit 14, 3rd floor
+            - generic [ref=e966]:
+              - generic [ref=e967]: Scheduled
+              - generic [ref=e968]: Tue, Jun 2 · 09:00
+          - generic [ref=e969]:
+            - generic [ref=e970]:
+              - generic [ref=e971]: Repair notes
+              - paragraph [ref=e972]: Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended.
+            - generic [ref=e973]:
+              - generic [ref=e974]: Tenant contact
+              - generic [ref=e975]: Anna Becker
+              - generic [ref=e976]:
+                - img [ref=e977]
+                - text: +49 30 1234567
+              - generic [ref=e979]:
+                - img [ref=e980]
+                - text: 2 Photos
+          - generic [ref=e983]:
+            - button "Accept job" [ref=e984]:
+              - img [ref=e985]
+              - text: Accept job
+            - button "Mark in progress" [ref=e988]:
+              - img [ref=e989]
+              - text: Mark in progress
+            - button "Request info" [ref=e991]:
+              - img [ref=e992]
+              - text: Request info
+            - button "Complete" [ref=e994]:
+              - img [ref=e995]
+              - text: Complete
+            - link "Directions" [ref=e998] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Lindenstra%C3%9Fe%2022%2C%20Berlin
+              - img [ref=e999]
+              - text: Directions
+            - link "Open ticket" [ref=e1002] [cursor=pointer]:
+              - /url: /ticket/VLT-2041

@@ -1,0 +1,414 @@
+- generic [ref=e1568]:
+  - complementary [ref=e1569]:
+    - link "V Valta Operations Copilot" [ref=e1570] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e1571]: V
+      - generic [ref=e1572]:
+        - generic [ref=e1573]: Valta
+        - generic [ref=e1574]: Operations Copilot
+    - generic [ref=e1576]:
+      - generic [ref=e1577]: SK
+      - generic [ref=e1578]:
+        - generic [ref=e1579]: Hausverwaltungs-Sicht
+        - generic [ref=e1580]: Sarah Krüger
+    - generic [ref=e1581]: Hausverwaltung
+    - navigation [ref=e1582]:
+      - link "Dashboard" [ref=e1583] [cursor=pointer]:
+        - /url: /
+        - img [ref=e1584]
+        - generic [ref=e1589]: Dashboard
+      - link "Operations Inbox" [ref=e1590] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e1591]
+        - generic [ref=e1594]: Operations Inbox
+      - link "AI Insights" [ref=e1595] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e1596]
+        - generic [ref=e1598]: AI Insights
+      - link "Objekte" [ref=e1599] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e1600]
+        - generic [ref=e1604]: Objekte
+      - link "Handwerker" [ref=e1605] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e1606]
+        - generic [ref=e1611]: Handwerker
+    - generic [ref=e1612]:
+      - generic [ref=e1613]:
+        - generic [ref=e1614]:
+          - img [ref=e1615]
+          - text: AI Copilot
+        - paragraph [ref=e1618]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e1619] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1620]: SK
+        - generic [ref=e1621]:
+          - generic [ref=e1622]: Sarah Krüger
+          - generic [ref=e1623]: Hausverwaltung Berlin GmbH
+        - img [ref=e1624]
+  - generic [ref=e1627]:
+    - banner [ref=e1628]:
+      - generic [ref=e1629]:
+        - heading "Handwerker" [level=1] [ref=e1630]
+        - paragraph [ref=e1631]: Ihr Partner-Netzwerk · 12 Firmen
+      - generic [ref=e1632]:
+        - generic [ref=e1633]:
+          - img [ref=e1634]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e1637]
+          - generic [ref=e1638]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e1640]':
+          - generic [ref=e1641]: "Aktuelle Sicht:"
+          - generic [ref=e1642]: Hausverwaltung
+          - img [ref=e1643]
+        - generic [ref=e1645]:
+          - button "DE" [ref=e1646]:
+            - img [ref=e1647]
+            - text: DE
+          - button "EN" [ref=e1651]
+        - button "Notifications" [ref=e1652]:
+          - img [ref=e1653]
+          - generic [ref=e1656]: "7"
+        - button "Neues Ticket" [ref=e1657]:
+          - img [ref=e1658]
+          - text: Neues Ticket
+    - main [ref=e1659]:
+      - generic [ref=e1660]:
+        - generic [ref=e1661]:
+          - generic [ref=e1662]:
+            - img [ref=e1663]
+            - textbox "Handwerker durchsuchen…" [ref=e1666]
+          - generic [ref=e1667]:
+            - img [ref=e1668]
+            - combobox [ref=e1670]:
+              - option "Alle · Gewerk" [selected]
+              - option "Heizung"
+              - option "Klempner"
+              - option "Elektriker"
+              - option "Aufzug-Service"
+              - option "Internet-Provider"
+              - option "Reinigung"
+              - option "Gutachter"
+              - option "Notfall"
+            - combobox [ref=e1671]:
+              - option "Alle · Verfügbarkeit" [selected]
+              - option "Verfügbar"
+              - option "Nicht verfügbar"
+        - generic [ref=e1672]:
+          - 'link "AquaStop München Wasserschäden 4.5 (132) · München · Verfügbar · ETA 3Std. Aktive Aufträge: 0 Zuverlässigkeit: 89%" [ref=e1673] [cursor=pointer]':
+            - /url: /contractors/c5
+            - generic [ref=e1674]:
+              - img [ref=e1676]
+              - generic [ref=e1678]:
+                - generic [ref=e1679]:
+                  - heading "AquaStop München" [level=3] [ref=e1680]
+                  - img [ref=e1681]
+                - generic [ref=e1684]: Wasserschäden
+            - generic [ref=e1685]:
+              - generic [ref=e1686]:
+                - img [ref=e1687]
+                - text: "4.5"
+              - generic [ref=e1689]: (132)
+              - generic [ref=e1690]: ·
+              - generic [ref=e1691]:
+                - img [ref=e1692]
+                - text: München
+              - generic [ref=e1695]: ·
+              - generic [ref=e1696]: Verfügbar · ETA 3Std.
+            - generic [ref=e1697]:
+              - generic [ref=e1698]: "Aktive Aufträge: 0"
+              - generic [ref=e1699]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1700]: 89%
+          - 'link "Elektro Bauer Elektroinstallation Bevorzugter Partner 4.7 (201) · Frankfurt · Verfügbar · ETA 5Std. Aktive Aufträge: 0 Zuverlässigkeit: 94%" [ref=e1701] [cursor=pointer]':
+            - /url: /contractors/c3
+            - generic [ref=e1702]:
+              - img [ref=e1704]
+              - generic [ref=e1706]:
+                - generic [ref=e1707]:
+                  - heading "Elektro Bauer" [level=3] [ref=e1708]
+                  - img [ref=e1709]
+                - generic [ref=e1712]: Elektroinstallation
+              - generic [ref=e1713]:
+                - img [ref=e1714]
+                - text: Bevorzugter Partner
+            - generic [ref=e1717]:
+              - generic [ref=e1718]:
+                - img [ref=e1719]
+                - text: "4.7"
+              - generic [ref=e1721]: (201)
+              - generic [ref=e1722]: ·
+              - generic [ref=e1723]:
+                - img [ref=e1724]
+                - text: Frankfurt
+              - generic [ref=e1727]: ·
+              - generic [ref=e1728]: Verfügbar · ETA 5Std.
+            - generic [ref=e1729]:
+              - generic [ref=e1730]: "Aktive Aufträge: 0"
+              - generic [ref=e1731]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1732]: 94%
+          - 'link "Glanz Reinigung GmbH Treppenhaus- & Gewerbereinigung Bevorzugter Partner 4.6 (145) · Köln · Verfügbar · ETA 12Std. Aktive Aufträge: 0 Zuverlässigkeit: 96%" [ref=e1733] [cursor=pointer]':
+            - /url: /contractors/c12
+            - generic [ref=e1734]:
+              - img [ref=e1736]
+              - generic [ref=e1738]:
+                - generic [ref=e1739]:
+                  - heading "Glanz Reinigung GmbH" [level=3] [ref=e1740]
+                  - img [ref=e1741]
+                - generic [ref=e1744]: Treppenhaus- & Gewerbereinigung
+              - generic [ref=e1745]:
+                - img [ref=e1746]
+                - text: Bevorzugter Partner
+            - generic [ref=e1749]:
+              - generic [ref=e1750]:
+                - img [ref=e1751]
+                - text: "4.6"
+              - generic [ref=e1753]: (145)
+              - generic [ref=e1754]: ·
+              - generic [ref=e1755]:
+                - img [ref=e1756]
+                - text: Köln
+              - generic [ref=e1759]: ·
+              - generic [ref=e1760]: Verfügbar · ETA 12Std.
+            - generic [ref=e1761]:
+              - generic [ref=e1762]: "Aktive Aufträge: 0"
+              - generic [ref=e1763]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1764]: 96%
+          - 'link "Gutachter Bauer Schimmelgutachten 4.8 (64) · Leipzig · Verfügbar · ETA 48Std. Aktive Aufträge: 1 Zuverlässigkeit: 93%" [ref=e1765] [cursor=pointer]':
+            - /url: /contractors/c9
+            - generic [ref=e1766]:
+              - img [ref=e1768]
+              - generic [ref=e1770]:
+                - generic [ref=e1771]:
+                  - heading "Gutachter Bauer" [level=3] [ref=e1772]
+                  - img [ref=e1773]
+                - generic [ref=e1776]: Schimmelgutachten
+            - generic [ref=e1777]:
+              - generic [ref=e1778]:
+                - img [ref=e1779]
+                - text: "4.8"
+              - generic [ref=e1781]: (64)
+              - generic [ref=e1782]: ·
+              - generic [ref=e1783]:
+                - img [ref=e1784]
+                - text: Leipzig
+              - generic [ref=e1787]: ·
+              - generic [ref=e1788]: Verfügbar · ETA 48Std.
+            - generic [ref=e1789]:
+              - generic [ref=e1790]: "Aktive Aufträge: 1"
+              - generic [ref=e1791]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1792]: 93%
+          - 'link "Hausmeister Krüger Hausmeisterservice Bevorzugter Partner 4.9 (412) · Berlin · Verfügbar · ETA 4Std. Aktive Aufträge: 0 Zuverlässigkeit: 99%" [ref=e1793] [cursor=pointer]':
+            - /url: /contractors/c10
+            - generic [ref=e1794]:
+              - img [ref=e1796]
+              - generic [ref=e1798]:
+                - generic [ref=e1799]:
+                  - heading "Hausmeister Krüger" [level=3] [ref=e1800]
+                  - img [ref=e1801]
+                - generic [ref=e1804]: Hausmeisterservice
+              - generic [ref=e1805]:
+                - img [ref=e1806]
+                - text: Bevorzugter Partner
+            - generic [ref=e1809]:
+              - generic [ref=e1810]:
+                - img [ref=e1811]
+                - text: "4.9"
+              - generic [ref=e1813]: (412)
+              - generic [ref=e1814]: ·
+              - generic [ref=e1815]:
+                - img [ref=e1816]
+                - text: Berlin
+              - generic [ref=e1819]: ·
+              - generic [ref=e1820]: Verfügbar · ETA 4Std.
+            - generic [ref=e1821]:
+              - generic [ref=e1822]: "Aktive Aufträge: 0"
+              - generic [ref=e1823]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1824]: 99%
+          - 'link "Klempner Schulz & Söhne Klempner & Sanitär Bevorzugter Partner 4.8 (244) · München · Verfügbar · ETA 1Std. Aktive Aufträge: 2 Zuverlässigkeit: 96%" [ref=e1825] [cursor=pointer]':
+            - /url: /contractors/c4
+            - generic [ref=e1826]:
+              - img [ref=e1828]
+              - generic [ref=e1830]:
+                - generic [ref=e1831]:
+                  - heading "Klempner Schulz & Söhne" [level=3] [ref=e1832]
+                  - img [ref=e1833]
+                - generic [ref=e1836]: Klempner & Sanitär
+              - generic [ref=e1837]:
+                - img [ref=e1838]
+                - text: Bevorzugter Partner
+            - generic [ref=e1841]:
+              - generic [ref=e1842]:
+                - img [ref=e1843]
+                - text: "4.8"
+              - generic [ref=e1845]: (244)
+              - generic [ref=e1846]: ·
+              - generic [ref=e1847]:
+                - img [ref=e1848]
+                - text: München
+              - generic [ref=e1851]: ·
+              - generic [ref=e1852]: Verfügbar · ETA 1Std.
+            - generic [ref=e1853]:
+              - generic [ref=e1854]: "Aktive Aufträge: 2"
+              - generic [ref=e1855]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1856]: 96%
+          - 'link "Müller Heizung GmbH Heizungsnotdienst Bevorzugter Partner 4.9 (312) · Berlin · Verfügbar · ETA 2Std. Aktive Aufträge: 0 Zuverlässigkeit: 97%" [ref=e1857] [cursor=pointer]':
+            - /url: /contractors/c1
+            - generic [ref=e1858]:
+              - img [ref=e1860]
+              - generic [ref=e1862]:
+                - generic [ref=e1863]:
+                  - heading "Müller Heizung GmbH" [level=3] [ref=e1864]
+                  - img [ref=e1865]
+                - generic [ref=e1868]: Heizungsnotdienst
+              - generic [ref=e1869]:
+                - img [ref=e1870]
+                - text: Bevorzugter Partner
+            - generic [ref=e1873]:
+              - generic [ref=e1874]:
+                - img [ref=e1875]
+                - text: "4.9"
+              - generic [ref=e1877]: (312)
+              - generic [ref=e1878]: ·
+              - generic [ref=e1879]:
+                - img [ref=e1880]
+                - text: Berlin
+              - generic [ref=e1883]: ·
+              - generic [ref=e1884]: Verfügbar · ETA 2Std.
+            - generic [ref=e1885]:
+              - generic [ref=e1886]: "Aktive Aufträge: 0"
+              - generic [ref=e1887]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1888]: 97%
+          - 'link "NetTech Köln Netzwerk vor Ort 4.6 (88) · Köln · Nicht verfügbar Aktive Aufträge: 0 Zuverlässigkeit: 88%" [ref=e1889] [cursor=pointer]':
+            - /url: /contractors/c7
+            - generic [ref=e1890]:
+              - img [ref=e1892]
+              - generic [ref=e1894]:
+                - generic [ref=e1895]:
+                  - heading "NetTech Köln" [level=3] [ref=e1896]
+                  - img [ref=e1897]
+                - generic [ref=e1900]: Netzwerk vor Ort
+            - generic [ref=e1901]:
+              - generic [ref=e1902]:
+                - img [ref=e1903]
+                - text: "4.6"
+              - generic [ref=e1905]: (88)
+              - generic [ref=e1906]: ·
+              - generic [ref=e1907]:
+                - img [ref=e1908]
+                - text: Köln
+              - generic [ref=e1911]: ·
+              - generic [ref=e1912]: Nicht verfügbar
+            - generic [ref=e1913]:
+              - generic [ref=e1914]: "Aktive Aufträge: 0"
+              - generic [ref=e1915]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1916]: 88%
+          - 'link "Notdienst 24 Berlin Notreparaturen 24/7 4.3 (220) · Berlin · Verfügbar · ETA 1Std. Aktive Aufträge: 0 Zuverlässigkeit: 87%" [ref=e1917] [cursor=pointer]':
+            - /url: /contractors/c11
+            - generic [ref=e1918]:
+              - img [ref=e1920]
+              - generic [ref=e1922]:
+                - generic [ref=e1923]:
+                  - heading "Notdienst 24 Berlin" [level=3] [ref=e1924]
+                  - img [ref=e1925]
+                - generic [ref=e1928]: Notreparaturen 24/7
+            - generic [ref=e1929]:
+              - generic [ref=e1930]:
+                - img [ref=e1931]
+                - text: "4.3"
+              - generic [ref=e1933]: (220)
+              - generic [ref=e1934]: ·
+              - generic [ref=e1935]:
+                - img [ref=e1936]
+                - text: Berlin
+              - generic [ref=e1939]: ·
+              - generic [ref=e1940]: Verfügbar · ETA 1Std.
+            - generic [ref=e1941]:
+              - generic [ref=e1942]: "Aktive Aufträge: 0"
+              - generic [ref=e1943]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1944]: 87%
+          - 'link "Schindler Service Aufzugswartung Bevorzugter Partner 4.7 (530) · Hamburg · Verfügbar · ETA 5Std. Aktive Aufträge: 1 Zuverlässigkeit: 95%" [ref=e1945] [cursor=pointer]':
+            - /url: /contractors/c8
+            - generic [ref=e1946]:
+              - img [ref=e1948]
+              - generic [ref=e1950]:
+                - generic [ref=e1951]:
+                  - heading "Schindler Service" [level=3] [ref=e1952]
+                  - img [ref=e1953]
+                - generic [ref=e1956]: Aufzugswartung
+              - generic [ref=e1957]:
+                - img [ref=e1958]
+                - text: Bevorzugter Partner
+            - generic [ref=e1961]:
+              - generic [ref=e1962]:
+                - img [ref=e1963]
+                - text: "4.7"
+              - generic [ref=e1965]: (530)
+              - generic [ref=e1966]: ·
+              - generic [ref=e1967]:
+                - img [ref=e1968]
+                - text: Hamburg
+              - generic [ref=e1971]: ·
+              - generic [ref=e1972]: Verfügbar · ETA 5Std.
+            - generic [ref=e1973]:
+              - generic [ref=e1974]: "Aktive Aufträge: 1"
+              - generic [ref=e1975]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e1976]: 95%
+          - 'link "Therm-Service Berlin Heizung & Sanitär 4.6 (178) · Berlin · Verfügbar · ETA 4Std. Aktive Aufträge: 0 Zuverlässigkeit: 91%" [ref=e1977] [cursor=pointer]':
+            - /url: /contractors/c2
+            - generic [ref=e1978]:
+              - img [ref=e1980]
+              - generic [ref=e1982]:
+                - generic [ref=e1983]:
+                  - heading "Therm-Service Berlin" [level=3] [ref=e1984]
+                  - img [ref=e1985]
+                - generic [ref=e1988]: Heizung & Sanitär
+            - generic [ref=e1989]:
+              - generic [ref=e1990]:
+                - img [ref=e1991]
+                - text: "4.6"
+              - generic [ref=e1993]: (178)
+              - generic [ref=e1994]: ·
+              - generic [ref=e1995]:
+                - img [ref=e1996]
+                - text: Berlin
+              - generic [ref=e1999]: ·
+              - generic [ref=e2000]: Verfügbar · ETA 4Std.
+            - generic [ref=e2001]:
+              - generic [ref=e2002]: "Aktive Aufträge: 0"
+              - generic [ref=e2003]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e2004]: 91%
+          - 'link "Vodafone Business Support Anbieterstörung 4.1 (1820) · Remote · Verfügbar · ETA 24Std. Aktive Aufträge: 1 Zuverlässigkeit: 82%" [ref=e2005] [cursor=pointer]':
+            - /url: /contractors/c6
+            - generic [ref=e2006]:
+              - img [ref=e2008]
+              - generic [ref=e2010]:
+                - generic [ref=e2011]:
+                  - heading "Vodafone Business Support" [level=3] [ref=e2012]
+                  - img [ref=e2013]
+                - generic [ref=e2016]: Anbieterstörung
+            - generic [ref=e2017]:
+              - generic [ref=e2018]:
+                - img [ref=e2019]
+                - text: "4.1"
+              - generic [ref=e2021]: (1820)
+              - generic [ref=e2022]: ·
+              - generic [ref=e2023]:
+                - img [ref=e2024]
+                - text: Remote
+              - generic [ref=e2027]: ·
+              - generic [ref=e2028]: Verfügbar · ETA 24Std.
+            - generic [ref=e2029]:
+              - generic [ref=e2030]: "Aktive Aufträge: 1"
+              - generic [ref=e2031]:
+                - text: "Zuverlässigkeit:"
+                - generic [ref=e2032]: 82%

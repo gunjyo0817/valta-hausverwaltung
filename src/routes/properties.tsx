@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { DataErrorState, EmptyDataState } from "@/components/DataState";
@@ -24,7 +24,15 @@ function statusStyle(s: PropertyDto["status"]) {
 }
 
 function PropertiesPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/properties" && pathname.startsWith("/properties/")) return <Outlet />;
+
+  return <PropertiesListPage />;
+}
+
+function PropertiesListPage() {
   const { t, lang } = useLang();
+
   const ticketsQuery = useTickets();
   const tickets = ticketsQuery.data ?? [];
   const [query, setQuery] = useState("");

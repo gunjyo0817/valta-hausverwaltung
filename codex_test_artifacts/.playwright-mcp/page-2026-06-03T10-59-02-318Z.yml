@@ -1,0 +1,160 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: SK
+      - generic [ref=e12]:
+        - generic [ref=e13]: Hausverwaltungs-Sicht
+        - generic [ref=e14]: Sarah Krüger
+    - generic [ref=e15]: Hausverwaltung
+    - navigation [ref=e346]:
+      - link "Dashboard" [ref=e347] [cursor=pointer]:
+        - /url: /
+        - img [ref=e348]
+        - generic [ref=e353]: Dashboard
+      - link "Operations Inbox" [ref=e354] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e355]
+        - generic [ref=e358]: Operations Inbox
+      - link "AI Insights" [ref=e359] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e360]
+        - generic [ref=e362]: AI Insights
+      - link "Objekte" [ref=e363] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e364]
+        - generic [ref=e368]: Objekte
+      - link "Handwerker" [ref=e369] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e370]
+        - generic [ref=e375]: Handwerker
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e376] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: SK
+        - generic [ref=e55]:
+          - generic [ref=e56]: Sarah Krüger
+          - generic [ref=e57]: Hausverwaltung Berlin GmbH
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Guten Morgen, Sarah" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Hier ist, was in Ihrem Portfolio heute Aufmerksamkeit braucht.
+      - generic [ref=e66]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e377]':
+          - generic [ref=e69]: "Aktuelle Sicht:"
+          - generic [ref=e70]: Hausverwaltung
+          - img [ref=e71]
+        - generic [ref=e73]:
+          - button "DE" [ref=e74]:
+            - img [ref=e75]
+            - text: DE
+          - button "EN" [ref=e79]
+        - button "Notifications" [ref=e80]:
+          - img [ref=e81]
+        - button "Neues Ticket" [ref=e378]:
+          - img [ref=e379]
+          - text: Neues Ticket
+    - main [ref=e380]:
+      - generic [ref=e381]:
+        - generic [ref=e382]:
+          - generic [ref=e383]:
+            - generic [ref=e384]:
+              - generic [ref=e385]: Offene Tickets
+              - img [ref=e386]
+            - generic [ref=e389]: "0"
+            - generic [ref=e390]:
+              - img [ref=e391]
+              - text: +3 heute
+          - generic [ref=e394]:
+            - generic [ref=e395]:
+              - generic [ref=e396]: Ø Reaktionszeit
+              - img [ref=e397]
+            - generic [ref=e400]: 0 Min.
+            - generic [ref=e401]:
+              - img [ref=e402]
+              - text: −38% MoM
+          - generic [ref=e405]:
+            - generic [ref=e406]:
+              - generic [ref=e407]: AI-Vorschläge übernommen
+              - img [ref=e408]
+            - generic [ref=e411]: "0"
+            - generic [ref=e412]:
+              - img [ref=e413]
+              - text: diese Woche
+          - generic [ref=e416]:
+            - generic [ref=e417]:
+              - generic [ref=e418]: Kritische Fälle
+              - img [ref=e419]
+            - generic [ref=e421]: "0"
+            - generic [ref=e422]:
+              - img [ref=e423]
+              - text: Sofort prüfen
+          - generic [ref=e426]:
+            - generic [ref=e427]:
+              - generic [ref=e428]: Wartet auf Handwerker
+              - img [ref=e429]
+            - generic [ref=e431]: "0"
+            - generic [ref=e432]:
+              - img [ref=e433]
+              - text: 2 überfällig
+        - generic [ref=e436]:
+          - generic [ref=e437]:
+            - generic [ref=e438]:
+              - generic [ref=e439]:
+                - heading "Aktive Tickets" [level=2] [ref=e440]
+                - paragraph [ref=e441]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+              - link "Inbox öffnen" [ref=e442] [cursor=pointer]:
+                - /url: /inbox
+                - text: Inbox öffnen
+                - img [ref=e443]
+            - list [ref=e445]:
+              - listitem [ref=e446]:
+                - generic [ref=e447]:
+                  - img [ref=e449]
+                  - generic [ref=e453]: Keine aktiven Tickets
+                  - paragraph [ref=e454]: Die Demo-Datenbank enthaelt keine aktiven Ticket-Datensaetze. Lade Mock-Daten im Adminbereich neu, um diese Ansicht zu fuellen.
+                  - link "Demo-Daten-Admin oeffnen" [ref=e455] [cursor=pointer]:
+                    - /url: /admin/demo-data
+                    - img [ref=e456]
+                    - text: Demo-Daten-Admin oeffnen
+          - generic [ref=e459]:
+            - generic [ref=e460]:
+              - generic [ref=e461]:
+                - img [ref=e462]
+                - heading "AI Assistant · Aktivität" [level=2] [ref=e465]
+              - list [ref=e466]:
+                - listitem [ref=e467]:
+                  - generic [ref=e468]:
+                    - img [ref=e470]
+                    - generic [ref=e474]: Keine KI-Aktivitaet
+                    - paragraph [ref=e475]: In der Datenbank sind noch keine KI-Aktivitaeten vorhanden.
+                    - link "Demo-Daten-Admin oeffnen" [ref=e476] [cursor=pointer]:
+                      - /url: /admin/demo-data
+                      - img [ref=e477]
+                      - text: Demo-Daten-Admin oeffnen
+            - generic [ref=e480]:
+              - generic [ref=e481]:
+                - img [ref=e482]
+                - heading "Benachrichtigungen" [level=2] [ref=e485]
+              - list [ref=e486]:
+                - listitem [ref=e487]:
+                  - generic [ref=e488]:
+                    - img [ref=e490]
+                    - generic [ref=e494]: Keine Benachrichtigungen
+                    - paragraph [ref=e495]: Fuer diese Rolle sind keine Benachrichtigungen vorhanden.
+                    - link "Demo-Daten-Admin oeffnen" [ref=e496] [cursor=pointer]:
+                      - /url: /admin/demo-data
+                      - img [ref=e497]
+                      - text: Demo-Daten-Admin oeffnen

@@ -1,0 +1,181 @@
+- generic [ref=e350]:
+  - complementary [ref=e351]:
+    - link "V Valta Operations Copilot" [ref=e352] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e353]: V
+      - generic [ref=e354]:
+        - generic [ref=e355]: Valta
+        - generic [ref=e356]: Operations Copilot
+    - generic [ref=e358]:
+      - generic [ref=e359]: SK
+      - generic [ref=e360]:
+        - generic [ref=e361]: Hausverwaltungs-Sicht
+        - generic [ref=e362]: Sarah Krüger
+    - generic [ref=e363]: Hausverwaltung
+    - navigation [ref=e364]:
+      - link "Dashboard" [ref=e365] [cursor=pointer]:
+        - /url: /
+        - img [ref=e366]
+        - generic [ref=e371]: Dashboard
+      - link "Operations Inbox" [ref=e372] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e373]
+        - generic [ref=e376]: Operations Inbox
+      - link "AI Insights" [ref=e377] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e378]
+        - generic [ref=e380]: AI Insights
+      - link "Objekte" [ref=e381] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e382]
+        - generic [ref=e386]: Objekte
+      - link "Handwerker" [ref=e387] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e388]
+        - generic [ref=e393]: Handwerker
+    - generic [ref=e394]:
+      - generic [ref=e395]:
+        - generic [ref=e396]:
+          - img [ref=e397]
+          - text: AI Copilot
+        - paragraph [ref=e400]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e401] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e402]: SK
+        - generic [ref=e403]:
+          - generic [ref=e404]: Sarah Krüger
+          - generic [ref=e405]: Hausverwaltung Berlin GmbH
+        - img [ref=e406]
+  - generic [ref=e409]:
+    - banner [ref=e410]:
+      - generic [ref=e411]:
+        - heading "AI Insights" [level=1] [ref=e412]
+        - paragraph [ref=e413]: Operativer Intelligence-Layer · letzte 90 Tage
+      - generic [ref=e414]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e416]':
+          - generic [ref=e417]: "Aktuelle Sicht:"
+          - generic [ref=e418]: Hausverwaltung
+          - img [ref=e419]
+        - generic [ref=e421]:
+          - button "DE" [ref=e422]:
+            - img [ref=e423]
+            - text: DE
+          - button "EN" [ref=e427]
+        - button "Notifications" [ref=e428]:
+          - img [ref=e429]
+        - button "Neues Ticket" [ref=e432]:
+          - img [ref=e433]
+          - text: Neues Ticket
+    - main [ref=e434]:
+      - generic [ref=e435]:
+        - generic [ref=e436]:
+          - generic [ref=e437]:
+            - generic [ref=e439]: AI-Automatisierungsrate
+            - generic [ref=e442]: 0%
+            - generic [ref=e443]: Aus gespeicherten KI-Vorschlägen
+          - generic [ref=e444]:
+            - generic [ref=e445]:
+              - generic [ref=e446]: Ø Auflösungszeit
+              - img [ref=e447]
+            - generic [ref=e450]: 0 Std.
+            - generic [ref=e451]: Aus aktuellen Tickets
+          - generic [ref=e452]:
+            - generic [ref=e453]:
+              - generic [ref=e454]: SLA-Verletzungen
+              - img [ref=e455]
+            - generic [ref=e457]: "0"
+            - generic [ref=e458]: Offene Tickets über Schwellwert
+          - generic [ref=e459]:
+            - generic [ref=e460]:
+              - generic [ref=e461]: Kritischer Hotspot
+              - img [ref=e462]
+            - generic [ref=e464]: —
+            - generic [ref=e465]: Häufigste Kategorie
+        - generic [ref=e466]:
+          - img [ref=e468]
+          - generic [ref=e472]: Keine Insight-Daten
+          - paragraph [ref=e473]: Es gibt keine Tickets, Handwerker oder KI-Vorschlaege fuer diese Auswertung. Lade Mock-Daten im Adminbereich neu, um Insights wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e474] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e475]
+            - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e478]:
+          - generic [ref=e479]:
+            - generic [ref=e480]:
+              - generic [ref=e481]:
+                - heading "Reaktionszeit pro Woche" [level=2] [ref=e482]
+                - paragraph [ref=e483]: Minuten zwischen Eingang und erster Antwort.
+              - generic [ref=e484]:
+                - img [ref=e485]
+                - text: Live DB
+            - generic [ref=e488]:
+              - generic [ref=e490]: W1
+              - generic [ref=e492]: W2
+              - generic [ref=e494]: W3
+              - generic [ref=e496]: W4
+              - generic [ref=e498]: W5
+              - generic [ref=e500]: W6
+              - generic [ref=e502]: W7
+              - generic [ref=e504]: W8
+          - generic [ref=e505]:
+            - generic [ref=e506]:
+              - heading "Häufigste Kategorien" [level=2] [ref=e507]
+              - paragraph [ref=e508]: Anteil der Tickets pro Kategorie.
+            - generic [ref=e509]:
+              - img [ref=e511]
+              - generic [ref=e515]: Keine Kategorien
+              - paragraph [ref=e516]: Es sind keine Tickets fuer eine Kategorien-Auswertung vorhanden.
+              - link "Demo-Daten-Admin oeffnen" [ref=e517] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e518]
+                - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e521]:
+          - generic [ref=e522]:
+            - generic [ref=e523]:
+              - img [ref=e524]
+              - generic [ref=e526]:
+                - heading "Risiko-Tickets · brauchen Aufmerksamkeit" [level=2] [ref=e527]
+                - paragraph [ref=e528]: AI-erkannte Eskalations-Kandidaten.
+            - generic [ref=e529]:
+              - img [ref=e531]
+              - generic [ref=e535]: Keine Risiko-Tickets
+              - paragraph [ref=e536]: Aktuell liegen keine offenen Tickets ueber den Demo-Risikoschwellen.
+              - link "Demo-Daten-Admin oeffnen" [ref=e537] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e538]
+                - text: Demo-Daten-Admin oeffnen
+          - generic [ref=e541]:
+            - generic [ref=e542]:
+              - img [ref=e543]
+              - text: AI-Automatisierung
+            - generic [ref=e546]: 0%
+            - paragraph [ref=e547]: der AI-Entwürfe wurden ohne Bearbeitung freigegeben.
+            - list [ref=e549]:
+              - listitem [ref=e550]:
+                - generic [ref=e551]: Auto-Triage
+                - generic [ref=e552]: 0%
+              - listitem [ref=e553]:
+                - generic [ref=e554]: Handwerker-Vorschlag akzeptiert
+                - generic [ref=e555]: 0%
+              - listitem [ref=e556]:
+                - generic [ref=e557]: Übersetzungen
+                - generic [ref=e558]: 0%
+              - listitem [ref=e559]:
+                - generic [ref=e560]: Duplikate erkannt
+                - generic [ref=e561]: "0"
+        - generic [ref=e562]:
+          - generic [ref=e563]:
+            - generic [ref=e564]:
+              - heading "Handwerker-Netzwerk · Top-Performer" [level=2] [ref=e565]
+              - paragraph [ref=e566]: Nach Reaktionszeit und Mieter-Zufriedenheit.
+            - link "Alle anzeigen →" [ref=e567] [cursor=pointer]:
+              - /url: /contractors
+          - generic [ref=e568]:
+            - img [ref=e570]
+            - generic [ref=e574]: Keine Handwerker
+            - paragraph [ref=e575]: Es sind keine Handwerker-Datensaetze fuer das Ranking vorhanden.
+            - link "Demo-Daten-Admin oeffnen" [ref=e576] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e577]
+              - text: Demo-Daten-Admin oeffnen
+        - paragraph [ref=e580]: Demo-Daten · 0 aktive Tickets im Bestand

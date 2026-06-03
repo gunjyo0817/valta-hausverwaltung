@@ -1,0 +1,76 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "Open menu" [ref=e5]:
+      - img [ref=e6]
+    - heading "Guten Morgen, Sarah" [level=1] [ref=e8]
+    - generic [ref=e9]:
+      - button "Notifications" [ref=e10]:
+        - img [ref=e11]
+      - button "Neues Ticket" [ref=e14]:
+        - img [ref=e15]
+        - text: Neues Ticket
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: Offene Tickets
+            - img [ref=e22]
+          - generic [ref=e25]: "0"
+          - generic [ref=e26]:
+            - img [ref=e27]
+            - text: +3 heute
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: Ø Reaktionszeit
+            - img [ref=e33]
+          - generic [ref=e36]: 0 Min.
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - text: −38% MoM
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - generic [ref=e43]: AI-Vorschläge übernommen
+            - img [ref=e44]
+          - generic [ref=e47]: "0"
+          - generic [ref=e48]:
+            - img [ref=e49]
+            - text: diese Woche
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]: Kritische Fälle
+            - img [ref=e55]
+          - generic [ref=e57]: "0"
+          - generic [ref=e58]:
+            - img [ref=e59]
+            - text: Sofort prüfen
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: Wartet auf Handwerker
+            - img [ref=e65]
+          - generic [ref=e67]: "0"
+          - generic [ref=e68]:
+            - img [ref=e69]
+            - text: 2 überfällig
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - heading "Aktive Tickets" [level=2] [ref=e76]
+              - paragraph [ref=e77]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+            - link "Inbox öffnen" [ref=e78] [cursor=pointer]:
+              - /url: /inbox
+              - text: Inbox öffnen
+              - img [ref=e79]
+          - list
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - heading "AI Assistant · Aktivität" [level=2] [ref=e87]
+            - list [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - img [ref=e91]
+              - heading "Benachrichtigungen" [level=2] [ref=e94]
+            - list [ref=e95]

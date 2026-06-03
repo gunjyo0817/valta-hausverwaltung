@@ -1,0 +1,57 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "V Valta · Schaden melden" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: V
+      - generic [ref=e6]: Valta · Schaden melden
+    - generic [ref=e7]:
+      - button "DE" [ref=e8]:
+        - img [ref=e9]
+        - text: DE
+      - link "Status verfolgen →" [ref=e13] [cursor=pointer]:
+        - /url: /portal
+  - generic [ref=e15]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: "1"
+          - generic [ref=e22]: Schaden melden
+        - generic [ref=e25]:
+          - generic [ref=e26]: "2"
+          - generic [ref=e27]: AI strukturiert
+        - generic [ref=e30]:
+          - generic [ref=e31]: "3"
+          - generic [ref=e32]: Prüfen & anpassen
+        - generic [ref=e35]:
+          - generic [ref=e36]: "4"
+          - generic [ref=e37]: Eingereicht
+      - generic [ref=e38]:
+        - img [ref=e40]
+        - generic [ref=e43]: Hallo 👋 Ich bin Valta, der digitale Assistent Ihrer Hausverwaltung. Was möchten Sie melden?
+      - generic [ref=e56]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+      - generic [ref=e57]:
+        - img [ref=e59]
+        - generic [ref=e62]:
+          - text: Läuft aktuell noch Wasser aus, und wo genau tritt es aus?
+          - generic [ref=e63]:
+            - button "Läuft noch" [active] [ref=e64]
+            - button "Jetzt gestoppt" [ref=e65]
+            - button "Unter Spüle" [ref=e66]
+            - button "Decke/Wand" [ref=e67]
+      - generic [ref=e69]: Läuft noch
+      - generic [ref=e70]:
+        - img [ref=e72]
+        - generic [ref=e75]:
+          - text: Möchten Sie ein Foto anhängen, damit die Hausverwaltung es schneller einschätzen kann?
+          - generic [ref=e76]:
+            - button "Foto hinzufügen" [ref=e77]
+            - button "Überspringen" [ref=e78]
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - button "Foto hinzufügen" [ref=e46]:
+          - img [ref=e47]
+        - textbox "Beschreiben Sie das Problem…" [ref=e49]
+        - button "Senden" [ref=e50]:
+          - img [ref=e51]
+          - text: Senden
+      - paragraph [ref=e54]: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.

@@ -1,0 +1,105 @@
+- generic [ref=e663]:
+  - banner [ref=e664]:
+    - link "V Valta · Schaden melden" [ref=e665] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e666]: V
+      - generic [ref=e667]: Valta · Schaden melden
+    - generic [ref=e668]:
+      - button "DE" [ref=e669]:
+        - img [ref=e670]
+        - text: DE
+      - link "Status verfolgen →" [ref=e674] [cursor=pointer]:
+        - /url: /portal
+  - generic [ref=e675]:
+    - generic [ref=e676]:
+      - generic [ref=e678]:
+        - generic [ref=e679]:
+          - generic [ref=e681]:
+            - generic [ref=e682]: "1"
+            - generic [ref=e683]: Schaden melden
+          - generic [ref=e686]:
+            - generic [ref=e687]: "2"
+            - generic [ref=e688]: AI strukturiert
+          - generic [ref=e691]:
+            - generic [ref=e692]: "3"
+            - generic [ref=e693]: Prüfen & anpassen
+          - generic [ref=e696]:
+            - generic [ref=e697]: "4"
+            - generic [ref=e698]: Eingereicht
+        - generic [ref=e699]:
+          - img [ref=e701]
+          - generic [ref=e704]: Hallo 👋 Ich bin Valta, der digitale Assistent Ihrer Hausverwaltung. Was möchten Sie melden?
+        - generic [ref=e739]: "📎 Foto angehängt: audit-tenant-new-request.png"
+        - generic [ref=e740]:
+          - img [ref=e742]
+          - generic [ref=e745]:
+            - text: Können Sie den genauen Ort nennen und was sich seit der letzten Funktion geändert hat?
+            - generic [ref=e746]:
+              - button "Küche" [ref=e747]
+              - button "Bad" [ref=e748]
+              - button "Flur" [ref=e749]
+              - button "Seit heute" [ref=e750]
+        - generic [ref=e752]: In der Kueche tropft Wasser aus dem Rohr unter der Spuele. Der Boden ist nass und es wird langsam mehr.
+        - generic [ref=e753]:
+          - img [ref=e755]
+          - generic [ref=e758]:
+            - text: Für welches Gebäude und welche Wohneinheit ist die Meldung?
+            - generic [ref=e759]:
+              - button "Lindenstraße 22 · WE 14" [ref=e760]
+              - button "Goethestraße 8 · WE 3" [ref=e761]
+              - button "Parkallee 110" [ref=e762]
+        - generic [ref=e764]: Küche
+        - generic [ref=e765]:
+          - img [ref=e767]
+          - generic [ref=e770]:
+            - text: Für welches Gebäude und welche Wohneinheit ist die Meldung?
+            - generic [ref=e771]:
+              - button "Lindenstraße 22 · WE 14" [ref=e772]
+              - button "Goethestraße 8 · WE 3" [ref=e773]
+              - button "Parkallee 110" [ref=e774]
+        - generic [ref=e776]: Lindenstraße 22 · WE 14
+        - generic [ref=e777]:
+          - img [ref=e779]
+          - generic [ref=e782]:
+            - text: Wann darf ein Techniker in die Wohnung, und soll er vorher anrufen?
+            - generic [ref=e783]:
+              - button "Jederzeit" [ref=e784]
+              - button "Werktags vormittags" [ref=e785]
+              - button "Nach 17 Uhr" [ref=e786]
+              - button "Vorher anrufen" [active] [ref=e787]
+        - generic [ref=e789]: Vorher anrufen
+        - generic [ref=e790]:
+          - img [ref=e792]
+          - generic [ref=e795]:
+            - text: Welche Telefonnummer soll die Hausverwaltung oder der Handwerker für diese Meldung nutzen?
+            - generic [ref=e796]:
+              - button "Gespeicherte Nummer" [ref=e797]
+              - button "+49 30 1234567" [ref=e798]
+      - generic [ref=e705]:
+        - generic [ref=e706]:
+          - button "Foto hinzufügen" [ref=e707]:
+            - img [ref=e708]
+          - textbox "Beschreiben Sie das Problem…" [ref=e710]
+          - button "Senden" [ref=e711]:
+            - img [ref=e712]
+            - text: Senden
+        - paragraph [ref=e715]: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.
+    - complementary [ref=e716]:
+      - generic [ref=e717]:
+        - generic [ref=e718]: Wohneinheit
+        - generic [ref=e719]:
+          - img [ref=e720]
+          - generic [ref=e724]: Lindenstraße 22 · WE 14, 3. OG
+      - generic [ref=e725]:
+        - generic [ref=e726]: Was passiert mit Ihrer Meldung?
+        - list [ref=e727]:
+          - listitem [ref=e728]: 1. Valta stellt fehlende Rückfragen.
+          - listitem [ref=e729]: 2. Ein strukturiertes Ticket wird erstellt.
+          - listitem [ref=e730]: 3. Hausverwaltung beauftragt Handwerker.
+          - listitem [ref=e731]: 4. Sie erhalten Status-Updates.
+      - generic [ref=e732]:
+        - generic [ref=e733]: Tipps für schnelle Bearbeitung
+        - list [ref=e734]:
+          - listitem [ref=e735]: • Fotos beschleunigen die Diagnose.
+          - listitem [ref=e736]: • Geben Sie an, ob es akut ist.
+          - listitem [ref=e737]: • Nennen Sie den genauen Ort.

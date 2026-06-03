@@ -1,0 +1,100 @@
+- generic [ref=e684]:
+  - complementary [ref=e685]:
+    - link "V Valta Operations Copilot" [ref=e686] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e687]: V
+      - generic [ref=e688]:
+        - generic [ref=e689]: Valta
+        - generic [ref=e690]: Operations Copilot
+    - generic [ref=e692]:
+      - generic [ref=e693]: AB
+      - generic [ref=e694]:
+        - generic [ref=e695]: Tenant view
+        - generic [ref=e696]: Anna Becker
+    - generic [ref=e697]: Tenant view
+    - navigation [ref=e698]:
+      - link "Home" [ref=e699] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e700]
+        - generic [ref=e703]: Home
+      - link "Report issue" [ref=e704] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e705]
+        - generic [ref=e707]: Report issue
+      - link "My requests" [ref=e708] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e709]
+        - generic [ref=e712]: My requests
+    - generic [ref=e713]:
+      - generic [ref=e714]:
+        - generic [ref=e715]:
+          - img [ref=e716]
+          - text: AI Copilot
+        - paragraph [ref=e719]: Structures requests, prioritises urgency, recommends contractors.
+      - link "AB Anna Becker Lindenstraße 22, Unit 14" [ref=e720] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e721]: AB
+        - generic [ref=e722]:
+          - generic [ref=e723]: Anna Becker
+          - generic [ref=e724]: Lindenstraße 22, Unit 14
+        - img [ref=e725]
+  - generic [ref=e728]:
+    - banner [ref=e729]:
+      - generic [ref=e730]:
+        - heading "My requests" [level=1] [ref=e731]
+        - paragraph [ref=e732]: We're on it — transparent and traceable.
+      - generic [ref=e733]:
+        - generic [ref=e734]:
+          - img [ref=e735]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e738]
+          - generic [ref=e739]: ⌘K
+        - 'button "Current view: Tenant" [ref=e741]':
+          - generic [ref=e742]: "Current view:"
+          - generic [ref=e743]: Tenant
+          - img [ref=e744]
+        - generic [ref=e746]:
+          - button "DE" [ref=e747]:
+            - img [ref=e748]
+            - text: DE
+          - button "EN" [ref=e752]
+        - button "Notifications" [ref=e753]:
+          - img [ref=e754]
+    - main [ref=e757]:
+      - generic [ref=e758]:
+        - generic [ref=e760]:
+          - img [ref=e762]
+          - generic [ref=e765]:
+            - heading "Something broken in your home?" [level=2] [ref=e766]
+            - paragraph [ref=e767]: Report it in 60 seconds — Valta structures everything for property management.
+            - generic [ref=e768]:
+              - link "Start a new report" [ref=e769] [cursor=pointer]:
+                - /url: /tenant/new-request
+                - img [ref=e770]
+                - text: Start a new report
+              - link "Timeline" [ref=e772] [cursor=pointer]:
+                - /url: /tenant/tickets
+                - img [ref=e773]
+                - text: Timeline
+        - generic [ref=e776]:
+          - heading "Active requests · 1" [level=3] [ref=e777]:
+            - text: Active requests
+            - generic [ref=e778]: · 1
+          - link "Heating completely down VLT-2041 · Opened 1 h ago New Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended. Müller Heizung GmbH Track status" [ref=e780] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+            - generic [ref=e781]:
+              - img [ref=e783]
+              - generic [ref=e786]:
+                - generic [ref=e787]:
+                  - generic [ref=e788]:
+                    - generic [ref=e789]: Heating completely down
+                    - generic [ref=e790]: VLT-2041 · Opened 1 h ago
+                  - generic [ref=e791]: New
+                - paragraph [ref=e793]: Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended.
+                - generic [ref=e794]:
+                  - generic [ref=e795]: Müller Heizung GmbH
+                  - generic [ref=e796]:
+                    - text: Track status
+                    - img [ref=e797]
+        - generic [ref=e799]:
+          - img [ref=e800]
+          - text: Your input is sent directly to property management. Data stays inside the system.

@@ -1,0 +1,130 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: AB
+      - generic [ref=e12]:
+        - generic [ref=e13]: Mieter-Sicht
+        - generic [ref=e14]: Anna Becker
+    - generic [ref=e15]: Mieter-Sicht
+    - navigation [ref=e97]:
+      - link "Start" [ref=e98] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e99]
+        - generic [ref=e102]: Start
+      - link "Schaden melden" [ref=e103] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e104]
+        - generic [ref=e106]: Schaden melden
+      - link "Meine Anfragen" [ref=e107] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e108]
+        - generic [ref=e111]: Meine Anfragen
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e112] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: AB
+        - generic [ref=e55]:
+          - generic [ref=e56]: Anna Becker
+          - generic [ref=e57]: Lindenstraße 22, WE 14
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Meine Anfragen" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Alle Anfragen an einem Ort
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - 'button "Aktuelle Sicht: Mieter:in" [active] [ref=e113]':
+            - generic [ref=e69]: "Aktuelle Sicht:"
+            - generic [ref=e70]: Mieter:in
+            - img [ref=e71]
+          - generic [ref=e163]:
+            - generic [ref=e165]: Demo-Modus · Rolle umschalten
+            - button "Hausverwaltung Sarah Krüger" [ref=e166]:
+              - img [ref=e168]
+              - generic [ref=e173]:
+                - generic [ref=e174]: Hausverwaltung
+                - generic [ref=e175]: Sarah Krüger
+            - button "Mieter:in Anna Becker" [ref=e176]:
+              - img [ref=e178]
+              - generic [ref=e180]:
+                - generic [ref=e181]: Mieter:in
+                - generic [ref=e182]: Anna Becker
+              - img [ref=e183]
+            - button "Handwerker Thomas Müller" [ref=e185]:
+              - img [ref=e187]
+              - generic [ref=e189]:
+                - generic [ref=e190]: Handwerker
+                - generic [ref=e191]: Thomas Müller
+            - button "Eigentümer:in Dr. Karl Reichmann" [ref=e192]:
+              - img [ref=e194]
+              - generic [ref=e197]:
+                - generic [ref=e198]: Eigentümer:in
+                - generic [ref=e199]: Dr. Karl Reichmann
+        - generic [ref=e73]:
+          - button "DE" [ref=e74]:
+            - img [ref=e75]
+            - text: DE
+          - button "EN" [ref=e79]
+        - button "Notifications" [ref=e80]:
+          - img [ref=e81]
+        - link "Neue Anfrage" [ref=e84] [cursor=pointer]:
+          - /url: /tenant/new-request
+          - img [ref=e85]
+          - text: Neue Anfrage
+    - main [ref=e114]:
+      - generic [ref=e115]:
+        - generic [ref=e116]:
+          - button "Alle 2" [ref=e117]:
+            - text: Alle
+            - generic [ref=e118]: "2"
+          - button "Aktiv 2" [ref=e119]:
+            - text: Aktiv
+            - generic [ref=e120]: "2"
+          - button "Erledigt 0" [ref=e121]:
+            - text: Erledigt
+            - generic [ref=e122]: "0"
+        - generic [ref=e123]:
+          - link "Wasserleck in der Wohnung VLT-2050 · jetzt · Wasserschaden Neu Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567. Klempner Schulz & Söhne Verfolgen" [ref=e124] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2050
+            - generic [ref=e125]:
+              - img [ref=e127]
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - generic [ref=e132]:
+                    - generic [ref=e133]: Wasserleck in der Wohnung
+                    - generic [ref=e134]: VLT-2050 · jetzt · Wasserschaden
+                  - generic [ref=e135]: Neu
+                - paragraph [ref=e137]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+                - generic [ref=e138]:
+                  - generic [ref=e139]: Klempner Schulz & Söhne
+                  - generic [ref=e140]:
+                    - text: Verfolgen
+                    - img [ref=e141]
+          - link "Heizung komplett ausgefallen VLT-2041 · vor 1 Std. · Heizung Neu Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen. Müller Heizung GmbH Verfolgen" [ref=e143] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+            - generic [ref=e144]:
+              - img [ref=e146]
+              - generic [ref=e149]:
+                - generic [ref=e150]:
+                  - generic [ref=e151]:
+                    - generic [ref=e152]: Heizung komplett ausgefallen
+                    - generic [ref=e153]: VLT-2041 · vor 1 Std. · Heizung
+                  - generic [ref=e154]: Neu
+                - paragraph [ref=e156]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Müller Heizung GmbH
+                  - generic [ref=e159]:
+                    - text: Verfolgen
+                    - img [ref=e160]

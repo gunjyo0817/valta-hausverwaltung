@@ -1,0 +1,231 @@
+- generic [ref=e353]:
+  - complementary [ref=e354]:
+    - link "V Valta Operations Copilot" [ref=e355] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e356]: V
+      - generic [ref=e357]:
+        - generic [ref=e358]: Valta
+        - generic [ref=e359]: Operations Copilot
+    - generic [ref=e361]:
+      - generic [ref=e362]: SK
+      - generic [ref=e363]:
+        - generic [ref=e364]: Hausverwaltungs-Sicht
+        - generic [ref=e365]: Sarah Krüger
+    - generic [ref=e366]: Hausverwaltung
+    - navigation [ref=e367]:
+      - link "Dashboard" [ref=e368] [cursor=pointer]:
+        - /url: /
+        - img [ref=e369]
+        - generic [ref=e374]: Dashboard
+      - link "Operations Inbox" [ref=e375] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e376]
+        - generic [ref=e379]: Operations Inbox
+      - link "AI Insights" [ref=e380] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e381]
+        - generic [ref=e383]: AI Insights
+      - link "Objekte" [ref=e384] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e385]
+        - generic [ref=e389]: Objekte
+      - link "Handwerker" [ref=e390] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e391]
+        - generic [ref=e396]: Handwerker
+    - generic [ref=e397]:
+      - generic [ref=e398]:
+        - generic [ref=e399]:
+          - img [ref=e400]
+          - text: AI Copilot
+        - paragraph [ref=e403]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e404] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e405]: SK
+        - generic [ref=e406]:
+          - generic [ref=e407]: Sarah Krüger
+          - generic [ref=e408]: Hausverwaltung Berlin GmbH
+        - img [ref=e409]
+  - generic [ref=e412]:
+    - banner [ref=e413]:
+      - generic [ref=e414]:
+        - heading "VLT-2050 · Wasserleck in der Wohnung" [level=1] [ref=e415]
+        - paragraph [ref=e416]: Lindenstraße 22 · WE 14
+      - generic [ref=e417]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e419]':
+          - generic [ref=e420]: "Aktuelle Sicht:"
+          - generic [ref=e421]: Hausverwaltung
+          - img [ref=e422]
+        - generic [ref=e424]:
+          - button "DE" [ref=e425]:
+            - img [ref=e426]
+            - text: DE
+          - button "EN" [ref=e430]
+        - button "Notifications" [ref=e431]:
+          - img [ref=e432]
+          - generic [ref=e435]: "4"
+        - button "Neues Ticket" [ref=e436]:
+          - img [ref=e437]
+          - text: Neues Ticket
+    - main [ref=e438]:
+      - generic [ref=e439]:
+        - link "Zurück zur Inbox" [ref=e440] [cursor=pointer]:
+          - /url: /inbox
+          - img [ref=e441]
+          - text: Zurück zur Inbox
+        - generic [ref=e443]:
+          - generic [ref=e444]:
+            - generic [ref=e445]:
+              - generic [ref=e446]:
+                - generic [ref=e447]: Niedrig
+                - generic [ref=e448]: Neu
+                - generic [ref=e450]:
+                  - img [ref=e451]
+                  - text: AI · 74%
+                - button "Auf Englisch anzeigen" [ref=e454]:
+                  - img [ref=e455]
+                  - text: Auf Englisch anzeigen
+              - heading "Wasserleck in der Wohnung" [level=2] [ref=e459]
+              - generic [ref=e460]:
+                - generic [ref=e461]:
+                  - img [ref=e462]
+                  - text: AI-Zusammenfassung
+                  - button "Neu generieren" [ref=e465]:
+                    - img [ref=e466]
+                    - text: Neu generieren
+                - paragraph [ref=e471]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+              - paragraph [ref=e472]: Unter der Spüle läuft Wasser aus. Es tropft weiter, der Boden ist nass. Lindenstraße 22, WE 14. Ich bin Anna Becker und heute ab 16 Uhr erreichbar, bitte vorher anrufen unter +49 30 1234567.
+              - generic [ref=e473]:
+                - generic [ref=e474]:
+                  - generic [ref=e475]: Kategorie
+                  - generic [ref=e476]: Wasserschaden
+                - generic [ref=e477]:
+                  - generic [ref=e478]: Seit
+                  - generic [ref=e479]: jetzt
+                - generic [ref=e480]:
+                  - generic [ref=e481]: Sprache
+                  - generic [ref=e482]: DE
+                - generic [ref=e483]:
+                  - generic [ref=e484]: ETA
+                  - generic [ref=e485]: —
+            - generic [ref=e486]:
+              - generic [ref=e487]:
+                - img [ref=e488]
+                - heading "Kommunikationsverlauf" [level=3] [ref=e490]
+                - generic [ref=e491]: Alle Kanäle zentralisiert
+              - paragraph [ref=e492]: E-Mail, SMS, App, Telefon – vereint in einem operativen Thread.
+              - list [ref=e493]:
+                - listitem [ref=e494]:
+                  - generic [ref=e496]:
+                    - img [ref=e497]
+                    - generic [ref=e500]: Valta AI
+                    - generic [ref=e501]: ·
+                    - generic [ref=e502]: jetzt
+                  - paragraph [ref=e503]: "Ticket aus unstrukturierter Anfrage erstellt. Kategorie: Sanitär. Priorität: low."
+                - listitem [ref=e504]:
+                  - generic [ref=e506]:
+                    - img [ref=e507]
+                    - generic [ref=e510]: Sarah Krüger
+                    - generic [ref=e511]: ·
+                    - generic [ref=e512]: jetzt
+                  - paragraph [ref=e513]: "Zugang: Bitte vor Ankunft anrufen"
+            - generic [ref=e514]:
+              - generic [ref=e515]:
+                - heading "Angehängte Fotos" [level=3] [ref=e516]
+                - button "Hochladen" [ref=e517]:
+                  - img [ref=e518]
+                  - text: Hochladen
+              - button "Foto hinzufuegen" [ref=e523]
+          - complementary [ref=e524]:
+            - generic [ref=e526]:
+              - img [ref=e527]
+              - text: AI Copilot
+              - generic [ref=e530]: Schlägt vor — Sie entscheiden
+            - generic [ref=e531]:
+              - generic [ref=e532]:
+                - generic [ref=e533]: Antwortentwurf
+                - generic [ref=e534]:
+                  - generic [ref=e535]:
+                    - img [ref=e536]
+                    - text: AI · 94%
+                  - button "Neu" [ref=e539]:
+                    - img [ref=e540]
+                    - text: Neu
+              - generic [ref=e545]: Hallo Anna, vielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt - ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist. Beste Grüße Ihre Hausverwaltung
+              - generic [ref=e546]:
+                - button "Freigeben & senden" [ref=e547]:
+                  - img [ref=e548]
+                  - text: Freigeben & senden
+                - button "Bearbeiten" [ref=e551]:
+                  - img [ref=e552]
+                  - text: Bearbeiten
+                - button "Manuell senden" [ref=e555]:
+                  - img [ref=e556]
+                  - text: Manuell senden
+            - generic [ref=e559]:
+              - generic [ref=e560]:
+                - img [ref=e561]
+                - text: Fehlende Informationen erkannt
+                - button "Neu" [ref=e563]:
+                  - img [ref=e564]
+                  - text: Neu
+              - list [ref=e569]:
+                - listitem [ref=e570]: • Zugangszeitfenster bestätigen (heute ab 16 Uhr oder alternativ)
+                - listitem [ref=e571]: • Status des Wassers/Absperrventils mitteilen
+              - button "Mehr Infos anfordern" [ref=e572]:
+                - img [ref=e573]
+                - text: Mehr Infos anfordern
+            - generic [ref=e575]:
+              - generic [ref=e576]:
+                - img [ref=e577]
+                - text: Begründung Dringlichkeit
+              - list [ref=e579]:
+                - listitem [ref=e580]: • Kein unmittelbares Notfallsignal erkannt
+            - generic [ref=e581]:
+              - generic [ref=e582]:
+                - img [ref=e583]
+                - text: Empfohlener Handwerker
+                - button "Neu" [ref=e585]:
+                  - img [ref=e586]
+                  - text: Neu
+              - generic [ref=e591]:
+                - generic [ref=e592]: Klempner Schulz & Söhne
+                - generic [ref=e593]:
+                  - img [ref=e594]
+                  - text: AI · 88%
+              - generic [ref=e597]: ★ 4.9 · ETA 2 Std. · Bevorzugter Sanitär-Partner für Wasser- und Rohrprobleme.
+              - button "Handwerker zuweisen" [ref=e598]:
+                - img [ref=e599]
+                - text: Handwerker zuweisen
+            - generic [ref=e602]:
+              - generic [ref=e603]:
+                - generic [ref=e604]: Manueller Status
+                - generic [ref=e605]: Neu
+              - textbox "Optionale interne Notiz" [ref=e607]
+              - generic [ref=e608]:
+                - button "Info anfragen" [ref=e609]:
+                  - img [ref=e610]
+                  - text: Info anfragen
+                - button "Handwerker gesetzt" [ref=e613]:
+                  - img [ref=e614]
+                  - text: Handwerker gesetzt
+                - button "In Bearbeitung" [ref=e617]:
+                  - img [ref=e618]
+                  - text: In Bearbeitung
+                - button "Als erledigt markieren" [ref=e621]:
+                  - img [ref=e622]
+                  - text: Als erledigt markieren
+            - generic [ref=e625]:
+              - generic [ref=e626]: Mieter:in
+              - generic [ref=e627]: Anna Becker
+              - generic [ref=e628]:
+                - generic [ref=e629]:
+                  - img [ref=e630]
+                  - text: Lindenstraße 22 · WE 14
+                - generic [ref=e633]:
+                  - img [ref=e634]
+                  - text: +49 30 1234567
+                - link "Lindenstraße 22" [ref=e636] [cursor=pointer]:
+                  - /url: /properties/p-lindenstr-22
+                  - img [ref=e637]
+                  - text: Lindenstraße 22

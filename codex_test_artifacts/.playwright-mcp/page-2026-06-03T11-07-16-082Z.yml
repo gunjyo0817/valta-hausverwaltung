@@ -1,0 +1,220 @@
+- generic [ref=e1641]:
+  - complementary [ref=e1642]:
+    - link "V Valta Operations Copilot" [ref=e1643] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e1644]: V
+      - generic [ref=e1645]:
+        - generic [ref=e1646]: Valta
+        - generic [ref=e1647]: Operations Copilot
+    - generic [ref=e1649]:
+      - generic [ref=e1650]: SK
+      - generic [ref=e1651]:
+        - generic [ref=e1652]: Property Manager view
+        - generic [ref=e1653]: Sarah Krüger
+    - generic [ref=e1654]: Property management
+    - navigation [ref=e1655]:
+      - link "Dashboard" [ref=e1656] [cursor=pointer]:
+        - /url: /
+        - img [ref=e1657]
+        - generic [ref=e1662]: Dashboard
+      - link "Operations Inbox" [ref=e1663] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e1664]
+        - generic [ref=e1667]: Operations Inbox
+      - link "AI Insights" [ref=e1668] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e1669]
+        - generic [ref=e1671]: AI Insights
+      - link "Properties" [ref=e1672] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e1673]
+        - generic [ref=e1677]: Properties
+      - link "Contractors" [ref=e1678] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e1679]
+        - generic [ref=e1684]: Contractors
+    - generic [ref=e1685]:
+      - generic [ref=e1686]:
+        - generic [ref=e1687]:
+          - img [ref=e1688]
+          - text: AI Copilot
+        - paragraph [ref=e1691]: Structures requests, prioritises urgency, recommends contractors.
+      - link "SK Sarah Krüger Berlin Property Mgmt." [ref=e1692] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1693]: SK
+        - generic [ref=e1694]:
+          - generic [ref=e1695]: Sarah Krüger
+          - generic [ref=e1696]: Berlin Property Mgmt.
+        - img [ref=e1697]
+  - generic [ref=e1700]:
+    - banner [ref=e1701]:
+      - generic [ref=e1702]:
+        - heading "Operations Inbox" [level=1] [ref=e1703]
+        - paragraph [ref=e1704]: AI triages · humans decide
+      - generic [ref=e1705]:
+        - generic [ref=e1706]:
+          - img [ref=e1707]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e1710]
+          - generic [ref=e1711]: ⌘K
+        - 'button "Current view: Property Manager" [ref=e1713]':
+          - generic [ref=e1714]: "Current view:"
+          - generic [ref=e1715]: Property Manager
+          - img [ref=e1716]
+        - generic [ref=e1718]:
+          - button "DE" [ref=e1719]:
+            - img [ref=e1720]
+            - text: DE
+          - button "EN" [ref=e1724]
+        - button "Notifications" [ref=e1725]:
+          - img [ref=e1726]
+          - generic [ref=e1729]: "3"
+        - button "New ticket" [ref=e1730]:
+          - img [ref=e1731]
+          - text: New ticket
+    - main [ref=e1732]:
+      - generic [ref=e1733]:
+        - complementary [ref=e1734]:
+          - generic [ref=e1735]:
+            - generic [ref=e1736]:
+              - img [ref=e1737]
+              - textbox "Search tickets…" [ref=e1740]
+            - generic [ref=e1741]:
+              - button "All" [ref=e1742]
+              - button "Critical" [active] [ref=e1743]
+              - button "New" [ref=e1744]
+              - button "Waiting" [ref=e1745]
+              - button "In progress" [ref=e1746]
+              - button "More" [ref=e1747]:
+                - img [ref=e1748]
+                - text: More
+          - list [ref=e1750]:
+            - listitem [ref=e1965]:
+              - button "VLT-2041 Critical 1 h ago Heating completely down Anna Becker · Unit 14, 3rd floor New AI · 96%" [ref=e1966]:
+                - generic [ref=e1967]:
+                  - generic [ref=e1968]: VLT-2041
+                  - generic [ref=e1969]: Critical
+                  - generic [ref=e1970]: 1 h ago
+                - generic [ref=e1971]: Heating completely down
+                - generic [ref=e1972]: Anna Becker · Unit 14, 3rd floor
+                - generic [ref=e1973]:
+                  - generic [ref=e1974]: New
+                  - generic [ref=e1976]:
+                    - img [ref=e1977]
+                    - text: AI · 96%
+            - listitem [ref=e1766]:
+              - button "VLT-2039 High 4 h ago Water leak in kitchen Mehmet Yilmaz · Unit 4, ground floor In progress AI · 89%" [ref=e1767]:
+                - generic [ref=e1768]:
+                  - generic [ref=e1769]: VLT-2039
+                  - generic [ref=e1770]: High
+                  - generic [ref=e1771]: 4 h ago
+                - generic [ref=e1772]: Water leak in kitchen
+                - generic [ref=e1773]: Mehmet Yilmaz · Unit 4, ground floor
+                - generic [ref=e1774]:
+                  - generic [ref=e1775]: In progress
+                  - generic [ref=e1777]:
+                    - img [ref=e1778]
+                    - text: AI · 89%
+            - listitem [ref=e1980]:
+              - button "VLT-2037 High 8 h ago Elevator out of service Sophia Klein · Unit 22, 6th floor Contractor assigned AI · 92%" [ref=e1981]:
+                - generic [ref=e1982]:
+                  - generic [ref=e1983]: VLT-2037
+                  - generic [ref=e1984]: High
+                  - generic [ref=e1985]: 8 h ago
+                - generic [ref=e1986]: Elevator out of service
+                - generic [ref=e1987]: Sophia Klein · Unit 22, 6th floor
+                - generic [ref=e1988]:
+                  - generic [ref=e1989]: Contractor assigned
+                  - generic [ref=e1991]:
+                    - img [ref=e1992]
+                    - text: AI · 92%
+        - generic [ref=e1857]:
+          - generic [ref=e1858]:
+            - generic [ref=e1859]:
+              - link "Operations Inbox" [ref=e1860] [cursor=pointer]:
+                - /url: /inbox
+              - img [ref=e1861]
+              - generic [ref=e1863]: VLT-2041
+            - generic [ref=e1864]:
+              - heading "Heating completely down" [level=2] [ref=e1865]
+              - generic [ref=e1866]: Critical
+              - generic [ref=e1867]: New
+              - generic [ref=e1869]:
+                - img [ref=e1870]
+                - text: AI · 96%
+              - button "Translated" [ref=e1873]:
+                - img [ref=e1874]
+                - text: Translated
+          - generic [ref=e1878]:
+            - generic [ref=e1879]:
+              - img [ref=e1880]
+              - text: AI summary
+            - paragraph [ref=e1883]: Tenant reports complete heating failure since yesterday evening. Outside temperature below 5 °C. Entire apartment affected. High urgency recommended.
+          - generic [ref=e1884]:
+            - generic [ref=e1885]:
+              - generic [ref=e1886]: Tenant
+              - generic [ref=e1887]: Anna Becker
+              - generic [ref=e1888]: +49 30 1234567
+            - generic [ref=e1889]:
+              - generic [ref=e1890]: Property / Unit
+              - generic [ref=e1891]: Unit 14, 3rd floor
+              - generic [ref=e1892]: Lindenstraße 22, Berlin
+            - generic [ref=e1893]:
+              - generic [ref=e1894]: Category
+              - generic [ref=e1895]: Heating
+              - generic [ref=e1896]: Language DE
+            - generic [ref=e1897]:
+              - generic [ref=e1898]: Recommended contractor
+              - generic [ref=e1899]: Müller Heizung GmbH
+              - generic [ref=e1900]: Preferred Berlin heating partner with fastest emergency ETA.
+          - generic [ref=e1901]:
+            - heading "Communication timeline" [level=3] [ref=e1902]
+            - list [ref=e1903]:
+              - listitem [ref=e1904]:
+                - generic [ref=e1905]: 08:42
+                - generic [ref=e1906]: Tenant
+                - paragraph [ref=e1907]: Heating is dead, it's very cold.
+              - listitem [ref=e1908]:
+                - generic [ref=e1909]: 08:42
+                - generic [ref=e1910]: AI
+                - paragraph [ref=e1911]: Since when has this been happening? Does it affect all rooms?
+              - listitem [ref=e1912]:
+                - generic [ref=e1913]: 08:44
+                - generic [ref=e1914]: Tenant
+                - paragraph [ref=e1915]: Since yesterday evening, all rooms.
+              - listitem [ref=e1916]:
+                - generic [ref=e1917]: 08:45
+                - generic [ref=e1918]: AI
+                - paragraph [ref=e1919]: "Ticket created — priority: critical. Recommendation: emergency heating service."
+          - generic [ref=e1920]:
+            - heading "Attached photos (2)" [level=3] [ref=e1921]
+            - generic [ref=e1922]:
+              - img [ref=e1924]
+              - img [ref=e1929]
+          - link "Open ticket →" [ref=e1934] [cursor=pointer]:
+            - /url: /ticket/VLT-2041
+        - complementary [ref=e1935]:
+          - generic [ref=e1936]:
+            - generic [ref=e1937]:
+              - generic [ref=e1938]:
+                - img [ref=e1939]
+                - text: AI Copilot
+              - paragraph [ref=e1942]: Suggestions — you stay in control.
+            - generic [ref=e1943]:
+              - generic [ref=e1944]:
+                - generic [ref=e1945]: Reply draft
+                - generic [ref=e1946]:
+                  - img [ref=e1947]
+                  - text: AI · 94%
+              - generic [ref=e1950]: Hi Anna, thanks for your report. We've dispatched an emergency technician - ETA today between 11:00 and 13:00. You'll get an update once they're on the way. Best Your property management
+              - generic [ref=e1951]:
+                - button "Approve & send" [ref=e1952]:
+                  - img [ref=e1953]
+                  - text: Approve & send
+                - button "Edit" [ref=e1956]:
+                  - img [ref=e1957]
+                  - text: Edit
+                - button "Send manually" [ref=e1960]:
+                  - img [ref=e1961]
+                  - text: Send manually
+            - link "Open ticket →" [ref=e1964] [cursor=pointer]:
+              - /url: /ticket/VLT-2041

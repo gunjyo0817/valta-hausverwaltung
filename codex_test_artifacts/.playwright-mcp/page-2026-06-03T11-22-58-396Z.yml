@@ -1,0 +1,277 @@
+- generic [ref=e2068]:
+  - complementary [ref=e2069]:
+    - link "V Valta Operations Copilot" [ref=e2070] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e2071]: V
+      - generic [ref=e2072]:
+        - generic [ref=e2073]: Valta
+        - generic [ref=e2074]: Operations Copilot
+    - generic [ref=e2076]:
+      - generic [ref=e2077]: SK
+      - generic [ref=e2078]:
+        - generic [ref=e2079]: Hausverwaltungs-Sicht
+        - generic [ref=e2080]: Sarah Krüger
+    - generic [ref=e2081]: Hausverwaltung
+    - navigation [ref=e2082]:
+      - link "Dashboard" [ref=e2083] [cursor=pointer]:
+        - /url: /
+        - img [ref=e2084]
+        - generic [ref=e2089]: Dashboard
+      - link "Operations Inbox" [ref=e2090] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e2091]
+        - generic [ref=e2094]: Operations Inbox
+      - link "AI Insights" [ref=e2095] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e2096]
+        - generic [ref=e2098]: AI Insights
+      - link "Objekte" [ref=e2099] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e2100]
+        - generic [ref=e2104]: Objekte
+      - link "Handwerker" [ref=e2105] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e2106]
+        - generic [ref=e2111]: Handwerker
+    - generic [ref=e2112]:
+      - generic [ref=e2113]:
+        - generic [ref=e2114]:
+          - img [ref=e2115]
+          - text: AI Copilot
+        - paragraph [ref=e2118]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e2119] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e2120]: SK
+        - generic [ref=e2121]:
+          - generic [ref=e2122]: Sarah Krüger
+          - generic [ref=e2123]: Hausverwaltung Berlin GmbH
+        - img [ref=e2124]
+  - generic [ref=e2127]:
+    - banner [ref=e2128]:
+      - generic [ref=e2129]:
+        - heading "AI Insights" [level=1] [ref=e2130]
+        - paragraph [ref=e2131]: Operativer Intelligence-Layer · letzte 90 Tage
+      - generic [ref=e2132]:
+        - generic [ref=e2133]:
+          - img [ref=e2134]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e2137]
+          - generic [ref=e2138]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e2140]':
+          - generic [ref=e2141]: "Aktuelle Sicht:"
+          - generic [ref=e2142]: Hausverwaltung
+          - img [ref=e2143]
+        - generic [ref=e2145]:
+          - button "DE" [ref=e2146]:
+            - img [ref=e2147]
+            - text: DE
+          - button "EN" [ref=e2151]
+        - button "Notifications" [ref=e2152]:
+          - img [ref=e2153]
+          - generic [ref=e2156]: "7"
+        - button "Neues Ticket" [ref=e2157]:
+          - img [ref=e2158]
+          - text: Neues Ticket
+    - main [ref=e2159]:
+      - generic [ref=e2160]:
+        - generic [ref=e2161]:
+          - generic [ref=e2162]:
+            - generic [ref=e2163]:
+              - generic [ref=e2164]: AI-Automatisierungsrate
+              - img [ref=e2165]
+            - generic [ref=e2168]: 100%
+            - generic [ref=e2169]: Aus gespeicherten KI-Vorschlägen
+          - generic [ref=e2170]:
+            - generic [ref=e2171]:
+              - generic [ref=e2172]: Ø Auflösungszeit
+              - img [ref=e2173]
+            - generic [ref=e2176]: 1 Std.
+            - generic [ref=e2177]: Aus aktuellen Tickets
+          - generic [ref=e2178]:
+            - generic [ref=e2179]:
+              - generic [ref=e2180]: SLA-Verletzungen
+              - img [ref=e2181]
+            - generic [ref=e2183]: "0"
+            - generic [ref=e2184]: Offene Tickets über Schwellwert
+          - generic [ref=e2185]:
+            - generic [ref=e2186]:
+              - generic [ref=e2187]: Kritischer Hotspot
+              - img [ref=e2188]
+            - generic [ref=e2190]: Wasserschaden
+            - generic [ref=e2191]: Häufigste Kategorie
+        - generic [ref=e2192]:
+          - generic [ref=e2193]:
+            - generic [ref=e2194]:
+              - generic [ref=e2195]:
+                - heading "Reaktionszeit pro Woche" [level=2] [ref=e2196]
+                - paragraph [ref=e2197]: Minuten zwischen Eingang und erster Antwort.
+              - generic [ref=e2198]:
+                - img [ref=e2199]
+                - text: Live DB
+            - generic [ref=e2202]:
+              - generic [ref=e2204]: W1
+              - generic [ref=e2206]: W2
+              - generic [ref=e2208]: W3
+              - generic [ref=e2210]: W4
+              - generic [ref=e2212]: W5
+              - generic [ref=e2214]: W6
+              - generic [ref=e2216]: W7
+              - generic [ref=e2218]: W8
+          - generic [ref=e2219]:
+            - generic [ref=e2220]:
+              - heading "Häufigste Kategorien" [level=2] [ref=e2221]
+              - paragraph [ref=e2222]: Anteil der Tickets pro Kategorie.
+            - list [ref=e2223]:
+              - listitem [ref=e2224]:
+                - generic [ref=e2225]:
+                  - generic [ref=e2226]: Wasserschaden
+                  - generic [ref=e2227]: 25%
+              - listitem [ref=e2230]:
+                - generic [ref=e2231]:
+                  - generic [ref=e2232]: Aufzug
+                  - generic [ref=e2233]: 13%
+              - listitem [ref=e2236]:
+                - generic [ref=e2237]:
+                  - generic [ref=e2238]: Internet
+                  - generic [ref=e2239]: 13%
+              - listitem [ref=e2242]:
+                - generic [ref=e2243]:
+                  - generic [ref=e2244]: Schimmel
+                  - generic [ref=e2245]: 13%
+              - listitem [ref=e2248]:
+                - generic [ref=e2249]:
+                  - generic [ref=e2250]: Heizung
+                  - generic [ref=e2251]: 13%
+              - listitem [ref=e2254]:
+                - generic [ref=e2255]:
+                  - generic [ref=e2256]: Beleuchtung
+                  - generic [ref=e2257]: 13%
+              - listitem [ref=e2260]:
+                - generic [ref=e2261]:
+                  - generic [ref=e2262]: Elektrik
+                  - generic [ref=e2263]: 13%
+        - generic [ref=e2266]:
+          - generic [ref=e2267]:
+            - generic [ref=e2268]:
+              - img [ref=e2269]
+              - generic [ref=e2271]:
+                - heading "Risiko-Tickets · brauchen Aufmerksamkeit" [level=2] [ref=e2272]
+                - paragraph [ref=e2273]: AI-erkannte Eskalations-Kandidaten.
+            - list [ref=e2274]:
+              - listitem [ref=e2275]:
+                - img [ref=e2277]
+                - generic [ref=e2279]:
+                  - generic [ref=e2280]:
+                    - generic [ref=e2281]: VLT-2037
+                    - generic [ref=e2282]: 8 Std. offen
+                  - generic [ref=e2283]: Aufzug außer Betrieb
+                  - generic [ref=e2284]: 8 Std. offen · Aufzug
+                - link "Bearbeiten" [ref=e2285] [cursor=pointer]:
+                  - /url: /ticket/VLT-2037
+                  - text: Bearbeiten
+                  - img [ref=e2286]
+              - listitem [ref=e2288]:
+                - img [ref=e2290]
+                - generic [ref=e2292]:
+                  - generic [ref=e2293]:
+                    - generic [ref=e2294]: VLT-2039
+                    - generic [ref=e2295]: 4 Std. offen
+                  - generic [ref=e2296]: Wasserschaden Küche
+                  - generic [ref=e2297]: 4 Std. offen · Wasserschaden
+                - link "Bearbeiten" [ref=e2298] [cursor=pointer]:
+                  - /url: /ticket/VLT-2039
+                  - text: Bearbeiten
+                  - img [ref=e2299]
+              - listitem [ref=e2301]:
+                - img [ref=e2303]
+                - generic [ref=e2305]:
+                  - generic [ref=e2306]:
+                    - generic [ref=e2307]: VLT-2030
+                    - generic [ref=e2308]: 36 Std. offen
+                  - generic [ref=e2309]: Schimmel im Schlafzimmer
+                  - generic [ref=e2310]: 36 Std. offen · Schimmel
+                - link "Bearbeiten" [ref=e2311] [cursor=pointer]:
+                  - /url: /ticket/VLT-2030
+                  - text: Bearbeiten
+                  - img [ref=e2312]
+              - listitem [ref=e2314]:
+                - img [ref=e2316]
+                - generic [ref=e2318]:
+                  - generic [ref=e2319]:
+                    - generic [ref=e2320]: VLT-2034
+                    - generic [ref=e2321]: 12 Std. offen
+                  - generic [ref=e2322]: Internetausfall im gesamten Haus
+                  - generic [ref=e2323]: 12 Std. offen · Internet
+                - link "Bearbeiten" [ref=e2324] [cursor=pointer]:
+                  - /url: /ticket/VLT-2034
+                  - text: Bearbeiten
+                  - img [ref=e2325]
+          - generic [ref=e2327]:
+            - generic [ref=e2328]:
+              - img [ref=e2329]
+              - text: AI-Automatisierung
+            - generic [ref=e2332]: 100%
+            - paragraph [ref=e2333]: der AI-Entwürfe wurden ohne Bearbeitung freigegeben.
+            - list [ref=e2336]:
+              - listitem [ref=e2337]:
+                - generic [ref=e2338]: Auto-Triage
+                - generic [ref=e2339]: 75%
+              - listitem [ref=e2340]:
+                - generic [ref=e2341]: Handwerker-Vorschlag akzeptiert
+                - generic [ref=e2342]: 88%
+              - listitem [ref=e2343]:
+                - generic [ref=e2344]: Übersetzungen
+                - generic [ref=e2345]: 0%
+              - listitem [ref=e2346]:
+                - generic [ref=e2347]: Duplikate erkannt
+                - generic [ref=e2348]: "15"
+        - generic [ref=e2349]:
+          - generic [ref=e2350]:
+            - generic [ref=e2351]:
+              - heading "Handwerker-Netzwerk · Top-Performer" [level=2] [ref=e2352]
+              - paragraph [ref=e2353]: Nach Reaktionszeit und Mieter-Zufriedenheit.
+            - link "Alle anzeigen →" [ref=e2354] [cursor=pointer]:
+              - /url: /contractors
+          - generic [ref=e2355]:
+            - link "Hausmeister Krüger ★ 4.9 · 412 · Berlin ETA 4Std." [ref=e2356] [cursor=pointer]:
+              - /url: /contractors/c10
+              - img [ref=e2358]
+              - generic [ref=e2360]:
+                - generic [ref=e2361]: Hausmeister Krüger
+                - generic [ref=e2362]: ★ 4.9 · 412 · Berlin
+              - generic [ref=e2363]: ETA 4Std.
+            - link "Müller Heizung GmbH ★ 4.9 · 312 · Berlin ETA 2Std." [ref=e2364] [cursor=pointer]:
+              - /url: /contractors/c1
+              - img [ref=e2366]
+              - generic [ref=e2368]:
+                - generic [ref=e2369]: Müller Heizung GmbH
+                - generic [ref=e2370]: ★ 4.9 · 312 · Berlin
+              - generic [ref=e2371]: ETA 2Std.
+            - link "Klempner Schulz & Söhne ★ 4.8 · 244 · München ETA 1Std." [ref=e2372] [cursor=pointer]:
+              - /url: /contractors/c4
+              - img [ref=e2374]
+              - generic [ref=e2376]:
+                - generic [ref=e2377]: Klempner Schulz & Söhne
+                - generic [ref=e2378]: ★ 4.8 · 244 · München
+              - generic [ref=e2379]: ETA 1Std.
+            - link "Glanz Reinigung GmbH ★ 4.6 · 145 · Köln ETA 12Std." [ref=e2380] [cursor=pointer]:
+              - /url: /contractors/c12
+              - img [ref=e2382]
+              - generic [ref=e2384]:
+                - generic [ref=e2385]: Glanz Reinigung GmbH
+                - generic [ref=e2386]: ★ 4.6 · 145 · Köln
+              - generic [ref=e2387]: ETA 12Std.
+            - link "Schindler Service ★ 4.7 · 530 · Hamburg ETA 5Std." [ref=e2388] [cursor=pointer]:
+              - /url: /contractors/c8
+              - img [ref=e2390]
+              - generic [ref=e2392]:
+                - generic [ref=e2393]: Schindler Service
+                - generic [ref=e2394]: ★ 4.7 · 530 · Hamburg
+              - generic [ref=e2395]: ETA 5Std.
+            - link "Elektro Bauer ★ 4.7 · 201 · Frankfurt ETA 5Std." [ref=e2396] [cursor=pointer]:
+              - /url: /contractors/c3
+              - img [ref=e2398]
+              - generic [ref=e2400]:
+                - generic [ref=e2401]: Elektro Bauer
+                - generic [ref=e2402]: ★ 4.7 · 201 · Frankfurt
+              - generic [ref=e2403]: ETA 5Std.
+        - paragraph [ref=e2404]: Demo-Daten · 8 aktive Tickets im Bestand

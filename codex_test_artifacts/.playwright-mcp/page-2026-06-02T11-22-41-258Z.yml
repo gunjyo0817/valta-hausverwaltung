@@ -1,0 +1,88 @@
+- generic [ref=e837]:
+  - complementary [ref=e838]:
+    - link "V Valta Operations Copilot" [ref=e839] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e840]: V
+      - generic [ref=e841]:
+        - generic [ref=e842]: Valta
+        - generic [ref=e843]: Operations Copilot
+    - generic [ref=e845]:
+      - generic [ref=e846]: AB
+      - generic [ref=e847]:
+        - generic [ref=e848]: Mieter-Sicht
+        - generic [ref=e849]: Anna Becker
+    - generic [ref=e850]: Mieter-Sicht
+    - navigation [ref=e851]:
+      - link "Start" [ref=e852] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e853]
+        - generic [ref=e856]: Start
+      - link "Schaden melden" [ref=e857] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e858]
+        - generic [ref=e860]: Schaden melden
+      - link "Meine Anfragen" [ref=e861] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e862]
+        - generic [ref=e865]: Meine Anfragen
+    - generic [ref=e866]:
+      - generic [ref=e867]:
+        - generic [ref=e868]:
+          - img [ref=e869]
+          - text: AI Copilot
+        - paragraph [ref=e872]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e873] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e874]: AB
+        - generic [ref=e875]:
+          - generic [ref=e876]: Anna Becker
+          - generic [ref=e877]: Lindenstraße 22, WE 14
+        - img [ref=e878]
+  - generic [ref=e881]:
+    - banner [ref=e882]:
+      - generic [ref=e883]:
+        - heading "Meine Anfragen" [level=1] [ref=e884]
+        - paragraph [ref=e885]: Wir kümmern uns – transparent und nachvollziehbar.
+      - generic [ref=e886]:
+        - 'button "Aktuelle Sicht: Mieter:in" [ref=e888]':
+          - generic [ref=e889]: "Aktuelle Sicht:"
+          - generic [ref=e890]: Mieter:in
+          - img [ref=e891]
+        - generic [ref=e893]:
+          - button "DE" [ref=e894]:
+            - img [ref=e895]
+            - text: DE
+          - button "EN" [ref=e899]
+        - button "Notifications" [ref=e900]:
+          - img [ref=e901]
+    - main [ref=e904]:
+      - generic [ref=e905]:
+        - generic [ref=e907]:
+          - img [ref=e909]
+          - generic [ref=e912]:
+            - heading "Etwas in Ihrer Wohnung defekt?" [level=2] [ref=e913]
+            - paragraph [ref=e914]: Melden Sie es in 60 Sekunden – Valta strukturiert alles für die Hausverwaltung.
+            - generic [ref=e915]:
+              - link "Neue Meldung starten" [ref=e916] [cursor=pointer]:
+                - /url: /tenant/new-request
+                - img [ref=e917]
+                - text: Neue Meldung starten
+              - link "Verlauf" [ref=e919] [cursor=pointer]:
+                - /url: /tenant/tickets
+                - img [ref=e920]
+                - text: Verlauf
+        - generic [ref=e923]:
+          - heading "Aktive Anfragen · 0" [level=3] [ref=e924]:
+            - text: Aktive Anfragen
+            - generic [ref=e925]: · 0
+          - generic [ref=e926]:
+            - img [ref=e928]
+            - generic [ref=e932]: Keine Mieteranfragen
+            - paragraph [ref=e933]: Die Demo-Daten enthalten keine Mieter-Tickets. Neue Anfragen funktionieren weiterhin, oder du laedst Mock-Daten im Adminbereich neu.
+            - link "Demo-Daten-Admin oeffnen" [ref=e934] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e935]
+              - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e938]:
+          - img [ref=e939]
+          - text: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.

@@ -1,0 +1,79 @@
+- generic [ref=e1525]:
+  - complementary [ref=e1526]:
+    - link "V Valta Operations Copilot" [ref=e1527] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e1528]: V
+      - generic [ref=e1529]:
+        - generic [ref=e1530]: Valta
+        - generic [ref=e1531]: Operations Copilot
+    - generic [ref=e1533]:
+      - generic [ref=e1534]: MH
+      - generic [ref=e1535]:
+        - generic [ref=e1536]: Handwerker-Sicht
+        - generic [ref=e1537]: Thomas Müller
+    - generic [ref=e1538]: Handwerker-Sicht
+    - navigation [ref=e1539]:
+      - link "Aufträge" [ref=e1540] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e1541]
+        - generic [ref=e1544]: Aufträge
+      - link "Terminplan" [ref=e1545] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e1546]
+        - generic [ref=e1548]: Terminplan
+      - link "Nachrichten" [ref=e1549] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e1550]
+        - generic [ref=e1552]: Nachrichten
+      - link "Erledigt" [ref=e1553] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e1554]
+        - generic [ref=e1557]: Erledigt
+    - generic [ref=e1558]:
+      - generic [ref=e1559]:
+        - generic [ref=e1560]:
+          - img [ref=e1561]
+          - text: AI Copilot
+        - paragraph [ref=e1564]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e1565] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1566]: MH
+        - generic [ref=e1567]:
+          - generic [ref=e1568]: Thomas Müller
+          - generic [ref=e1569]: Müller Heizung GmbH
+        - img [ref=e1570]
+  - generic [ref=e1573]:
+    - banner [ref=e1574]:
+      - generic [ref=e1575]:
+        - heading "Nachrichten von Hausverwaltungen" [level=1] [ref=e1576]
+        - paragraph [ref=e1577]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e1578]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e1580]':
+          - generic [ref=e1581]: "Aktuelle Sicht:"
+          - generic [ref=e1582]: Handwerker
+          - img [ref=e1583]
+        - generic [ref=e1585]:
+          - button "DE" [ref=e1586]:
+            - img [ref=e1587]
+            - text: DE
+          - button "EN" [ref=e1591]
+        - button "Notifications" [ref=e1592]:
+          - img [ref=e1593]
+    - main [ref=e1596]:
+      - generic [ref=e1598]:
+        - generic [ref=e1601]:
+          - img [ref=e1603]
+          - generic [ref=e1607]: Keine Nachrichtenverlaeufe
+          - paragraph [ref=e1608]: Es gibt keine Ticket-Datensaetze fuer Handwerker-Konversationen. Lade Mock-Daten im Adminbereich neu, um Verlaeufe wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e1609] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e1610]
+            - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e1614]:
+          - img [ref=e1616]
+          - generic [ref=e1620]: Keine Konversation ausgewaehlt
+          - paragraph [ref=e1621]: Lade Mock-Daten im Adminbereich neu, um Handwerker-Konversationen wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e1622] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e1623]
+            - text: Demo-Daten-Admin oeffnen

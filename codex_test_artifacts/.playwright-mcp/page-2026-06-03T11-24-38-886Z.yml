@@ -1,0 +1,174 @@
+- generic [ref=e3261]:
+  - complementary [ref=e3262]:
+    - link "V Valta Operations Copilot" [ref=e3263] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e3264]: V
+      - generic [ref=e3265]:
+        - generic [ref=e3266]: Valta
+        - generic [ref=e3267]: Operations Copilot
+    - generic [ref=e3269]:
+      - generic [ref=e3270]: KR
+      - generic [ref=e3271]:
+        - generic [ref=e3272]: Eigentümer-Sicht
+        - generic [ref=e3273]: Dr. Karl Reichmann
+    - generic [ref=e3274]: Eigentümer-Sicht
+    - navigation [ref=e3275]:
+      - link "Objekte" [ref=e3276] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e3277]
+        - generic [ref=e3280]: Objekte
+      - link "Offene Fälle" [ref=e3281] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e3282]
+        - generic [ref=e3284]: Offene Fälle
+      - link "Finanzübersicht" [ref=e3285] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e3286]
+        - generic [ref=e3289]: Finanzübersicht
+      - link "Freigaben" [ref=e3290] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e3291]
+        - generic [ref=e3294]: Freigaben
+    - generic [ref=e3295]:
+      - generic [ref=e3296]:
+        - generic [ref=e3297]:
+          - img [ref=e3298]
+          - text: AI Copilot
+        - paragraph [ref=e3301]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e3302] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e3303]: KR
+        - generic [ref=e3304]:
+          - generic [ref=e3305]: Dr. Karl Reichmann
+          - generic [ref=e3306]: Reichmann Immobilien KG
+        - img [ref=e3307]
+  - generic [ref=e3310]:
+    - banner [ref=e3311]:
+      - generic [ref=e3312]:
+        - heading "Portfolio-Übersicht" [level=1] [ref=e3313]
+        - paragraph [ref=e3314]: Transparenz für Eigentümer · zentrale KPIs & Freigaben.
+      - generic [ref=e3315]:
+        - generic [ref=e3316]:
+          - img [ref=e3317]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e3320]
+          - generic [ref=e3321]: ⌘K
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e3323]':
+          - generic [ref=e3324]: "Aktuelle Sicht:"
+          - generic [ref=e3325]: Eigentümer:in
+          - img [ref=e3326]
+        - generic [ref=e3328]:
+          - button "DE" [ref=e3329]:
+            - img [ref=e3330]
+            - text: DE
+          - button "EN" [ref=e3334]
+        - button "Notifications" [ref=e3335]:
+          - img [ref=e3336]
+    - main [ref=e3339]:
+      - generic [ref=e3340]:
+        - generic [ref=e3341]:
+          - generic [ref=e3342]:
+            - generic [ref=e3343]:
+              - img [ref=e3345]
+              - generic [ref=e3349]: Wohneinheiten
+            - generic [ref=e3350]: "148"
+            - generic [ref=e3351]: 6 Objekte
+          - generic [ref=e3352]:
+            - generic [ref=e3353]:
+              - img [ref=e3355]
+              - generic [ref=e3357]: Offene Fälle
+            - generic [ref=e3358]: "6"
+            - generic [ref=e3359]: Kritisch
+          - generic [ref=e3360]:
+            - generic [ref=e3361]:
+              - img [ref=e3363]
+              - generic [ref=e3366]: Freigaben offen
+            - generic [ref=e3367]: "3"
+            - generic [ref=e3368]: —
+          - generic [ref=e3369]:
+            - generic [ref=e3370]:
+              - img [ref=e3372]
+              - generic [ref=e3375]: Wartungskosten YTD
+            - generic [ref=e3376]: € 5.080
+            - generic [ref=e3377]: 8% Budget
+        - generic [ref=e3379]:
+          - img [ref=e3381]
+          - generic [ref=e3384]:
+            - generic [ref=e3385]: AI-Zusammenfassung Portfolio
+            - paragraph [ref=e3386]: 3 ungelöste Heizungsfälle im Berliner Objekt deuten auf alternde Anlagen hin. Wartungsaufwand in München −18% MoM. Frankfurter Objekt stabil ohne kritische Vorfälle.
+        - generic [ref=e3387]:
+          - generic [ref=e3388]:
+            - generic [ref=e3389]:
+              - heading "Gebäude-Gesundheit" [level=3] [ref=e3390]
+              - link "Offene Fälle" [ref=e3391] [cursor=pointer]:
+                - /url: /owner/issues
+                - text: Offene Fälle
+                - img [ref=e3392]
+            - paragraph [ref=e3394]: AI-bewertet aus Wartungs- und Ticket-Historie.
+            - generic [ref=e3395]:
+              - link "Frankfurter Allee 88 Frankfurt · 36 Einheiten 1 Offene Tickets" [ref=e3396] [cursor=pointer]:
+                - /url: /properties/p-frankfurter-88
+                - generic [ref=e3398]:
+                  - generic [ref=e3399]: Frankfurter Allee 88
+                  - generic [ref=e3400]: Frankfurt · 36 Einheiten
+                - generic [ref=e3401]: 1 Offene Tickets
+              - link "Goethestraße 8 München · 14 Einheiten 1 Offene Tickets" [ref=e3402] [cursor=pointer]:
+                - /url: /properties/p-goethestr-8
+                - generic [ref=e3404]:
+                  - generic [ref=e3405]: Goethestraße 8
+                  - generic [ref=e3406]: München · 14 Einheiten
+                - generic [ref=e3407]: 1 Offene Tickets
+              - link "Hauptstraße 5 Köln · 18 Einheiten 1 Offene Tickets" [ref=e3408] [cursor=pointer]:
+                - /url: /properties/p-hauptstr-5
+                - generic [ref=e3410]:
+                  - generic [ref=e3411]: Hauptstraße 5
+                  - generic [ref=e3412]: Köln · 18 Einheiten
+                - generic [ref=e3413]: 1 Offene Tickets
+              - link "Lindenstraße 22 Berlin · 28 Einheiten 1 Offene Tickets" [ref=e3414] [cursor=pointer]:
+                - /url: /properties/p-lindenstr-22
+                - generic [ref=e3416]:
+                  - generic [ref=e3417]: Lindenstraße 22
+                  - generic [ref=e3418]: Berlin · 28 Einheiten
+                - generic [ref=e3419]: 1 Offene Tickets
+          - generic [ref=e3420]:
+            - heading "Ausstehende Freigaben" [level=3] [ref=e3421]
+            - paragraph [ref=e3422]: Hausverwaltung wartet auf Ihre Entscheidung.
+            - generic [ref=e3423]:
+              - generic [ref=e3424]:
+                - generic [ref=e3425]:
+                  - generic [ref=e3426]: Aufzugswartung - Jahresvertrag
+                  - generic [ref=e3427]: € 5.700
+                - paragraph [ref=e3428]: Verlängerung des Wartungsvertrags inkl. 24/7 Notdienst.
+                - generic [ref=e3429]:
+                  - button "Freigeben" [ref=e3430]
+                  - button "Ablehnen" [ref=e3431]
+              - generic [ref=e3432]:
+                - generic [ref=e3433]:
+                  - generic [ref=e3434]: Heizungsanlage - Tausch
+                  - generic [ref=e3435]: € 12.400
+                - paragraph [ref=e3436]: Zentralheizung mit 3 Ausfällen in 30 Tagen. Ersatzteile für Modell nicht mehr verfügbar.
+                - generic [ref=e3437]:
+                  - button "Freigeben" [ref=e3438]
+                  - button "Ablehnen" [ref=e3439]
+        - generic [ref=e3440]:
+          - heading "Kostenverteilung nach Kategorie" [level=3] [ref=e3441]
+          - generic [ref=e3442]:
+            - generic [ref=e3443]:
+              - generic [ref=e3444]: Aufzug
+              - generic [ref=e3447]: € 2.150
+              - generic [ref=e3448]: 42%
+            - generic [ref=e3449]:
+              - generic [ref=e3450]: Heizung
+              - generic [ref=e3453]: € 1.240
+              - generic [ref=e3454]: 24%
+            - generic [ref=e3455]:
+              - generic [ref=e3456]: Dach & Fassade
+              - generic [ref=e3459]: € 890
+              - generic [ref=e3460]: 18%
+            - generic [ref=e3461]:
+              - generic [ref=e3462]: Sanitär
+              - generic [ref=e3465]: € 680
+              - generic [ref=e3466]: 13%
+            - generic [ref=e3467]:
+              - generic [ref=e3468]: Sonstiges
+              - generic [ref=e3471]: € 120
+              - generic [ref=e3472]: 2%

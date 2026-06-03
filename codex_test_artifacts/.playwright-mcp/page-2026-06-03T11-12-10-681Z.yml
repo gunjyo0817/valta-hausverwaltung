@@ -1,0 +1,312 @@
+- generic [ref=e105]:
+  - complementary [ref=e106]:
+    - link "V Valta Operations Copilot" [ref=e107] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e108]: V
+      - generic [ref=e109]:
+        - generic [ref=e110]: Valta
+        - generic [ref=e111]: Operations Copilot
+    - generic [ref=e113]:
+      - generic [ref=e114]: SK
+      - generic [ref=e115]:
+        - generic [ref=e116]: Hausverwaltungs-Sicht
+        - generic [ref=e117]: Sarah Krüger
+    - generic [ref=e118]: Hausverwaltung
+    - navigation [ref=e119]:
+      - link "Dashboard" [ref=e120] [cursor=pointer]:
+        - /url: /
+        - img [ref=e121]
+        - generic [ref=e126]: Dashboard
+      - link "Operations Inbox" [ref=e127] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e128]
+        - generic [ref=e131]: Operations Inbox
+      - link "AI Insights" [ref=e132] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e133]
+        - generic [ref=e135]: AI Insights
+      - link "Objekte" [ref=e136] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e137]
+        - generic [ref=e141]: Objekte
+      - link "Handwerker" [ref=e142] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e143]
+        - generic [ref=e148]: Handwerker
+    - generic [ref=e149]:
+      - generic [ref=e150]:
+        - generic [ref=e151]:
+          - img [ref=e152]
+          - text: AI Copilot
+        - paragraph [ref=e155]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e156] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e157]: SK
+        - generic [ref=e158]:
+          - generic [ref=e159]: Sarah Krüger
+          - generic [ref=e160]: Hausverwaltung Berlin GmbH
+        - img [ref=e161]
+  - generic [ref=e164]:
+    - banner [ref=e165]:
+      - generic [ref=e166]:
+        - heading "VLT-2041 · Heizung komplett ausgefallen" [level=1] [ref=e167]
+        - paragraph [ref=e168]: Lindenstraße 22, Berlin · WE 14, 3. OG
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - img [ref=e171]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e174]
+          - generic [ref=e175]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e177]':
+          - generic [ref=e178]: "Aktuelle Sicht:"
+          - generic [ref=e179]: Hausverwaltung
+          - img [ref=e180]
+        - generic [ref=e182]:
+          - button "DE" [ref=e183]:
+            - img [ref=e184]
+            - text: DE
+          - button "EN" [ref=e188]
+        - button "Notifications" [ref=e189]:
+          - img [ref=e190]
+          - generic [ref=e193]: "3"
+        - button "Neues Ticket" [ref=e194]:
+          - img [ref=e195]
+          - text: Neues Ticket
+    - main [ref=e196]:
+      - generic [ref=e197]:
+        - link "Zurück zur Inbox" [ref=e198] [cursor=pointer]:
+          - /url: /inbox
+          - img [ref=e199]
+          - text: Zurück zur Inbox
+        - generic [ref=e430]: "Aktion fehlgeschlagen: tickets?.map is not a function"
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - generic [ref=e205]: Kritisch
+                - generic [ref=e206]: Neu
+                - generic [ref=e208]:
+                  - img [ref=e209]
+                  - text: AI · 96%
+                - button "Auf Englisch anzeigen" [ref=e212]:
+                  - img [ref=e213]
+                  - text: Auf Englisch anzeigen
+              - heading "Heizung komplett ausgefallen" [level=2] [ref=e217]
+              - generic [ref=e218]:
+                - generic [ref=e219]:
+                  - img [ref=e220]
+                  - text: AI-Zusammenfassung
+                  - button "Neu generieren" [ref=e223]:
+                    - img [ref=e224]
+                    - text: Neu generieren
+                - paragraph [ref=e229]: Mieterin meldet kompletten Heizungsausfall in WE 14 seit gestern Abend; betroffen sind alle Räume, Außentemperatur unter 5 °C. Kritisch, Heizungsnotdienst Müller GmbH ist bereits für morgen 09:00–10:30 Uhr eingeplant.
+              - paragraph [ref=e230]: Die Heizung in der ganzen Wohnung ist seit ca. 19:00 Uhr ausgefallen. Thermostate reagieren nicht, Heizkörper sind kalt. Es ist sehr kalt in der Wohnung.
+              - generic [ref=e231]:
+                - generic [ref=e232]:
+                  - generic [ref=e233]: Kategorie
+                  - generic [ref=e234]: Heizung
+                - generic [ref=e235]:
+                  - generic [ref=e236]: Seit
+                  - generic [ref=e237]: vor 1 Std.
+                - generic [ref=e238]:
+                  - generic [ref=e239]: Sprache
+                  - generic [ref=e240]: DE
+                - generic [ref=e241]:
+                  - generic [ref=e242]: ETA
+                  - generic [ref=e243]: Di., 02.06. · 09:00
+            - generic [ref=e244]:
+              - generic [ref=e245]:
+                - img [ref=e246]
+                - heading "Kommunikationsverlauf" [level=3] [ref=e248]
+                - generic [ref=e249]: Alle Kanäle zentralisiert
+              - paragraph [ref=e250]: E-Mail, SMS, App, Telefon – vereint in einem operativen Thread.
+              - list [ref=e251]:
+                - listitem [ref=e252]:
+                  - generic [ref=e254]:
+                    - img [ref=e255]
+                    - generic [ref=e258]: Anna Becker
+                    - generic [ref=e259]: ·
+                    - generic [ref=e260]: 08:42
+                  - paragraph [ref=e261]: Heizung geht nicht mehr, sehr kalt.
+                - listitem [ref=e262]:
+                  - generic [ref=e264]:
+                    - img [ref=e265]
+                    - generic [ref=e268]: Valta AI
+                    - generic [ref=e269]: ·
+                    - generic [ref=e270]: 08:42
+                  - paragraph [ref=e271]: Seit wann besteht das Problem? Betrifft es alle Räume?
+                - listitem [ref=e272]:
+                  - generic [ref=e274]:
+                    - img [ref=e275]
+                    - generic [ref=e278]: Anna Becker
+                    - generic [ref=e279]: ·
+                    - generic [ref=e280]: 08:44
+                  - paragraph [ref=e281]: Seit gestern Abend, alle Räume.
+                - listitem [ref=e282]:
+                  - generic [ref=e284]:
+                    - img [ref=e285]
+                    - generic [ref=e288]: Valta AI
+                    - generic [ref=e289]: ·
+                    - generic [ref=e290]: 08:45
+                  - paragraph [ref=e291]: "Ticket erstellt – Priorität: Kritisch. Empfehlung: Heizungsnotdienst."
+            - generic [ref=e292]:
+              - generic [ref=e293]:
+                - heading "Angehängte Fotos" [level=3] [ref=e294]
+                - button "Hochladen" [ref=e295]:
+                  - img [ref=e296]
+                  - text: Hochladen
+              - generic [ref=e300]:
+                - img [ref=e302]
+                - img [ref=e307]
+          - complementary [ref=e311]:
+            - generic [ref=e313]:
+              - img [ref=e314]
+              - text: AI Copilot
+              - generic [ref=e317]: Schlägt vor — Sie entscheiden
+            - generic [ref=e318]:
+              - generic [ref=e319]:
+                - generic [ref=e320]: Antwortentwurf
+                - generic [ref=e321]:
+                  - generic [ref=e322]:
+                    - img [ref=e323]
+                    - text: AI · 94%
+                  - button "Neu" [ref=e326]:
+                    - img [ref=e327]
+                    - text: Neu
+              - generic [ref=e332]: Hallo Anna, vielen Dank für Ihre Meldung. Wir haben einen Heizungsnotdienst beauftragt - ETA heute zwischen 11:00 und 13:00 Uhr. Sie erhalten ein Update, sobald der Techniker unterwegs ist. Beste Grüße Ihre Hausverwaltung
+              - generic [ref=e333]:
+                - button "Freigeben & senden" [ref=e334]:
+                  - img [ref=e335]
+                  - text: Freigeben & senden
+                - button "Bearbeiten" [ref=e338]:
+                  - img [ref=e339]
+                  - text: Bearbeiten
+                - button "Manuell senden" [ref=e342]:
+                  - img [ref=e343]
+                  - text: Manuell senden
+            - generic [ref=e346]:
+              - generic [ref=e347]:
+                - img [ref=e348]
+                - text: Fehlende Informationen erkannt
+                - button "Neu" [ref=e350]:
+                  - img [ref=e351]
+                  - text: Neu
+              - list [ref=e356]:
+                - listitem [ref=e357]: • Genauer Thermostat-Typ
+                - listitem [ref=e358]: "• Bestätigung: Sind Nachbarn betroffen?"
+              - button "Mehr Infos anfordern" [ref=e359]:
+                - img [ref=e360]
+                - text: Mehr Infos anfordern
+            - generic [ref=e362]:
+              - generic [ref=e363]:
+                - img [ref=e364]
+                - text: Begründung Dringlichkeit
+              - list [ref=e366]:
+                - listitem [ref=e367]: • Kompletter Ausfall oder dringende Formulierung erkannt
+            - generic [ref=e368]:
+              - generic [ref=e369]:
+                - img [ref=e370]
+                - text: Empfohlener Handwerker
+                - button "Neu" [ref=e372]:
+                  - img [ref=e373]
+                  - text: Neu
+              - generic [ref=e378]:
+                - generic [ref=e379]: Müller Heizung GmbH
+                - generic [ref=e380]:
+                  - img [ref=e381]
+                  - text: AI · 94%
+              - generic [ref=e384]: ★ 4.9 · ETA 2 Std. · Bevorzugter Berliner Heizungs-Partner mit schnellster Notfall-ETA.
+              - button "Handwerker zuweisen" [ref=e385]:
+                - img [ref=e386]
+                - text: Handwerker zuweisen
+            - generic [ref=e389]:
+              - generic [ref=e390]:
+                - generic [ref=e391]: Manueller Status
+                - generic [ref=e392]: Neu
+              - textbox "Optionale interne Notiz" [ref=e394]: Playwright status test
+              - generic [ref=e395]:
+                - button "Info anfragen" [ref=e396]:
+                  - img [ref=e397]
+                  - text: Info anfragen
+                - button "Handwerker gesetzt" [ref=e400]:
+                  - img [ref=e401]
+                  - text: Handwerker gesetzt
+                - button "In Bearbeitung" [ref=e404]:
+                  - img [ref=e405]
+                  - text: In Bearbeitung
+                - button "Als erledigt markieren" [ref=e408]:
+                  - img [ref=e409]
+                  - text: Als erledigt markieren
+            - generic [ref=e412]:
+              - generic [ref=e413]: Mieter:in
+              - generic [ref=e414]: Anna Becker
+              - generic [ref=e415]:
+                - generic [ref=e416]:
+                  - img [ref=e417]
+                  - text: Lindenstraße 22, Berlin · WE 14, 3. OG
+                - generic [ref=e420]:
+                  - img [ref=e421]
+                  - text: +49 30 1234567
+                - link "Lindenstraße 22" [ref=e423] [cursor=pointer]:
+                  - /url: /properties/p-lindenstr-22
+                  - img [ref=e424]
+                  - text: Lindenstraße 22
+      - generic [ref=e432]:
+        - generic [ref=e433]:
+          - img [ref=e434]
+          - generic [ref=e436]:
+            - heading "Handwerker zuweisen" [level=3] [ref=e437]
+            - paragraph [ref=e438]: AI-vorgeschlagene Auswahl · Sortiert nach Verfügbarkeit & Bewertung
+          - button [ref=e439]:
+            - img [ref=e440]
+        - list [ref=e443]:
+          - listitem [ref=e444]:
+            - button "Müller Heizung GmbH Top-Match Heizungsnotdienst · Berlin 4.9 (312) · €€ · Verfügbar · ETA 2Std." [ref=e445]:
+              - img [ref=e447]
+              - generic [ref=e449]:
+                - generic [ref=e450]:
+                  - generic [ref=e451]: Müller Heizung GmbH
+                  - generic [ref=e452]:
+                    - img [ref=e453]
+                    - text: Top-Match
+                - generic [ref=e456]: Heizungsnotdienst · Berlin
+                - generic [ref=e457]:
+                  - generic [ref=e458]:
+                    - img [ref=e459]
+                    - text: 4.9 (312)
+                  - generic [ref=e461]: ·
+                  - generic [ref=e462]: €€
+                  - generic [ref=e463]: ·
+                  - generic [ref=e464]: Verfügbar · ETA 2Std.
+          - listitem [ref=e466]:
+            - button "Therm-Service Berlin Heizung & Sanitär · Berlin 4.6 (178) · €€ · Verfügbar · ETA 4Std." [ref=e467]:
+              - img [ref=e469]
+              - generic [ref=e471]:
+                - generic [ref=e473]: Therm-Service Berlin
+                - generic [ref=e474]: Heizung & Sanitär · Berlin
+                - generic [ref=e475]:
+                  - generic [ref=e476]:
+                    - img [ref=e477]
+                    - text: 4.6 (178)
+                  - generic [ref=e479]: ·
+                  - generic [ref=e480]: €€
+                  - generic [ref=e481]: ·
+                  - generic [ref=e482]: Verfügbar · ETA 4Std.
+        - generic [ref=e484]:
+          - generic [ref=e485]:
+            - img [ref=e486]
+            - text: AI erstellt Auftragszusammenfassung, fügt Fotos & Adresse an.
+          - generic [ref=e489]:
+            - generic [ref=e490]: Geplanter Termin
+            - textbox "Geplanter Termin" [ref=e491]: 2026-06-03T15:00
+          - generic [ref=e492]:
+            - button "Angebot anfordern" [ref=e493]:
+              - img [ref=e494]
+              - text: Angebot anfordern
+            - link "Anrufen" [ref=e497] [cursor=pointer]:
+              - /url: tel:+49 30 555 1110
+              - img [ref=e498]
+              - text: Anrufen
+            - button "Zusammenfassung senden" [active] [ref=e500]:
+              - img [ref=e501]
+              - text: Zusammenfassung senden
+          - generic [ref=e504]: tickets?.map is not a function

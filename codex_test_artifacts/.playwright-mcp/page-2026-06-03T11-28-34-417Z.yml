@@ -1,0 +1,137 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: SK
+      - generic [ref=e12]:
+        - generic [ref=e13]: Hausverwaltungs-Sicht
+        - generic [ref=e14]: Sarah Krüger
+    - generic [ref=e15]: Hausverwaltung
+    - navigation [ref=e16]:
+      - link "Dashboard" [ref=e17] [cursor=pointer]:
+        - /url: /
+        - img [ref=e18]
+        - generic [ref=e23]: Dashboard
+      - link "Operations Inbox" [ref=e24] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e25]
+        - generic [ref=e28]: Operations Inbox
+      - link "AI Insights" [ref=e29] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e30]
+        - generic [ref=e32]: AI Insights
+      - link "Objekte" [ref=e33] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e34]
+        - generic [ref=e38]: Objekte
+      - link "Handwerker" [ref=e39] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e40]
+        - generic [ref=e45]: Handwerker
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e53] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: SK
+        - generic [ref=e55]:
+          - generic [ref=e56]: Sarah Krüger
+          - generic [ref=e57]: Hausverwaltung Berlin GmbH
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Guten Morgen, Sarah" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Hier ist, was in Ihrem Portfolio heute Aufmerksamkeit braucht.
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - img [ref=e68]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e71]
+          - generic [ref=e72]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e74]':
+          - generic [ref=e75]: "Aktuelle Sicht:"
+          - generic [ref=e76]: Hausverwaltung
+          - img [ref=e77]
+        - generic [ref=e79]:
+          - button "DE" [ref=e80]:
+            - img [ref=e81]
+            - text: DE
+          - button "EN" [ref=e85]
+        - button "Notifications" [ref=e86]:
+          - img [ref=e87]
+        - button "Neues Ticket" [ref=e90]:
+          - img [ref=e91]
+          - text: Neues Ticket
+    - main [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - generic [ref=e97]: Offene Tickets
+              - img [ref=e98]
+            - generic [ref=e101]: "0"
+            - generic [ref=e102]:
+              - img [ref=e103]
+              - text: +3 heute
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - generic [ref=e108]: Ø Reaktionszeit
+              - img [ref=e109]
+            - generic [ref=e112]: 0 Min.
+            - generic [ref=e113]:
+              - img [ref=e114]
+              - text: −38% MoM
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - generic [ref=e119]: AI-Vorschläge übernommen
+              - img [ref=e120]
+            - generic [ref=e123]: "0"
+            - generic [ref=e124]:
+              - img [ref=e125]
+              - text: diese Woche
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: Kritische Fälle
+              - img [ref=e131]
+            - generic [ref=e133]: "0"
+            - generic [ref=e134]:
+              - img [ref=e135]
+              - text: Sofort prüfen
+          - generic [ref=e138]:
+            - generic [ref=e139]:
+              - generic [ref=e140]: Wartet auf Handwerker
+              - img [ref=e141]
+            - generic [ref=e143]: "0"
+            - generic [ref=e144]:
+              - img [ref=e145]
+              - text: 2 überfällig
+        - generic [ref=e148]:
+          - generic [ref=e149]:
+            - generic [ref=e150]:
+              - generic [ref=e151]:
+                - heading "Aktive Tickets" [level=2] [ref=e152]
+                - paragraph [ref=e153]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+              - link "Inbox öffnen" [ref=e154] [cursor=pointer]:
+                - /url: /inbox
+                - text: Inbox öffnen
+                - img [ref=e155]
+            - list
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - generic [ref=e159]:
+                - img [ref=e160]
+                - heading "AI Assistant · Aktivität" [level=2] [ref=e163]
+              - list [ref=e164]
+            - generic [ref=e165]:
+              - generic [ref=e166]:
+                - img [ref=e167]
+                - heading "Benachrichtigungen" [level=2] [ref=e170]
+              - list [ref=e171]

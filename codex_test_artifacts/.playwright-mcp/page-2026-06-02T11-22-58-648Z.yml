@@ -1,0 +1,39 @@
+- generic [ref=e942]:
+  - banner [ref=e943]:
+    - link "V Valta · Schaden melden" [ref=e944] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e945]: V
+      - generic [ref=e946]: Valta · Schaden melden
+    - generic [ref=e947]:
+      - button "DE" [ref=e948]:
+        - img [ref=e949]
+        - text: DE
+      - link "Status verfolgen →" [ref=e953] [cursor=pointer]:
+        - /url: /portal
+  - generic [ref=e955]:
+    - generic [ref=e957]:
+      - generic [ref=e958]:
+        - generic [ref=e960]:
+          - generic [ref=e961]: "1"
+          - generic [ref=e962]: Schaden melden
+        - generic [ref=e965]:
+          - generic [ref=e966]: "2"
+          - generic [ref=e967]: AI strukturiert
+        - generic [ref=e970]:
+          - generic [ref=e971]: "3"
+          - generic [ref=e972]: Prüfen & anpassen
+        - generic [ref=e975]:
+          - generic [ref=e976]: "4"
+          - generic [ref=e977]: Eingereicht
+      - generic [ref=e978]:
+        - img [ref=e980]
+        - generic [ref=e983]: Hallo 👋 Ich bin Valta, der digitale Assistent Ihrer Hausverwaltung. Was möchten Sie melden?
+    - generic [ref=e984]:
+      - generic [ref=e985]:
+        - button "Foto hinzufügen" [ref=e986]:
+          - img [ref=e987]
+        - textbox "Beschreiben Sie das Problem…" [ref=e989]
+        - button "Senden" [ref=e990]:
+          - img [ref=e991]
+          - text: Senden
+      - paragraph [ref=e994]: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.

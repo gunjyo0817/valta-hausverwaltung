@@ -1,0 +1,140 @@
+- generic [ref=e3686]:
+  - complementary [ref=e3687]:
+    - link "V Valta Operations Copilot" [ref=e3688] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e3689]: V
+      - generic [ref=e3690]:
+        - generic [ref=e3691]: Valta
+        - generic [ref=e3692]: Operations Copilot
+    - generic [ref=e3694]:
+      - generic [ref=e3695]: KR
+      - generic [ref=e3696]:
+        - generic [ref=e3697]: Eigentümer-Sicht
+        - generic [ref=e3698]: Dr. Karl Reichmann
+    - generic [ref=e3699]: Eigentümer-Sicht
+    - navigation [ref=e3700]:
+      - link "Objekte" [ref=e3701] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e3702]
+        - generic [ref=e3705]: Objekte
+      - link "Offene Fälle" [ref=e3706] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e3707]
+        - generic [ref=e3709]: Offene Fälle
+      - link "Finanzübersicht" [ref=e3710] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e3711]
+        - generic [ref=e3714]: Finanzübersicht
+      - link "Freigaben" [ref=e3715] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e3716]
+        - generic [ref=e3719]: Freigaben
+    - generic [ref=e3720]:
+      - generic [ref=e3721]:
+        - generic [ref=e3722]:
+          - img [ref=e3723]
+          - text: AI Copilot
+        - paragraph [ref=e3726]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e3727] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e3728]: KR
+        - generic [ref=e3729]:
+          - generic [ref=e3730]: Dr. Karl Reichmann
+          - generic [ref=e3731]: Reichmann Immobilien KG
+        - img [ref=e3732]
+  - generic [ref=e3735]:
+    - banner [ref=e3736]:
+      - generic [ref=e3737]:
+        - heading "Offene Freigaben" [level=1] [ref=e3738]
+        - paragraph [ref=e3739]: Hausverwaltung wartet auf Ihre Entscheidung.
+      - generic [ref=e3740]:
+        - generic [ref=e3741]:
+          - img [ref=e3742]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e3745]
+          - generic [ref=e3746]: ⌘K
+        - generic [ref=e3747]:
+          - 'button "Aktuelle Sicht: Eigentümer:in" [active] [ref=e3748]':
+            - generic [ref=e3749]: "Aktuelle Sicht:"
+            - generic [ref=e3750]: Eigentümer:in
+            - img [ref=e3751]
+          - generic [ref=e3895]:
+            - generic [ref=e3897]: Demo-Modus · Rolle umschalten
+            - button "Hausverwaltung Sarah Krüger" [ref=e3898]:
+              - img [ref=e3900]
+              - generic [ref=e3905]:
+                - generic [ref=e3906]: Hausverwaltung
+                - generic [ref=e3907]: Sarah Krüger
+            - button "Mieter:in Anna Becker" [ref=e3908]:
+              - img [ref=e3910]
+              - generic [ref=e3912]:
+                - generic [ref=e3913]: Mieter:in
+                - generic [ref=e3914]: Anna Becker
+            - button "Handwerker Thomas Müller" [ref=e3915]:
+              - img [ref=e3917]
+              - generic [ref=e3919]:
+                - generic [ref=e3920]: Handwerker
+                - generic [ref=e3921]: Thomas Müller
+            - button "Eigentümer:in Dr. Karl Reichmann" [ref=e3922]:
+              - img [ref=e3924]
+              - generic [ref=e3927]:
+                - generic [ref=e3928]: Eigentümer:in
+                - generic [ref=e3929]: Dr. Karl Reichmann
+              - img [ref=e3930]
+        - generic [ref=e3753]:
+          - button "DE" [ref=e3754]:
+            - img [ref=e3755]
+            - text: DE
+          - button "EN" [ref=e3759]
+        - button "Notifications" [ref=e3760]:
+          - img [ref=e3761]
+    - main [ref=e3764]:
+      - generic [ref=e3765]:
+        - generic [ref=e3766]:
+          - generic [ref=e3767]:
+            - generic [ref=e3768]:
+              - img [ref=e3770]
+              - generic [ref=e3773]: Offene Freigaben
+            - generic [ref=e3774]: "1"
+          - generic [ref=e3775]:
+            - generic [ref=e3776]:
+              - img [ref=e3778]
+              - generic [ref=e3781]: Offener Gesamtbetrag
+            - generic [ref=e3782]: € 8.900
+          - generic [ref=e3783]:
+            - generic [ref=e3784]:
+              - img [ref=e3786]
+              - generic [ref=e3788]: Kritische Freigaben
+            - generic [ref=e3789]: "0"
+          - generic [ref=e3790]:
+            - generic [ref=e3791]:
+              - img [ref=e3793]
+              - generic [ref=e3796]: Ø Freigabezeit
+            - generic [ref=e3797]: 1.8 d
+        - generic [ref=e3859]:
+          - generic [ref=e3860]:
+            - generic [ref=e3861]:
+              - generic [ref=e3862]:
+                - generic [ref=e3863]: AP-103
+                - generic [ref=e3864]: "Risiko: mittel"
+              - heading "Dachsanierung" [level=3] [ref=e3865]
+              - generic [ref=e3866]: Parkallee 110 · Dachdecker Hansen
+            - generic [ref=e3867]:
+              - generic [ref=e3868]: € 8.900
+              - generic [ref=e3869]:
+                - img [ref=e3870]
+                - text: 10 Werktage
+          - generic [ref=e3873]: Wassereintritt im Dachgeschoss nach Sturm. 2 Wohnungen betroffen.
+          - generic [ref=e3874]:
+            - img [ref=e3875]
+            - generic [ref=e3878]: "Empfohlen: Angebot marktgerecht, Versicherung deckt voraussichtlich 60 %."
+          - generic [ref=e3879]:
+            - link "Objekt ansehen" [ref=e3880] [cursor=pointer]:
+              - /url: /properties/p-parkallee-110
+            - link "Finanzen ansehen" [ref=e3881] [cursor=pointer]:
+              - /url: /owner/financials
+          - generic [ref=e3882]:
+            - button "Freigeben" [ref=e3883]
+            - button "Ablehnen" [ref=e3884]
+            - button "Rückfrage senden" [ref=e3885]:
+              - img [ref=e3886]
+              - text: Rückfrage senden

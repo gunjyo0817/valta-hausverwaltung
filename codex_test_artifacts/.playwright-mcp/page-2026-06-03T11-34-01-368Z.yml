@@ -1,0 +1,163 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: KR
+      - generic [ref=e12]:
+        - generic [ref=e13]: Eigentümer-Sicht
+        - generic [ref=e14]: Dr. Karl Reichmann
+    - generic [ref=e15]: Eigentümer-Sicht
+    - navigation [ref=e119]:
+      - link "Objekte" [ref=e120] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e121]
+        - generic [ref=e124]: Objekte
+      - link "Offene Fälle" [ref=e125] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e126]
+        - generic [ref=e128]: Offene Fälle
+      - link "Finanzübersicht" [ref=e129] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e130]
+        - generic [ref=e133]: Finanzübersicht
+      - link "Freigaben" [ref=e134] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e135]
+        - generic [ref=e138]: Freigaben
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e139] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: KR
+        - generic [ref=e55]:
+          - generic [ref=e56]: Dr. Karl Reichmann
+          - generic [ref=e57]: Reichmann Immobilien KG
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Demo data admin" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Clear mutable demo data and reload the mock database state.
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - img [ref=e68]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e71]
+          - generic [ref=e72]: ⌘K
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e140]':
+          - generic [ref=e75]: "Aktuelle Sicht:"
+          - generic [ref=e76]: Eigentümer:in
+          - img [ref=e77]
+        - generic [ref=e79]:
+          - button "DE" [ref=e80]:
+            - img [ref=e81]
+            - text: DE
+          - button "EN" [ref=e85]
+        - button "Notifications" [ref=e86]:
+          - img [ref=e87]
+    - main [ref=e141]:
+      - generic [ref=e142]:
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - img [ref=e147]
+              - text: Demo database controls
+            - paragraph [ref=e151]: These controls are for prototype demos. They preserve demo accounts and role switching while clearing or restoring mutable demo records.
+            - generic [ref=e268]:
+              - img [ref=e269]
+              - generic [ref=e272]: "Reloaded mock data. Mutable rows: 122."
+          - generic [ref=e152]:
+            - button "Clear demo data" [ref=e153]:
+              - img [ref=e154]
+              - text: Clear demo data
+            - button "Reload mock data" [ref=e157]:
+              - img [ref=e158]
+              - text: Reload mock data
+        - generic [ref=e163]:
+          - generic [ref=e164]:
+            - generic [ref=e165]: Mutable demo rows
+            - generic [ref=e166]: "122"
+          - generic [ref=e167]:
+            - generic [ref=e168]: Identity rows preserved
+            - generic [ref=e169]: "9"
+          - generic [ref=e170]:
+            - generic [ref=e171]: Controls
+            - generic [ref=e172]: Enabled
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - img [ref=e177]
+              - generic [ref=e180]:
+                - heading "Preserved accounts" [level=2] [ref=e181]
+                - paragraph [ref=e182]: These records stay in place when demo data is cleared.
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - generic [ref=e185]: Organizations
+                - generic [ref=e186]: "1"
+              - generic [ref=e187]:
+                - generic [ref=e188]: Users
+                - generic [ref=e189]: "4"
+              - generic [ref=e190]:
+                - generic [ref=e191]: User roles
+                - generic [ref=e192]: "4"
+          - generic [ref=e193]:
+            - generic [ref=e194]:
+              - img [ref=e196]
+              - generic [ref=e200]:
+                - heading "Mutable demo data" [level=2] [ref=e201]
+                - paragraph [ref=e202]: These records are cleared and rebuilt by the admin actions.
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - generic [ref=e205]: Properties
+                - generic [ref=e206]: "6"
+              - generic [ref=e207]:
+                - generic [ref=e208]: Units
+                - generic [ref=e209]: "16"
+              - generic [ref=e210]:
+                - generic [ref=e211]: Tenants
+                - generic [ref=e212]: "16"
+              - generic [ref=e213]:
+                - generic [ref=e214]: Contractors
+                - generic [ref=e215]: "12"
+              - generic [ref=e216]:
+                - generic [ref=e217]: Tickets
+                - generic [ref=e218]: "7"
+              - generic [ref=e219]:
+                - generic [ref=e220]: Ticket events
+                - generic [ref=e221]: "18"
+              - generic [ref=e222]:
+                - generic [ref=e223]: Ticket assignments
+                - generic [ref=e224]: "6"
+              - generic [ref=e225]:
+                - generic [ref=e226]: Documents
+                - generic [ref=e227]: "21"
+              - generic [ref=e228]:
+                - generic [ref=e229]: Notifications
+                - generic [ref=e230]: "7"
+              - generic [ref=e231]:
+                - generic [ref=e232]: AI activity
+                - generic [ref=e233]: "5"
+              - generic [ref=e234]:
+                - generic [ref=e235]: AI suggestions
+                - generic [ref=e236]: "0"
+              - generic [ref=e237]:
+                - generic [ref=e238]: Approvals
+                - generic [ref=e239]: "3"
+              - generic [ref=e240]:
+                - generic [ref=e241]: Invoices
+                - generic [ref=e242]: "5"
+        - generic [ref=e243]:
+          - generic [ref=e244]: "Last checked: 03/06/2026, 13:34:00"
+          - button "Refresh counts" [ref=e245]:
+            - img [ref=e273]
+            - text: Refresh counts
+        - link "Back to dashboard" [ref=e252] [cursor=pointer]:
+          - /url: /

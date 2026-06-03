@@ -1,0 +1,164 @@
+- generic [ref=e3473]:
+  - complementary [ref=e3474]:
+    - link "V Valta Operations Copilot" [ref=e3475] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e3476]: V
+      - generic [ref=e3477]:
+        - generic [ref=e3478]: Valta
+        - generic [ref=e3479]: Operations Copilot
+    - generic [ref=e3481]:
+      - generic [ref=e3482]: KR
+      - generic [ref=e3483]:
+        - generic [ref=e3484]: Eigentümer-Sicht
+        - generic [ref=e3485]: Dr. Karl Reichmann
+    - generic [ref=e3486]: Eigentümer-Sicht
+    - navigation [ref=e3487]:
+      - link "Objekte" [ref=e3488] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e3489]
+        - generic [ref=e3492]: Objekte
+      - link "Offene Fälle" [ref=e3493] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e3494]
+        - generic [ref=e3496]: Offene Fälle
+      - link "Finanzübersicht" [ref=e3497] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e3498]
+        - generic [ref=e3501]: Finanzübersicht
+      - link "Freigaben" [ref=e3502] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e3503]
+        - generic [ref=e3506]: Freigaben
+    - generic [ref=e3507]:
+      - generic [ref=e3508]:
+        - generic [ref=e3509]:
+          - img [ref=e3510]
+          - text: AI Copilot
+        - paragraph [ref=e3513]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e3514] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e3515]: KR
+        - generic [ref=e3516]:
+          - generic [ref=e3517]: Dr. Karl Reichmann
+          - generic [ref=e3518]: Reichmann Immobilien KG
+        - img [ref=e3519]
+  - generic [ref=e3522]:
+    - banner [ref=e3523]:
+      - generic [ref=e3524]:
+        - heading "Finanzübersicht" [level=1] [ref=e3525]
+        - paragraph [ref=e3526]: Transparenz für Eigentümer · zentrale KPIs & Freigaben.
+      - generic [ref=e3527]:
+        - generic [ref=e3528]:
+          - img [ref=e3529]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e3532]
+          - generic [ref=e3533]: ⌘K
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e3535]':
+          - generic [ref=e3536]: "Aktuelle Sicht:"
+          - generic [ref=e3537]: Eigentümer:in
+          - img [ref=e3538]
+        - generic [ref=e3540]:
+          - button "DE" [ref=e3541]:
+            - img [ref=e3542]
+            - text: DE
+          - button "EN" [ref=e3546]
+        - button "Notifications" [ref=e3547]:
+          - img [ref=e3548]
+    - main [ref=e3551]:
+      - generic [ref=e3552]:
+        - generic [ref=e3553]:
+          - generic [ref=e3554]:
+            - generic [ref=e3555]:
+              - img [ref=e3556]
+              - text: Monatlich
+            - generic [ref=e3559]: € 5.080
+          - generic [ref=e3560]:
+            - generic [ref=e3561]:
+              - img [ref=e3562]
+              - text: Wartung YTD
+            - generic [ref=e3565]: € 5.080
+          - generic [ref=e3566]:
+            - generic [ref=e3567]:
+              - img [ref=e3568]
+              - text: Jahresbudget
+            - generic [ref=e3571]: € 60.000
+          - generic [ref=e3572]:
+            - generic [ref=e3573]:
+              - img [ref=e3574]
+              - text: Kritische Fälle
+            - generic [ref=e3577]: € 12.400
+        - generic [ref=e3579]:
+          - heading "Budget-Auslastung" [level=3] [ref=e3580]
+          - generic [ref=e3581]: 8% · € 5.080 / € 60.000
+        - generic [ref=e3584]:
+          - generic [ref=e3585]:
+            - heading "Wartungskosten · 12 Monate" [level=3] [ref=e3586]
+            - generic [ref=e3588]:
+              - generic "€ 5.080"
+              - generic [ref=e3589]: May
+          - generic [ref=e3590]:
+            - heading "Kostenverteilung nach Kategorie" [level=3] [ref=e3591]
+            - generic [ref=e3592]:
+              - generic [ref=e3594]:
+                - generic [ref=e3595]: Aufzug
+                - generic [ref=e3596]: € 2.150 · 42%
+              - generic [ref=e3600]:
+                - generic [ref=e3601]: Heizung
+                - generic [ref=e3602]: € 1.240 · 24%
+              - generic [ref=e3606]:
+                - generic [ref=e3607]: Dach & Fassade
+                - generic [ref=e3608]: € 890 · 18%
+              - generic [ref=e3612]:
+                - generic [ref=e3613]: Sanitär
+                - generic [ref=e3614]: € 680 · 13%
+              - generic [ref=e3618]:
+                - generic [ref=e3619]: Sonstiges
+                - generic [ref=e3620]: € 120 · 2%
+        - generic [ref=e3623]:
+          - generic [ref=e3624]:
+            - img [ref=e3625]
+            - heading "Aktuelle Rechnungen" [level=3] [ref=e3628]
+          - generic [ref=e3629]:
+            - generic [ref=e3630]: Rechnung
+            - generic [ref=e3631]: Datum
+            - generic [ref=e3632]: Handwerker
+            - generic [ref=e3633]: Objekt
+            - generic [ref=e3634]: Betrag
+            - generic [ref=e3635]: Status
+          - generic [ref=e3637]:
+            - generic [ref=e3638]: INV-2041
+            - generic [ref=e3639]: 24.05.2026
+            - generic [ref=e3640]: Müller Heizung GmbH
+            - generic [ref=e3641]: Lindenstraße 22
+            - generic [ref=e3642]: € 1.240
+            - generic [ref=e3644]: Bezahlt
+          - generic [ref=e3646]:
+            - generic [ref=e3647]: INV-2039
+            - generic [ref=e3648]: 22.05.2026
+            - generic [ref=e3649]: Klempner Schulz & Söhne
+            - generic [ref=e3650]: Goethestraße 8
+            - generic [ref=e3651]: € 680
+            - generic [ref=e3653]: Bezahlt
+          - generic [ref=e3655]:
+            - generic [ref=e3656]: INV-2037
+            - generic [ref=e3657]: 20.05.2026
+            - generic [ref=e3658]: Schindler Service
+            - generic [ref=e3659]: Parkallee 110
+            - generic [ref=e3660]: € 2.150
+            - generic [ref=e3662]: Offen
+          - generic [ref=e3664]:
+            - generic [ref=e3665]: INV-2030
+            - generic [ref=e3666]: 18.05.2026
+            - generic [ref=e3667]: Gutachter Bauer
+            - generic [ref=e3668]: Rosenweg 3
+            - generic [ref=e3669]: € 890
+            - generic [ref=e3671]: Offen
+          - generic [ref=e3673]:
+            - generic [ref=e3674]: INV-2025
+            - generic [ref=e3675]: 15.05.2026
+            - generic [ref=e3676]: Hausmeister Krüger
+            - generic [ref=e3677]: Lindenstraße 22
+            - generic [ref=e3678]: € 120
+            - generic [ref=e3680]: Bezahlt
+          - button "Als CSV exportieren" [ref=e3682]:
+            - img [ref=e3683]
+            - text: Als CSV exportieren

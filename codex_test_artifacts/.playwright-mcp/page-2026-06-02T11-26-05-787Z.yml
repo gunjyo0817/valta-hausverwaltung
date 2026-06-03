@@ -1,0 +1,122 @@
+- generic [ref=e2252]:
+  - complementary [ref=e2253]:
+    - link "V Valta Operations Copilot" [ref=e2254] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e2255]: V
+      - generic [ref=e2256]:
+        - generic [ref=e2257]: Valta
+        - generic [ref=e2258]: Operations Copilot
+    - generic [ref=e2260]:
+      - generic [ref=e2261]: KR
+      - generic [ref=e2262]:
+        - generic [ref=e2263]: Eigentümer-Sicht
+        - generic [ref=e2264]: Dr. Karl Reichmann
+    - generic [ref=e2265]: Eigentümer-Sicht
+    - navigation [ref=e2266]:
+      - link "Objekte" [ref=e2267] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e2268]
+        - generic [ref=e2271]: Objekte
+      - link "Offene Fälle" [ref=e2272] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e2273]
+        - generic [ref=e2275]: Offene Fälle
+      - link "Finanzübersicht" [ref=e2276] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e2277]
+        - generic [ref=e2280]: Finanzübersicht
+      - link "Freigaben" [ref=e2281] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e2282]
+        - generic [ref=e2285]: Freigaben
+    - generic [ref=e2286]:
+      - generic [ref=e2287]:
+        - generic [ref=e2288]:
+          - img [ref=e2289]
+          - text: AI Copilot
+        - paragraph [ref=e2292]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e2293] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e2294]: KR
+        - generic [ref=e2295]:
+          - generic [ref=e2296]: Dr. Karl Reichmann
+          - generic [ref=e2297]: Reichmann Immobilien KG
+        - img [ref=e2298]
+  - generic [ref=e2301]:
+    - banner [ref=e2302]:
+      - generic [ref=e2303]:
+        - heading "Offene Freigaben" [level=1] [ref=e2304]
+        - paragraph [ref=e2305]: Hausverwaltung wartet auf Ihre Entscheidung.
+      - generic [ref=e2306]:
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e2308]':
+          - generic [ref=e2309]: "Aktuelle Sicht:"
+          - generic [ref=e2310]: Eigentümer:in
+          - img [ref=e2311]
+        - generic [ref=e2313]:
+          - button "DE" [ref=e2314]:
+            - img [ref=e2315]
+            - text: DE
+          - button "EN" [ref=e2319]
+        - button "Notifications" [active] [ref=e2320]:
+          - img [ref=e2321]
+    - main [ref=e2324]:
+      - generic [ref=e2325]:
+        - generic [ref=e2326]:
+          - generic [ref=e2327]:
+            - generic [ref=e2328]:
+              - img [ref=e2330]
+              - generic [ref=e2333]: Offene Freigaben
+            - generic [ref=e2334]: "0"
+          - generic [ref=e2335]:
+            - generic [ref=e2336]:
+              - img [ref=e2338]
+              - generic [ref=e2341]: Offener Gesamtbetrag
+            - generic [ref=e2342]: € 0
+          - generic [ref=e2343]:
+            - generic [ref=e2344]:
+              - img [ref=e2346]
+              - generic [ref=e2348]: Kritische Freigaben
+            - generic [ref=e2349]: "0"
+          - generic [ref=e2350]:
+            - generic [ref=e2351]:
+              - img [ref=e2353]
+              - generic [ref=e2356]: Ø Freigabezeit
+            - generic [ref=e2357]: 1.8 d
+        - generic [ref=e2359]:
+          - img [ref=e2361]
+          - generic [ref=e2365]: Keine offenen Freigaben
+          - paragraph [ref=e2366]: Es gibt keine offenen Freigabe-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Eigentuemer-Freigaben wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e2367] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e2368]
+            - text: Demo-Daten-Admin oeffnen
+  - complementary [ref=e2373]:
+    - generic [ref=e2374]:
+      - img [ref=e2375]
+      - generic [ref=e2378]: Benachrichtigungen
+      - button "Alle gelesen" [disabled] [ref=e2379]:
+        - img [ref=e2380]
+        - text: Alle gelesen
+      - button [ref=e2383]:
+        - img [ref=e2384]
+    - generic [ref=e2387]:
+      - button "Alle 0" [ref=e2388]:
+        - text: Alle
+        - generic [ref=e2389]: "0"
+      - button "Ungelesen 0" [ref=e2390]:
+        - text: Ungelesen
+        - generic [ref=e2391]: "0"
+      - button "Kritisch 0" [ref=e2392]:
+        - text: Kritisch
+        - generic [ref=e2393]: "0"
+      - button "Freigaben 0" [ref=e2394]:
+        - text: Freigaben
+        - generic [ref=e2395]: "0"
+    - generic [ref=e2398]:
+      - img [ref=e2400]
+      - generic [ref=e2404]: Keine Benachrichtigungen
+      - paragraph [ref=e2405]: Fuer diese Rolle gibt es keine Benachrichtigungs-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Benachrichtigungen wiederherzustellen.
+      - link "Demo-Daten-Admin oeffnen" [ref=e2406] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - img [ref=e2407]
+        - text: Demo-Daten-Admin oeffnen

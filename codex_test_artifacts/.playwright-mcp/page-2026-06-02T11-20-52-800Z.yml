@@ -1,0 +1,111 @@
+- generic [ref=e206]:
+  - complementary [ref=e207]:
+    - link "V Valta Operations Copilot" [ref=e208] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e209]: V
+      - generic [ref=e210]:
+        - generic [ref=e211]: Valta
+        - generic [ref=e212]: Operations Copilot
+    - generic [ref=e214]:
+      - generic [ref=e215]: SK
+      - generic [ref=e216]:
+        - generic [ref=e217]: Hausverwaltungs-Sicht
+        - generic [ref=e218]: Sarah Krüger
+    - generic [ref=e219]: Hausverwaltung
+    - navigation [ref=e220]:
+      - link "Dashboard" [ref=e221] [cursor=pointer]:
+        - /url: /
+        - img [ref=e222]
+        - generic [ref=e227]: Dashboard
+      - link "Operations Inbox" [ref=e228] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e229]
+        - generic [ref=e232]: Operations Inbox
+      - link "AI Insights" [ref=e233] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e234]
+        - generic [ref=e236]: AI Insights
+      - link "Objekte" [ref=e237] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e238]
+        - generic [ref=e242]: Objekte
+      - link "Handwerker" [ref=e243] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e244]
+        - generic [ref=e249]: Handwerker
+    - generic [ref=e250]:
+      - generic [ref=e251]:
+        - generic [ref=e252]:
+          - img [ref=e253]
+          - text: AI Copilot
+        - paragraph [ref=e256]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e257] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e258]: SK
+        - generic [ref=e259]:
+          - generic [ref=e260]: Sarah Krüger
+          - generic [ref=e261]: Hausverwaltung Berlin GmbH
+        - img [ref=e262]
+  - generic [ref=e265]:
+    - banner [ref=e266]:
+      - generic [ref=e267]:
+        - heading "Operations Inbox" [level=1] [ref=e268]
+        - paragraph [ref=e269]: AI triagiert · Mensch entscheidet
+      - generic [ref=e270]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e272]':
+          - generic [ref=e273]: "Aktuelle Sicht:"
+          - generic [ref=e274]: Hausverwaltung
+          - img [ref=e275]
+        - generic [ref=e277]:
+          - button "DE" [ref=e278]:
+            - img [ref=e279]
+            - text: DE
+          - button "EN" [ref=e283]
+        - button "Notifications" [ref=e284]:
+          - img [ref=e285]
+        - button "Neues Ticket" [ref=e288]:
+          - img [ref=e289]
+          - text: Neues Ticket
+    - main [ref=e290]:
+      - generic [ref=e291]:
+        - complementary [ref=e292]:
+          - generic [ref=e293]:
+            - generic [ref=e294]:
+              - img [ref=e295]
+              - textbox "Tickets durchsuchen…" [ref=e298]
+            - generic [ref=e299]:
+              - button "Alle" [ref=e300]
+              - button "Kritisch" [ref=e301]
+              - button "Neu" [ref=e302]
+              - button "Wartet auf Info" [ref=e303]
+              - button "In Bearbeitung" [ref=e304]
+              - button "Mehr" [ref=e305]:
+                - img [ref=e306]
+                - text: Mehr
+          - list [ref=e308]:
+            - listitem [ref=e309]:
+              - generic [ref=e310]:
+                - img [ref=e312]
+                - generic [ref=e316]: Keine Tickets in der Datenbank
+                - paragraph [ref=e317]: Die Demo-Daten wurden geleert. Lade Mock-Daten im Adminbereich neu, um die Inbox wieder zu fuellen.
+                - link "Demo-Daten-Admin oeffnen" [ref=e318] [cursor=pointer]:
+                  - /url: /admin/demo-data
+                  - img [ref=e319]
+                  - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e324]:
+          - img [ref=e326]
+          - generic [ref=e330]: Ticket auswaehlen
+          - paragraph [ref=e331]: Es gibt keine Tickets zum Anzeigen. Im Demo-Daten-Admin kannst du Mock-Datensaetze neu laden.
+          - link "Demo-Daten-Admin oeffnen" [ref=e332] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e333]
+            - text: Demo-Daten-Admin oeffnen
+        - complementary [ref=e336]:
+          - generic [ref=e338]:
+            - img [ref=e340]
+            - generic [ref=e344]: Copilot wartet
+            - paragraph [ref=e345]: Copilot-Aktionen benoetigen ein Ticket.
+            - link "Demo-Daten-Admin oeffnen" [ref=e346] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e347]
+              - text: Demo-Daten-Admin oeffnen

@@ -1,0 +1,101 @@
+- generic [ref=e1963]:
+  - complementary [ref=e1964]:
+    - link "V Valta Operations Copilot" [ref=e1965] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e1966]: V
+      - generic [ref=e1967]:
+        - generic [ref=e1968]: Valta
+        - generic [ref=e1969]: Operations Copilot
+    - generic [ref=e1971]:
+      - generic [ref=e1972]: KR
+      - generic [ref=e1973]:
+        - generic [ref=e1974]: Eigentümer-Sicht
+        - generic [ref=e1975]: Dr. Karl Reichmann
+    - generic [ref=e1976]: Eigentümer-Sicht
+    - navigation [ref=e1977]:
+      - link "Objekte" [ref=e1978] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e1979]
+        - generic [ref=e1982]: Objekte
+      - link "Offene Fälle" [ref=e1983] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e1984]
+        - generic [ref=e1986]: Offene Fälle
+      - link "Finanzübersicht" [ref=e1987] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e1988]
+        - generic [ref=e1991]: Finanzübersicht
+      - link "Freigaben" [ref=e1992] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e1993]
+        - generic [ref=e1996]: Freigaben
+    - generic [ref=e1997]:
+      - generic [ref=e1998]:
+        - generic [ref=e1999]:
+          - img [ref=e2000]
+          - text: AI Copilot
+        - paragraph [ref=e2003]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e2004] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e2005]: KR
+        - generic [ref=e2006]:
+          - generic [ref=e2007]: Dr. Karl Reichmann
+          - generic [ref=e2008]: Reichmann Immobilien KG
+        - img [ref=e2009]
+  - generic [ref=e2012]:
+    - banner [ref=e2013]:
+      - generic [ref=e2014]:
+        - heading "Offene Reparaturfälle" [level=1] [ref=e2015]
+        - paragraph [ref=e2016]: Transparenz für Eigentümer · zentrale KPIs & Freigaben.
+      - generic [ref=e2017]:
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e2019]':
+          - generic [ref=e2020]: "Aktuelle Sicht:"
+          - generic [ref=e2021]: Eigentümer:in
+          - img [ref=e2022]
+        - generic [ref=e2024]:
+          - button "DE" [ref=e2025]:
+            - img [ref=e2026]
+            - text: DE
+          - button "EN" [ref=e2030]
+        - button "Notifications" [ref=e2031]:
+          - img [ref=e2032]
+    - main [ref=e2035]:
+      - generic [ref=e2036]:
+        - generic [ref=e2037]:
+          - button "Offen gesamt 0" [ref=e2038]:
+            - generic [ref=e2039]:
+              - img [ref=e2041]
+              - generic [ref=e2043]: Offen gesamt
+            - generic [ref=e2044]: "0"
+          - button "Kritisch 0" [ref=e2045]:
+            - generic [ref=e2046]:
+              - img [ref=e2048]
+              - generic [ref=e2050]: Kritisch
+            - generic [ref=e2051]: "0"
+          - button "Hoch 0" [ref=e2052]:
+            - generic [ref=e2053]:
+              - img [ref=e2055]
+              - generic [ref=e2057]: Hoch
+            - generic [ref=e2058]: "0"
+          - button "Mittel 0" [ref=e2059]:
+            - generic [ref=e2060]:
+              - img [ref=e2062]
+              - generic [ref=e2064]: Mittel
+            - generic [ref=e2065]: "0"
+        - generic [ref=e2066]:
+          - generic [ref=e2067]:
+            - generic [ref=e2068]: ID
+            - generic [ref=e2069]: AI-Zusammenfassung
+            - generic [ref=e2070]: Kategorie
+            - generic [ref=e2071]: Objekt
+            - generic [ref=e2072]: Status
+            - generic [ref=e2073]: Priorität
+            - generic [ref=e2074]: Vorauss. Lösung
+          - generic [ref=e2076]:
+            - img [ref=e2078]
+            - generic [ref=e2082]: Keine offenen Eigentuemer-Faelle
+            - paragraph [ref=e2083]: Es gibt keine offenen Ticket-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Eigentuemer-Faelle wiederherzustellen.
+            - link "Demo-Daten-Admin oeffnen" [ref=e2084] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e2085]
+              - text: Demo-Daten-Admin oeffnen

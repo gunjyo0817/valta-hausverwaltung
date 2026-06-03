@@ -1,0 +1,101 @@
+- generic [ref=e543]:
+  - complementary [ref=e544]:
+    - link "V Valta Operations Copilot" [ref=e545] [cursor=pointer]:
+      - /url: /tenant
+      - generic [ref=e546]: V
+      - generic [ref=e547]:
+        - generic [ref=e548]: Valta
+        - generic [ref=e549]: Operations Copilot
+    - generic [ref=e551]:
+      - generic [ref=e552]: AB
+      - generic [ref=e553]:
+        - generic [ref=e554]: Mieter-Sicht
+        - generic [ref=e555]: Anna Becker
+    - generic [ref=e556]: Mieter-Sicht
+    - navigation [ref=e557]:
+      - link "Start" [ref=e558] [cursor=pointer]:
+        - /url: /tenant
+        - img [ref=e559]
+        - generic [ref=e562]: Start
+      - link "Schaden melden" [ref=e563] [cursor=pointer]:
+        - /url: /tenant/new-request
+        - img [ref=e564]
+        - generic [ref=e566]: Schaden melden
+      - link "Meine Anfragen" [ref=e567] [cursor=pointer]:
+        - /url: /tenant/tickets
+        - img [ref=e568]
+        - generic [ref=e571]: Meine Anfragen
+    - generic [ref=e572]:
+      - generic [ref=e573]:
+        - generic [ref=e574]:
+          - img [ref=e575]
+          - text: AI Copilot
+        - paragraph [ref=e578]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "AB Anna Becker Lindenstraße 22, WE 14" [ref=e579] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e580]: AB
+        - generic [ref=e581]:
+          - generic [ref=e582]: Anna Becker
+          - generic [ref=e583]: Lindenstraße 22, WE 14
+        - img [ref=e584]
+  - generic [ref=e587]:
+    - banner [ref=e588]:
+      - generic [ref=e589]:
+        - heading "Meine Anfragen" [level=1] [ref=e590]
+        - paragraph [ref=e591]: Wir kümmern uns – transparent und nachvollziehbar.
+      - generic [ref=e592]:
+        - generic [ref=e593]:
+          - img [ref=e594]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e597]
+          - generic [ref=e598]: ⌘K
+        - 'button "Aktuelle Sicht: Mieter:in" [ref=e600]':
+          - generic [ref=e601]: "Aktuelle Sicht:"
+          - generic [ref=e602]: Mieter:in
+          - img [ref=e603]
+        - generic [ref=e605]:
+          - button "DE" [ref=e606]:
+            - img [ref=e607]
+            - text: DE
+          - button "EN" [ref=e611]
+        - button "Notifications" [ref=e612]:
+          - img [ref=e613]
+          - generic [ref=e616]: "3"
+    - main [ref=e617]:
+      - generic [ref=e618]:
+        - generic [ref=e620]:
+          - img [ref=e622]
+          - generic [ref=e625]:
+            - heading "Etwas in Ihrer Wohnung defekt?" [level=2] [ref=e626]
+            - paragraph [ref=e627]: Melden Sie es in 60 Sekunden – Valta strukturiert alles für die Hausverwaltung.
+            - generic [ref=e628]:
+              - link "Neue Meldung starten" [ref=e629] [cursor=pointer]:
+                - /url: /tenant/new-request
+                - img [ref=e630]
+                - text: Neue Meldung starten
+              - link "Verlauf" [ref=e632] [cursor=pointer]:
+                - /url: /tenant/tickets
+                - img [ref=e633]
+                - text: Verlauf
+        - generic [ref=e636]:
+          - heading "Aktive Anfragen · 1" [level=3] [ref=e637]:
+            - text: Aktive Anfragen
+            - generic [ref=e638]: · 1
+          - link "Heizung komplett ausgefallen VLT-2041 · Eingereicht vor 1 Std. Handwerker vergeben Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen. Müller Heizung GmbH Status verfolgen" [ref=e640] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+            - generic [ref=e641]:
+              - img [ref=e643]
+              - generic [ref=e646]:
+                - generic [ref=e647]:
+                  - generic [ref=e648]:
+                    - generic [ref=e649]: Heizung komplett ausgefallen
+                    - generic [ref=e650]: VLT-2041 · Eingereicht vor 1 Std.
+                  - generic [ref=e651]: Handwerker vergeben
+                - paragraph [ref=e653]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+                - generic [ref=e654]:
+                  - generic [ref=e655]: Müller Heizung GmbH
+                  - generic [ref=e656]:
+                    - text: Status verfolgen
+                    - img [ref=e657]
+        - generic [ref=e659]:
+          - img [ref=e660]
+          - text: Ihre Angaben werden direkt an die Hausverwaltung übermittelt. Keine Daten verlassen das Verwaltungssystem.

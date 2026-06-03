@@ -1,0 +1,130 @@
+- generic [ref=e2088]:
+  - complementary [ref=e2089]:
+    - link "V Valta Operations Copilot" [ref=e2090] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e2091]: V
+      - generic [ref=e2092]:
+        - generic [ref=e2093]: Valta
+        - generic [ref=e2094]: Operations Copilot
+    - generic [ref=e2096]:
+      - generic [ref=e2097]: KR
+      - generic [ref=e2098]:
+        - generic [ref=e2099]: Eigentümer-Sicht
+        - generic [ref=e2100]: Dr. Karl Reichmann
+    - generic [ref=e2101]: Eigentümer-Sicht
+    - navigation [ref=e2102]:
+      - link "Objekte" [ref=e2103] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e2104]
+        - generic [ref=e2107]: Objekte
+      - link "Offene Fälle" [ref=e2108] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e2109]
+        - generic [ref=e2111]: Offene Fälle
+      - link "Finanzübersicht" [ref=e2112] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e2113]
+        - generic [ref=e2116]: Finanzübersicht
+      - link "Freigaben" [ref=e2117] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e2118]
+        - generic [ref=e2121]: Freigaben
+    - generic [ref=e2122]:
+      - generic [ref=e2123]:
+        - generic [ref=e2124]:
+          - img [ref=e2125]
+          - text: AI Copilot
+        - paragraph [ref=e2128]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e2129] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e2130]: KR
+        - generic [ref=e2131]:
+          - generic [ref=e2132]: Dr. Karl Reichmann
+          - generic [ref=e2133]: Reichmann Immobilien KG
+        - img [ref=e2134]
+  - generic [ref=e2137]:
+    - banner [ref=e2138]:
+      - generic [ref=e2139]:
+        - heading "Finanzübersicht" [level=1] [ref=e2140]
+        - paragraph [ref=e2141]: Transparenz für Eigentümer · zentrale KPIs & Freigaben.
+      - generic [ref=e2142]:
+        - 'button "Aktuelle Sicht: Eigentümer:in" [ref=e2144]':
+          - generic [ref=e2145]: "Aktuelle Sicht:"
+          - generic [ref=e2146]: Eigentümer:in
+          - img [ref=e2147]
+        - generic [ref=e2149]:
+          - button "DE" [ref=e2150]:
+            - img [ref=e2151]
+            - text: DE
+          - button "EN" [ref=e2155]
+        - button "Notifications" [ref=e2156]:
+          - img [ref=e2157]
+    - main [ref=e2160]:
+      - generic [ref=e2161]:
+        - generic [ref=e2162]:
+          - generic [ref=e2163]:
+            - generic [ref=e2164]:
+              - img [ref=e2165]
+              - text: Monatlich
+            - generic [ref=e2168]: € 0
+          - generic [ref=e2169]:
+            - generic [ref=e2170]:
+              - img [ref=e2171]
+              - text: Wartung YTD
+            - generic [ref=e2174]: € 0
+          - generic [ref=e2175]:
+            - generic [ref=e2176]:
+              - img [ref=e2177]
+              - text: Jahresbudget
+            - generic [ref=e2180]: € 60.000
+          - generic [ref=e2181]:
+            - generic [ref=e2182]:
+              - img [ref=e2183]
+              - text: Kritische Fälle
+            - generic [ref=e2186]: € 0
+        - generic [ref=e2188]:
+          - heading "Budget-Auslastung" [level=3] [ref=e2189]
+          - generic [ref=e2190]: 0% · € 0 / € 60.000
+        - generic [ref=e2192]:
+          - generic [ref=e2193]:
+            - heading "Wartungskosten · 12 Monate" [level=3] [ref=e2194]
+            - generic [ref=e2195]:
+              - img [ref=e2197]
+              - generic [ref=e2201]: Keine Kostenhistorie
+              - paragraph [ref=e2202]: Es gibt keine Rechnungs-Datensaetze fuer das Monatsdiagramm.
+              - link "Demo-Daten-Admin oeffnen" [ref=e2203] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e2204]
+                - text: Demo-Daten-Admin oeffnen
+          - generic [ref=e2207]:
+            - heading "Kostenverteilung nach Kategorie" [level=3] [ref=e2208]
+            - generic [ref=e2209]:
+              - img [ref=e2211]
+              - generic [ref=e2215]: Keine Kostenkategorien
+              - paragraph [ref=e2216]: Es gibt keine Rechnungen fuer eine Kategorien-Auswertung.
+              - link "Demo-Daten-Admin oeffnen" [ref=e2217] [cursor=pointer]:
+                - /url: /admin/demo-data
+                - img [ref=e2218]
+                - text: Demo-Daten-Admin oeffnen
+        - generic [ref=e2221]:
+          - generic [ref=e2222]:
+            - img [ref=e2223]
+            - heading "Aktuelle Rechnungen" [level=3] [ref=e2226]
+          - generic [ref=e2227]:
+            - generic [ref=e2228]: Rechnung
+            - generic [ref=e2229]: Datum
+            - generic [ref=e2230]: Handwerker
+            - generic [ref=e2231]: Objekt
+            - generic [ref=e2232]: Betrag
+            - generic [ref=e2233]: Status
+          - generic [ref=e2235]:
+            - img [ref=e2237]
+            - generic [ref=e2241]: Keine Rechnungen
+            - paragraph [ref=e2242]: In der Datenbank sind keine Rechnungs-Datensaetze vorhanden. Lade Mock-Daten im Adminbereich neu, um Rechnungen wiederherzustellen.
+            - link "Demo-Daten-Admin oeffnen" [ref=e2243] [cursor=pointer]:
+              - /url: /admin/demo-data
+              - img [ref=e2244]
+              - text: Demo-Daten-Admin oeffnen
+          - button "Als CSV exportieren" [ref=e2248]:
+            - img [ref=e2249]
+            - text: Als CSV exportieren

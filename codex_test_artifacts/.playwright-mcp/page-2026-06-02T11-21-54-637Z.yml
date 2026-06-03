@@ -1,0 +1,91 @@
+- generic [ref=e581]:
+  - complementary [ref=e582]:
+    - link "V Valta Operations Copilot" [ref=e583] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e584]: V
+      - generic [ref=e585]:
+        - generic [ref=e586]: Valta
+        - generic [ref=e587]: Operations Copilot
+    - generic [ref=e589]:
+      - generic [ref=e590]: SK
+      - generic [ref=e591]:
+        - generic [ref=e592]: Hausverwaltungs-Sicht
+        - generic [ref=e593]: Sarah Krüger
+    - generic [ref=e594]: Hausverwaltung
+    - navigation [ref=e595]:
+      - link "Dashboard" [ref=e596] [cursor=pointer]:
+        - /url: /
+        - img [ref=e597]
+        - generic [ref=e602]: Dashboard
+      - link "Operations Inbox" [ref=e603] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e604]
+        - generic [ref=e607]: Operations Inbox
+      - link "AI Insights" [ref=e608] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e609]
+        - generic [ref=e611]: AI Insights
+      - link "Objekte" [ref=e612] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e613]
+        - generic [ref=e617]: Objekte
+      - link "Handwerker" [ref=e618] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e619]
+        - generic [ref=e624]: Handwerker
+    - generic [ref=e625]:
+      - generic [ref=e626]:
+        - generic [ref=e627]:
+          - img [ref=e628]
+          - text: AI Copilot
+        - paragraph [ref=e631]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e632] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e633]: SK
+        - generic [ref=e634]:
+          - generic [ref=e635]: Sarah Krüger
+          - generic [ref=e636]: Hausverwaltung Berlin GmbH
+        - img [ref=e637]
+  - generic [ref=e640]:
+    - banner [ref=e641]:
+      - generic [ref=e642]:
+        - heading "Objekte" [level=1] [ref=e643]
+        - paragraph [ref=e644]: Ihr Portfolio im Überblick · 0 Objekte
+      - generic [ref=e645]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e647]':
+          - generic [ref=e648]: "Aktuelle Sicht:"
+          - generic [ref=e649]: Hausverwaltung
+          - img [ref=e650]
+        - generic [ref=e652]:
+          - button "DE" [ref=e653]:
+            - img [ref=e654]
+            - text: DE
+          - button "EN" [ref=e658]
+        - button "Notifications" [ref=e659]:
+          - img [ref=e660]
+        - button "Neues Ticket" [ref=e663]:
+          - img [ref=e664]
+          - text: Neues Ticket
+    - main [ref=e665]:
+      - generic [ref=e666]:
+        - generic [ref=e667]:
+          - generic [ref=e668]:
+            - img [ref=e669]
+            - textbox "Objekte durchsuchen…" [ref=e672]
+          - generic [ref=e673]:
+            - img [ref=e674]
+            - combobox [ref=e676]:
+              - option "Alle · Status" [selected]
+              - option "Stabil"
+              - option "Beobachten"
+              - option "Dringend"
+            - combobox [ref=e677]:
+              - option "Alle · Stadt" [selected]
+        - generic [ref=e678]:
+          - img [ref=e680]
+          - generic [ref=e684]: Keine Objekte in der Datenbank
+          - paragraph [ref=e685]: Die Demo-Daten wurden geleert. Lade Mock-Daten im Adminbereich neu, um Objekte, Einheiten und Dokumente wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e686] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e687]
+            - text: Demo-Daten-Admin oeffnen

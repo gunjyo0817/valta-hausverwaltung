@@ -1,0 +1,92 @@
+- generic [ref=e1265]:
+  - complementary [ref=e1266]:
+    - link "V Valta Operations Copilot" [ref=e1267] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e1268]: V
+      - generic [ref=e1269]:
+        - generic [ref=e1270]: Valta
+        - generic [ref=e1271]: Operations Copilot
+    - generic [ref=e1273]:
+      - generic [ref=e1274]: MH
+      - generic [ref=e1275]:
+        - generic [ref=e1276]: Handwerker-Sicht
+        - generic [ref=e1277]: Thomas Müller
+    - generic [ref=e1278]: Handwerker-Sicht
+    - navigation [ref=e1279]:
+      - link "Aufträge" [ref=e1280] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e1281]
+        - generic [ref=e1284]: Aufträge
+      - link "Terminplan" [ref=e1285] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e1286]
+        - generic [ref=e1288]: Terminplan
+      - link "Nachrichten" [ref=e1289] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e1290]
+        - generic [ref=e1292]: Nachrichten
+      - link "Erledigt" [ref=e1293] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e1294]
+        - generic [ref=e1297]: Erledigt
+    - generic [ref=e1298]:
+      - generic [ref=e1299]:
+        - generic [ref=e1300]:
+          - img [ref=e1301]
+          - text: AI Copilot
+        - paragraph [ref=e1304]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e1305] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1306]: MH
+        - generic [ref=e1307]:
+          - generic [ref=e1308]: Thomas Müller
+          - generic [ref=e1309]: Müller Heizung GmbH
+        - img [ref=e1310]
+  - generic [ref=e1313]:
+    - banner [ref=e1314]:
+      - generic [ref=e1315]:
+        - heading "Meine Aufträge" [level=1] [ref=e1316]
+        - paragraph [ref=e1317]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e1318]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e1320]':
+          - generic [ref=e1321]: "Aktuelle Sicht:"
+          - generic [ref=e1322]: Handwerker
+          - img [ref=e1323]
+        - generic [ref=e1325]:
+          - button "DE" [ref=e1326]:
+            - img [ref=e1327]
+            - text: DE
+          - button "EN" [ref=e1331]
+        - button "Notifications" [ref=e1332]:
+          - img [ref=e1333]
+    - main [ref=e1336]:
+      - generic [ref=e1337]:
+        - generic [ref=e1338]:
+          - generic [ref=e1339]:
+            - generic [ref=e1340]:
+              - img [ref=e1342]
+              - generic [ref=e1345]: Aktive Aufträge
+            - generic [ref=e1346]: "0"
+          - generic [ref=e1347]:
+            - generic [ref=e1348]:
+              - img [ref=e1350]
+              - generic [ref=e1353]: Diese Woche fällig
+            - generic [ref=e1354]: "5"
+          - generic [ref=e1355]:
+            - generic [ref=e1356]:
+              - img [ref=e1358]
+              - generic [ref=e1360]: Ø Reaktionszeit
+            - generic [ref=e1361]: 2.1h
+          - generic [ref=e1362]:
+            - generic [ref=e1363]:
+              - img [ref=e1365]
+              - generic [ref=e1367]: Bewertung
+            - generic [ref=e1368]: "4.9"
+        - generic [ref=e1370]:
+          - img [ref=e1372]
+          - generic [ref=e1376]: Keine aktiven Handwerker-Auftraege
+          - paragraph [ref=e1377]: Diesem Demo-Handwerker sind keine aktiven Auftraege zugewiesen. Lade Mock-Daten im Adminbereich neu, um Auftraege wiederherzustellen.
+          - link "Demo-Daten-Admin oeffnen" [ref=e1378] [cursor=pointer]:
+            - /url: /admin/demo-data
+            - img [ref=e1379]
+            - text: Demo-Daten-Admin oeffnen

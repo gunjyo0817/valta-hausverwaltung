@@ -1,0 +1,268 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - button "Open menu" [active] [ref=e5]:
+        - img [ref=e6]
+      - heading "Guten Morgen, Sarah" [level=1] [ref=e8]
+      - button "Notifications" [ref=e10]:
+        - img [ref=e11]
+    - main [ref=e96]:
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e101]: Offene Tickets
+              - img [ref=e102]
+            - generic [ref=e105]: "7"
+            - generic [ref=e106]:
+              - img [ref=e107]
+              - text: +3 heute
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e112]: Ø Reaktionszeit
+              - img [ref=e113]
+            - generic [ref=e116]: 14 Min.
+            - generic [ref=e117]:
+              - img [ref=e118]
+              - text: −38% MoM
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: AI-Vorschläge übernommen
+              - img [ref=e124]
+            - generic [ref=e127]: "11"
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - text: diese Woche
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic [ref=e134]: Kritische Fälle
+              - img [ref=e135]
+            - generic [ref=e137]: "3"
+            - generic [ref=e138]:
+              - img [ref=e139]
+              - text: Sofort prüfen
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]: Wartet auf Handwerker
+              - img [ref=e145]
+            - generic [ref=e147]: "2"
+            - generic [ref=e148]:
+              - img [ref=e149]
+              - text: 2 überfällig
+        - generic [ref=e152]:
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - heading "Aktive Tickets" [level=2] [ref=e156]
+                - paragraph [ref=e157]: Sortiert nach Dringlichkeit – Copilot triagiert in Echtzeit.
+              - link "Inbox öffnen" [ref=e158] [cursor=pointer]:
+                - /url: /inbox
+                - text: Inbox öffnen
+                - img [ref=e159]
+            - list [ref=e161]:
+              - listitem [ref=e162]:
+                - link "VLT-2050 Mittel AI · 0% Regression test issue in the kitchen sink. Anna Becker · — · Lindenstraße 22" [ref=e163] [cursor=pointer]:
+                  - /url: /ticket/VLT-2050
+                  - img [ref=e165]
+                  - generic [ref=e167]:
+                    - generic [ref=e168]:
+                      - generic [ref=e169]: VLT-2050
+                      - generic [ref=e170]: Mittel
+                      - generic [ref=e171]:
+                        - img [ref=e172]
+                        - text: AI · 0%
+                    - generic [ref=e175]: Regression test issue in the kitchen sink.
+                    - generic [ref=e176]: Anna Becker · — · Lindenstraße 22
+                  - img [ref=e177]
+              - listitem [ref=e180]:
+                - link "VLT-2041 Kritisch AI · 96% Heizung komplett ausgefallen Anna Becker · WE 14, 3. OG · Lindenstraße 22, Berlin" [ref=e181] [cursor=pointer]:
+                  - /url: /ticket/VLT-2041
+                  - img [ref=e183]
+                  - generic [ref=e185]:
+                    - generic [ref=e186]:
+                      - generic [ref=e187]: VLT-2041
+                      - generic [ref=e188]: Kritisch
+                      - generic [ref=e189]:
+                        - img [ref=e190]
+                        - text: AI · 96%
+                    - generic [ref=e193]: Heizung komplett ausgefallen
+                    - generic [ref=e194]: Anna Becker · WE 14, 3. OG · Lindenstraße 22, Berlin
+                  - img [ref=e195]
+              - listitem [ref=e198]:
+                - link "VLT-2039 Hoch AI · 89% Wasserschaden Küche Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München" [ref=e199] [cursor=pointer]:
+                  - /url: /ticket/VLT-2039
+                  - img [ref=e201]
+                  - generic [ref=e203]:
+                    - generic [ref=e204]:
+                      - generic [ref=e205]: VLT-2039
+                      - generic [ref=e206]: Hoch
+                      - generic [ref=e207]:
+                        - img [ref=e208]
+                        - text: AI · 89%
+                    - generic [ref=e211]: Wasserschaden Küche
+                    - generic [ref=e212]: Mehmet Yilmaz · WE 4, EG · Goethestraße 8, München
+                  - img [ref=e213]
+              - listitem [ref=e216]:
+                - link "VLT-2037 Hoch AI · 92% Aufzug außer Betrieb Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg" [ref=e217] [cursor=pointer]:
+                  - /url: /ticket/VLT-2037
+                  - img [ref=e219]
+                  - generic [ref=e221]:
+                    - generic [ref=e222]:
+                      - generic [ref=e223]: VLT-2037
+                      - generic [ref=e224]: Hoch
+                      - generic [ref=e225]:
+                        - img [ref=e226]
+                        - text: AI · 92%
+                    - generic [ref=e229]: Aufzug außer Betrieb
+                    - generic [ref=e230]: Sophia Klein · WE 22, 6. OG · Parkallee 110, Hamburg
+                  - img [ref=e231]
+              - listitem [ref=e234]:
+                - link "VLT-2034 Mittel AI · 74% Internetausfall im gesamten Haus Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln" [ref=e235] [cursor=pointer]:
+                  - /url: /ticket/VLT-2034
+                  - img [ref=e237]
+                  - generic [ref=e239]:
+                    - generic [ref=e240]:
+                      - generic [ref=e241]: VLT-2034
+                      - generic [ref=e242]: Mittel
+                      - generic [ref=e243]:
+                        - img [ref=e244]
+                        - text: AI · 74%
+                    - generic [ref=e247]: Internetausfall im gesamten Haus
+                    - generic [ref=e248]: Lukas Wagner · WE 9, 2. OG · Hauptstraße 5, Köln
+                  - img [ref=e249]
+              - listitem [ref=e252]:
+                - link "VLT-2030 Mittel AI · 81% Schimmel im Schlafzimmer Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig" [ref=e253] [cursor=pointer]:
+                  - /url: /ticket/VLT-2030
+                  - img [ref=e255]
+                  - generic [ref=e257]:
+                    - generic [ref=e258]:
+                      - generic [ref=e259]: VLT-2030
+                      - generic [ref=e260]: Mittel
+                      - generic [ref=e261]:
+                        - img [ref=e262]
+                        - text: AI · 81%
+                    - generic [ref=e265]: Schimmel im Schlafzimmer
+                    - generic [ref=e266]: Clara Hoffmann · WE 7, 1. OG · Rosenweg 3, Leipzig
+                  - img [ref=e267]
+              - listitem [ref=e270]:
+                - link "VLT-2022 Niedrig AI · 84% Steckdose im Bad funktioniert nicht Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt" [ref=e271] [cursor=pointer]:
+                  - /url: /ticket/VLT-2022
+                  - img [ref=e273]
+                  - generic [ref=e275]:
+                    - generic [ref=e276]:
+                      - generic [ref=e277]: VLT-2022
+                      - generic [ref=e278]: Niedrig
+                      - generic [ref=e279]:
+                        - img [ref=e280]
+                        - text: AI · 84%
+                    - generic [ref=e283]: Steckdose im Bad funktioniert nicht
+                    - generic [ref=e284]: Elena Fischer · WE 3, 1. OG · Frankfurter Allee 88, Frankfurt
+                  - img [ref=e285]
+          - generic [ref=e288]:
+            - generic [ref=e289]:
+              - generic [ref=e290]:
+                - img [ref=e291]
+                - heading "AI Assistant · Aktivität" [level=2] [ref=e294]
+              - list [ref=e295]:
+                - listitem [ref=e296]:
+                  - generic [ref=e298]:
+                    - generic [ref=e299]: Ticket VLT-2041 als kritisch eingestuft (Heizungsausfall, < 5 °C).
+                    - generic [ref=e300]: vor 2 Min.
+                - listitem [ref=e301]:
+                  - generic [ref=e303]:
+                    - generic [ref=e304]: Antwortentwurf für VLT-2039 erstellt.
+                    - generic [ref=e305]: vor 8 Min.
+                - listitem [ref=e306]:
+                  - generic [ref=e308]:
+                    - generic [ref=e309]: Kontraktor 'Schulz & Söhne' für Wasserschaden vorgeschlagen.
+                    - generic [ref=e310]: vor 14 Min.
+                - listitem [ref=e311]:
+                  - generic [ref=e313]:
+                    - generic [ref=e314]: 3 doppelte Tickets zu Internetausfall zusammengeführt.
+                    - generic [ref=e315]: vor 22 Min.
+                - listitem [ref=e316]:
+                  - generic [ref=e318]:
+                    - generic [ref=e319]: Übersetzung EN → DE für 2 Anfragen.
+                    - generic [ref=e320]: vor 41 Min.
+            - generic [ref=e321]:
+              - generic [ref=e322]:
+                - img [ref=e323]
+                - heading "Benachrichtigungen" [level=2] [ref=e326]
+              - list [ref=e327]:
+                - listitem [ref=e328]:
+                  - generic [ref=e329]:
+                    - img [ref=e331]
+                    - generic [ref=e335]: Keine Benachrichtigungen
+                    - paragraph [ref=e336]: Fuer diese Rolle sind keine Benachrichtigungen vorhanden.
+                    - link "Demo-Daten-Admin oeffnen" [ref=e337] [cursor=pointer]:
+                      - /url: /admin/demo-data
+                      - img [ref=e338]
+                      - text: Demo-Daten-Admin oeffnen
+  - complementary [ref=e343]:
+    - generic [ref=e344]:
+      - generic [ref=e345]: V
+      - generic [ref=e346]:
+        - generic [ref=e347]: Valta
+        - generic [ref=e348]: Operations Copilot
+      - button "Close menu" [ref=e349]:
+        - img [ref=e350]
+    - generic [ref=e354]:
+      - generic [ref=e355]: KR
+      - generic [ref=e356]:
+        - generic [ref=e357]: Eigentümer-Sicht
+        - generic [ref=e358]: Dr. Karl Reichmann
+    - generic [ref=e359]: Eigentümer-Sicht
+    - navigation [ref=e360]:
+      - link "Objekte" [ref=e361] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e362]
+        - generic [ref=e365]: Objekte
+      - link "Offene Fälle" [ref=e366] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e367]
+        - generic [ref=e369]: Offene Fälle
+      - link "Finanzübersicht" [ref=e370] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e371]
+        - generic [ref=e374]: Finanzübersicht
+      - link "Freigaben" [ref=e375] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e376]
+        - generic [ref=e379]: Freigaben
+      - generic [ref=e380]: Demo-Modus · Rolle umschalten
+      - button "Hausverwaltung Sarah Krüger" [ref=e381]:
+        - img [ref=e383]
+        - generic [ref=e388]:
+          - generic [ref=e389]: Hausverwaltung
+          - generic [ref=e390]: Sarah Krüger
+      - button "Mieter:in Anna Becker" [ref=e391]:
+        - img [ref=e393]
+        - generic [ref=e395]:
+          - generic [ref=e396]: Mieter:in
+          - generic [ref=e397]: Anna Becker
+      - button "Handwerker Thomas Müller" [ref=e398]:
+        - img [ref=e400]
+        - generic [ref=e402]:
+          - generic [ref=e403]: Handwerker
+          - generic [ref=e404]: Thomas Müller
+      - button "Eigentümer:in Dr. Karl Reichmann" [ref=e405]:
+        - img [ref=e407]
+        - generic [ref=e410]:
+          - generic [ref=e411]: Eigentümer:in
+          - generic [ref=e412]: Dr. Karl Reichmann
+        - img [ref=e413]
+    - generic [ref=e415]:
+      - generic [ref=e416]:
+        - generic [ref=e417]: Sprache
+        - generic [ref=e418]:
+          - button "DE" [ref=e419]:
+            - img [ref=e420]
+            - text: DE
+          - button "EN" [ref=e424]
+      - link "KR Dr. Karl Reichmann Reichmann Immobilien KG" [ref=e425] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e426]: KR
+        - generic [ref=e427]:
+          - generic [ref=e428]: Dr. Karl Reichmann
+          - generic [ref=e429]: Reichmann Immobilien KG
+        - img [ref=e430]

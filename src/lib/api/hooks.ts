@@ -74,6 +74,22 @@ function withDemoRole<TInput>(input: TInput, role: Role): TInput {
   } as TInput;
 }
 
+function isTicketDto(value: unknown): value is TicketDto {
+  return Boolean(value && typeof value === "object" && "id" in value && "status" in value);
+}
+
+function updateCachedTicket(value: unknown, ticket: TicketDto) {
+  if (Array.isArray(value)) {
+    return value.map((item) => (isTicketDto(item) && item.id === ticket.id ? ticket : item));
+  }
+
+  if (isTicketDto(value) && value.id === ticket.id) {
+    return ticket;
+  }
+
+  return value;
+}
+
 export const queryKeys = {
   me: (role: string) => ["me", role] as const,
   dashboard: (role: string) => ["dashboard", role] as const,
@@ -100,9 +116,7 @@ function useTicketMutation<TInput>(mutationFn: (input: TInput) => Promise<Ticket
     mutationFn: (input) => mutationFn(withDemoRole(input, role)),
     onSuccess: async (ticket) => {
       if (ticket) {
-        queryClient.setQueriesData<TicketDto[]>({ queryKey: ["tickets"] }, (tickets) =>
-          tickets?.map((item) => (item.id === ticket.id ? ticket : item)),
-        );
+        queryClient.setQueriesData({ queryKey: ["tickets"] }, (value) => updateCachedTicket(value, ticket));
       }
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["dashboard"] }),

@@ -1,0 +1,169 @@
+- generic [ref=e464]:
+  - complementary [ref=e465]:
+    - link "V Valta Operations Copilot" [ref=e466] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e467]: V
+      - generic [ref=e468]:
+        - generic [ref=e469]: Valta
+        - generic [ref=e470]: Operations Copilot
+    - generic [ref=e472]:
+      - generic [ref=e473]: SK
+      - generic [ref=e474]:
+        - generic [ref=e475]: Hausverwaltungs-Sicht
+        - generic [ref=e476]: Sarah Krüger
+    - generic [ref=e477]: Hausverwaltung
+    - navigation [ref=e478]:
+      - link "Dashboard" [ref=e479] [cursor=pointer]:
+        - /url: /
+        - img [ref=e480]
+        - generic [ref=e485]: Dashboard
+      - link "Operations Inbox" [ref=e486] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e487]
+        - generic [ref=e490]: Operations Inbox
+      - link "AI Insights" [ref=e491] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e492]
+        - generic [ref=e494]: AI Insights
+      - link "Objekte" [ref=e495] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e496]
+        - generic [ref=e500]: Objekte
+      - link "Handwerker" [ref=e501] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e502]
+        - generic [ref=e507]: Handwerker
+    - generic [ref=e508]:
+      - generic [ref=e509]:
+        - generic [ref=e510]:
+          - img [ref=e511]
+          - text: AI Copilot
+        - paragraph [ref=e514]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e515] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e516]: SK
+        - generic [ref=e517]:
+          - generic [ref=e518]: Sarah Krüger
+          - generic [ref=e519]: Hausverwaltung Berlin GmbH
+        - img [ref=e520]
+  - generic [ref=e523]:
+    - banner [ref=e524]:
+      - generic [ref=e525]:
+        - heading "Müller Heizung GmbH" [level=1] [ref=e526]
+        - paragraph [ref=e527]: Heizungsnotdienst
+      - generic [ref=e528]:
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e530]':
+          - generic [ref=e531]: "Aktuelle Sicht:"
+          - generic [ref=e532]: Hausverwaltung
+          - img [ref=e533]
+        - generic [ref=e535]:
+          - button "DE" [ref=e536]:
+            - img [ref=e537]
+            - text: DE
+          - button "EN" [ref=e541]
+        - button "Notifications" [ref=e542]:
+          - img [ref=e543]
+          - generic [ref=e546]: "4"
+        - button "Neues Ticket" [ref=e547]:
+          - img [ref=e548]
+          - text: Neues Ticket
+    - main [ref=e549]:
+      - generic [ref=e550]:
+        - generic [ref=e551]:
+          - link "Zurück zu Handwerkern" [ref=e552] [cursor=pointer]:
+            - /url: /contractors
+            - img [ref=e553]
+            - text: Zurück zu Handwerkern
+          - img [ref=e555]
+          - generic [ref=e557]: Müller Heizung GmbH
+        - generic [ref=e558]:
+          - generic [ref=e559]:
+            - generic [ref=e560]:
+              - generic [ref=e561]:
+                - img [ref=e563]
+                - generic [ref=e565]:
+                  - generic [ref=e566]:
+                    - heading "Müller Heizung GmbH" [level=2] [ref=e567]
+                    - generic [ref=e568]:
+                      - img [ref=e569]
+                      - text: Bevorzugter Partner
+                  - generic [ref=e572]: Heizungsnotdienst
+                  - generic [ref=e573]:
+                    - generic [ref=e574]:
+                      - img [ref=e575]
+                      - text: 4.9 (312)
+                    - generic [ref=e577]: ·
+                    - generic [ref=e578]:
+                      - img [ref=e579]
+                      - text: Berlin
+                    - generic [ref=e582]: ·
+                    - generic [ref=e583]: Verfügbar · ETA 2Std.
+              - generic [ref=e584]:
+                - generic [ref=e585]:
+                  - generic [ref=e586]: Aktive Aufträge
+                  - generic [ref=e587]: "1"
+                - generic [ref=e588]:
+                  - generic [ref=e589]: Erledigte Aufträge
+                  - generic [ref=e590]: "0"
+                - generic [ref=e591]:
+                  - generic [ref=e592]: Ø Bearbeitungszeit
+                  - generic [ref=e593]: 6 Std.
+                - generic [ref=e594]:
+                  - generic [ref=e595]: Zuverlässigkeit
+                  - generic [ref=e596]: 97%
+              - generic [ref=e597]:
+                - generic [ref=e598]:
+                  - img [ref=e599]
+                  - text: AI-Empfehlung
+                - paragraph [ref=e602]: Beste Reaktionszeit (Ø 2 Std.) für Heizungs-Notfälle in Berlin, 184 abgeschlossene Aufträge ohne Eskalation.
+            - generic [ref=e603]:
+              - generic [ref=e604]:
+                - img [ref=e605]
+                - heading "Aktive Aufträge" [level=3] [ref=e608]
+              - list [ref=e609]:
+                - listitem [ref=e610]:
+                  - link "VLT-2041 Kritisch Heizung komplett ausgefallen Lindenstraße 22, Berlin Neu" [ref=e611] [cursor=pointer]:
+                    - /url: /ticket/VLT-2041
+                    - img [ref=e613]
+                    - generic [ref=e615]:
+                      - generic [ref=e616]:
+                        - generic [ref=e617]: VLT-2041
+                        - generic [ref=e618]: Kritisch
+                      - generic [ref=e619]: Heizung komplett ausgefallen
+                      - generic [ref=e620]: Lindenstraße 22, Berlin
+                    - generic [ref=e621]: Neu
+                    - img [ref=e623]
+            - generic [ref=e626]:
+              - generic [ref=e627]:
+                - img [ref=e628]
+                - heading "Erledigte Aufträge" [level=3] [ref=e631]
+              - list [ref=e632]:
+                - listitem [ref=e633]: Noch keine abgeschlossenen Aufträge.
+          - complementary [ref=e634]:
+            - generic [ref=e635]:
+              - heading "Kontaktdaten" [level=3] [ref=e636]
+              - list [ref=e637]:
+                - listitem [ref=e638]:
+                  - img [ref=e639]
+                  - generic [ref=e641]: +49 30 555 1110
+                - listitem [ref=e642]:
+                  - img [ref=e643]
+                  - generic [ref=e646]: dispatch@mueller-heizung.de
+                - listitem [ref=e647]:
+                  - img [ref=e648]
+                  - generic [ref=e651]: Berlin
+              - generic [ref=e652]:
+                - link "Anrufen" [ref=e653] [cursor=pointer]:
+                  - /url: tel:+49 30 555 1110
+                  - img [ref=e654]
+                  - text: Anrufen
+                - link "E-Mail" [ref=e656] [cursor=pointer]:
+                  - /url: mailto:dispatch@mueller-heizung.de
+                  - img [ref=e657]
+                  - text: E-Mail
+            - generic [ref=e660]:
+              - heading "Einsatzgebiet" [level=3] [ref=e661]
+              - generic [ref=e662]:
+                - generic [ref=e663]: Berlin
+                - generic [ref=e664]: Potsdam
+              - generic [ref=e665]: Valta priorisiert diesen Partner basierend auf Reaktionszeit, Bewertung und früheren Aufträgen in dieser Region.

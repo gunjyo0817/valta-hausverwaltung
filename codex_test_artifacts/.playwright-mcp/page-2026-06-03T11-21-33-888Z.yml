@@ -1,0 +1,261 @@
+- generic [ref=e1178]:
+  - complementary [ref=e1179]:
+    - link "V Valta Operations Copilot" [ref=e1180] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e1181]: V
+      - generic [ref=e1182]:
+        - generic [ref=e1183]: Valta
+        - generic [ref=e1184]: Operations Copilot
+    - generic [ref=e1186]:
+      - generic [ref=e1187]: SK
+      - generic [ref=e1188]:
+        - generic [ref=e1189]: Hausverwaltungs-Sicht
+        - generic [ref=e1190]: Sarah Krüger
+    - generic [ref=e1191]: Hausverwaltung
+    - navigation [ref=e1192]:
+      - link "Dashboard" [ref=e1193] [cursor=pointer]:
+        - /url: /
+        - img [ref=e1194]
+        - generic [ref=e1199]: Dashboard
+      - link "Operations Inbox" [ref=e1200] [cursor=pointer]:
+        - /url: /inbox
+        - img [ref=e1201]
+        - generic [ref=e1204]: Operations Inbox
+      - link "AI Insights" [ref=e1205] [cursor=pointer]:
+        - /url: /insights
+        - img [ref=e1206]
+        - generic [ref=e1208]: AI Insights
+      - link "Objekte" [ref=e1209] [cursor=pointer]:
+        - /url: /properties
+        - img [ref=e1210]
+        - generic [ref=e1214]: Objekte
+      - link "Handwerker" [ref=e1215] [cursor=pointer]:
+        - /url: /contractors
+        - img [ref=e1216]
+        - generic [ref=e1221]: Handwerker
+    - generic [ref=e1222]:
+      - generic [ref=e1223]:
+        - generic [ref=e1224]:
+          - img [ref=e1225]
+          - text: AI Copilot
+        - paragraph [ref=e1228]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "SK Sarah Krüger Hausverwaltung Berlin GmbH" [ref=e1229] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1230]: SK
+        - generic [ref=e1231]:
+          - generic [ref=e1232]: Sarah Krüger
+          - generic [ref=e1233]: Hausverwaltung Berlin GmbH
+        - img [ref=e1234]
+  - generic [ref=e1237]:
+    - banner [ref=e1238]:
+      - generic [ref=e1239]:
+        - heading "Objekte" [level=1] [ref=e1240]
+        - paragraph [ref=e1241]: Ihr Portfolio im Überblick · 6 Objekte
+      - generic [ref=e1242]:
+        - generic [ref=e1243]:
+          - img [ref=e1244]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e1247]
+          - generic [ref=e1248]: ⌘K
+        - 'button "Aktuelle Sicht: Hausverwaltung" [ref=e1250]':
+          - generic [ref=e1251]: "Aktuelle Sicht:"
+          - generic [ref=e1252]: Hausverwaltung
+          - img [ref=e1253]
+        - generic [ref=e1255]:
+          - button "DE" [ref=e1256]:
+            - img [ref=e1257]
+            - text: DE
+          - button "EN" [ref=e1261]
+        - button "Notifications" [ref=e1262]:
+          - img [ref=e1263]
+          - generic [ref=e1266]: "7"
+        - button "Neues Ticket" [ref=e1267]:
+          - img [ref=e1268]
+          - text: Neues Ticket
+    - main [ref=e1269]:
+      - generic [ref=e1270]:
+        - generic [ref=e1271]:
+          - generic [ref=e1272]:
+            - img [ref=e1273]
+            - textbox "Objekte durchsuchen…" [ref=e1276]
+          - generic [ref=e1277]:
+            - img [ref=e1278]
+            - combobox [ref=e1280]:
+              - option "Alle · Status" [selected]
+              - option "Stabil"
+              - option "Beobachten"
+              - option "Dringend"
+            - combobox [ref=e1281]:
+              - option "Alle · Stadt" [selected]
+              - option "Frankfurt"
+              - option "München"
+              - option "Köln"
+              - option "Berlin"
+              - option "Hamburg"
+              - option "Leipzig"
+        - generic [ref=e1282]:
+          - 'link "Frankfurter Allee 88 Frankfurter Allee 88, 60313 Frankfurt Beobachten Einheiten 36 Offene Tickets 1 Ø Reaktion 10 Min. Verwalter:in: Yasemin Aydın" [ref=e1283] [cursor=pointer]':
+            - /url: /properties/p-frankfurter-88
+            - generic [ref=e1284]:
+              - img [ref=e1286]
+              - generic [ref=e1290]:
+                - generic [ref=e1291]:
+                  - heading "Frankfurter Allee 88" [level=3] [ref=e1292]
+                  - img [ref=e1293]
+                - generic [ref=e1296]: Frankfurter Allee 88, 60313 Frankfurt
+              - generic [ref=e1299]: Beobachten
+            - generic [ref=e1301]:
+              - generic [ref=e1302]:
+                - generic [ref=e1303]:
+                  - img [ref=e1304]
+                  - text: Einheiten
+                - generic [ref=e1309]: "36"
+              - generic [ref=e1310]:
+                - generic [ref=e1311]:
+                  - img [ref=e1312]
+                  - text: Offene Tickets
+                - generic [ref=e1314]: "1"
+              - generic [ref=e1315]:
+                - generic [ref=e1316]:
+                  - img [ref=e1317]
+                  - text: Ø Reaktion
+                - generic [ref=e1320]: 10 Min.
+            - generic [ref=e1322]: "Verwalter:in: Yasemin Aydın"
+          - 'link "Goethestraße 8 Goethestraße 8, 80336 München Beobachten Einheiten 14 Offene Tickets 1 Ø Reaktion 9 Min. Verwalter:in: Sarah Krüger" [ref=e1323] [cursor=pointer]':
+            - /url: /properties/p-goethestr-8
+            - generic [ref=e1324]:
+              - img [ref=e1326]
+              - generic [ref=e1330]:
+                - generic [ref=e1331]:
+                  - heading "Goethestraße 8" [level=3] [ref=e1332]
+                  - img [ref=e1333]
+                - generic [ref=e1336]: Goethestraße 8, 80336 München
+              - generic [ref=e1339]: Beobachten
+            - generic [ref=e1341]:
+              - generic [ref=e1342]:
+                - generic [ref=e1343]:
+                  - img [ref=e1344]
+                  - text: Einheiten
+                - generic [ref=e1349]: "14"
+              - generic [ref=e1350]:
+                - generic [ref=e1351]:
+                  - img [ref=e1352]
+                  - text: Offene Tickets
+                - generic [ref=e1354]: "1"
+              - generic [ref=e1355]:
+                - generic [ref=e1356]:
+                  - img [ref=e1357]
+                  - text: Ø Reaktion
+                - generic [ref=e1360]: 9 Min.
+            - generic [ref=e1362]: "Verwalter:in: Sarah Krüger"
+          - 'link "Hauptstraße 5 Hauptstraße 5, 50667 Köln Beobachten Einheiten 18 Offene Tickets 1 Ø Reaktion 18 Min. Verwalter:in: Tobias Lang" [ref=e1363] [cursor=pointer]':
+            - /url: /properties/p-hauptstr-5
+            - generic [ref=e1364]:
+              - img [ref=e1366]
+              - generic [ref=e1370]:
+                - generic [ref=e1371]:
+                  - heading "Hauptstraße 5" [level=3] [ref=e1372]
+                  - img [ref=e1373]
+                - generic [ref=e1376]:
+                  - img [ref=e1377]
+                  - text: Hauptstraße 5, 50667 Köln
+              - generic [ref=e1380]: Beobachten
+            - generic [ref=e1382]:
+              - generic [ref=e1383]:
+                - generic [ref=e1384]:
+                  - img [ref=e1385]
+                  - text: Einheiten
+                - generic [ref=e1390]: "18"
+              - generic [ref=e1391]:
+                - generic [ref=e1392]:
+                  - img [ref=e1393]
+                  - text: Offene Tickets
+                - generic [ref=e1395]: "1"
+              - generic [ref=e1396]:
+                - generic [ref=e1397]:
+                  - img [ref=e1398]
+                  - text: Ø Reaktion
+                - generic [ref=e1401]: 18 Min.
+            - generic [ref=e1403]: "Verwalter:in: Tobias Lang"
+          - 'link "Lindenstraße 22 Lindenstraße 22, 10969 Berlin Beobachten Einheiten 28 Offene Tickets 1 Ø Reaktion 11 Min. Verwalter:in: Sarah Krüger" [ref=e1404] [cursor=pointer]':
+            - /url: /properties/p-lindenstr-22
+            - generic [ref=e1405]:
+              - img [ref=e1407]
+              - generic [ref=e1411]:
+                - generic [ref=e1412]:
+                  - heading "Lindenstraße 22" [level=3] [ref=e1413]
+                  - img [ref=e1414]
+                - generic [ref=e1417]: Lindenstraße 22, 10969 Berlin
+              - generic [ref=e1420]: Beobachten
+            - generic [ref=e1422]:
+              - generic [ref=e1423]:
+                - generic [ref=e1424]:
+                  - img [ref=e1425]
+                  - text: Einheiten
+                - generic [ref=e1430]: "28"
+              - generic [ref=e1431]:
+                - generic [ref=e1432]:
+                  - img [ref=e1433]
+                  - text: Offene Tickets
+                - generic [ref=e1435]: "1"
+              - generic [ref=e1436]:
+                - generic [ref=e1437]:
+                  - img [ref=e1438]
+                  - text: Ø Reaktion
+                - generic [ref=e1441]: 11 Min.
+            - generic [ref=e1443]: "Verwalter:in: Sarah Krüger"
+          - 'link "Parkallee 110 Parkallee 110, 20144 Hamburg Beobachten Einheiten 42 Offene Tickets 1 Ø Reaktion 14 Min. Verwalter:in: Tobias Lang" [ref=e1444] [cursor=pointer]':
+            - /url: /properties/p-parkallee-110
+            - generic [ref=e1445]:
+              - img [ref=e1447]
+              - generic [ref=e1451]:
+                - generic [ref=e1452]:
+                  - heading "Parkallee 110" [level=3] [ref=e1453]
+                  - img [ref=e1454]
+                - generic [ref=e1457]: Parkallee 110, 20144 Hamburg
+              - generic [ref=e1460]: Beobachten
+            - generic [ref=e1462]:
+              - generic [ref=e1463]:
+                - generic [ref=e1464]:
+                  - img [ref=e1465]
+                  - text: Einheiten
+                - generic [ref=e1470]: "42"
+              - generic [ref=e1471]:
+                - generic [ref=e1472]:
+                  - img [ref=e1473]
+                  - text: Offene Tickets
+                - generic [ref=e1475]: "1"
+              - generic [ref=e1476]:
+                - generic [ref=e1477]:
+                  - img [ref=e1478]
+                  - text: Ø Reaktion
+                - generic [ref=e1481]: 14 Min.
+            - generic [ref=e1483]: "Verwalter:in: Tobias Lang"
+          - 'link "Rosenweg 3 Rosenweg 3, 04109 Leipzig Beobachten Einheiten 10 Offene Tickets 1 Ø Reaktion 22 Min. Verwalter:in: Yasemin Aydın" [ref=e1484] [cursor=pointer]':
+            - /url: /properties/p-rosenweg-3
+            - generic [ref=e1485]:
+              - img [ref=e1487]
+              - generic [ref=e1491]:
+                - generic [ref=e1492]:
+                  - heading "Rosenweg 3" [level=3] [ref=e1493]
+                  - img [ref=e1494]
+                - generic [ref=e1497]:
+                  - img [ref=e1498]
+                  - text: Rosenweg 3, 04109 Leipzig
+              - generic [ref=e1501]: Beobachten
+            - generic [ref=e1503]:
+              - generic [ref=e1504]:
+                - generic [ref=e1505]:
+                  - img [ref=e1506]
+                  - text: Einheiten
+                - generic [ref=e1511]: "10"
+              - generic [ref=e1512]:
+                - generic [ref=e1513]:
+                  - img [ref=e1514]
+                  - text: Offene Tickets
+                - generic [ref=e1516]: "1"
+              - generic [ref=e1517]:
+                - generic [ref=e1518]:
+                  - img [ref=e1519]
+                  - text: Ø Reaktion
+                - generic [ref=e1522]: 22 Min.
+            - generic [ref=e1524]: "Verwalter:in: Yasemin Aydın"

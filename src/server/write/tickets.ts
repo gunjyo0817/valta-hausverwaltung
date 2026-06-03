@@ -11,6 +11,7 @@ import {
   ticketEvents,
   tickets,
 } from "@/server/db/schema";
+import { selectedDemoIdentity } from "@/server/auth/demo";
 import { getTicketById } from "@/server/read/queries";
 import { syncContractorJobCounts, syncPropertyTicketCounts } from "@/server/write/consistency";
 import { requireDemoWriteRole } from "@/server/write/authz";
@@ -128,6 +129,7 @@ async function nextTicketId() {
 
 export async function createTicket(input: CreateTicketInput) {
   const role = requireDemoWriteRole("create ticket", input.role, ["pm", "tenant"]);
+  const identity = selectedDemoIdentity({ role });
   assertAttachments(input);
 
   const ticketId = await nextTicketId();
@@ -135,20 +137,22 @@ export async function createTicket(input: CreateTicketInput) {
   const category = input.category?.trim() || (language === "EN" ? "Other" : "Sonstiges");
   const key = categoryKey(category);
   const attachmentCount = Math.max(input.photos ?? 0, input.attachments?.length ?? 0);
+  const propertyId = role === "tenant" ? identity.propertyIds?.[0] ?? input.propertyId : input.propertyId;
+  const tenantName = role === "tenant" ? identity.tenantName ?? input.tenant : input.tenant;
+  const tenantId = role === "tenant" ? identity.tenantId ?? `tenant-${slug(tenantName)}-${propertyId}` : `tenant-${slug(tenantName)}-${propertyId}`;
 
-  const [property] = await db.select().from(properties).where(eq(properties.id, input.propertyId)).limit(1);
+  const [property] = await db.select().from(properties).where(eq(properties.id, propertyId)).limit(1);
   if (!property) {
-    throw new Error(`Property not found: ${input.propertyId}`);
+    throw new Error(`Property not found: ${propertyId}`);
   }
 
   const [contractor] = input.contractor
     ? await db.select().from(contractors).where(eq(contractors.name, input.contractor)).limit(1)
     : [];
 
-  const tenantId = `tenant-${slug(input.tenant)}-${input.propertyId}`;
   const apartment = bi(input.unit?.trim() || "—", input.unit?.trim() || "—");
   const tenantSnapshot = {
-    name: input.tenant,
+    name: tenantName,
     apartment,
     building: property.name,
     phone: input.phone ?? "",
@@ -159,10 +163,10 @@ export async function createTicket(input: CreateTicketInput) {
     .insert(tenants)
     .values({
       id: tenantId,
-      userId: input.tenant === "Anna Becker" ? "demo-tenant" : null,
-      propertyId: input.propertyId,
+      userId: role === "tenant" ? identity.userId : tenantName === "Anna Becker" ? "demo-tenant" : null,
+      propertyId,
       unitId: null,
-      name: input.tenant,
+      name: tenantName,
       phone: input.phone ?? null,
       email: input.email ?? null,
       preferredLanguage: language,
@@ -182,7 +186,7 @@ export async function createTicket(input: CreateTicketInput) {
   await db.insert(tickets).values({
     id: ticketId,
     organizationId: ORG_ID,
-    propertyId: input.propertyId,
+    propertyId,
     tenantId,
     contractorId: contractor?.id ?? null,
     title: makeTitle(input),
@@ -265,7 +269,7 @@ export async function createTicket(input: CreateTicketInput) {
   if (!created) throw new Error(`Created ticket not found: ${ticketId}`);
 
   await Promise.all([
-    syncPropertyTicketCounts(input.propertyId),
+    syncPropertyTicketCounts(propertyId),
     syncContractorJobCounts(contractor?.id),
   ]);
 

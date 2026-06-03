@@ -1,0 +1,174 @@
+- generic [ref=e1041]:
+  - complementary [ref=e1042]:
+    - link "V Valta Operations Copilot" [ref=e1043] [cursor=pointer]:
+      - /url: /owner
+      - generic [ref=e1044]: V
+      - generic [ref=e1045]:
+        - generic [ref=e1046]: Valta
+        - generic [ref=e1047]: Operations Copilot
+    - generic [ref=e1049]:
+      - generic [ref=e1050]: KR
+      - generic [ref=e1051]:
+        - generic [ref=e1052]: Owner view
+        - generic [ref=e1053]: Dr. Karl Reichmann
+    - generic [ref=e1054]: Owner view
+    - navigation [ref=e1055]:
+      - link "Properties" [ref=e1056] [cursor=pointer]:
+        - /url: /owner
+        - img [ref=e1057]
+        - generic [ref=e1060]: Properties
+      - link "Open issues" [ref=e1061] [cursor=pointer]:
+        - /url: /owner/issues
+        - img [ref=e1062]
+        - generic [ref=e1064]: Open issues
+      - link "Financials" [ref=e1065] [cursor=pointer]:
+        - /url: /owner/financials
+        - img [ref=e1066]
+        - generic [ref=e1069]: Financials
+      - link "Approvals" [ref=e1070] [cursor=pointer]:
+        - /url: /owner/approvals
+        - img [ref=e1071]
+        - generic [ref=e1074]: Approvals
+    - generic [ref=e1075]:
+      - generic [ref=e1076]:
+        - generic [ref=e1077]:
+          - img [ref=e1078]
+          - text: AI Copilot
+        - paragraph [ref=e1081]: Structures requests, prioritises urgency, recommends contractors.
+      - link "KR Dr. Karl Reichmann Reichmann Real Estate" [ref=e1082] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e1083]: KR
+        - generic [ref=e1084]:
+          - generic [ref=e1085]: Dr. Karl Reichmann
+          - generic [ref=e1086]: Reichmann Real Estate
+        - img [ref=e1087]
+  - generic [ref=e1090]:
+    - banner [ref=e1091]:
+      - generic [ref=e1092]:
+        - heading "Portfolio overview" [level=1] [ref=e1093]
+        - paragraph [ref=e1094]: Transparency for owners — central KPIs and approvals.
+      - generic [ref=e1095]:
+        - generic [ref=e1096]:
+          - img [ref=e1097]
+          - textbox "Search tickets, tenants, properties, contractors…" [ref=e1100]
+          - generic [ref=e1101]: ⌘K
+        - 'button "Current view: Property Owner" [ref=e1103]':
+          - generic [ref=e1104]: "Current view:"
+          - generic [ref=e1105]: Property Owner
+          - img [ref=e1106]
+        - generic [ref=e1108]:
+          - button "DE" [ref=e1109]:
+            - img [ref=e1110]
+            - text: DE
+          - button "EN" [ref=e1114]
+        - button "Notifications" [ref=e1115]:
+          - img [ref=e1116]
+    - main [ref=e1119]:
+      - generic [ref=e1120]:
+        - generic [ref=e1121]:
+          - generic [ref=e1122]:
+            - generic [ref=e1123]:
+              - img [ref=e1125]
+              - generic [ref=e1129]: Units
+            - generic [ref=e1130]: "148"
+            - generic [ref=e1131]: 6 Properties
+          - generic [ref=e1132]:
+            - generic [ref=e1133]:
+              - img [ref=e1135]
+              - generic [ref=e1137]: Open cases
+            - generic [ref=e1138]: "6"
+            - generic [ref=e1139]: Critical
+          - generic [ref=e1140]:
+            - generic [ref=e1141]:
+              - img [ref=e1143]
+              - generic [ref=e1146]: Pending approvals
+            - generic [ref=e1147]: "3"
+            - generic [ref=e1148]: —
+          - generic [ref=e1149]:
+            - generic [ref=e1150]:
+              - img [ref=e1152]
+              - generic [ref=e1155]: Maintenance YTD
+            - generic [ref=e1156]: € 5.080
+            - generic [ref=e1157]: 8% budget
+        - generic [ref=e1159]:
+          - img [ref=e1161]
+          - generic [ref=e1164]:
+            - generic [ref=e1165]: AI portfolio summary
+            - paragraph [ref=e1166]: 3 unresolved heating cases at the Berlin property suggest aging equipment. Maintenance load in Munich down 18% MoM. Frankfurt property stable with no critical incidents.
+        - generic [ref=e1167]:
+          - generic [ref=e1168]:
+            - generic [ref=e1169]:
+              - heading "Building health" [level=3] [ref=e1170]
+              - link "Open issues" [ref=e1171] [cursor=pointer]:
+                - /url: /owner/issues
+                - text: Open issues
+                - img [ref=e1172]
+            - paragraph [ref=e1174]: AI-rated from maintenance and ticket history.
+            - generic [ref=e1175]:
+              - link "Frankfurter Allee 88 Frankfurt · 36 Units 1 Open tickets" [ref=e1176] [cursor=pointer]:
+                - /url: /properties/p-frankfurter-88
+                - generic [ref=e1178]:
+                  - generic [ref=e1179]: Frankfurter Allee 88
+                  - generic [ref=e1180]: Frankfurt · 36 Units
+                - generic [ref=e1181]: 1 Open tickets
+              - link "Goethestraße 8 München · 14 Units 1 Open tickets" [ref=e1182] [cursor=pointer]:
+                - /url: /properties/p-goethestr-8
+                - generic [ref=e1184]:
+                  - generic [ref=e1185]: Goethestraße 8
+                  - generic [ref=e1186]: München · 14 Units
+                - generic [ref=e1187]: 1 Open tickets
+              - link "Hauptstraße 5 Köln · 18 Units 1 Open tickets" [ref=e1188] [cursor=pointer]:
+                - /url: /properties/p-hauptstr-5
+                - generic [ref=e1190]:
+                  - generic [ref=e1191]: Hauptstraße 5
+                  - generic [ref=e1192]: Köln · 18 Units
+                - generic [ref=e1193]: 1 Open tickets
+              - link "Lindenstraße 22 Berlin · 28 Units 1 Open tickets" [ref=e1194] [cursor=pointer]:
+                - /url: /properties/p-lindenstr-22
+                - generic [ref=e1196]:
+                  - generic [ref=e1197]: Lindenstraße 22
+                  - generic [ref=e1198]: Berlin · 28 Units
+                - generic [ref=e1199]: 1 Open tickets
+          - generic [ref=e1200]:
+            - heading "Pending approvals" [level=3] [ref=e1201]
+            - paragraph [ref=e1202]: Property management is awaiting your decision.
+            - generic [ref=e1203]:
+              - generic [ref=e1204]:
+                - generic [ref=e1205]:
+                  - generic [ref=e1206]: Elevator maintenance - annual contract
+                  - generic [ref=e1207]: € 5.700
+                - paragraph [ref=e1208]: Renewal of maintenance contract including 24/7 emergency service.
+                - generic [ref=e1209]:
+                  - button "Approve" [ref=e1210]
+                  - button "Decline" [ref=e1211]
+              - generic [ref=e1212]:
+                - generic [ref=e1213]:
+                  - generic [ref=e1214]: Heating system - replacement
+                  - generic [ref=e1215]: € 12.400
+                - paragraph [ref=e1216]: Central heating with 3 failures in 30 days. Spare parts for this model no longer available.
+                - generic [ref=e1217]:
+                  - button "Approve" [ref=e1218]
+                  - button "Decline" [ref=e1219]
+        - generic [ref=e1220]:
+          - heading "Cost breakdown by category" [level=3] [ref=e1221]
+          - generic [ref=e1222]:
+            - generic [ref=e1223]:
+              - generic [ref=e1224]: Elevator
+              - generic [ref=e1227]: € 2.150
+              - generic [ref=e1228]: 42%
+            - generic [ref=e1229]:
+              - generic [ref=e1230]: Heating
+              - generic [ref=e1233]: € 1.240
+              - generic [ref=e1234]: 24%
+            - generic [ref=e1235]:
+              - generic [ref=e1236]: Roof & facade
+              - generic [ref=e1239]: € 890
+              - generic [ref=e1240]: 18%
+            - generic [ref=e1241]:
+              - generic [ref=e1242]: Plumbing
+              - generic [ref=e1245]: € 680
+              - generic [ref=e1246]: 13%
+            - generic [ref=e1247]:
+              - generic [ref=e1248]: Other
+              - generic [ref=e1251]: € 120
+              - generic [ref=e1252]: 2%

@@ -1,0 +1,130 @@
+- generic [ref=e620]:
+  - complementary [ref=e621]:
+    - link "V Valta Operations Copilot" [ref=e622] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e623]: V
+      - generic [ref=e624]:
+        - generic [ref=e625]: Valta
+        - generic [ref=e626]: Operations Copilot
+    - generic [ref=e628]:
+      - generic [ref=e629]: MH
+      - generic [ref=e630]:
+        - generic [ref=e631]: Handwerker-Sicht
+        - generic [ref=e632]: Thomas Müller
+    - generic [ref=e633]: Handwerker-Sicht
+    - navigation [ref=e634]:
+      - link "Aufträge" [ref=e635] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e636]
+        - generic [ref=e639]: Aufträge
+      - link "Terminplan" [ref=e640] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e641]
+        - generic [ref=e643]: Terminplan
+      - link "Nachrichten" [ref=e644] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e645]
+        - generic [ref=e647]: Nachrichten
+      - link "Erledigt" [ref=e648] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e649]
+        - generic [ref=e652]: Erledigt
+    - generic [ref=e653]:
+      - generic [ref=e654]:
+        - generic [ref=e655]:
+          - img [ref=e656]
+          - text: AI Copilot
+        - paragraph [ref=e659]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e660] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e661]: MH
+        - generic [ref=e662]:
+          - generic [ref=e663]: Thomas Müller
+          - generic [ref=e664]: Müller Heizung GmbH
+        - img [ref=e665]
+  - generic [ref=e668]:
+    - banner [ref=e669]:
+      - generic [ref=e670]:
+        - heading "Meine Aufträge" [level=1] [ref=e671]
+        - paragraph [ref=e672]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e673]:
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e675]':
+          - generic [ref=e676]: "Aktuelle Sicht:"
+          - generic [ref=e677]: Handwerker
+          - img [ref=e678]
+        - generic [ref=e680]:
+          - button "DE" [ref=e681]:
+            - img [ref=e682]
+            - text: DE
+          - button "EN" [ref=e686]
+        - button "Notifications" [ref=e687]:
+          - img [ref=e688]
+    - main [ref=e691]:
+      - generic [ref=e692]:
+        - generic [ref=e693]:
+          - generic [ref=e694]:
+            - generic [ref=e695]:
+              - img [ref=e697]
+              - generic [ref=e700]: Aktive Aufträge
+            - generic [ref=e701]: "1"
+          - generic [ref=e702]:
+            - generic [ref=e703]:
+              - img [ref=e705]
+              - generic [ref=e708]: Diese Woche fällig
+            - generic [ref=e709]: "5"
+          - generic [ref=e710]:
+            - generic [ref=e711]:
+              - img [ref=e713]
+              - generic [ref=e715]: Ø Reaktionszeit
+            - generic [ref=e716]: 2.1h
+          - generic [ref=e717]:
+            - generic [ref=e718]:
+              - img [ref=e720]
+              - generic [ref=e722]: Bewertung
+            - generic [ref=e723]: "4.9"
+        - generic [ref=e726]:
+          - generic [ref=e727]:
+            - generic [ref=e728]:
+              - generic [ref=e729]:
+                - generic [ref=e730]: VLT-2041
+                - generic [ref=e731]: Kritisch
+                - generic [ref=e732]: Handwerker vergeben
+              - heading "Heizung komplett ausgefallen" [level=3] [ref=e734]
+              - generic [ref=e735]:
+                - img [ref=e736]
+                - text: Lindenstraße 22, Berlin · WE 14, 3. OG
+            - generic [ref=e739]:
+              - generic [ref=e740]: Geplant
+              - generic [ref=e741]: Mi., 03.06. · 20:00
+          - generic [ref=e742]:
+            - generic [ref=e743]:
+              - generic [ref=e744]: Reparaturhinweise
+              - paragraph [ref=e745]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+            - generic [ref=e746]:
+              - generic [ref=e747]: Mieterkontakt
+              - generic [ref=e748]: Anna Becker
+              - generic [ref=e749]:
+                - img [ref=e750]
+                - text: +49 30 1234567
+              - generic [ref=e752]:
+                - img [ref=e753]
+                - text: 2 Fotos
+          - generic [ref=e756]:
+            - button "Auftrag annehmen" [ref=e757]:
+              - img [ref=e758]
+              - text: Auftrag annehmen
+            - button "Arbeit starten" [ref=e761]:
+              - img [ref=e762]
+              - text: Arbeit starten
+            - button "Rückfrage stellen" [ref=e764]:
+              - img [ref=e765]
+              - text: Rückfrage stellen
+            - button "Abschließen" [ref=e767]:
+              - img [ref=e768]
+              - text: Abschließen
+            - link "Route" [ref=e771] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Lindenstra%C3%9Fe%2022%2C%20Berlin
+              - img [ref=e772]
+              - text: Route
+            - link "Ticket öffnen" [ref=e775] [cursor=pointer]:
+              - /url: /ticket/VLT-2041

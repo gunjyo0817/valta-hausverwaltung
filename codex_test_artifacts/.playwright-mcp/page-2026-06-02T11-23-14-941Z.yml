@@ -1,0 +1,106 @@
+- generic [ref=e995]:
+  - banner [ref=e996]:
+    - link "V Mein Anliegen" [ref=e997] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e998]: V
+      - generic [ref=e999]: Mein Anliegen
+    - generic [ref=e1000]: Lindenstraße 22 · WE 14
+  - generic [ref=e1001]:
+    - generic [ref=e1002]:
+      - generic [ref=e1003]:
+        - img [ref=e1005]
+        - generic [ref=e1007]:
+          - generic [ref=e1008]: Vorgang VLT-2041
+          - heading "Heizung komplett ausgefallen" [level=1] [ref=e1009]
+          - paragraph [ref=e1010]: Wir kümmern uns – ein Techniker ist auf dem Weg.
+        - generic [ref=e1011]:
+          - img [ref=e1012]
+          - text: Wir kümmern uns
+      - generic [ref=e1015]:
+        - generic [ref=e1016]:
+          - generic [ref=e1017]: Beauftragter Handwerker
+          - generic [ref=e1018]: Müller Heizung GmbH
+        - generic [ref=e1019]:
+          - generic [ref=e1020]: ETA
+          - generic [ref=e1021]: 11:00 – 13:00
+        - generic [ref=e1022]:
+          - generic [ref=e1023]: Status
+          - generic [ref=e1024]: Techniker unterwegs
+    - generic [ref=e1025]:
+      - heading "Fortschritt" [level=2] [ref=e1026]
+      - list [ref=e1027]:
+        - listitem [ref=e1028]:
+          - img [ref=e1030]
+          - generic [ref=e1034]:
+            - generic [ref=e1035]:
+              - generic [ref=e1036]: Eingegangen
+              - generic [ref=e1037]:
+                - img [ref=e1038]
+                - text: AI
+            - generic [ref=e1041]: Heute, 08:42
+            - generic [ref=e1042]: Ihre Meldung wurde von Valta erfasst und strukturiert.
+        - listitem [ref=e1043]:
+          - img [ref=e1045]
+          - generic [ref=e1049]:
+            - generic [ref=e1051]: Von Hausverwaltung geprüft
+            - generic [ref=e1052]: Heute, 08:45
+            - generic [ref=e1053]: Wir haben die Angaben bestätigt und die passende Reaktion festgelegt.
+        - listitem [ref=e1054]:
+          - img [ref=e1056]
+          - generic [ref=e1060]:
+            - generic [ref=e1062]: Handwerker beauftragt
+            - generic [ref=e1063]: Heute, 09:10
+            - generic [ref=e1064]: Müller Heizung GmbH – ETA 11:00–13:00.
+        - listitem [ref=e1065]:
+          - generic [ref=e1071]:
+            - generic [ref=e1073]: Techniker unterwegs
+            - generic [ref=e1074]: ETA 11:00
+            - generic [ref=e1075]: Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft.
+        - listitem [ref=e1076]:
+          - img [ref=e1078]
+          - generic [ref=e1080]:
+            - generic [ref=e1082]: Reparatur abgeschlossen
+            - generic [ref=e1083]: geplant heute
+            - generic [ref=e1084]: Bitte bestätigen Sie nach Abschluss die Behebung.
+    - generic [ref=e1085]:
+      - generic [ref=e1086]:
+        - generic [ref=e1087]:
+          - img [ref=e1088]
+          - heading "Updates" [level=2] [ref=e1090]
+        - list [ref=e1091]:
+          - listitem [ref=e1092]:
+            - generic [ref=e1093]:
+              - generic [ref=e1094]: 09:14
+              - generic [ref=e1095]: Hausverwaltung
+            - paragraph [ref=e1096]: Müller Heizung GmbH wurde beauftragt. Voraussichtliche Ankunft 11:00–13:00.
+          - listitem [ref=e1097]:
+            - generic [ref=e1098]:
+              - generic [ref=e1099]: 08:45
+              - generic [ref=e1100]: Valta
+            - paragraph [ref=e1101]: Wir prüfen Ihre Meldung und legen die passende Reaktion fest.
+          - listitem [ref=e1102]:
+            - generic [ref=e1103]:
+              - generic [ref=e1104]: 08:42
+              - generic [ref=e1105]: Sie
+            - paragraph [ref=e1106]: Heizung ausgefallen seit gestern Abend, gesamte Wohnung kalt.
+      - generic [ref=e1107]:
+        - generic [ref=e1108]:
+          - img [ref=e1109]
+          - heading "Ihre Anhänge" [level=2] [ref=e1113]
+        - generic [ref=e1114]:
+          - img [ref=e1116]
+          - img [ref=e1121]
+          - link "+ Foto" [ref=e1125] [cursor=pointer]:
+            - /url: /tenant/tickets/VLT-2041
+        - generic [ref=e1126]:
+          - link "Hausverwaltung kontaktieren" [ref=e1127] [cursor=pointer]:
+            - /url: tel:+493012345678
+            - img [ref=e1128]
+            - text: Hausverwaltung kontaktieren
+          - button "Benachrichtigungen verwalten" [ref=e1130]:
+            - img [ref=e1131]
+            - text: Benachrichtigungen verwalten
+    - generic [ref=e1134]:
+      - link "Weiteres Anliegen melden" [ref=e1135] [cursor=pointer]:
+        - /url: /intake
+      - text: · powered by Valta

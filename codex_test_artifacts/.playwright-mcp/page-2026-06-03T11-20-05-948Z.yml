@@ -1,0 +1,116 @@
+- generic [ref=e260]:
+  - complementary [ref=e261]:
+    - link "V Valta Operations Copilot" [ref=e262] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e263]: V
+      - generic [ref=e264]:
+        - generic [ref=e265]: Valta
+        - generic [ref=e266]: Operations Copilot
+    - generic [ref=e268]:
+      - generic [ref=e269]: MH
+      - generic [ref=e270]:
+        - generic [ref=e271]: Handwerker-Sicht
+        - generic [ref=e272]: Thomas Müller
+    - generic [ref=e273]: Handwerker-Sicht
+    - navigation [ref=e274]:
+      - link "Aufträge" [ref=e275] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e276]
+        - generic [ref=e279]: Aufträge
+      - link "Terminplan" [ref=e280] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e281]
+        - generic [ref=e283]: Terminplan
+      - link "Nachrichten" [ref=e284] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e285]
+        - generic [ref=e287]: Nachrichten
+      - link "Erledigt" [ref=e288] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e289]
+        - generic [ref=e292]: Erledigt
+    - generic [ref=e293]:
+      - generic [ref=e294]:
+        - generic [ref=e295]:
+          - img [ref=e296]
+          - text: AI Copilot
+        - paragraph [ref=e299]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e300] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e301]: MH
+        - generic [ref=e302]:
+          - generic [ref=e303]: Thomas Müller
+          - generic [ref=e304]: Müller Heizung GmbH
+        - img [ref=e305]
+  - generic [ref=e308]:
+    - banner [ref=e309]:
+      - generic [ref=e310]:
+        - heading "Abgeschlossene Aufträge" [level=1] [ref=e311]
+        - paragraph [ref=e312]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e313]:
+        - generic [ref=e314]:
+          - img [ref=e315]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e318]
+          - generic [ref=e319]: ⌘K
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e321]':
+          - generic [ref=e322]: "Aktuelle Sicht:"
+          - generic [ref=e323]: Handwerker
+          - img [ref=e324]
+        - generic [ref=e326]:
+          - button "DE" [ref=e327]:
+            - img [ref=e328]
+            - text: DE
+          - button "EN" [ref=e332]
+        - button "Notifications" [ref=e333]:
+          - img [ref=e334]
+    - main [ref=e337]:
+      - generic [ref=e338]:
+        - generic [ref=e339]:
+          - generic [ref=e340]:
+            - generic [ref=e341]:
+              - img [ref=e343]
+              - generic [ref=e346]: Insgesamt erledigt
+            - generic [ref=e347]: "1"
+          - generic [ref=e348]:
+            - generic [ref=e349]:
+              - img [ref=e351]
+              - generic [ref=e354]: Ø Dauer
+            - generic [ref=e355]: 1.2 h
+          - generic [ref=e356]:
+            - generic [ref=e357]:
+              - img [ref=e359]
+              - generic [ref=e361]: Ø Bewertung
+            - generic [ref=e362]: "5.0"
+          - generic [ref=e363]:
+            - generic [ref=e364]:
+              - img [ref=e366]
+              - generic [ref=e369]: Termintreue
+            - generic [ref=e370]: 100%
+        - generic [ref=e371]:
+          - generic [ref=e372]:
+            - generic [ref=e373]: ID
+            - generic [ref=e374]: Reparatur
+            - generic [ref=e375]: Kategorie
+            - generic [ref=e376]: Objekt
+            - generic [ref=e377]: Dauer
+            - generic [ref=e378]: Bewertung
+            - generic [ref=e379]: Erledigt
+          - generic [ref=e380]:
+            - generic [ref=e381]: VLT-2041
+            - generic [ref=e382]:
+              - generic [ref=e383]: Heizung komplett ausgefallen
+              - generic [ref=e384]:
+                - img [ref=e385]
+                - text: Anna Becker
+            - generic [ref=e388]: Heizung
+            - generic [ref=e389]:
+              - img [ref=e390]
+              - text: Lindenstraße 22, Berlin
+            - generic [ref=e393]: 1.2 h
+            - generic [ref=e394]:
+              - img [ref=e395]
+              - img [ref=e397]
+              - img [ref=e399]
+              - img [ref=e401]
+              - img [ref=e403]
+            - generic [ref=e405]: jetzt

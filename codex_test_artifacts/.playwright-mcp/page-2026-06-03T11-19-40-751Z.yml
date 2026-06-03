@@ -1,0 +1,147 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "V Valta Operations Copilot" [ref=e4] [cursor=pointer]:
+      - /url: /contractor
+      - generic [ref=e5]: V
+      - generic [ref=e6]:
+        - generic [ref=e7]: Valta
+        - generic [ref=e8]: Operations Copilot
+    - generic [ref=e10]:
+      - generic [ref=e11]: MH
+      - generic [ref=e12]:
+        - generic [ref=e13]: Handwerker-Sicht
+        - generic [ref=e14]: Thomas Müller
+    - generic [ref=e15]: Handwerker-Sicht
+    - navigation [ref=e125]:
+      - link "Aufträge" [ref=e126] [cursor=pointer]:
+        - /url: /contractor
+        - img [ref=e127]
+        - generic [ref=e130]: Aufträge
+      - link "Terminplan" [ref=e131] [cursor=pointer]:
+        - /url: /contractor/schedule
+        - img [ref=e132]
+        - generic [ref=e134]: Terminplan
+      - link "Nachrichten" [ref=e135] [cursor=pointer]:
+        - /url: /contractor/messages
+        - img [ref=e136]
+        - generic [ref=e138]: Nachrichten
+      - link "Erledigt" [ref=e139] [cursor=pointer]:
+        - /url: /contractor/completed
+        - img [ref=e140]
+        - generic [ref=e143]: Erledigt
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e49]
+          - text: AI Copilot
+        - paragraph [ref=e52]: Strukturiert Anfragen, priorisiert Dringlichkeit und schlägt Handwerker vor.
+      - link "MH Thomas Müller Müller Heizung GmbH" [ref=e144] [cursor=pointer]:
+        - /url: /admin/demo-data
+        - generic [ref=e54]: MH
+        - generic [ref=e55]:
+          - generic [ref=e56]: Thomas Müller
+          - generic [ref=e57]: Müller Heizung GmbH
+        - img [ref=e58]
+  - generic [ref=e61]:
+    - banner [ref=e62]:
+      - generic [ref=e63]:
+        - heading "Meine Aufträge" [level=1] [ref=e64]
+        - paragraph [ref=e65]: Nur das Wesentliche – damit Sie schnell loslegen können.
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - img [ref=e68]
+          - textbox "Tickets, Mieter:innen, Objekte, Handwerker suchen…" [ref=e71]
+          - generic [ref=e72]: ⌘K
+        - 'button "Aktuelle Sicht: Handwerker" [ref=e145]':
+          - generic [ref=e75]: "Aktuelle Sicht:"
+          - generic [ref=e76]: Handwerker
+          - img [ref=e77]
+        - generic [ref=e79]:
+          - button "DE" [ref=e80]:
+            - img [ref=e81]
+            - text: DE
+          - button "EN" [ref=e85]
+        - button "Notifications" [ref=e86]:
+          - img [ref=e87]
+    - main [ref=e146]:
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - generic [ref=e149]:
+            - generic [ref=e150]:
+              - img [ref=e152]
+              - generic [ref=e155]: Aktive Aufträge
+            - generic [ref=e156]: "1"
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - img [ref=e160]
+              - generic [ref=e163]: Diese Woche fällig
+            - generic [ref=e164]: "5"
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - img [ref=e168]
+              - generic [ref=e170]: Ø Reaktionszeit
+            - generic [ref=e171]: 2.1h
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - img [ref=e175]
+              - generic [ref=e177]: Bewertung
+            - generic [ref=e178]: "4.9"
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - generic [ref=e185]: VLT-2041
+                - generic [ref=e186]: Kritisch
+                - generic [ref=e187]: In Bearbeitung
+              - heading "Heizung komplett ausgefallen" [level=3] [ref=e189]
+              - generic [ref=e190]:
+                - img [ref=e191]
+                - text: Lindenstraße 22, Berlin · WE 14, 3. OG
+            - generic [ref=e194]:
+              - generic [ref=e195]: Geplant
+              - generic [ref=e196]: Mi., 03.06. · 15:00
+          - generic [ref=e197]:
+            - generic [ref=e198]:
+              - generic [ref=e199]: Reparaturhinweise
+              - paragraph [ref=e200]: Mieterin meldet kompletten Heizungsausfall seit gestern Abend. Außentemperatur unter 5 °C. Betrifft die gesamte Wohnung. Hohe Dringlichkeit empfohlen.
+            - generic [ref=e201]:
+              - generic [ref=e202]: Mieterkontakt
+              - generic [ref=e203]: Anna Becker
+              - generic [ref=e204]:
+                - img [ref=e205]
+                - text: +49 30 1234567
+              - generic [ref=e207]:
+                - img [ref=e208]
+                - text: 2 Fotos
+          - generic [ref=e211]:
+            - button "Auftrag annehmen" [ref=e212]:
+              - img [ref=e213]
+              - text: Auftrag annehmen
+            - button "Arbeit starten" [ref=e216]:
+              - img [ref=e217]
+              - text: Arbeit starten
+            - button "Rückfrage stellen" [ref=e219]:
+              - img [ref=e220]
+              - text: Rückfrage stellen
+            - button "Abschließen" [ref=e222]:
+              - img [ref=e223]
+              - text: Abschließen
+            - link "Route" [ref=e226] [cursor=pointer]:
+              - /url: https://maps.google.com/?q=Lindenstra%C3%9Fe%2022%2C%20Berlin
+              - img [ref=e227]
+              - text: Route
+            - link "Ticket öffnen" [ref=e230] [cursor=pointer]:
+              - /url: /ticket/VLT-2041
+          - generic [ref=e231]:
+            - generic [ref=e232]: Abschlussdetails
+            - generic [ref=e233]:
+              - textbox "Durchgefuehrte Arbeiten, Zugangshinweise oder verbleibende Beobachtungen" [ref=e234]: Heizung gestartet und Anlage entlueftet. Vorlauf wieder warm, Mieterin informiert.
+              - textbox "Optionale Rechnungs- oder Referenznummer" [ref=e235]: PW-REF-2041
+              - generic [ref=e236]:
+                - generic [ref=e237]: audit-contractor-completed.png
+                - img [ref=e238]
+            - generic [ref=e241]:
+              - button "Abbrechen" [ref=e242]
+              - button "Abschluss senden" [ref=e243]:
+                - img [ref=e244]
+                - text: Abschluss senden
