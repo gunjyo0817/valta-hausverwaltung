@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { CheckCircle2, Clock, Star, Briefcase, MapPin, User } from "lucide-react";
 import { useTickets } from "@/lib/api";
@@ -17,22 +18,12 @@ type Job = {
   rating: number;
 };
 
-const jobs: Job[] = [
-  { id: "VLT-2025", title: { DE: "Treppenhausbeleuchtung defekt", EN: "Stairwell lighting broken" }, category: { DE: "Beleuchtung", EN: "Lighting" }, property: "Lindenstraße 22, Berlin", tenant: "Jonas Richter", completedAt: { DE: "vor 3 Tagen", EN: "3 days ago" }, durationHours: 0.8, rating: 5 },
-  { id: "VLT-2019", title: { DE: "Wasserhahn tropft – Küche", EN: "Dripping tap — kitchen" }, category: { DE: "Sanitär", EN: "Plumbing" }, property: "Goethestraße 8, München", tenant: "Mehmet Yilmaz", completedAt: { DE: "vor 4 Tagen", EN: "4 days ago" }, durationHours: 1.5, rating: 5 },
-  { id: "VLT-2014", title: { DE: "Heizkörper entlüften", EN: "Bleed radiator" }, category: { DE: "Heizung", EN: "Heating" }, property: "Lindenstraße 22, Berlin", tenant: "Anna Becker", completedAt: { DE: "vor 5 Tagen", EN: "5 days ago" }, durationHours: 1.0, rating: 5 },
-  { id: "VLT-2010", title: { DE: "Siphon getauscht", EN: "Replaced siphon" }, category: { DE: "Sanitär", EN: "Plumbing" }, property: "Goethestraße 8, München", tenant: "Mehmet Yilmaz", completedAt: { DE: "vor 1 Woche", EN: "1 week ago" }, durationHours: 2.2, rating: 4 },
-  { id: "VLT-2008", title: { DE: "Thermostat ersetzt", EN: "Replaced thermostat" }, category: { DE: "Heizung", EN: "Heating" }, property: "Parkallee 110, Hamburg", tenant: "Sophia Klein", completedAt: { DE: "vor 1 Woche", EN: "1 week ago" }, durationHours: 1.2, rating: 5 },
-  { id: "VLT-1998", title: { DE: "Sicherung erneuert", EN: "Fuse replaced" }, category: { DE: "Elektrik", EN: "Electrical" }, property: "Frankfurter Allee 88, Frankfurt", tenant: "Elena Fischer", completedAt: { DE: "vor 2 Wochen", EN: "2 weeks ago" }, durationHours: 0.5, rating: 5 },
-  { id: "VLT-1986", title: { DE: "Tür Schließanlage justiert", EN: "Door lock adjusted" }, category: { DE: "Schließanlage", EN: "Locks" }, property: "Rosenweg 3, Leipzig", tenant: "Clara Hoffmann", completedAt: { DE: "vor 3 Wochen", EN: "3 weeks ago" }, durationHours: 1.0, rating: 4 },
-];
-
 function Completed() {
   const { t, lang } = useLang();
-  const { data } = useTickets();
+  const ticketsQuery = useTickets();
+  const { data } = ticketsQuery;
   const completedTickets = (data ?? []).filter((ticket) => ticket.status === "resolved");
-  const displayJobs: Job[] = completedTickets.length > 0
-    ? completedTickets.map((ticket) => ({
+  const displayJobs: Job[] = completedTickets.map((ticket) => ({
         id: ticket.id,
         title: ticket.title,
         category: ticket.category,
@@ -41,17 +32,22 @@ function Completed() {
         completedAt: { DE: "jetzt", EN: "now" },
         durationHours: 1.2,
         rating: 5,
-      }))
-    : jobs;
+      }));
 
   const total = displayJobs.length;
-  const avgHours = (displayJobs.reduce((s, j) => s + j.durationHours, 0) / total).toFixed(1);
-  const avgRating = (displayJobs.reduce((s, j) => s + j.rating, 0) / total).toFixed(1);
-  const onTime = Math.round((displayJobs.filter((j) => j.rating >= 4).length / total) * 100);
+  const avgHours = total === 0 ? "0.0" : (displayJobs.reduce((s, j) => s + j.durationHours, 0) / total).toFixed(1);
+  const avgRating = total === 0 ? "0.0" : (displayJobs.reduce((s, j) => s + j.rating, 0) / total).toFixed(1);
+  const onTime = total === 0 ? 0 : Math.round((displayJobs.filter((j) => j.rating >= 4).length / total) * 100);
 
   return (
     <AppShell title={t("cdash.completed_title")} subtitle={t("cdash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
+        {ticketsQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Completed jobs could not be loaded" : "Abgeschlossene Auftraege konnten nicht geladen werden"}
+            description={lang === "EN" ? "The backend request failed. This is different from an empty demo database." : "Die Backend-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        )}
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
@@ -99,6 +95,14 @@ function Completed() {
               <div className="col-span-1 text-right text-[11px] text-muted-foreground">{j.completedAt[lang]}</div>
             </div>
           ))}
+          {displayJobs.length === 0 && !ticketsQuery.isLoading && (
+            <div className="p-8">
+              <EmptyDataState
+                title={lang === "EN" ? "No completed jobs" : "Keine abgeschlossenen Auftraege"}
+                description={lang === "EN" ? "There are no resolved ticket records for this contractor. Reload mock data from the admin page to restore completed jobs." : "Es gibt keine erledigten Ticket-Datensaetze fuer diesen Handwerker. Lade Mock-Daten im Adminbereich neu, um abgeschlossene Auftraege wiederherzustellen."}
+              />
+            </div>
+          )}
         </div>
       </div>
     </AppShell>

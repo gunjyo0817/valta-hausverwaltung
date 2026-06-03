@@ -28,6 +28,7 @@ import { properties } from "@/lib/properties";
 import { allContractors } from "@/lib/contractors";
 import { StatusBadge, UrgencyBadge, AIBadge } from "./Badges";
 import type { Urgency } from "@/lib/mockData";
+import { demoUploadErrorMessage, demoUploadFiles, formatDemoFileSize, type DemoUploadedFile } from "@/lib/demoUpload";
 
 type Mode = "choose" | "ai" | "manual" | "success";
 
@@ -94,7 +95,8 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzed, setAnalyzed] = useState(false);
   const [draft, setDraft] = useState<Draft>(emptyDraft());
-  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [photoFiles, setPhotoFiles] = useState<DemoUploadedFile[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [ticketId, setTicketId] = useState("");
   const createTicketMutation = useCreateTicket();
   const structureIntakeMutation = useStructureIntake();
@@ -109,6 +111,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
         setAnalyzed(false);
         setDraft(emptyDraft());
         setPhotoFiles([]);
+        setUploadError(null);
         setTicketId("");
       }, 200);
     }
@@ -167,7 +170,8 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
         photos: photoFiles.length,
         attachments: photoFiles.map((file) => ({
           name: file.name,
-          type: file.type || "image",
+          type: file.type,
+          url: file.url,
         })),
         language: lang,
       },
@@ -223,7 +227,7 @@ export function NewTicketModal({ open, onClose }: { open: boolean; onClose: () =
               loadSample={() => setRaw(lang === "DE" ? SAMPLE_EMAIL_DE : SAMPLE_EMAIL_EN)}
             />
           )}
-          {mode === "manual" && <ManualStep draft={draft} setDraft={setDraft} photoFiles={photoFiles} setPhotoFiles={setPhotoFiles} T={T} />}
+          {mode === "manual" && <ManualStep draft={draft} setDraft={setDraft} photoFiles={photoFiles} setPhotoFiles={setPhotoFiles} uploadError={uploadError} setUploadError={setUploadError} T={T} lang={lang} />}
           {mode === "success" && <SuccessStep ticketId={ticketId} draft={draft} T={T} />}
         </div>
 
@@ -475,14 +479,30 @@ function ManualStep({
   setDraft,
   photoFiles,
   setPhotoFiles,
+  uploadError,
+  setUploadError,
   T,
+  lang,
 }: {
   draft: Draft;
   setDraft: (d: Draft) => void;
-  photoFiles: File[];
-  setPhotoFiles: (files: File[]) => void;
+  photoFiles: DemoUploadedFile[];
+  setPhotoFiles: (files: DemoUploadedFile[]) => void;
+  uploadError: string | null;
+  setUploadError: (error: string | null) => void;
   T: (de: string, en: string) => string;
+  lang: "DE" | "EN";
 }) {
+  const addPhotoFiles = async (files: FileList | null) => {
+    setUploadError(null);
+    try {
+      const uploaded = await demoUploadFiles(files, { kind: "image", maxFiles: 5 });
+      setPhotoFiles(uploaded);
+    } catch (error) {
+      setUploadError(demoUploadErrorMessage(error, lang));
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -534,20 +554,34 @@ function ManualStep({
 
       <div>
         <label className="text-[11px] font-medium text-muted-foreground flex items-center gap-1"><Camera className="h-3 w-3" /> {T("Fotos", "Photos")}</label>
+        {uploadError && <div className="mt-1 rounded-md border border-destructive/30 bg-destructive/5 px-2.5 py-2 text-xs text-destructive">{uploadError}</div>}
         <label className="mt-1 border border-dashed border-border rounded-lg p-4 flex flex-col items-center justify-center text-center bg-surface/40 hover:bg-surface transition cursor-pointer">
           <input
             type="file"
             accept="image/*"
             multiple
             className="hidden"
-            onChange={(event) => setPhotoFiles(Array.from(event.target.files ?? []))}
+            onChange={(event) => void addPhotoFiles(event.target.files)}
           />
           <Upload className="h-4 w-4 text-muted-foreground mb-1.5" />
           <span className="text-xs text-muted-foreground">
             {photoFiles.length > 0 ? `${photoFiles.length} ${T("Foto(s) ausgewählt", "photo(s) selected")}` : T("Fotos hierher ziehen oder klicken zum Auswählen", "Drag photos here or click to select")}
           </span>
-          <span className="text-[10px] text-muted-foreground mt-0.5">PNG · JPG · HEIC · {T("max. 10 MB", "max. 10 MB")}</span>
+          <span className="text-[10px] text-muted-foreground mt-0.5">PNG · JPG · HEIC · {T("max. 5 MB", "max. 5 MB")}</span>
         </label>
+        {photoFiles.length > 0 && (
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {photoFiles.map((file) => (
+              <div key={file.name} className="flex items-center gap-2 rounded-md border border-border bg-card p-2 text-xs">
+                <img src={file.url} alt={file.name} className="h-10 w-10 rounded object-cover" />
+                <div className="min-w-0">
+                  <div className="truncate font-medium">{file.name}</div>
+                  <div className="text-[10px] text-muted-foreground">{formatDemoFileSize(file.size)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

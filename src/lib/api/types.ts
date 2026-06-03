@@ -52,6 +52,19 @@ export type PropertyDocumentDto = {
 
 export type TicketAttachmentDto = PropertyDocumentDto;
 
+export type TicketScheduleDto = {
+  assignmentId: string;
+  contractorId: string;
+  status: string;
+  etaHours?: number | null;
+  scheduledFor?: string | null;
+  dateLabel: LocalizedText;
+  timeLabel: LocalizedText;
+  endTimeLabel: LocalizedText;
+  weekNumber: number;
+  dayIndex: number;
+};
+
 export type TicketDto = {
   id: string;
   title: LocalizedText;
@@ -71,8 +84,13 @@ export type TicketDto = {
   language: Lang;
   photos: number;
   attachments?: TicketAttachmentDto[];
+  schedule?: TicketScheduleDto | null;
   history: HistoryItem[];
   suggestedActions: LocalizedText[];
+};
+
+export type ContractorAppointmentDto = TicketScheduleDto & {
+  ticket: TicketDto;
 };
 
 export type PropertyUnitDto = {
@@ -137,6 +155,11 @@ export type ApprovalDto = {
   risk: "high" | "medium" | "low";
   urgency: Urgency;
   status: ApprovalStatus;
+  links: Array<{
+    label: LocalizedText;
+    path: string;
+    params?: Record<string, string> | null;
+  }>;
 };
 
 export type InvoiceDto = {
@@ -147,6 +170,74 @@ export type InvoiceDto = {
   amount: string;
   amountNum: number;
   status: string;
+};
+
+export type FinancialSummaryDto = {
+  monthlySpend: number;
+  monthlySpendLabel: string;
+  ytdSpend: number;
+  ytdSpendLabel: string;
+  annualBudget: number;
+  annualBudgetLabel: string;
+  budgetUtilization: number;
+  criticalCaseCost: number;
+  criticalCaseCostLabel: string;
+  trendMonthlyPct: number;
+  trendYtdPct: number;
+  trendCriticalPct: number;
+  monthlySeries: Array<{
+    month: string;
+    amount: number;
+    label: string;
+  }>;
+  categoryBreakdown: Array<{
+    category: LocalizedText;
+    amount: number;
+    amountLabel: string;
+    pct: number;
+  }>;
+};
+
+export type AiInsightsDto = {
+  automationRate: number;
+  avgResolutionHours: number;
+  slaBreaches: number;
+  hotspot: LocalizedText;
+  responseTrend: number[];
+  volumeByCategory: Array<{
+    label: LocalizedText;
+    value: number;
+  }>;
+  atRisk: Array<{
+    id: string;
+    title: LocalizedText;
+    reason: LocalizedText;
+    hours: number;
+    to: {
+      path: string;
+      params?: Record<string, string> | null;
+    };
+  }>;
+  aiPanel: {
+    autoTriage: number;
+    contractorAccepted: number;
+    translations: number;
+    duplicates: number;
+  };
+  topPerformers: ContractorDto[];
+  ticketCount: number;
+};
+
+export type GlobalSearchResultDto = {
+  id: string;
+  type: "ticket" | "property" | "contractor";
+  title: string;
+  subtitle: string;
+  badge?: string;
+  to: {
+    path: string;
+    params?: Record<string, string> | null;
+  };
 };
 
 export type NotificationDto = {
@@ -267,4 +358,38 @@ export type DashboardDto = {
   activeTickets: TicketDto[];
   aiActivity: AiActivityDto[];
   notifications: NotificationDto[];
+};
+
+export type DemoDataTable =
+  | "organizations"
+  | "users"
+  | "userRoles"
+  | "properties"
+  | "units"
+  | "tenants"
+  | "contractors"
+  | "tickets"
+  | "ticketEvents"
+  | "ticketAssignments"
+  | "documents"
+  | "notifications"
+  | "aiActivities"
+  | "aiSuggestions"
+  | "approvals"
+  | "invoices";
+
+export type DemoDataStatusDto = {
+  enabled: boolean;
+  reason?: string;
+  counts: Record<DemoDataTable, number>;
+  mutableTotal: number;
+  identityTotal: number;
+  checkedAt: string;
+};
+
+export type DemoDataOperationDto = {
+  ok: true;
+  action: "clear" | "reload";
+  before: DemoDataStatusDto;
+  after: DemoDataStatusDto;
 };

@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 
-import type { LocalizedText, Urgency } from "@/lib/api/types";
+import type { LocalizedText, Role, Urgency } from "@/lib/api/types";
 import { db } from "@/server/db/client";
 import {
   contractors,
@@ -12,6 +12,8 @@ import {
   tickets,
 } from "@/server/db/schema";
 import { getTicketById } from "@/server/read/queries";
+import { syncContractorJobCounts, syncPropertyTicketCounts } from "@/server/write/consistency";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 const ORG_ID = "org-hausverwaltung-berlin";
 const PM_USER_ID = "demo-pm";
@@ -37,6 +39,7 @@ export type CreateTicketInput = {
     url?: string | null;
   }>;
   language?: "DE" | "EN";
+  role?: Role;
 };
 
 function slug(value: string) {
@@ -93,6 +96,26 @@ function makeTitle(input: CreateTicketInput) {
   return bi(category, category);
 }
 
+function assertAttachments(input: CreateTicketInput) {
+  const attachments = input.attachments ?? [];
+  if (attachments.length > 5) {
+    throw new Error("A ticket can include at most 5 demo attachments.");
+  }
+
+  for (const attachment of attachments) {
+    const type = attachment.type || "image";
+    if (!type.startsWith("image/") && type !== "image") {
+      throw new Error(`Unsupported ticket attachment type: ${type}`);
+    }
+    if (attachment.url && !attachment.url.startsWith("data:") && !attachment.url.startsWith("http://") && !attachment.url.startsWith("https://")) {
+      throw new Error("Unsupported ticket attachment URL.");
+    }
+    if (attachment.url && attachment.url.length > 14_000_000) {
+      throw new Error("Ticket attachment is too large for demo storage.");
+    }
+  }
+}
+
 async function nextTicketId() {
   const rows = await db.select({ id: tickets.id }).from(tickets).orderBy(desc(tickets.id));
   const max = rows.reduce((highest, row) => {
@@ -104,6 +127,9 @@ async function nextTicketId() {
 }
 
 export async function createTicket(input: CreateTicketInput) {
+  const role = requireDemoWriteRole("create ticket", input.role, ["pm", "tenant"]);
+  assertAttachments(input);
+
   const ticketId = await nextTicketId();
   const language = input.language ?? "DE";
   const category = input.category?.trim() || (language === "EN" ? "Other" : "Sonstiges");
@@ -235,8 +261,13 @@ export async function createTicket(input: CreateTicketInput) {
     });
   }
 
-  const created = await getTicketById(ticketId);
+  const created = await getTicketById(ticketId, { role });
   if (!created) throw new Error(`Created ticket not found: ${ticketId}`);
+
+  await Promise.all([
+    syncPropertyTicketCounts(input.propertyId),
+    syncContractorJobCounts(contractor?.id),
+  ]);
 
   await db
     .insert(notifications)

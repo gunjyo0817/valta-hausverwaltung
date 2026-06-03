@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { allContractors as mockContractors } from "@/lib/contractors";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { useContractors, type ContractorDto } from "@/lib/api";
 import { Search, Wrench, Star, ArrowUpRight, Filter, Sparkles, MapPin } from "lucide-react";
@@ -35,21 +35,23 @@ function specialtyLabel(k: string, lang: "DE" | "EN") {
 
 function ContractorsPage() {
   const { t, lang } = useLang();
-  const { data } = useContractors();
-  const allContractors = data ?? mockContractors;
   const [query, setQuery] = useState("");
   const [spec, setSpec] = useState<string>("all");
   const [avail, setAvail] = useState<"all" | "available" | "unavailable">("all");
-
-  const filtered = useMemo(() => allContractors.filter((c) =>
-    (spec === "all" || c.specialtyKey === spec) &&
-    (avail === "all" || (avail === "available" ? c.available : !c.available)) &&
-    (query === "" || `${c.name} ${c.city} ${c.specialty.DE} ${c.specialty.EN}`.toLowerCase().includes(query.toLowerCase())),
-  ), [query, spec, avail]);
+  const allContractorsQuery = useContractors();
+  const contractorsQuery = useContractors({ query, specialtyKey: spec, availability: avail });
+  const allContractors = allContractorsQuery.data ?? [];
+  const filtered = contractorsQuery.data ?? [];
 
   return (
     <AppShell title={t("ctr.title")} subtitle={t("ctr.sub").replace("{n}", String(allContractors.length))}>
       <div className="p-4 md:p-8 space-y-6">
+        {(contractorsQuery.isError || allContractorsQuery.isError) && (
+          <DataErrorState
+            title={lang === "EN" ? "Contractors could not be loaded" : "Handwerker konnten nicht geladen werden"}
+            description={lang === "EN" ? "The contractor directory request failed. This is different from an intentionally empty demo database." : "Die Handwerker-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich geleerte Demo-Datenbank."}
+          />
+        )}
         <div className="flex flex-col md:flex-row md:items-center gap-2">
           <div className="flex-1 flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs">
             <Search className="h-3.5 w-3.5 text-muted-foreground" />
@@ -76,10 +78,17 @@ function ContractorsPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="rounded-xl border border-dashed border-border p-12 text-center">
-            <div className="text-sm font-medium">{t("common.no_results")}</div>
-            <div className="text-xs text-muted-foreground mt-1">{t("common.empty_sub")}</div>
-          </div>
+          allContractors.length === 0 && !contractorsQuery.isLoading ? (
+            <EmptyDataState
+              title={lang === "EN" ? "No contractors in the database" : "Keine Handwerker in der Datenbank"}
+              description={lang === "EN" ? "The demo contractor records have been cleared. Reload mock data from the admin page to restore the directory." : "Die Demo-Handwerker wurden geleert. Lade Mock-Daten im Adminbereich neu, um das Verzeichnis wiederherzustellen."}
+            />
+          ) : (
+            <div className="rounded-xl border border-dashed border-border p-12 text-center">
+              <div className="text-sm font-medium">{t("common.no_results")}</div>
+              <div className="text-xs text-muted-foreground mt-1">{t("common.empty_sub")}</div>
+            </div>
+          )
         )}
       </div>
     </AppShell>

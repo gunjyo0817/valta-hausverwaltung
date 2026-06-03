@@ -10,6 +10,7 @@ import {
   type AiStructuredIntakeDto,
   type Urgency,
 } from "@/lib/api";
+import { demoUploadErrorMessage, demoUploadFiles, formatDemoFileSize, type DemoUploadedFile } from "@/lib/demoUpload";
 
 export const Route = createFileRoute("/intake")({
   head: () => ({
@@ -86,7 +87,10 @@ export function IntakePage() {
   const [submitted, setSubmitted] = useState(false);
   const [structuring, setStructuring] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<DemoUploadedFile[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Editable ticket draft (visible in review step)
   const [draft, setDraft] = useState<Draft>({
@@ -101,7 +105,7 @@ export function IntakePage() {
     contactEmail: "a.becker@example.com",
     access: lang === "EN" ? "Weekday mornings, please call 30 min before" : "Werktags vormittags, bitte 30 Min vorher anrufen",
     preferred: lang === "EN" ? "Weekday mornings" : "Werktags vormittags",
-    photos: 1,
+    photos: 0,
     priority: "critical",
     contractor: "Müller Heizung GmbH",
     confidence: 94,
@@ -111,13 +115,13 @@ export function IntakePage() {
 
   const photoLabel = lang === "EN" ? "Add photo" : "Foto hinzufügen";
 
-  const respond = async (text: string, photo?: boolean) => {
+  const respond = async (text: string, photo?: boolean, uploaded: DemoUploadedFile[] = []) => {
     if (!text && !photo) return;
-    const newUser: Msg = { from: "user", text: photo ? t("intake.photo_attached") : text, photo };
+    const newUser: Msg = { from: "user", text: photo ? text || t("intake.photo_attached") : text, photo };
     const nextMessages = [...messages, newUser];
     setMessages(nextMessages);
     setInput("");
-    const nextPhotoCount = photo ? draft.photos + 1 : draft.photos;
+    const nextPhotoCount = photo ? draft.photos + Math.max(1, uploaded.length) : draft.photos;
     if (photo) setDraft((d) => ({ ...d, photos: nextPhotoCount }));
     setTyping(true);
 
@@ -147,6 +151,32 @@ export function IntakePage() {
     }
   };
 
+  const addIntakePhotos = async (files: FileList | null) => {
+    setUploadError(null);
+    try {
+      const uploaded = await demoUploadFiles(files, { kind: "image", maxFiles: 5 - uploadedFiles.length });
+      if (uploaded.length === 0) return;
+      setUploadedFiles((current) => [...current, ...uploaded]);
+      if (reviewing) {
+        setDraft((current) => ({ ...current, photos: current.photos + uploaded.length }));
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+      const text = uploaded.length === 1
+        ? `${t("intake.photo_attached")}: ${uploaded[0].name}`
+        : `${t("intake.photo_attached")}: ${uploaded.length}`;
+      await respond(text, true, uploaded);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      setUploadError(demoUploadErrorMessage(error, lang));
+    }
+  };
+
+  const removeIntakePhoto = (name: string) => {
+    setUploadedFiles((current) => current.filter((file) => file.name !== name));
+    setDraft((current) => ({ ...current, photos: Math.max(0, current.photos - 1) }));
+  };
+
   const restart = () => {
     setMessages([{ from: "ai", text: t("intake.greeting") }]);
     setStep(0);
@@ -154,6 +184,8 @@ export function IntakePage() {
     setSubmitted(false);
     setStructuring(false);
     setTyping(false);
+    setUploadedFiles([]);
+    setUploadError(null);
   };
 
   const submitTicket = async () => {
@@ -172,7 +204,12 @@ export function IntakePage() {
         confidence: draft.confidence,
         access: draft.access,
         preferred: draft.preferred,
-        photos: draft.photos,
+        photos: uploadedFiles.length,
+        attachments: uploadedFiles.map((file) => ({
+          name: file.name,
+          type: file.type,
+          url: file.url,
+        })),
         language: lang,
       },
     });
@@ -201,6 +238,7 @@ export function IntakePage() {
         <div className="flex flex-col min-h-0">
           <div className="flex-1 overflow-y-auto px-4 md:px-10 py-6">
             <div className="mx-auto max-w-2xl space-y-4">
+              <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(event) => void addIntakePhotos(event.target.files)} />
               {/* Stepper */}
               <Stepper step={submitted ? 4 : reviewing ? 3 : structuring ? 2 : 1} lang={lang} />
 
@@ -221,7 +259,7 @@ export function IntakePage() {
                         {m.chips.map((c) => (
                           <button
                             key={c}
-                            onClick={() => void respond(c, c === photoLabel)}
+                            onClick={() => c === photoLabel ? fileInputRef.current?.click() : void respond(c)}
                             className="text-xs rounded-full border border-border bg-background px-2.5 py-1 hover:bg-accent text-foreground"
                           >
                             {c}
@@ -242,6 +280,10 @@ export function IntakePage() {
                   onSubmit={submitTicket}
                   submitting={createTicketMutation.isPending}
                   lang={lang}
+                  uploadedFiles={uploadedFiles}
+                  uploadError={uploadError}
+                  onAddPhotos={() => fileInputRef.current?.click()}
+                  onRemovePhoto={removeIntakePhoto}
                 />
               )}
               {submitted && <SubmittedCard onAnother={restart} />}
@@ -252,7 +294,7 @@ export function IntakePage() {
           {!reviewing && !submitted && (
             <div className="border-t border-border bg-surface p-3 md:p-4">
               <div className="mx-auto max-w-2xl flex items-end gap-2 rounded-xl border border-border bg-background p-2">
-                <button onClick={() => void respond("", true)} aria-label={photoLabel} className="h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-accent text-muted-foreground">
+                <button onClick={() => fileInputRef.current?.click()} aria-label={photoLabel} className="h-9 w-9 inline-flex items-center justify-center rounded-md hover:bg-accent text-muted-foreground">
                   <Paperclip className="h-4 w-4" />
                 </button>
                 <textarea
@@ -267,6 +309,7 @@ export function IntakePage() {
                   <Send className="h-3.5 w-3.5" /> {t("intake.send")}
                 </button>
               </div>
+              {uploadError && <p className="mx-auto max-w-2xl mt-2 text-[11px] text-destructive text-center">{uploadError}</p>}
               <p className="mx-auto max-w-2xl mt-2 text-[11px] text-muted-foreground text-center">{t("intake.privacy")}</p>
             </div>
           )}
@@ -334,7 +377,29 @@ function Stepper({ step, lang }: { step: 1 | 2 | 3 | 4; lang: "DE" | "EN" }) {
   );
 }
 
-function TicketReview({ draft, setDraft, onBack, onSubmit, submitting, lang }: { draft: Draft; setDraft: (u: (d: Draft) => Draft) => void; onBack: () => void; onSubmit: () => void | Promise<void>; submitting: boolean; lang: "DE" | "EN" }) {
+function TicketReview({
+  draft,
+  setDraft,
+  onBack,
+  onSubmit,
+  submitting,
+  lang,
+  uploadedFiles,
+  uploadError,
+  onAddPhotos,
+  onRemovePhoto,
+}: {
+  draft: Draft;
+  setDraft: (u: (d: Draft) => Draft) => void;
+  onBack: () => void;
+  onSubmit: () => void | Promise<void>;
+  submitting: boolean;
+  lang: "DE" | "EN";
+  uploadedFiles: DemoUploadedFile[];
+  uploadError: string | null;
+  onAddPhotos: () => void;
+  onRemovePhoto: (name: string) => void;
+}) {
   const [editing, setEditing] = useState(false);
   const L = (de: string, en: string) => lang === "EN" ? en : de;
   return (
@@ -410,16 +475,18 @@ function TicketReview({ draft, setDraft, onBack, onSubmit, submitting, lang }: {
         <div className="rounded-md border border-border bg-background p-3">
           <div className="flex items-center justify-between">
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{L("Fotos", "Photos")}</div>
-            <span className="text-[11px] text-muted-foreground">{draft.photos} {L("angehängt", "attached")}</span>
+            <span className="text-[11px] text-muted-foreground">{uploadedFiles.length} {L("angehängt", "attached")}</span>
           </div>
+          {uploadError && <div className="mt-2 rounded-md border border-destructive/30 bg-destructive/5 px-2.5 py-2 text-xs text-destructive">{uploadError}</div>}
           <div className="mt-2 flex flex-wrap gap-2">
-            {Array.from({ length: draft.photos }).map((_, i) => (
-              <div key={i} className="relative h-14 w-14 rounded-md border border-border bg-muted flex items-center justify-center text-muted-foreground">
-                <ImageIcon className="h-4 w-4" />
+            {uploadedFiles.map((file) => (
+              <div key={file.name} className="relative h-16 w-16 overflow-hidden rounded-md border border-border bg-muted flex items-center justify-center text-muted-foreground">
+                <img src={file.url} alt={file.name} className="h-full w-full object-cover" />
                 {editing && (
                   <button
-                    onClick={() => setDraft((d) => ({ ...d, photos: Math.max(0, d.photos - 1) }))}
+                    onClick={() => onRemovePhoto(file.name)}
                     className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-destructive text-destructive-foreground inline-flex items-center justify-center"
+                    title={`${file.name} · ${formatDemoFileSize(file.size)}`}
                   >
                     <X className="h-2.5 w-2.5" />
                   </button>
@@ -428,8 +495,8 @@ function TicketReview({ draft, setDraft, onBack, onSubmit, submitting, lang }: {
             ))}
             {editing && (
               <button
-                onClick={() => setDraft((d) => ({ ...d, photos: d.photos + 1 }))}
-                className="h-14 w-14 rounded-md border-2 border-dashed border-border text-muted-foreground hover:bg-accent inline-flex items-center justify-center"
+                onClick={onAddPhotos}
+                className="h-16 w-16 rounded-md border-2 border-dashed border-border text-muted-foreground hover:bg-accent inline-flex items-center justify-center"
               >
                 <Plus className="h-4 w-4" />
               </button>

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
-import { tickets as mockTickets } from "@/lib/mockData";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import {
   useApproveTicketReply,
@@ -39,9 +39,10 @@ type FilterKey = "all" | "critical" | "new" | "waiting" | "in_progress" | "resol
 
 function InboxPage() {
   const { t, lang } = useLang();
-  const { data } = useTickets();
-  const tickets = data ?? mockTickets;
-  const [selectedId, setSelectedId] = useState(mockTickets[0].id);
+  const ticketsQuery = useTickets();
+  const { data } = ticketsQuery;
+  const tickets = data ?? [];
+  const [selectedId, setSelectedId] = useState("");
   const [filter, setFilter] = useState<FilterKey>("all");
   const [query, setQuery] = useState("");
   const [showMoreFilters, setShowMoreFilters] = useState(false);
@@ -83,10 +84,29 @@ function InboxPage() {
 
   const selected = tickets.find((tk) => tk.id === selectedId) ?? tickets[0];
 
+  useEffect(() => {
+    if (!selectedId && tickets.length > 0) {
+      setSelectedId(tickets[0].id);
+      return;
+    }
+    if (selectedId && tickets.length > 0 && !tickets.some((ticket) => ticket.id === selectedId)) {
+      setSelectedId(tickets[0].id);
+    }
+  }, [selectedId, tickets]);
+
   return (
     <AppShell title={t("inbox.title")} subtitle={t("inbox.sub")}>
       <div className="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)_360px] h-[calc(100vh-4rem)]">
         <aside className="border-r border-border bg-surface flex flex-col min-h-0">
+          {ticketsQuery.isError && (
+            <div className="p-3">
+              <DataErrorState
+                title={lang === "EN" ? "Tickets could not be loaded" : "Tickets konnten nicht geladen werden"}
+                description={lang === "EN" ? "The inbox request failed. This is different from an intentionally empty demo database." : "Die Inbox-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich geleerte Demo-Datenbank."}
+                className="p-5"
+              />
+            </div>
+          )}
           <div className="p-3 border-b border-border space-y-2">
             <div className="flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs">
               <Search className="h-3.5 w-3.5 text-muted-foreground" />
@@ -113,8 +133,18 @@ function InboxPage() {
           <ul className="flex-1 overflow-y-auto divide-y divide-border">
             {list.length === 0 && (
               <li className="p-8 text-center text-xs text-muted-foreground">
-                <div className="font-medium text-sm text-foreground mb-1">{t("common.no_results")}</div>
-                {t("common.empty_sub")}
+                {tickets.length === 0 && !query && filter === "all" ? (
+                  <EmptyDataState
+                    title={lang === "EN" ? "No tickets in the database" : "Keine Tickets in der Datenbank"}
+                    description={lang === "EN" ? "The demo data has been cleared. Reload mock data from the admin page to restore the inbox." : "Die Demo-Daten wurden geleert. Lade Mock-Daten im Adminbereich neu, um die Inbox wieder zu fuellen."}
+                    className="border-0 bg-transparent p-0"
+                  />
+                ) : (
+                  <>
+                    <div className="font-medium text-sm text-foreground mb-1">{t("common.no_results")}</div>
+                    {t("common.empty_sub")}
+                  </>
+                )}
               </li>
             )}
             {list.map((tk) => (
@@ -144,11 +174,30 @@ function InboxPage() {
         </aside>
 
         <section className="overflow-y-auto bg-background min-h-0">
-          <TicketDetail ticket={selected} translated={translated} onTranslate={() => setTranslated((v) => !v)} />
+          {selected ? (
+            <TicketDetail ticket={selected} translated={translated} onTranslate={() => setTranslated((v) => !v)} />
+          ) : (
+            <div className="p-6 md:p-8">
+              <EmptyDataState
+                title={lang === "EN" ? "Select a ticket" : "Ticket auswaehlen"}
+                description={lang === "EN" ? "There are no tickets to show. Use the demo data admin to reload mock records." : "Es gibt keine Tickets zum Anzeigen. Im Demo-Daten-Admin kannst du Mock-Datensaetze neu laden."}
+              />
+            </div>
+          )}
         </section>
 
         <aside className="border-l border-border bg-surface overflow-y-auto min-h-0">
-          <CopilotPanel ticket={selected} draftEdit={draftEdit} setDraftEdit={setDraftEdit} />
+          {selected ? (
+            <CopilotPanel ticket={selected} draftEdit={draftEdit} setDraftEdit={setDraftEdit} />
+          ) : (
+            <div className="p-4">
+              <EmptyDataState
+                title={lang === "EN" ? "Copilot is idle" : "Copilot wartet"}
+                description={lang === "EN" ? "Copilot actions need a ticket record." : "Copilot-Aktionen benoetigen ein Ticket."}
+                className="p-5"
+              />
+            </div>
+          )}
         </aside>
       </div>
     </AppShell>
@@ -248,6 +297,10 @@ function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; 
         <ol className="rounded-xl border border-border bg-surface divide-y divide-border">
           {ticket.history.map((h, i) => (
             <li key={i} className="flex gap-3 p-3 text-sm">
+              {(() => {
+                const delivery = h.type === "system" && (h.text.EN.startsWith("Delivery:") || h.text.DE.startsWith("Zustellung:"));
+                return (
+                  <>
               <span className="w-12 shrink-0 text-[11px] text-muted-foreground">{h.at[lang]}</span>
               <span className={cn(
                 "rounded-md px-2 py-0.5 text-[11px] h-fit",
@@ -255,8 +308,12 @@ function TicketDetail({ ticket, translated, onTranslate }: { ticket: TicketDto; 
                 h.type === "tenant" && "bg-info/10 text-info-foreground",
                 h.type === "manager" && "bg-primary/10 text-primary",
                 h.type === "contractor" && "bg-success/15 text-success-foreground",
-              )}>{h.type === "ai" ? t("common.ai") : h.type === "tenant" ? t("common.tenant") : h.type === "manager" ? t("common.manager") : t("common.contractor")}</span>
+                delivery && "bg-warning/15 text-warning-foreground",
+              )}>{delivery ? (lang === "EN" ? "Delivery" : "Zustellung") : h.type === "ai" ? t("common.ai") : h.type === "tenant" ? t("common.tenant") : h.type === "manager" ? t("common.manager") : h.type === "contractor" ? t("common.contractor") : "System"}</span>
               <p className="flex-1 leading-snug">{h.text[lang]}</p>
+                  </>
+                );
+              })()}
             </li>
           ))}
         </ol>

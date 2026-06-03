@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import type { LocalizedText, Role } from "@/lib/api/types";
 import { db } from "@/server/db/client";
@@ -9,7 +9,9 @@ import {
   tickets,
 } from "@/server/db/schema";
 import { getTicketById } from "@/server/read/queries";
+import { syncContractorJobCounts, syncPropertyTicketCounts } from "@/server/write/consistency";
 import { addTicketEvent } from "@/server/write/ticketActions";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 type ContractorJobAction = "accept" | "start" | "request_info" | "complete";
 
@@ -99,10 +101,18 @@ async function notifyTenantStatus(ticketId: string, description: LocalizedText) 
 }
 
 export async function updateContractorJob(input: ContractorJobActionInput) {
-  const { contractor } = await assignedContractor(input.ticketId);
-  const role = input.role ?? "contractor";
+  const role = requireDemoWriteRole("update contractor job", input.role, ["contractor"]);
+  const { ticket: currentTicket, contractor } = await assignedContractor(input.ticketId);
 
   if (input.action === "accept") {
+    const [assignment] = await db
+      .select()
+      .from(ticketAssignments)
+      .where(and(eq(ticketAssignments.ticketId, input.ticketId), eq(ticketAssignments.contractorId, contractor.id)))
+      .limit(1);
+    if (assignment?.status === "accepted") {
+      return getTicketById(input.ticketId, { role });
+    }
     await upsertAssignment(input.ticketId, contractor.id, "accepted");
     await db
       .update(tickets)
@@ -123,10 +133,14 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
       description: bi(eventText, `${contractor.name}: job accepted.`),
       action: bi("Ticket öffnen", "Open ticket"),
     });
+    await syncContractorJobCounts(contractor.id);
     return ticket;
   }
 
   if (input.action === "start") {
+    if (currentTicket.status === "in_progress") {
+      return getTicketById(input.ticketId, { role });
+    }
     await upsertAssignment(input.ticketId, contractor.id, "in_progress");
     const eventText = `${contractor.name}: Arbeiten gestartet.`;
     const ticket = await addTicketEvent({
@@ -145,6 +159,7 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
       action: bi("Ticket öffnen", "Open ticket"),
     });
     await notifyTenantStatus(input.ticketId, bi("Der Handwerker hat die Arbeiten gestartet.", "The contractor has started work."));
+    await Promise.all([syncPropertyTicketCounts(currentTicket.propertyId), syncContractorJobCounts(contractor.id)]);
     return ticket;
   }
 
@@ -168,18 +183,16 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
     return ticket;
   }
 
+  if (currentTicket.status === "resolved") {
+    await upsertAssignment(input.ticketId, contractor.id, "completed");
+    await Promise.all([syncPropertyTicketCounts(currentTicket.propertyId), syncContractorJobCounts(contractor.id)]);
+    return getTicketById(input.ticketId, { role });
+  }
+
   await db
     .update(ticketAssignments)
     .set({ status: "completed", updatedAt: new Date() })
     .where(and(eq(ticketAssignments.ticketId, input.ticketId), eq(ticketAssignments.contractorId, contractor.id)));
-  await db
-    .update(contractors)
-    .set({
-      activeJobs: sql`greatest(${contractors.activeJobs} - 1, 0)`,
-      pastJobs: sql`${contractors.pastJobs} + 1`,
-      updatedAt: new Date(),
-    })
-    .where(eq(contractors.id, contractor.id));
 
   const eventText = input.message?.trim() || `${contractor.name}: Auftrag abgeschlossen.`;
   const ticket = await addTicketEvent({
@@ -198,6 +211,7 @@ export async function updateContractorJob(input: ContractorJobActionInput) {
     action: bi("Ticket öffnen", "Open ticket"),
   });
   await notifyTenantStatus(input.ticketId, bi("Die Reparatur wurde als abgeschlossen markiert.", "The repair was marked complete."));
+  await Promise.all([syncPropertyTicketCounts(currentTicket.propertyId), syncContractorJobCounts(contractor.id)]);
 
   return ticket ?? getTicketById(input.ticketId, { role });
 }

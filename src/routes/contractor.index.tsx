@@ -1,20 +1,28 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
-import { tickets as mockTickets } from "@/lib/mockData";
 import { UrgencyBadge, StatusBadge } from "@/components/Badges";
 import { MapPin, Phone, Camera, CheckCircle2, MessageSquareText, Wrench, Clock, Star, Briefcase } from "lucide-react";
-import { useTickets, useUpdateContractorJob } from "@/lib/api";
+import { useAddDocumentMetadata, useTickets, useUpdateContractorJob } from "@/lib/api";
 import { useMemo, useState } from "react";
+import { demoUploadErrorMessage, demoUploadFiles, type DemoUploadedFile } from "@/lib/demoUpload";
 
 export const Route = createFileRoute("/contractor/")({ component: ContractorJobs });
 
 function ContractorJobs() {
   const { t, lang } = useLang();
-  const { data } = useTickets();
+  const ticketsQuery = useTickets();
   const updateJob = useUpdateContractorJob();
-  const tickets = data && data.length > 0 ? data : mockTickets;
+  const addDocument = useAddDocumentMetadata();
+  const tickets = ticketsQuery.data ?? [];
   const [activeAction, setActiveAction] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+  const [completionTicketId, setCompletionTicketId] = useState<string | null>(null);
+  const [completionNote, setCompletionNote] = useState("");
+  const [completionInvoice, setCompletionInvoice] = useState("");
+  const [completionPhoto, setCompletionPhoto] = useState<DemoUploadedFile | null>(null);
   const jobs = useMemo(
     () => tickets.filter((tk) => tk.contractorId === "c1" && tk.status !== "resolved"),
     [tickets],
@@ -26,15 +34,81 @@ function ContractorJobs() {
       : undefined;
     const key = `${ticketId}:${action}`;
     setActiveAction(key);
+    setActionError(null);
+    setActionSuccess(null);
     try {
       await updateJob.mutateAsync({ data: { ticketId, action, message, role: "contractor" } });
+      setActionSuccess(lang === "EN" ? "Job updated." : "Auftrag aktualisiert.");
     } catch (error) {
       console.error("Contractor job action failed", error);
+      setActionError(
+        error instanceof Error
+          ? error.message
+          : (lang === "EN" ? "The job action failed." : "Die Auftragsaktion ist fehlgeschlagen."),
+      );
     } finally {
       setActiveAction(null);
     }
   };
   const isActing = (ticketId: string, action: string) => activeAction === `${ticketId}:${action}` && updateJob.isPending;
+  const startCompletion = (ticketId: string) => {
+    setActionError(null);
+    setActionSuccess(null);
+    setCompletionTicketId((current) => current === ticketId ? null : ticketId);
+    setCompletionNote("");
+    setCompletionInvoice("");
+    setCompletionPhoto(null);
+  };
+  const completeWithDetails = async (ticketId: string) => {
+    if (updateJob.isPending || addDocument.isPending) return;
+    const note = completionNote.trim();
+    const invoice = completionInvoice.trim();
+    const messageParts = [
+      note || (lang === "EN" ? "Work completed." : "Arbeiten abgeschlossen."),
+      invoice ? `${lang === "EN" ? "Invoice/reference" : "Rechnung/Referenz"}: ${invoice}` : null,
+      completionPhoto ? `${lang === "EN" ? "Completion photo" : "Abschlussfoto"}: ${completionPhoto.name}` : null,
+    ].filter(Boolean);
+    const key = `${ticketId}:complete`;
+    setActiveAction(key);
+    setActionError(null);
+    setActionSuccess(null);
+    try {
+      if (completionPhoto) {
+        await addDocument.mutateAsync({
+          data: {
+            scope: "ticket",
+            targetId: ticketId,
+            name: completionPhoto.name,
+            type: completionPhoto.type,
+            url: completionPhoto.url,
+            role: "contractor",
+          },
+        });
+      }
+      await updateJob.mutateAsync({
+        data: {
+          ticketId,
+          action: "complete",
+          message: messageParts.join("\n"),
+          role: "contractor",
+        },
+      });
+      setCompletionTicketId(null);
+      setCompletionNote("");
+      setCompletionInvoice("");
+      setCompletionPhoto(null);
+      setActionSuccess(lang === "EN" ? "Job marked complete." : "Auftrag als abgeschlossen markiert.");
+    } catch (error) {
+      console.error("Contractor completion failed", error);
+      setActionError(
+        error instanceof Error
+          ? error.message
+          : demoUploadErrorMessage(error, lang),
+      );
+    } finally {
+      setActiveAction(null);
+    }
+  };
 
   const kpi = [
     { label: t("cdash.kpi_active"), value: jobs.length, icon: Briefcase, color: "text-primary bg-primary/10" },
@@ -46,6 +120,23 @@ function ContractorJobs() {
   return (
     <AppShell title={t("cdash.title")} subtitle={t("cdash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
+        {ticketsQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Jobs could not be loaded" : "Auftraege konnten nicht geladen werden"}
+            description={lang === "EN" ? "The contractor job read failed. This is different from an empty demo database." : "Die Abfrage der Handwerker-Auftraege ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        )}
+        {actionError && (
+          <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {lang === "EN" ? "Action failed: " : "Aktion fehlgeschlagen: "}
+            <span className="font-medium">{actionError}</span>
+          </div>
+        )}
+        {actionSuccess && (
+          <div className="rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success-foreground">
+            {actionSuccess}
+          </div>
+        )}
         {/* KPIs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {kpi.map((k) => (
@@ -61,6 +152,12 @@ function ContractorJobs() {
 
         {/* Jobs list */}
         <div className="space-y-3">
+          {jobs.length === 0 && !ticketsQuery.isLoading && (
+            <EmptyDataState
+              title={lang === "EN" ? "No active contractor jobs" : "Keine aktiven Handwerker-Auftraege"}
+              description={lang === "EN" ? "There are no active jobs assigned to this demo contractor. Reload mock data from the admin page to restore job records." : "Diesem Demo-Handwerker sind keine aktiven Auftraege zugewiesen. Lade Mock-Daten im Adminbereich neu, um Auftraege wiederherzustellen."}
+            />
+          )}
           {jobs.map((tk) => (
             <div key={tk.id} className="rounded-xl border border-border bg-surface overflow-hidden hover:shadow-soft transition-shadow">
               <div className="p-4 md:p-5">
@@ -78,7 +175,7 @@ function ContractorJobs() {
                   </div>
                   <div className="text-right shrink-0">
                     <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("cdash.eta")}</div>
-                    <div className="text-sm font-semibold">Heute · 14:00</div>
+                    <div className="text-sm font-semibold">{tk.schedule ? `${tk.schedule.dateLabel[lang]} · ${tk.schedule.timeLabel[lang]}` : "—"}</div>
                   </div>
                 </div>
 
@@ -105,7 +202,7 @@ function ContractorJobs() {
                   <button onClick={() => void act(tk.id, "request_info")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
                     <MessageSquareText className="h-3.5 w-3.5" /> {isActing(tk.id, "request_info") ? t("common.loading") : t("cdash.request_info")}
                   </button>
-                  <button onClick={() => void act(tk.id, "complete")} disabled={updateJob.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
+                  <button onClick={() => startCompletion(tk.id)} disabled={updateJob.isPending || addDocument.isPending} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50">
                     <CheckCircle2 className="h-3.5 w-3.5" /> {isActing(tk.id, "complete") ? t("common.loading") : (lang === "EN" ? "Complete" : "Abschließen")}
                   </button>
                   <a href={`https://maps.google.com/?q=${encodeURIComponent(tk.tenant.building)}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent transition ml-auto">
@@ -115,6 +212,59 @@ function ContractorJobs() {
                     {t("act.open_ticket")}
                   </Link>
                 </div>
+                {completionTicketId === tk.id && (
+                  <div className="mt-4 rounded-lg border border-border bg-background p-3">
+                    <div className="text-xs font-semibold">{lang === "EN" ? "Completion details" : "Abschlussdetails"}</div>
+                    <div className="mt-3 grid gap-3">
+                      <textarea
+                        value={completionNote}
+                        onChange={(event) => setCompletionNote(event.target.value)}
+                        placeholder={lang === "EN" ? "Work performed, access notes, or remaining observations" : "Durchgefuehrte Arbeiten, Zugangshinweise oder verbleibende Beobachtungen"}
+                        className="h-24 w-full rounded-md border border-border bg-surface p-2 text-xs outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <input
+                        value={completionInvoice}
+                        onChange={(event) => setCompletionInvoice(event.target.value)}
+                        placeholder={lang === "EN" ? "Optional invoice or reference number" : "Optionale Rechnungs- oder Referenznummer"}
+                        className="w-full rounded-md border border-border bg-surface px-2 py-2 text-xs outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <label className="flex items-center justify-between gap-3 rounded-md border border-dashed border-border bg-surface px-3 py-2 text-xs text-muted-foreground">
+                        <span className="truncate">{completionPhoto ? completionPhoto.name : (lang === "EN" ? "Optional completion photo" : "Optionales Abschlussfoto")}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(event) => {
+                            void demoUploadFiles(event.target.files, { kind: "image", maxFiles: 1 })
+                              .then((files) => {
+                                setActionError(null);
+                                setCompletionPhoto(files[0] ?? null);
+                              })
+                              .catch((error) => setActionError(demoUploadErrorMessage(error, lang)));
+                          }}
+                        />
+                        <Camera className="h-3.5 w-3.5 shrink-0" />
+                      </label>
+                    </div>
+                    <div className="mt-3 flex flex-wrap justify-end gap-2">
+                      <button
+                        onClick={() => startCompletion(tk.id)}
+                        disabled={updateJob.isPending || addDocument.isPending}
+                        className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+                      >
+                        {lang === "EN" ? "Cancel" : "Abbrechen"}
+                      </button>
+                      <button
+                        onClick={() => void completeWithDetails(tk.id)}
+                        disabled={updateJob.isPending || addDocument.isPending}
+                        className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        {isActing(tk.id, "complete") || addDocument.isPending ? t("common.loading") : (lang === "EN" ? "Submit completion" : "Abschluss senden")}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}

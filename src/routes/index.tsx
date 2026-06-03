@@ -1,12 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
-import {
-  tickets as mockTickets,
-  kpis as mockKpis,
-  aiActivity as mockAiActivity,
-  notifications as mockNotifications,
-} from "@/lib/mockData";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { useDashboardData } from "@/lib/api";
 import {
@@ -33,15 +28,22 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const { t, lang } = useLang();
-  const { data } = useDashboardData();
-  const kpis = data?.kpis ?? mockKpis;
-  const tickets = data?.activeTickets ?? mockTickets;
-  const aiActivity = data?.aiActivity ?? mockAiActivity;
+  const dashboardQuery = useDashboardData();
+  const { data } = dashboardQuery;
+  const kpis = data?.kpis ?? {
+    openTickets: 0,
+    avgResponseMin: 0,
+    aiResolved: 0,
+    urgent: 0,
+    pendingContractor: 0,
+  };
+  const tickets = data?.activeTickets ?? [];
+  const aiActivity = data?.aiActivity ?? [];
   const notifications =
     data?.notifications.map((notification) => ({
       at: notification.time[lang],
       text: notification.title,
-    })) ?? mockNotifications;
+    })) ?? [];
   const kpiCards = [
     { label: t("kpi.open"), value: kpis.openTickets, delta: t("kpi.open.delta"), icon: Inbox, tone: "primary" as const },
     { label: t("kpi.response"), value: `${kpis.avgResponseMin} ${t("common.minutes_short")}`, delta: t("kpi.response.delta"), icon: Timer, tone: "success" as const },
@@ -53,6 +55,12 @@ function Dashboard() {
   return (
     <AppShell title={t("dash.greeting")} subtitle={t("dash.sub")}>
       <div className="p-4 md:p-8 space-y-6">
+        {dashboardQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Dashboard data could not be loaded" : "Dashboard-Daten konnten nicht geladen werden"}
+            description={lang === "EN" ? "This is a read error, not an empty demo database. Check the backend connection and retry." : "Das ist ein Lesefehler, keine leere Demo-Datenbank. Backend-Verbindung prüfen und erneut laden."}
+          />
+        )}
         <section className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           {kpiCards.map((k) => (
             <div key={k.label} className="rounded-xl border border-border bg-surface p-4 shadow-soft hover:shadow-card transition-shadow">
@@ -85,6 +93,15 @@ function Dashboard() {
               </Link>
             </header>
             <ul className="divide-y divide-border">
+              {!dashboardQuery.isLoading && tickets.filter((tk) => tk.status !== "resolved").length === 0 && (
+                <li className="p-4">
+                  <EmptyDataState
+                    title={lang === "EN" ? "No active tickets" : "Keine aktiven Tickets"}
+                    description={lang === "EN" ? "The demo database has no active ticket records. Reload mock data from the admin page to repopulate this view." : "Die Demo-Datenbank enthaelt keine aktiven Ticket-Datensaetze. Lade Mock-Daten im Adminbereich neu, um diese Ansicht zu fuellen."}
+                    className="border-0 bg-background"
+                  />
+                </li>
+              )}
               {tickets.filter((tk) => tk.status !== "resolved").map((tk) => (
                 <li key={tk.id}>
                   <Link
@@ -124,6 +141,15 @@ function Dashboard() {
                 <h2 className="text-sm font-semibold">{t("section.ai_activity")}</h2>
               </header>
               <ul className="p-4 space-y-3">
+                {!dashboardQuery.isLoading && aiActivity.length === 0 && (
+                  <li>
+                    <EmptyDataState
+                      title={lang === "EN" ? "No AI activity" : "Keine KI-Aktivitaet"}
+                      description={lang === "EN" ? "There are no AI activity records in the database yet." : "In der Datenbank sind noch keine KI-Aktivitaeten vorhanden."}
+                      className="p-5"
+                    />
+                  </li>
+                )}
                 {aiActivity.map((a, i) => (
                   <li key={i} className="flex gap-3">
                     <div className="mt-1 h-2 w-2 rounded-full bg-ai/70" />
@@ -142,6 +168,15 @@ function Dashboard() {
                 <h2 className="text-sm font-semibold">{t("section.notifications")}</h2>
               </header>
               <ul className="p-4 space-y-3">
+                {!dashboardQuery.isLoading && notifications.length === 0 && (
+                  <li>
+                    <EmptyDataState
+                      title={lang === "EN" ? "No notifications" : "Keine Benachrichtigungen"}
+                      description={lang === "EN" ? "There are no notification records for this role." : "Fuer diese Rolle sind keine Benachrichtigungen vorhanden."}
+                      className="p-5"
+                    />
+                  </li>
+                )}
                 {notifications.map((n, i) => (
                   <li key={i} className="flex gap-3 text-sm">
                     <span className="w-12 shrink-0 text-[11px] text-muted-foreground">{n.at}</span>

@@ -1,11 +1,12 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { getProperty } from "@/lib/properties";
-import { tickets as mockTickets } from "@/lib/mockData";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
 import { useLang } from "@/lib/i18n";
 import { useAddDocumentMetadata, useProperty, useTickets } from "@/lib/api";
-import { ArrowLeft, Building2, MapPin, Users, Sparkles, FileText, Download, MessageSquareText, ArrowUpRight, Wrench, ChevronRight } from "lucide-react";
+import { ArrowLeft, Building2, MapPin, Users, Sparkles, FileText, Download, MessageSquareText, ArrowUpRight, Wrench, ChevronRight, Upload } from "lucide-react";
+import { demoUploadErrorMessage, demoUploadFiles } from "@/lib/demoUpload";
 
 export const Route = createFileRoute("/properties/$id")({
   head: ({ params }) => ({
@@ -19,26 +20,65 @@ export const Route = createFileRoute("/properties/$id")({
 
 function PropertyDetail() {
   const { id } = useParams({ from: "/properties/$id" });
-  const { data: propertyData } = useProperty(id);
-  const { data: ticketData } = useTickets();
-  const p = propertyData ?? getProperty(id);
-  const tickets = ticketData ?? mockTickets;
+  const propertyQuery = useProperty(id);
+  const ticketsQuery = useTickets();
+  const p = propertyQuery.data;
+  const tickets = ticketsQuery.data ?? [];
   const { t, lang } = useLang();
   const addDocument = useAddDocumentMetadata();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadMessage, setUploadMessage] = useState<string | null>(null);
+  if (propertyQuery.isError || ticketsQuery.isError) {
+    return (
+      <AppShell title={lang === "EN" ? "Property unavailable" : "Objekt nicht verfuegbar"}>
+        <div className="p-4 md:p-8">
+          <DataErrorState
+            title={lang === "EN" ? "Property data could not be loaded" : "Objektdaten konnten nicht geladen werden"}
+            description={lang === "EN" ? "The backend read failed. This is different from an empty demo database." : "Die Backend-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        </div>
+      </AppShell>
+    );
+  }
+  if (!p) {
+    return (
+      <AppShell title={propertyQuery.isLoading ? "Loading" : "Not found"}>
+        <div className="p-4 md:p-8">
+          <EmptyDataState
+            title={propertyQuery.isLoading ? (lang === "EN" ? "Loading property" : "Objekt wird geladen") : (lang === "EN" ? "Property not found" : "Objekt nicht gefunden")}
+            description={propertyQuery.isLoading ? (lang === "EN" ? "Waiting for the backend response." : "Warte auf die Backend-Antwort.") : (lang === "EN" ? "This property record is not present in the database. It may have been cleared from the demo data." : "Dieser Objekt-Datensatz ist nicht in der Datenbank vorhanden. Er wurde moeglicherweise aus den Demo-Daten geloescht.")}
+          />
+        </div>
+      </AppShell>
+    );
+  }
   const open = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved");
   const all = tickets.filter((tk) => tk.propertyId === p.id);
   const addPropertyDocumentMetadata = async (files: FileList | null) => {
-    const file = files?.[0];
-    if (!file) return;
-    await addDocument.mutateAsync({
-      data: {
-        scope: "property",
-        targetId: p.id,
-        name: file.name,
-        type: file.type || "document",
-        role: "pm",
-      },
-    });
+    const selected = Array.from(files ?? []);
+    if (selected.length === 0) return;
+    setUploadError(null);
+    setUploadMessage(null);
+    try {
+      const uploaded = await demoUploadFiles(selected, { kind: "document" });
+      for (const file of uploaded) {
+        await addDocument.mutateAsync({
+          data: {
+            scope: "property",
+            targetId: p.id,
+            name: file.name,
+            type: file.type || "document",
+            url: file.url,
+            role: "pm",
+          },
+        });
+      }
+      setUploadMessage(lang === "EN" ? "Document uploaded." : "Dokument hochgeladen.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      setUploadError(demoUploadErrorMessage(error, lang));
+    }
   };
 
   return (
@@ -153,6 +193,15 @@ function PropertyDetail() {
                 <h3 className="text-sm font-semibold">{t("common.documents")}</h3>
               </div>
               <p className="text-xs text-muted-foreground mb-3">{t("prop.documents_sub")}</p>
+              {uploadError && <div className="mb-3 rounded-md border border-destructive/30 bg-destructive/5 px-2.5 py-2 text-xs text-destructive">{uploadError}</div>}
+              {uploadMessage && <div className="mb-3 rounded-md bg-success/10 px-2.5 py-2 text-xs text-success-foreground">{uploadMessage}</div>}
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                className="hidden"
+                onChange={(event) => void addPropertyDocumentMetadata(event.target.files)}
+              />
               <ul className="space-y-2">
                 {p.documents.map((d) => (
                   <li key={d.name} className="flex items-center gap-2 text-xs rounded-md border border-border bg-background px-2.5 py-2 hover:bg-accent transition-colors">
@@ -161,12 +210,20 @@ function PropertyDetail() {
                       <div className="font-medium truncate">{d.name}</div>
                       <div className="text-[11px] text-muted-foreground">{d.type} · {d.updated}</div>
                     </div>
-                    <a href={d.url ?? "#"} className="inline-flex" aria-label={d.name}>
+                    <a href={d.url ?? "#"} target={d.url ? "_blank" : undefined} rel="noreferrer" className="inline-flex" aria-label={d.name}>
                       <Download className="h-3.5 w-3.5 text-muted-foreground" />
                     </a>
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={addDocument.isPending}
+                className="mt-3 w-full inline-flex items-center justify-center gap-1.5 rounded-md border border-dashed border-border px-3 py-2 text-xs text-muted-foreground hover:bg-accent disabled:opacity-50"
+              >
+                <Upload className="h-3.5 w-3.5" />
+                {addDocument.isPending ? t("common.loading") : (lang === "EN" ? "Upload document" : "Dokument hochladen")}
+              </button>
             </div>
           </aside>
         </div>

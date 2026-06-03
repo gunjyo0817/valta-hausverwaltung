@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/server/db/client";
 import { aiSuggestions } from "@/server/db/schema";
@@ -13,6 +14,7 @@ import type {
   AiTranslationDto,
   AiUrgencyDto,
   Lang,
+  TicketDto,
 } from "@/lib/api/types";
 
 import { requestOpenAiJson } from "./client";
@@ -128,15 +130,67 @@ async function persistAiSuggestion(input: {
   }
 }
 
+function stableJson(value: unknown) {
+  return JSON.stringify(value, (_key, item) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return item;
+    return Object.keys(item as Record<string, unknown>)
+      .sort()
+      .reduce(
+        (acc, key) => {
+          acc[key] = (item as Record<string, unknown>)[key];
+          return acc;
+        },
+        {} as Record<string, unknown>,
+      );
+  });
+}
+
+async function readCachedAiSuggestion<T extends Record<string, unknown>>(input: {
+  kind: AiKind;
+  ticketId?: string | null;
+  request: Record<string, unknown>;
+  schema: z.ZodType<T>;
+}) {
+  const requestKey = stableJson(input.request);
+  const rows = await db
+    .select()
+    .from(aiSuggestions)
+    .where(eq(aiSuggestions.kind, input.kind))
+    .orderBy(desc(aiSuggestions.createdAt));
+  const row = rows.find((suggestion) =>
+    (suggestion.ticketId ?? null) === (input.ticketId ?? null) &&
+    stableJson(suggestion.input) === requestKey,
+  );
+  if (!row) return null;
+  const output = input.schema.parse(row.output);
+  return {
+    ...output,
+    kind: input.kind,
+    model: row.model,
+    status: statusSchema.parse(row.status),
+  };
+}
+
 async function runAi<K extends AiKind, T extends Record<string, unknown>>(input: {
   kind: K;
   ticketId?: string | null;
   request: Record<string, unknown>;
+  regenerate?: boolean;
   system: string;
   prompt: string;
   schema: z.ZodType<T>;
   fallback: T;
 }) {
+  if (!input.regenerate) {
+    const cached = await readCachedAiSuggestion({
+      kind: input.kind,
+      ticketId: input.ticketId,
+      request: input.request,
+      schema: input.schema,
+    });
+    if (cached) return cached;
+  }
+
   try {
     const result = await requestOpenAiJson<unknown>({
       system: input.system,
@@ -197,12 +251,13 @@ async function resolveTicket(ticketId: string, ticketContext?: TicketDto) {
   throw new Error(`Ticket ${ticketId} not found`);
 }
 
-export async function structureIntake(input: { raw: string; language?: Lang }): Promise<AiStructuredIntakeDto> {
+export async function structureIntake(input: { raw: string; language?: Lang; regenerate?: boolean }): Promise<AiStructuredIntakeDto> {
   const language = input.language ?? "DE";
   const fallback = structureIntakeFallback(input.raw, language);
   return runAi({
     kind: "structure_intake",
-    request: input,
+    request: { raw: input.raw, language },
+    regenerate: input.regenerate,
     system: "You structure German or English property-management maintenance intake into strict JSON. Use existing demo IDs when obvious. Do not invent passwords or auth data.",
     prompt: `Return JSON with title, category, priority, tenant, propertyId, unit, phone, email, description, contractor, confidence, access, preferred, missing.\nLanguage: ${language}\nRaw request:\n${input.raw}`,
     schema: structureIntakeSchema,
@@ -210,12 +265,13 @@ export async function structureIntake(input: { raw: string; language?: Lang }): 
   });
 }
 
-export async function generateIntakeFollowUp(input: { raw: string; language?: Lang; step?: number }): Promise<AiIntakeFollowUpDto> {
+export async function generateIntakeFollowUp(input: { raw: string; language?: Lang; step?: number; regenerate?: boolean }): Promise<AiIntakeFollowUpDto> {
   const language = input.language ?? "DE";
   const fallback = generateIntakeFollowUpFallback(input.raw, language, input.step ?? 0);
   return runAi({
     kind: "intake_follow_up",
-    request: input,
+    request: { raw: input.raw, language, step: input.step ?? 0 },
+    regenerate: input.regenerate,
     system: "You are a tenant-facing maintenance intake assistant for property management. Ask exactly one useful follow-up question at a time. Return strict JSON only.",
     prompt: `Return JSON with question, chips, ready, confidence. Use ${language}. Set ready=true only when there is enough information to create a maintenance ticket: issue category, affected location/unit, severity/detail, and access/contact preference.\nConversation:\n${input.raw}`,
     schema: intakeFollowUpOutputSchema,
@@ -223,13 +279,14 @@ export async function generateIntakeFollowUp(input: { raw: string; language?: La
   });
 }
 
-export async function classifyUrgency(input: { text: string; ticketId?: string | null; language?: Lang }): Promise<AiUrgencyDto> {
+export async function classifyUrgency(input: { text: string; ticketId?: string | null; language?: Lang; regenerate?: boolean }): Promise<AiUrgencyDto> {
   const language = input.language ?? "EN";
   const fallback = classifyUrgencyFallback(input.text, language);
   return runAi({
     kind: "classify_urgency",
     ticketId: input.ticketId,
-    request: input,
+    request: { text: input.text, ticketId: input.ticketId ?? null, language },
+    regenerate: input.regenerate,
     system: "You classify maintenance-ticket urgency for property management. Return strict JSON only.",
     prompt: `Return JSON with priority, confidence, reasons. Reasons must be in ${language}.\nText:\n${input.text}`,
     schema: urgencyOutputSchema,
@@ -237,7 +294,7 @@ export async function classifyUrgency(input: { text: string; ticketId?: string |
   });
 }
 
-export async function generateSummary(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiSummaryDto> {
+export async function generateSummary(input: { ticketId: string; language?: Lang; ticket?: TicketDto; regenerate?: boolean }): Promise<AiSummaryDto> {
   const language = input.language ?? "DE";
   const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = generateSummaryFallback(ticket, language);
@@ -245,6 +302,7 @@ export async function generateSummary(input: { ticketId: string; language?: Lang
     kind: "summary",
     ticketId: ticket.id,
     request: { ticketId: input.ticketId, language },
+    regenerate: input.regenerate,
     system: "You summarize maintenance tickets for property managers. Return strict JSON only.",
     prompt: `Return JSON with summary and confidence. Keep the summary concise and in ${language}.\nTicket:\n${JSON.stringify(ticket)}`,
     schema: summaryOutputSchema,
@@ -252,13 +310,14 @@ export async function generateSummary(input: { ticketId: string; language?: Lang
   });
 }
 
-export async function suggestContractor(input: { category: string; ticketId?: string | null; language?: Lang }): Promise<AiContractorSuggestionDto> {
+export async function suggestContractor(input: { category: string; ticketId?: string | null; language?: Lang; regenerate?: boolean }): Promise<AiContractorSuggestionDto> {
   const language = input.language ?? "EN";
   const fallback = suggestContractorFallback(input.category, language);
   return runAi({
     kind: "contractor_suggestion",
     ticketId: input.ticketId,
-    request: input,
+    request: { category: input.category, ticketId: input.ticketId ?? null, language },
+    regenerate: input.regenerate,
     system: "You suggest one contractor for a property-management maintenance category using the demo contractor names if possible. Return strict JSON only.",
     prompt: `Return JSON with contractor, contractorId, confidence, reason. Reason must be in ${language}.\nCategory: ${input.category}`,
     schema: contractorOutputSchema,
@@ -266,7 +325,7 @@ export async function suggestContractor(input: { category: string; ticketId?: st
   });
 }
 
-export async function generateReplyDraft(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiReplyDraftDto> {
+export async function generateReplyDraft(input: { ticketId: string; language?: Lang; ticket?: TicketDto; regenerate?: boolean }): Promise<AiReplyDraftDto> {
   const language = input.language ?? "DE";
   const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = generateReplyDraftFallback(ticket, language);
@@ -274,6 +333,7 @@ export async function generateReplyDraft(input: { ticketId: string; language?: L
     kind: "reply_draft",
     ticketId: ticket.id,
     request: { ticketId: input.ticketId, language },
+    regenerate: input.regenerate,
     system: "You draft tenant-facing property-management replies. Keep human approval required and do not claim the message was sent. Return strict JSON only.",
     prompt: `Return JSON with text and confidence. Draft in ${language}.\nTicket:\n${JSON.stringify(ticket)}`,
     schema: replyDraftOutputSchema,
@@ -281,7 +341,7 @@ export async function generateReplyDraft(input: { ticketId: string; language?: L
   });
 }
 
-export async function detectMissingInfo(input: { ticketId: string; language?: Lang; ticket?: TicketDto }): Promise<AiMissingInfoDto> {
+export async function detectMissingInfo(input: { ticketId: string; language?: Lang; ticket?: TicketDto; regenerate?: boolean }): Promise<AiMissingInfoDto> {
   const language = input.language ?? "DE";
   const ticket = await resolveTicket(input.ticketId, input.ticket);
   const fallback = detectMissingInfoFallback(ticket, language);
@@ -289,6 +349,7 @@ export async function detectMissingInfo(input: { ticketId: string; language?: La
     kind: "missing_info",
     ticketId: ticket.id,
     request: { ticketId: input.ticketId, language },
+    regenerate: input.regenerate,
     system: "You identify missing tenant information required to process maintenance tickets. Return strict JSON only.",
     prompt: `Return JSON with text, items, confidence. Text should be a tenant-facing request in ${language}.\nTicket:\n${JSON.stringify(ticket)}`,
     schema: missingInfoOutputSchema,
@@ -296,11 +357,12 @@ export async function detectMissingInfo(input: { ticketId: string; language?: La
   });
 }
 
-export async function translateText(input: { text: string; to: Lang; from?: Lang }): Promise<AiTranslationDto> {
+export async function translateText(input: { text: string; to: Lang; from?: Lang; regenerate?: boolean }): Promise<AiTranslationDto> {
   const fallback = translateTextFallback(input.text, input.to);
   return runAi({
     kind: "translation",
-    request: input,
+    request: { text: input.text, from: input.from ?? "auto", to: input.to },
+    regenerate: input.regenerate,
     system: "You translate property-management text between German and English. Return strict JSON only.",
     prompt: `Return JSON with text, to, confidence. Translate from ${input.from ?? "auto"} to ${input.to}.\nText:\n${input.text}`,
     schema: translationOutputSchema,

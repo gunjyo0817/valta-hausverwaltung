@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
-import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge } from "@/components/Badges";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, CheckCircle2, Circle, Clock, Image as ImageIcon, MessageSquareText, Phone, Sparkles, Wrench, Bell } from "lucide-react";
-import { useAddDocumentMetadata, useTicket } from "@/lib/api";
+import { useAddDocumentMetadata, useAddTicketEvent, useTicket } from "@/lib/api";
+import { demoUploadErrorMessage, demoUploadFiles } from "@/lib/demoUpload";
 
 export const Route = createFileRoute("/tenant/tickets/$id")({
   head: ({ params }) => ({
@@ -28,18 +29,40 @@ export const Route = createFileRoute("/tenant/tickets/$id")({
 
 function TicketTrackingPage() {
   const { id } = Route.useParams();
-  const { data } = useTicket(id);
-  const ticket = data ?? mockTickets.find((tk) => tk.id === id);
+  const ticketQuery = useTicket(id);
+  const { data: ticket } = ticketQuery;
   const { t, lang } = useLang();
   const addDocument = useAddDocumentMetadata();
+  const addEvent = useAddTicketEvent();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [replyText, setReplyText] = useState("");
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+
+  if (ticketQuery.isError) {
+    return (
+      <AppShell title="Not found">
+        <div className="max-w-2xl mx-auto p-8">
+          <DataErrorState
+            title={lang === "EN" ? "Request could not be loaded" : "Anfrage konnte nicht geladen werden"}
+            description={lang === "EN" ? "The backend read failed. This is different from an empty demo database." : "Die Backend-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        </div>
+      </AppShell>
+    );
+  }
 
   if (!ticket) {
     return (
       <AppShell title="Not found">
-        <div className="max-w-md mx-auto p-8 text-center">
-          <p className="text-sm text-muted-foreground mb-4">This request does not exist.</p>
-          <Link to="/tenant/tickets" className="text-primary hover:underline text-sm">Back to my requests</Link>
+        <div className="max-w-2xl mx-auto p-8">
+          <EmptyDataState
+            title={ticketQuery.isLoading ? (lang === "EN" ? "Loading request" : "Anfrage wird geladen") : (lang === "EN" ? "Request not found" : "Anfrage nicht gefunden")}
+            description={ticketQuery.isLoading ? (lang === "EN" ? "Waiting for the backend response." : "Warte auf die Backend-Antwort.") : (lang === "EN" ? "This request is not present in the database. It may have been cleared from the demo data." : "Diese Anfrage ist nicht in der Datenbank vorhanden. Sie wurde moeglicherweise aus den Demo-Daten geloescht.")}
+          />
+          <div className="mt-4 text-center">
+            <Link to="/tenant/tickets" className="text-primary hover:underline text-sm">Back to my requests</Link>
+          </div>
         </div>
       </AppShell>
     );
@@ -52,15 +75,15 @@ function TicketTrackingPage() {
     ? [
         { label: "Received", at: ticket.createdAt.EN, desc: "Your report was captured and structured by Valta.", ai: true },
         { label: "Reviewed by property management", at: "—", desc: "We confirmed the details and determined the appropriate response." },
-        { label: "Contractor dispatched", at: "—", desc: ticket.contractorName ? `${ticket.contractorName} assigned.` : "Selecting the right contractor." },
-        { label: "Technician on the way", at: "ETA 11:00", desc: "You'll be notified the moment the technician arrives." },
+        { label: "Contractor dispatched", at: ticket.schedule?.dateLabel.EN ?? "—", desc: ticket.contractorName ? `${ticket.contractorName} assigned.` : "Selecting the right contractor." },
+        { label: "Technician on the way", at: ticket.schedule ? `${ticket.schedule.timeLabel.EN} - ${ticket.schedule.endTimeLabel.EN}` : "ETA —", desc: "You'll be notified the moment the technician arrives." },
         { label: "Repair completed", at: "—", desc: "Please confirm once the issue is resolved." },
       ]
     : [
         { label: "Eingegangen", at: ticket.createdAt.DE, desc: "Ihre Meldung wurde von Valta erfasst und strukturiert.", ai: true },
         { label: "Von Hausverwaltung geprüft", at: "—", desc: "Wir haben die Angaben bestätigt und die passende Reaktion festgelegt." },
-        { label: "Handwerker beauftragt", at: "—", desc: ticket.contractorName ? `${ticket.contractorName} beauftragt.` : "Passender Handwerker wird ausgewählt." },
-        { label: "Techniker unterwegs", at: "ETA 11:00", desc: "Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft." },
+        { label: "Handwerker beauftragt", at: ticket.schedule?.dateLabel.DE ?? "—", desc: ticket.contractorName ? `${ticket.contractorName} beauftragt.` : "Passender Handwerker wird ausgewaehlt." },
+        { label: "Techniker unterwegs", at: ticket.schedule ? `${ticket.schedule.timeLabel.DE} - ${ticket.schedule.endTimeLabel.DE}` : "ETA —", desc: "Sie erhalten eine Benachrichtigung, sobald der Techniker eintrifft." },
         { label: "Reparatur abgeschlossen", at: "—", desc: "Bitte bestätigen Sie nach Abschluss die Behebung." },
       ]
   ).map((s, idx) => ({ ...s, done: idx + 1 < reached, current: idx + 1 === reached }));
@@ -78,18 +101,69 @@ function TicketTrackingPage() {
         url: null,
       }));
   const addAttachmentMetadata = async (files: FileList | null) => {
-    const file = files?.[0];
-    if (!file) return;
-    await addDocument.mutateAsync({
-      data: {
-        scope: "ticket",
-        targetId: ticket.id,
-        name: file.name,
-        type: file.type || "image",
-        role: "tenant",
-      },
-    });
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    const selected = Array.from(files ?? []);
+    if (selected.length === 0) return;
+    setActionError(null);
+    setActionSuccess(null);
+    try {
+      const uploaded = await demoUploadFiles(selected, { kind: "image" });
+      for (const file of uploaded) {
+        await addDocument.mutateAsync({
+          data: {
+            scope: "ticket",
+            targetId: ticket.id,
+            name: file.name,
+            type: file.type,
+            url: file.url,
+            role: "tenant",
+          },
+        });
+      }
+      setActionSuccess(lang === "EN" ? "Photo uploaded." : "Foto hochgeladen.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      setActionError(demoUploadErrorMessage(error, lang));
+    }
+  };
+  const sendTenantReply = async () => {
+    const text = replyText.trim();
+    if (!text || addEvent.isPending) return;
+    setActionError(null);
+    setActionSuccess(null);
+    try {
+      await addEvent.mutateAsync({
+        data: {
+          ticketId: ticket.id,
+          type: "tenant",
+          text,
+          role: "tenant",
+          status: ticket.status === "waiting" ? "in_progress" : undefined,
+        },
+      });
+      setReplyText("");
+      setActionSuccess(lang === "EN" ? "Your update was sent." : "Ihre Rueckmeldung wurde gesendet.");
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : (lang === "EN" ? "The update could not be sent." : "Die Rueckmeldung konnte nicht gesendet werden."));
+    }
+  };
+  const confirmResolved = async () => {
+    if (addEvent.isPending) return;
+    setActionError(null);
+    setActionSuccess(null);
+    try {
+      await addEvent.mutateAsync({
+        data: {
+          ticketId: ticket.id,
+          type: "tenant",
+          text: lang === "EN" ? "Tenant confirmed that the issue is resolved." : "Mieter hat bestaetigt, dass das Problem behoben ist.",
+          role: "tenant",
+          status: "resolved",
+        },
+      });
+      setActionSuccess(lang === "EN" ? "Resolution confirmed." : "Erledigung bestaetigt.");
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : (lang === "EN" ? "The confirmation could not be sent." : "Die Bestaetigung konnte nicht gesendet werden."));
+    }
   };
   const requestNotificationPermission = () => {
     if (typeof window === "undefined" || !("Notification" in window)) return;
@@ -102,6 +176,17 @@ function TicketTrackingPage() {
         <Link to="/tenant/tickets" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition">
           <ArrowLeft className="h-3.5 w-3.5" /> {lang === "EN" ? "All requests" : "Alle Anfragen"}
         </Link>
+        {actionError && (
+          <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {lang === "EN" ? "Action failed: " : "Aktion fehlgeschlagen: "}
+            <span className="font-medium">{actionError}</span>
+          </div>
+        )}
+        {actionSuccess && (
+          <div className="rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success-foreground">
+            {actionSuccess}
+          </div>
+        )}
 
         <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
           <div className="flex items-start gap-3">
@@ -123,7 +208,7 @@ function TicketTrackingPage() {
 
           <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
             <Stat label={t("portal.assigned_contractor")} value={ticket.contractorName ?? "—"} />
-            <Stat label={t("common.eta")} value="11:00 – 13:00" />
+            <Stat label={t("common.eta")} value={ticket.schedule ? `${ticket.schedule.dateLabel[lang]} · ${ticket.schedule.timeLabel[lang]}` : "—"} />
             <Stat label={lang === "EN" ? "Apartment" : "Wohnung"} value={ticket.tenant.apartment[lang]} />
           </div>
         </div>
@@ -159,6 +244,45 @@ function TicketTrackingPage() {
           </ol>
         </section>
 
+        <section className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+          <div className="flex items-center gap-2 mb-3">
+            <MessageSquareText className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold">
+              {ticket.status === "waiting"
+                ? (lang === "EN" ? "Send requested information" : "Angeforderte Informationen senden")
+                : (lang === "EN" ? "Send an update" : "Rueckmeldung senden")}
+            </h2>
+          </div>
+          <textarea
+            value={replyText}
+            onChange={(event) => setReplyText(event.target.value)}
+            placeholder={ticket.status === "waiting"
+              ? (lang === "EN" ? "Add access details, missing photos, or answers requested by property management." : "Ergaenzen Sie Zugangsdaten, fehlende Fotos oder Antworten der Hausverwaltung.")
+              : (lang === "EN" ? "Add a short update for property management." : "Senden Sie eine kurze Rueckmeldung an die Hausverwaltung.")}
+            className="h-28 w-full rounded-md border border-border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+          />
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              disabled={replyText.trim().length === 0 || addEvent.isPending}
+              onClick={sendTenantReply}
+              className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            >
+              <MessageSquareText className="h-3.5 w-3.5" />
+              {addEvent.isPending ? t("common.loading") : (lang === "EN" ? "Send update" : "Rueckmeldung senden")}
+            </button>
+            {ticket.status === "resolved" && (
+              <button
+                disabled={addEvent.isPending}
+                onClick={confirmResolved}
+                className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent disabled:opacity-50"
+              >
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                {lang === "EN" ? "Confirm resolved" : "Erledigung bestaetigen"}
+              </button>
+            )}
+          </div>
+        </section>
+
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
             <div className="flex items-center gap-2 mb-3">
@@ -168,11 +292,18 @@ function TicketTrackingPage() {
             <ul className="space-y-3">
               {ticket.history.map((u: typeof ticket.history[number], i: number) => (
                 <li key={i} className="text-sm">
+                  {(() => {
+                    const delivery = u.type === "system" && (u.text.EN.startsWith("Delivery:") || u.text.DE.startsWith("Zustellung:"));
+                    return (
+                      <>
                   <div className="flex items-baseline gap-2">
                     <span className="text-[11px] text-muted-foreground">{u.at[lang]}</span>
-                    <span className="text-xs font-medium capitalize">{u.type}</span>
+                    <span className="text-xs font-medium capitalize">{delivery ? (lang === "EN" ? "delivery" : "zustellung") : u.type}</span>
                   </div>
                   <p className="leading-snug text-foreground/80">{u.text[lang]}</p>
+                      </>
+                    );
+                  })()}
                 </li>
               ))}
             </ul>
@@ -185,8 +316,18 @@ function TicketTrackingPage() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {attachments.map((attachment) => (
-                <a key={attachment.id} href={attachment.url ?? undefined} className="aspect-square rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
-                  <ImageIcon className="h-5 w-5" />
+                <a
+                  key={attachment.id}
+                  href={attachment.url ?? undefined}
+                  target={attachment.url ? "_blank" : undefined}
+                  rel="noreferrer"
+                  className="aspect-square overflow-hidden rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground"
+                >
+                  {attachment.url && attachment.type.startsWith("image") ? (
+                    <img src={attachment.url} alt={attachment.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <ImageIcon className="h-5 w-5" />
+                  )}
                 </a>
               ))}
               {attachments.length === 0 && (
@@ -194,9 +335,9 @@ function TicketTrackingPage() {
                   <ImageIcon className="h-5 w-5" />
                 </div>
               )}
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(event) => addAttachmentMetadata(event.target.files)} />
-              <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
-                {t("portal.add_photo")}
+              <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={(event) => void addAttachmentMetadata(event.target.files)} />
+              <button onClick={() => fileInputRef.current?.click()} disabled={addDocument.isPending} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent disabled:opacity-50">
+                {addDocument.isPending ? t("common.loading") : t("portal.add_photo")}
               </button>
             </div>
             <div className="mt-4 flex flex-col gap-2">

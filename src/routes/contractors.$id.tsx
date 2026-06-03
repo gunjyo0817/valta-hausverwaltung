@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
-import { getContractor } from "@/lib/contractors";
-import { tickets as mockTickets } from "@/lib/mockData";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { useContractor, useTickets } from "@/lib/api";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
@@ -19,11 +18,35 @@ export const Route = createFileRoute("/contractors/$id")({
 
 function ContractorDetail() {
   const { id } = useParams({ from: "/contractors/$id" });
-  const { data: contractorData } = useContractor(id);
-  const { data: ticketData } = useTickets();
-  const c = contractorData ?? getContractor(id);
-  const tickets = ticketData ?? mockTickets;
+  const contractorQuery = useContractor(id);
+  const ticketsQuery = useTickets();
+  const c = contractorQuery.data;
+  const tickets = ticketsQuery.data ?? [];
   const { t, lang } = useLang();
+  if (contractorQuery.isError || ticketsQuery.isError) {
+    return (
+      <AppShell title={lang === "EN" ? "Contractor unavailable" : "Handwerker nicht verfuegbar"}>
+        <div className="p-4 md:p-8">
+          <DataErrorState
+            title={lang === "EN" ? "Contractor data could not be loaded" : "Handwerkerdaten konnten nicht geladen werden"}
+            description={lang === "EN" ? "The backend read failed. This is different from an empty demo database." : "Die Backend-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        </div>
+      </AppShell>
+    );
+  }
+  if (!c) {
+    return (
+      <AppShell title={contractorQuery.isLoading ? "Loading" : "Not found"}>
+        <div className="p-4 md:p-8">
+          <EmptyDataState
+            title={contractorQuery.isLoading ? (lang === "EN" ? "Loading contractor" : "Handwerker wird geladen") : (lang === "EN" ? "Contractor not found" : "Handwerker nicht gefunden")}
+            description={contractorQuery.isLoading ? (lang === "EN" ? "Waiting for the backend response." : "Warte auf die Backend-Antwort.") : (lang === "EN" ? "This contractor record is not present in the database. It may have been cleared from the demo data." : "Dieser Handwerker-Datensatz ist nicht in der Datenbank vorhanden. Er wurde moeglicherweise aus den Demo-Daten geloescht.")}
+          />
+        </div>
+      </AppShell>
+    );
+  }
   const active = tickets.filter((tk) => tk.contractorId === c.id && tk.status !== "resolved");
   const past = tickets.filter((tk) => tk.contractorId === c.id && tk.status === "resolved");
 

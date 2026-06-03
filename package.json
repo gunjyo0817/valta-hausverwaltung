@@ -14,6 +14,10 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx scripts/seed.ts",
+    "db:demo:status": "tsx scripts/demo-data.ts status",
+    "db:demo:clear": "tsx scripts/demo-data.ts clear",
+    "db:demo:reload": "tsx scripts/demo-data.ts reload",
+    "test:demo": "tsx scripts/demo-regression.ts",
     "db:studio": "drizzle-kit studio",
     "env:check": "tsx scripts/check-env.ts"
   },

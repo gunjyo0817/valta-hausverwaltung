@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef } from "react";
 import { CheckCircle2, Circle, Sparkles, Wrench, MessageSquareText, Image as ImageIcon, Phone, Bell, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
@@ -16,7 +15,6 @@ export const Route = createFileRoute("/portal")({
 
 function PortalPage() {
   const { t, lang } = useLang();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const requestNotificationPermission = () => {
     if (typeof window === "undefined" || !("Notification" in window)) return;
     void Notification.requestPermission();
@@ -143,10 +141,9 @@ function PortalPage() {
                   <ImageIcon className="h-5 w-5" />
                 </div>
               ))}
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" />
-              <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent">
+              <Link to="/tenant/tickets/$id" params={{ id: "VLT-2041" }} className="aspect-square rounded-lg border-2 border-dashed border-border text-xs text-muted-foreground hover:bg-accent inline-flex items-center justify-center text-center">
                 {t("portal.add_photo")}
-              </button>
+              </Link>
             </div>
             <div className="mt-4 flex flex-col gap-2">
               <a href="tel:+493012345678" className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs hover:bg-accent">

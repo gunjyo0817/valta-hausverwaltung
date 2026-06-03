@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { properties as mockProperties } from "@/lib/properties";
-import { tickets as mockTickets } from "@/lib/mockData";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { useProperties, useTickets, type PropertyDto } from "@/lib/api";
 import { Search, Building2, AlertTriangle, MapPin, Users, Timer, Filter, ArrowUpRight } from "lucide-react";
@@ -26,26 +25,28 @@ function statusStyle(s: PropertyDto["status"]) {
 
 function PropertiesPage() {
   const { t, lang } = useLang();
-  const { data: propertyData } = useProperties();
-  const { data: ticketData } = useTickets();
-  const properties = propertyData ?? mockProperties;
-  const tickets = ticketData ?? mockTickets;
+  const ticketsQuery = useTickets();
+  const tickets = ticketsQuery.data ?? [];
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"all" | PropertyDto["status"]>("all");
   const [city, setCity] = useState<string>("all");
-  const cities = useMemo(() => Array.from(new Set(properties.map((p) => p.city))), [properties]);
+  const allPropertiesQuery = useProperties();
+  const propertiesQuery = useProperties({ query, status, city });
+  const allProperties = allPropertiesQuery.data ?? [];
+  const filtered = propertiesQuery.data ?? [];
+  const cities = useMemo(() => Array.from(new Set(allProperties.map((p) => p.city))), [allProperties]);
 
-  const filtered = properties.filter((p) =>
-    (status === "all" || p.status === status) &&
-    (city === "all" || p.city === city) &&
-    (query === "" || `${p.name} ${p.address} ${p.manager}`.toLowerCase().includes(query.toLowerCase())),
-  );
-
-  const statusLabel = (s: Property["status"]) => s === "urgent" ? t("common.urgent") : s === "attention" ? t("common.attention") : t("common.healthy");
+  const statusLabel = (s: PropertyDto["status"]) => s === "urgent" ? t("common.urgent") : s === "attention" ? t("common.attention") : t("common.healthy");
 
   return (
-    <AppShell title={t("prop.title")} subtitle={t("prop.sub").replace("{n}", String(properties.length))}>
+    <AppShell title={t("prop.title")} subtitle={t("prop.sub").replace("{n}", String(allProperties.length))}>
       <div className="p-4 md:p-8 space-y-6">
+        {(propertiesQuery.isError || allPropertiesQuery.isError || ticketsQuery.isError) && (
+          <DataErrorState
+            title={lang === "EN" ? "Property data could not be loaded" : "Objektdaten konnten nicht geladen werden"}
+            description={lang === "EN" ? "The backend read failed. This is separate from an empty demo database." : "Die Backend-Abfrage ist fehlgeschlagen. Das ist getrennt von einer leeren Demo-Datenbank."}
+          />
+        )}
         <div className="flex flex-col md:flex-row md:items-center gap-2">
           <div className="flex-1 flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs">
             <Search className="h-3.5 w-3.5 text-muted-foreground" />
@@ -104,10 +105,17 @@ function PropertiesPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="rounded-xl border border-dashed border-border p-12 text-center">
-            <div className="text-sm font-medium">{t("common.no_results")}</div>
-            <div className="text-xs text-muted-foreground mt-1">{t("common.empty_sub")}</div>
-          </div>
+          allProperties.length === 0 && !allPropertiesQuery.isLoading ? (
+            <EmptyDataState
+              title={lang === "EN" ? "No properties in the database" : "Keine Objekte in der Datenbank"}
+              description={lang === "EN" ? "The demo data has been cleared. Reload mock data from the admin page to restore properties, units, and documents." : "Die Demo-Daten wurden geleert. Lade Mock-Daten im Adminbereich neu, um Objekte, Einheiten und Dokumente wiederherzustellen."}
+            />
+          ) : (
+            <div className="rounded-xl border border-dashed border-border p-12 text-center">
+              <div className="text-sm font-medium">{t("common.no_results")}</div>
+              <div className="text-xs text-muted-foreground mt-1">{t("common.empty_sub")}</div>
+            </div>
+          )
         )}
       </div>
     </AppShell>

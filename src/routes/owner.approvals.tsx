@@ -1,66 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { Sparkles, ShieldCheck, Clock, AlertTriangle, Wallet, FileQuestion } from "lucide-react";
 import { useApprovals, useUpdateApprovalDecision } from "@/lib/api";
+import type { ApprovalDto, ApprovalStatus } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/approvals")({ component: OwnerApprovals });
-
-type Approval = {
-  id: string;
-  property: string;
-  title: { DE: string; EN: string };
-  summary: { DE: string; EN: string };
-  contractor: string;
-  amount: string;
-  amountNum: number;
-  timeline: { DE: string; EN: string };
-  recommendation: { DE: string; EN: string };
-  risk: "high" | "medium" | "low";
-  urgency: "critical" | "high" | "medium" | "low";
-};
-
-const fallbackApprovals: Approval[] = [
-  {
-    id: "AP-104",
-    property: "Lindenstraße 22",
-    title: { DE: "Heizungsanlage – Tausch", EN: "Heating system — replacement" },
-    summary: { DE: "Zentralheizung mit 3 Ausfällen in 30 Tagen. Ersatzteile für Modell nicht mehr verfügbar.", EN: "Central heating with 3 failures in 30 days. Spare parts for this model no longer available." },
-    contractor: "Müller Heizung GmbH",
-    amount: "€ 12.400",
-    amountNum: 12400,
-    timeline: { DE: "5–7 Werktage nach Freigabe", EN: "5–7 business days after approval" },
-    recommendation: { DE: "Empfohlen: Austausch lohnt sich. Reparaturhistorie zeigt Eskalation, Angebot 8 % unter Marktdurchschnitt.", EN: "Recommended: replacement is cost-effective. Repair history shows escalation, quote 8% below market average." },
-    risk: "high",
-    urgency: "critical",
-  },
-  {
-    id: "AP-103",
-    property: "Parkallee 110",
-    title: { DE: "Dachsanierung", EN: "Roof repair" },
-    summary: { DE: "Wassereintritt im Dachgeschoss nach Sturm. 2 Wohnungen betroffen.", EN: "Water ingress in attic after storm. 2 apartments affected." },
-    contractor: "Dachdecker Hansen",
-    amount: "€ 8.900",
-    amountNum: 8900,
-    timeline: { DE: "10 Werktage", EN: "10 business days" },
-    recommendation: { DE: "Empfohlen: Angebot marktgerecht, Versicherung deckt voraussichtlich 60 %.", EN: "Recommended: quote is in line with market, insurance likely covers 60%." },
-    risk: "medium",
-    urgency: "high",
-  },
-  {
-    id: "AP-105",
-    property: "Parkallee 110",
-    title: { DE: "Aufzugswartung – Jahresvertrag", EN: "Elevator maintenance — annual contract" },
-    summary: { DE: "Verlängerung des Wartungsvertrags inkl. 24/7 Notdienst.", EN: "Renewal of maintenance contract including 24/7 emergency service." },
-    contractor: "Schindler Service",
-    amount: "€ 5.700",
-    amountNum: 5700,
-    timeline: { DE: "Laufzeit 12 Monate", EN: "12-month term" },
-    recommendation: { DE: "Zur Prüfung: Preis +6 % YoY. Alternativangebot von Kone verfügbar (€ 5.200).", EN: "Review: price +6% YoY. Alternative quote from Kone available (€ 5,200)." },
-    risk: "low",
-    urgency: "medium",
-  },
-];
 
 const riskColor: Record<string, string> = {
   high: "bg-destructive/15 text-destructive",
@@ -70,27 +17,25 @@ const riskColor: Record<string, string> = {
 
 function OwnerApprovals() {
   const { t, lang } = useLang();
-  const { data: approvalData } = useApprovals();
+  const approvalsQuery = useApprovals();
   const updateApproval = useUpdateApprovalDecision();
-  const approvals: Approval[] = approvalData
-    ? approvalData
-        .filter((approval) => approval.status === "pending")
-        .map((approval) => ({
-          id: approval.id,
-          property: approval.property,
-          title: approval.title,
-          summary: approval.summary,
-          contractor: approval.contractor,
-          amount: approval.amount,
-          amountNum: approval.amountNum,
-          timeline: approval.timeline,
-          recommendation: approval.recommendation,
-          risk: approval.risk,
-          urgency: approval.urgency,
-        }))
-    : fallbackApprovals;
+  const [clarificationId, setClarificationId] = useState<string | null>(null);
+  const [clarificationMessage, setClarificationMessage] = useState("");
+  const [actionError, setActionError] = useState<string | null>(null);
+  const approvals: ApprovalDto[] = approvalsQuery.data?.filter((approval) => approval.status === "pending") ?? [];
   const total = approvals.reduce((s, a) => s + a.amountNum, 0);
   const critical = approvals.filter((a) => a.urgency === "critical").length;
+
+  const submitDecision = async (id: string, status: Exclude<ApprovalStatus, "pending">, message?: string) => {
+    setActionError(null);
+    try {
+      await updateApproval.mutateAsync({ data: { id, status, role: "owner", message } });
+      setClarificationId(null);
+      setClarificationMessage("");
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : lang === "EN" ? "The approval action failed." : "Die Freigabe-Aktion ist fehlgeschlagen.");
+    }
+  };
 
   const kpis = [
     { icon: ShieldCheck, label: lang === "EN" ? "Pending approvals" : "Offene Freigaben", value: String(approvals.length), color: "text-primary bg-primary/10" },
@@ -102,6 +47,18 @@ function OwnerApprovals() {
   return (
     <AppShell title={lang === "EN" ? "Pending approvals" : "Offene Freigaben"} subtitle={t("odash.approvals_sub")}>
       <div className="p-4 md:p-8 space-y-5 max-w-5xl">
+        {approvalsQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Approvals could not be loaded" : "Freigaben konnten nicht geladen werden"}
+            description={lang === "EN" ? "The approvals request failed. This is different from an intentionally empty demo database." : "Die Freigabe-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich geleerte Demo-Datenbank."}
+          />
+        )}
+        {actionError && (
+          <DataErrorState
+            title={lang === "EN" ? "Approval action failed" : "Freigabe-Aktion fehlgeschlagen"}
+            description={actionError}
+          />
+        )}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {kpis.map((k) => (
             <div key={k.label} className="rounded-xl border border-border bg-surface p-3 md:p-4">
@@ -115,6 +72,12 @@ function OwnerApprovals() {
         </div>
 
         <div className="space-y-3">
+          {approvals.length === 0 && !approvalsQuery.isLoading && (
+            <EmptyDataState
+              title={lang === "EN" ? "No pending approvals" : "Keine offenen Freigaben"}
+              description={lang === "EN" ? "There are no pending approval records. Reload mock data from the admin page to restore owner approvals." : "Es gibt keine offenen Freigabe-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Eigentuemer-Freigaben wiederherzustellen."}
+            />
+          )}
           {approvals.map((a) => (
             <div key={a.id} className="rounded-xl border border-border bg-surface p-4 md:p-5">
               <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -142,9 +105,65 @@ function OwnerApprovals() {
               </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
-                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "approved", role: "owner" } })} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">{t("odash.approve")}</button>
-                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "rejected", role: "owner" } })} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">{t("odash.reject")}</button>
-                <button disabled={updateApproval.isPending} onClick={() => updateApproval.mutate({ data: { id: a.id, status: "clarification_requested", role: "owner" } })} className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
+                {a.links.map((link) =>
+                  link.path === "/properties/$id" && link.params?.id ? (
+                    <Link key={`${a.id}-${link.path}`} to="/properties/$id" params={{ id: link.params.id }} className="text-xs text-primary hover:underline">
+                      {link.label[lang]}
+                    </Link>
+                  ) : (
+                    <Link key={`${a.id}-${link.path}`} to="/owner/financials" className="text-xs text-primary hover:underline">
+                      {link.label[lang]}
+                    </Link>
+                  ),
+                )}
+              </div>
+
+              {clarificationId === a.id && (
+                <div className="mt-3 rounded-lg border border-border bg-surface-muted p-3 space-y-2">
+                  <label className="text-xs font-medium" htmlFor={`clarification-${a.id}`}>
+                    {lang === "EN" ? "Clarification message" : "Rückfrage"}
+                  </label>
+                  <textarea
+                    id={`clarification-${a.id}`}
+                    value={clarificationMessage}
+                    onChange={(event) => setClarificationMessage(event.target.value)}
+                    className="min-h-20 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
+                    placeholder={lang === "EN" ? "What should the property manager clarify?" : "Was soll die Verwaltung klären?"}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      disabled={updateApproval.isPending || clarificationMessage.trim().length === 0}
+                      onClick={() => submitDecision(a.id, "clarification_requested", clarificationMessage)}
+                      className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50"
+                    >
+                      {lang === "EN" ? "Send request" : "Rückfrage senden"}
+                    </button>
+                    <button
+                      disabled={updateApproval.isPending}
+                      onClick={() => {
+                        setClarificationId(null);
+                        setClarificationMessage("");
+                      }}
+                      className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50"
+                    >
+                      {lang === "EN" ? "Cancel" : "Abbrechen"}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button disabled={updateApproval.isPending} onClick={() => submitDecision(a.id, "approved")} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition disabled:opacity-50">{t("odash.approve")}</button>
+                <button disabled={updateApproval.isPending} onClick={() => submitDecision(a.id, "rejected")} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">{t("odash.reject")}</button>
+                <button
+                  disabled={updateApproval.isPending}
+                  onClick={() => {
+                    setClarificationId(a.id);
+                    setClarificationMessage("");
+                    setActionError(null);
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50"
+                >
                   <FileQuestion className="h-3.5 w-3.5" />
                   {lang === "EN" ? "Request clarification" : "Rückfrage senden"}
                 </button>

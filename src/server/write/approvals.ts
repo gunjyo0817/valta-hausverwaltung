@@ -4,11 +4,13 @@ import type { ApprovalStatus, LocalizedText, Role } from "@/lib/api/types";
 import { db } from "@/server/db/client";
 import { aiActivities, approvals, notifications } from "@/server/db/schema";
 import { listApprovals } from "@/server/read/queries";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 export type UpdateApprovalDecisionInput = {
   id: string;
   status: Exclude<ApprovalStatus, "pending">;
   role?: Role;
+  message?: string;
 };
 
 function bi(de: string, en = de): LocalizedText {
@@ -32,6 +34,7 @@ async function nextActivitySequence() {
 }
 
 export async function updateApprovalDecision(input: UpdateApprovalDecisionInput) {
+  const role = requireDemoWriteRole("update owner approval", input.role, ["owner"]);
   const [approval] = await db.select().from(approvals).where(eq(approvals.id, input.id)).limit(1);
   if (!approval) throw new Error(`Approval not found: ${input.id}`);
 
@@ -44,14 +47,16 @@ export async function updateApprovalDecision(input: UpdateApprovalDecisionInput)
     .where(eq(approvals.id, input.id));
 
   const decision = statusText(input.status);
+  const message = input.message?.trim();
+  const messageSuffix = message ? bi(` Rückfrage: ${message}`, ` Clarification: ${message}`) : bi("", "");
   await db.insert(notifications).values({
     id: `${approval.id}-owner-decision-${input.status}-${Date.now()}`,
     recipientUserId: "demo-pm",
     type: input.status === "clarification_requested" ? "missing" : "approval",
     title: bi("Eigentümerentscheidung erhalten", "Owner decision received"),
     description: bi(
-      `${approval.id} wurde ${decision.DE}.`,
-      `${approval.id} was ${decision.EN}.`,
+      `${approval.id} wurde ${decision.DE}.${messageSuffix.DE}`,
+      `${approval.id} was ${decision.EN}.${messageSuffix.EN}`,
     ),
     ticketId: approval.id,
     context: approval.amountLabel,
@@ -68,11 +73,11 @@ export async function updateApprovalDecision(input: UpdateApprovalDecisionInput)
     organizationId: approval.organizationId,
     atLabel: bi("jetzt", "now"),
     text: bi(
-      `Eigentümerentscheidung: ${approval.id} ${decision.DE}.`,
-      `Owner decision: ${approval.id} ${decision.EN}.`,
+      `Eigentümerentscheidung: ${approval.id} ${decision.DE}.${messageSuffix.DE}`,
+      `Owner decision: ${approval.id} ${decision.EN}.${messageSuffix.EN}`,
     ),
     sequence,
   });
 
-  return listApprovals({ role: input.role ?? "owner" });
+  return listApprovals({ role });
 }

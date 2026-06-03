@@ -5,6 +5,7 @@ import { selectedDemoIdentity } from "@/server/auth/demo";
 import { db } from "@/server/db/client";
 import { notifications } from "@/server/db/schema";
 import { listNotifications } from "@/server/read/queries";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 export type MarkNotificationReadInput = {
   id: string;
@@ -16,6 +17,7 @@ export type MarkAllNotificationsReadInput = {
 };
 
 export async function markNotificationRead(input: MarkNotificationReadInput) {
+  requireDemoWriteRole("mark notification read", input.role, ["pm", "tenant", "contractor", "owner"]);
   const identity = selectedDemoIdentity(input);
 
   await db
@@ -27,6 +29,7 @@ export async function markNotificationRead(input: MarkNotificationReadInput) {
 }
 
 export async function markAllNotificationsRead(input: MarkAllNotificationsReadInput) {
+  requireDemoWriteRole("mark all notifications read", input.role, ["pm", "tenant", "contractor", "owner"]);
   const identity = selectedDemoIdentity(input);
 
   await db
@@ -36,4 +39,3 @@ export async function markAllNotificationsRead(input: MarkAllNotificationsReadIn
 
   return listNotifications(input);
 }
-

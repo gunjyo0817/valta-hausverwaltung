@@ -10,10 +10,15 @@ import {
   tickets,
 } from "@/server/db/schema";
 import { getTicketById } from "@/server/read/queries";
+import { syncContractorJobCounts, syncPropertyTicketCounts } from "@/server/write/consistency";
+import { addDeliverySimulation } from "@/server/write/delivery";
+import { defaultScheduledFor, recordScheduleEvent } from "@/server/write/schedule";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 export type AssignContractorInput = {
   ticketId: string;
   contractorId: string;
+  scheduledFor?: string;
   role?: Role;
 };
 
@@ -33,11 +38,17 @@ async function nextEventSequence(ticketId: string) {
 }
 
 export async function assignContractor(input: AssignContractorInput) {
+  const role = requireDemoWriteRole("assign contractor", input.role, ["pm"]);
   const [ticket] = await db.select().from(tickets).where(eq(tickets.id, input.ticketId)).limit(1);
   if (!ticket) throw new Error(`Ticket not found: ${input.ticketId}`);
 
   const [contractor] = await db.select().from(contractors).where(eq(contractors.id, input.contractorId)).limit(1);
   if (!contractor) throw new Error(`Contractor not found: ${input.contractorId}`);
+  const alreadyAssignedToContractor = ticket.contractorId === contractor.id;
+  const scheduledFor = input.scheduledFor ? new Date(input.scheduledFor) : defaultScheduledFor(contractor.etaHours);
+  if (Number.isNaN(scheduledFor.getTime())) {
+    throw new Error("Invalid appointment date.");
+  }
 
   await db
     .update(tickets)
@@ -57,6 +68,7 @@ export async function assignContractor(input: AssignContractorInput) {
       contractorId: contractor.id,
       status: "assigned",
       etaHours: contractor.etaHours,
+      scheduledFor,
       assignedByUserId: "demo-pm",
     })
     .onConflictDoUpdate({
@@ -64,18 +76,20 @@ export async function assignContractor(input: AssignContractorInput) {
       set: {
         status: "assigned",
         etaHours: contractor.etaHours,
+        scheduledFor,
         updatedAt: new Date(),
       },
     });
 
-  if (ticket.contractorId !== contractor.id) {
-    await db
-      .update(contractors)
-      .set({
-        activeJobs: sql`${contractors.activeJobs} + 1`,
-        updatedAt: new Date(),
-      })
-      .where(eq(contractors.id, contractor.id));
+  await Promise.all([
+    syncPropertyTicketCounts(ticket.propertyId),
+    syncContractorJobCounts(ticket.contractorId),
+    syncContractorJobCounts(contractor.id),
+  ]);
+
+  if (alreadyAssignedToContractor) {
+    await recordScheduleEvent(ticket.id, scheduledFor);
+    return getTicketById(ticket.id, { role });
   }
 
   const sequence = await nextEventSequence(ticket.id);
@@ -127,5 +141,34 @@ export async function assignContractor(input: AssignContractorInput) {
     ])
     .onConflictDoNothing();
 
-  return getTicketById(ticket.id, { role: input.role ?? "pm" });
+  await addDeliverySimulation({
+    ticketId: ticket.id,
+    channel: "email",
+    recipient: "contractor",
+    subject: bi(
+      `Auftragszusammenfassung an ${contractor.name} gesendet.`,
+      `Job summary sent to ${contractor.name}.`,
+    ),
+    status: "sent",
+  });
+  await addDeliverySimulation({
+    ticketId: ticket.id,
+    channel: "sms",
+    recipient: "contractor",
+    subject: bi(
+      `SMS-Hinweis an ${contractor.name} versendet.`,
+      `SMS alert sent to ${contractor.name}.`,
+    ),
+    status: "sent",
+  });
+  await addDeliverySimulation({
+    ticketId: ticket.id,
+    channel: "in_app",
+    recipient: "tenant",
+    subject: bi("Mieterportal ueber Handwerkerbeauftragung aktualisiert.", "Tenant portal updated with contractor assignment."),
+    status: "read",
+  });
+  await recordScheduleEvent(ticket.id, scheduledFor);
+
+  return getTicketById(ticket.id, { role });
 }

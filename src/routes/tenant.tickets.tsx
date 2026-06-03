@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
-import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge } from "@/components/Badges";
 import { ArrowRight, MessageSquareText, Camera } from "lucide-react";
 import { useState } from "react";
@@ -22,8 +22,8 @@ export const Route = createFileRoute("/tenant/tickets")({
 function TenantTickets() {
   const { t, lang } = useLang();
   const [filter, setFilter] = useState<"all" | "active" | "resolved">("all");
-  const { data } = useTickets();
-  const tickets = data && data.length > 0 ? data : mockTickets;
+  const ticketsQuery = useTickets();
+  const tickets = ticketsQuery.data ?? [];
   const mine = tickets.filter(isDemoTenantTicket);
   const filtered = mine.filter((tk) =>
     filter === "all" ? true : filter === "resolved" ? tk.status === "resolved" : tk.status !== "resolved",
@@ -46,6 +46,12 @@ function TenantTickets() {
       }
     >
       <div className="max-w-3xl mx-auto p-4 md:p-8 space-y-4">
+        {ticketsQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Requests could not be loaded" : "Anfragen konnten nicht geladen werden"}
+            description={lang === "EN" ? "The tenant request read failed. This is different from an empty demo database." : "Die Abfrage der Mieteranfragen ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        )}
         <div className="flex items-center gap-1.5 overflow-x-auto -mx-1 px-1">
           {tabs.map((tab) => (
             <button
@@ -65,9 +71,16 @@ function TenantTickets() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border bg-surface p-10 text-center text-sm text-muted-foreground">
-            {lang === "EN" ? "No requests in this view." : "Keine Anfragen in dieser Ansicht."}
-          </div>
+          mine.length === 0 && !ticketsQuery.isLoading ? (
+            <EmptyDataState
+              title={lang === "EN" ? "No tenant requests" : "Keine Mieteranfragen"}
+              description={lang === "EN" ? "The demo database has no tenant ticket records. Reload mock data from the admin page to restore the tenant timeline." : "Die Demo-Datenbank enthaelt keine Mieter-Tickets. Lade Mock-Daten im Adminbereich neu, um die Mieter-Timeline wiederherzustellen."}
+            />
+          ) : (
+            <div className="rounded-xl border border-dashed border-border bg-surface p-10 text-center text-sm text-muted-foreground">
+              {lang === "EN" ? "No requests in this view." : "Keine Anfragen in dieser Ansicht."}
+            </div>
+          )
         ) : (
           <div className="space-y-2">
             {filtered.map((tk) => (

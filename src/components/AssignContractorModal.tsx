@@ -1,22 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sparkles, Wrench, Phone, Mail, FileText, X, CheckCircle2, Star } from "lucide-react";
 import { contractors } from "@/lib/contractors";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/lib/i18n";
-import { useAssignContractor } from "@/lib/api";
+import { useAddTicketEvent, useAssignContractor } from "@/lib/api";
+
+function defaultScheduleValue(hours = 2) {
+  const date = new Date();
+  date.setHours(date.getHours() + Math.max(hours, 1));
+  date.setMinutes(0, 0, 0);
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 16);
+}
 
 export function AssignContractorModal({ ticketId, category, onClose }: { ticketId: string; category: string; onClose: () => void }) {
   const { t, lang } = useLang();
   const list = contractors[category] ?? contractors["Heating"];
   const [selected, setSelected] = useState<string | null>(list[0]?.id ?? null);
   const [assigned, setAssigned] = useState(false);
+  const [quoteRequested, setQuoteRequested] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
   const assignContractor = useAssignContractor();
+  const addTicketEvent = useAddTicketEvent();
   const selectedContractor = list.find((contractor) => contractor.id === selected);
+  const [scheduledFor, setScheduledFor] = useState(defaultScheduleValue(selectedContractor?.etaHours));
+
+  useEffect(() => {
+    setScheduledFor(defaultScheduleValue(selectedContractor?.etaHours));
+  }, [selectedContractor?.etaHours]);
 
   const submitAssignment = async () => {
     if (!selected || assignContractor.isPending) return;
-    await assignContractor.mutateAsync({ data: { ticketId, contractorId: selected } });
-    setAssigned(true);
+    setActionError(null);
+    try {
+      await assignContractor.mutateAsync({ data: { ticketId, contractorId: selected, scheduledFor: new Date(scheduledFor).toISOString() } });
+      setAssigned(true);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : lang === "EN" ? "Assignment failed." : "Beauftragung fehlgeschlagen.");
+    }
+  };
+
+  const requestQuote = async () => {
+    if (!selectedContractor || addTicketEvent.isPending || quoteRequested) return;
+    setActionError(null);
+    try {
+      await addTicketEvent.mutateAsync({
+        data: {
+          ticketId,
+          type: "manager",
+          actorName: "Sarah Krüger",
+          text: lang === "EN"
+            ? `Demo quote request sent to ${selectedContractor.name}.`
+            : `Demo-Angebotsanfrage an ${selectedContractor.name} gesendet.`,
+          role: "pm",
+        },
+      });
+      setQuoteRequested(true);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : lang === "EN" ? "Quote request failed." : "Angebotsanfrage fehlgeschlagen.");
+    }
   };
 
   if (assigned) {
@@ -88,10 +130,23 @@ export function AssignContractorModal({ ticketId, category, onClose }: { ticketI
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <FileText className="h-3.5 w-3.5" /> {lang === "EN" ? "AI generates job summary, attaches photos & address." : "AI erstellt Auftragszusammenfassung, fügt Fotos & Adresse an."}
         </div>
+        <label className="block text-xs text-muted-foreground">
+          <span className="mb-1 block font-medium text-foreground">{lang === "EN" ? "Scheduled appointment" : "Geplanter Termin"}</span>
+          <input
+            type="datetime-local"
+            value={scheduledFor}
+            onChange={(event) => setScheduledFor(event.target.value)}
+            className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-xs outline-none focus:ring-2 focus:ring-ring"
+          />
+        </label>
         <div className="flex flex-wrap gap-2">
-          <a href={selectedContractor ? `mailto:${selectedContractor.email}?subject=${encodeURIComponent(`Anfrage ${ticketId}`)}` : undefined} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
-            <Mail className="h-3.5 w-3.5" /> {t("act.request_quote")}
-          </a>
+          <button
+            disabled={!selectedContractor || addTicketEvent.isPending || quoteRequested}
+            onClick={requestQuote}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+          >
+            <Mail className="h-3.5 w-3.5" /> {quoteRequested ? (lang === "EN" ? "Quote requested" : "Angebot angefragt") : t("act.request_quote")}
+          </button>
           <a href={selectedContractor ? `tel:${selectedContractor.phone}` : undefined} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs hover:bg-accent">
             <Phone className="h-3.5 w-3.5" /> {t("act.call")}
           </a>
@@ -103,6 +158,8 @@ export function AssignContractorModal({ ticketId, category, onClose }: { ticketI
             <CheckCircle2 className="h-3.5 w-3.5" /> {assignContractor.isPending ? t("common.loading") : t("act.send_summary")}
           </button>
         </div>
+        {actionError && <div className="rounded-md bg-destructive/10 px-2.5 py-1.5 text-xs text-destructive">{actionError}</div>}
+        {quoteRequested && <div className="rounded-md bg-success/10 px-2.5 py-1.5 text-xs text-success-foreground">{lang === "EN" ? "The quote request was recorded in the ticket timeline." : "Die Angebotsanfrage wurde in der Ticket-Timeline gespeichert."}</div>}
       </footer>
     </Backdrop>
   );

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useMarkAllNotificationsRead, useMarkNotificationRead, useNotifications } from "@/lib/api";
 import { useRole } from "@/lib/role";
 
@@ -142,10 +143,11 @@ export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: 
   const { lang } = useLang();
   const { role } = useRole();
   const navigate = useNavigate();
-  const { data } = useNotifications();
+  const notificationsQuery = useNotifications();
+  const { data } = notificationsQuery;
   const markOneMutation = useMarkNotificationRead();
   const markAllMutation = useMarkAllNotificationsRead();
-  const [items, setItems] = useState<Notif[]>(seed);
+  const [items, setItems] = useState<Notif[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
 
   useEffect(() => {
@@ -250,9 +252,22 @@ export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: 
         </div>
 
         <div className="flex-1 overflow-y-auto divide-y divide-border">
+          {notificationsQuery.isError && (
+            <div className="p-4">
+              <DataErrorState
+                title={lang === "EN" ? "Notifications could not be loaded" : "Benachrichtigungen konnten nicht geladen werden"}
+                description={lang === "EN" ? "The notification request failed. This is different from an intentionally empty demo database." : "Die Benachrichtigungs-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich geleerte Demo-Datenbank."}
+                className="p-5"
+              />
+            </div>
+          )}
           {filtered.length === 0 && (
-            <div className="p-10 text-center text-sm text-muted-foreground">
-              {lang === "EN" ? "No notifications." : "Keine Benachrichtigungen."}
+            <div className="p-4">
+              <EmptyDataState
+                title={lang === "EN" ? "No notifications" : "Keine Benachrichtigungen"}
+                description={lang === "EN" ? "There are no notification records for this role. Reload mock data from the admin page to restore seeded notifications." : "Fuer diese Rolle gibt es keine Benachrichtigungs-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Benachrichtigungen wiederherzustellen."}
+                className="p-5"
+              />
             </div>
           )}
           {filtered.map((n) => {
@@ -302,5 +317,5 @@ export function NotificationsPanel({ open, onClose }: { open: boolean; onClose: 
 
 export function useNotificationsUnread() {
   const { data } = useNotifications();
-  return (data ?? seed).filter((n) => n.unread).length;
+  return (data ?? []).filter((n) => n.unread).length;
 }

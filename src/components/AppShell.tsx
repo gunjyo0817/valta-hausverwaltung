@@ -33,7 +33,7 @@ import { useRole, ROLE_HOME, ROLE_META, type Role } from "@/lib/role";
 import { useState, useEffect, type ReactNode } from "react";
 import { NewTicketModal } from "./NewTicketModal";
 import { NotificationsPanel, useNotificationsUnread } from "./NotificationsPanel";
-import { useMe } from "@/lib/api";
+import { useGlobalSearch, useMe, type GlobalSearchResultDto } from "@/lib/api";
 
 type NavItem = { to: string; label: string; icon: any; exact?: boolean };
 
@@ -48,6 +48,10 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
   const [newTicketOpen, setNewTicketOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchResultsQuery = useGlobalSearch(searchQuery);
+  const searchResults = searchResultsQuery.data ?? [];
   const notifUnread = useNotificationsUnread();
 
   useEffect(() => {
@@ -94,6 +98,34 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
     setRoleOpen(false);
     navigate({ to: ROLE_HOME[r] as any });
   };
+
+  const navigateToSearchResult = (result: GlobalSearchResultDto) => {
+    setSearchOpen(false);
+    setSearchQuery("");
+    if (result.to.path === "/ticket/$id" && result.to.params?.id) {
+      navigate({ to: "/ticket/$id", params: { id: result.to.params.id } });
+      return;
+    }
+    if (result.to.path === "/properties/$id" && result.to.params?.id) {
+      navigate({ to: "/properties/$id", params: { id: result.to.params.id } });
+      return;
+    }
+    if (result.to.path === "/contractors/$id" && result.to.params?.id) {
+      navigate({ to: "/contractors/$id", params: { id: result.to.params.id } });
+    }
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+        window.setTimeout(() => document.getElementById("global-search")?.focus(), 0);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const roleViewLabelKey = ({
     pm: "role.pm_view",
@@ -153,14 +185,14 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             </div>
             <p className="mt-1 text-xs text-muted-foreground">{t("shell.copilot_blurb")}</p>
           </div>
-          <div className="mt-3 flex items-center gap-2 rounded-md p-2 hover:bg-accent">
+          <Link to={"/admin/demo-data" as any} className="mt-3 flex items-center gap-2 rounded-md p-2 hover:bg-accent">
             <div className={cn("h-7 w-7 rounded-full text-xs font-semibold flex items-center justify-center", meta.color)}>{meta.initials}</div>
             <div className="leading-tight min-w-0">
               <div className="text-xs font-medium truncate">{meta.person[lang]}</div>
               <div className="text-[11px] text-muted-foreground truncate">{meta.org[lang]}</div>
             </div>
             <Settings className="ml-auto h-4 w-4 text-muted-foreground" />
-          </div>
+          </Link>
         </div>
       </aside>
 
@@ -178,10 +210,50 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
             {subtitle && <p className="truncate text-xs text-muted-foreground hidden sm:block">{subtitle}</p>}
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <div className="hidden lg:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64">
+            <div className="relative hidden lg:flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs text-muted-foreground w-64">
               <Search className="h-3.5 w-3.5" />
-              <input placeholder={t("common.search")} className="w-full bg-transparent outline-none placeholder:text-muted-foreground" />
+              <input
+                id="global-search"
+                value={searchQuery}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setSearchOpen(true);
+                }}
+                onFocus={() => setSearchOpen(true)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && searchResults[0]) navigateToSearchResult(searchResults[0]);
+                  if (event.key === "Escape") setSearchOpen(false);
+                }}
+                placeholder={t("common.search")}
+                className="w-full bg-transparent outline-none placeholder:text-muted-foreground"
+              />
               <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[10px]">⌘K</kbd>
+              {searchOpen && searchQuery.trim().length >= 2 && (
+                <>
+                  <div className="fixed inset-0 z-30" onClick={() => setSearchOpen(false)} />
+                  <div className="absolute left-0 right-0 top-full z-40 mt-1.5 overflow-hidden rounded-lg border border-border bg-surface shadow-elegant">
+                    {searchResultsQuery.isLoading && (
+                      <div className="px-3 py-2 text-xs text-muted-foreground">{t("common.loading")}</div>
+                    )}
+                    {!searchResultsQuery.isLoading && searchResults.length === 0 && (
+                      <div className="px-3 py-2 text-xs text-muted-foreground">{t("common.no_results")}</div>
+                    )}
+                    {searchResults.map((result) => (
+                      <button
+                        key={`${result.type}-${result.id}`}
+                        onClick={() => navigateToSearchResult(result)}
+                        className="flex w-full items-start gap-2 px-3 py-2 text-left hover:bg-accent"
+                      >
+                        <span className="mt-0.5 rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{result.type}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-xs font-medium text-foreground">{result.title}</span>
+                          <span className="block truncate text-[11px] text-muted-foreground">{result.subtitle}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Role switcher */}
@@ -346,14 +418,14 @@ export function AppShell({ children, title, subtitle, actions }: { children: Rea
                   </button>
                 </div>
               </div>
-              <div className="flex items-center gap-2 rounded-md p-1">
+              <Link to={"/admin/demo-data" as any} onClick={() => setMobileNavOpen(false)} className="flex items-center gap-2 rounded-md p-1 hover:bg-accent">
                 <div className={cn("h-7 w-7 rounded-full text-xs font-semibold flex items-center justify-center", meta.color)}>{meta.initials}</div>
                 <div className="leading-tight min-w-0">
                   <div className="text-xs font-medium truncate">{meta.person[lang]}</div>
                   <div className="text-[11px] text-muted-foreground truncate">{meta.org[lang]}</div>
                 </div>
                 <Settings className="ml-auto h-4 w-4 text-muted-foreground" />
-              </div>
+              </Link>
             </div>
           </aside>
         </div>

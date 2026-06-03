@@ -13,22 +13,32 @@ import {
   translateText,
 } from "@/server/ai/service";
 import {
+  clearDemoData,
+  getDemoDataStatus,
+  reloadDemoData,
+} from "@/server/demoData";
+import {
   getContractorById,
+  getAiInsights,
   getDashboardData,
+  getFinancialSummary,
   getPropertyById,
   getTicketById,
+  listContractorSchedule,
   listApprovals,
   listContractors,
   listInvoices,
   listNotifications,
   listProperties,
   listTickets,
+  searchGlobal,
 } from "@/server/read/queries";
 import { updateApprovalDecision } from "@/server/write/approvals";
 import { addDocumentMetadata } from "@/server/write/documents";
 import { createTicket } from "@/server/write/tickets";
 import { assignContractor } from "@/server/write/assignments";
 import { updateContractorJob } from "@/server/write/contractorActions";
+import { rescheduleAppointment } from "@/server/write/schedule";
 import {
   markAllNotificationsRead,
   markNotificationRead,
@@ -49,6 +59,28 @@ const idInput = z.object({
 });
 
 const scopedIdInput = idInput.merge(roleInput);
+
+const searchInput = z.object({
+  query: z.string().min(1),
+  limit: z.number().int().min(1).max(20).optional(),
+  role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
+});
+
+const listPropertiesInput = roleInput.extend({
+  query: z.string().optional(),
+  status: z.enum(["all", "healthy", "attention", "urgent"]).optional(),
+  city: z.string().optional(),
+  limit: z.number().int().min(1).max(100).optional(),
+  offset: z.number().int().min(0).optional(),
+});
+
+const listContractorsInput = roleInput.extend({
+  query: z.string().optional(),
+  specialtyKey: z.string().optional(),
+  availability: z.enum(["all", "available", "unavailable"]).optional(),
+  limit: z.number().int().min(1).max(100).optional(),
+  offset: z.number().int().min(0).optional(),
+});
 
 const createTicketInput = z.object({
   title: z.string().optional(),
@@ -71,6 +103,7 @@ const createTicketInput = z.object({
     url: z.string().optional().nullable(),
   })).optional(),
   language: z.enum(["DE", "EN"]).optional(),
+  role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
 });
 
 const ticketStatusInput = z.enum(["new", "waiting", "in_progress", "contractor_assigned", "resolved"]);
@@ -102,6 +135,14 @@ const updateTicketStatusInput = z.object({
 const assignContractorInput = z.object({
   ticketId: z.string().min(1),
   contractorId: z.string().min(1),
+  scheduledFor: z.string().optional(),
+  role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
+});
+
+const rescheduleAppointmentInput = z.object({
+  ticketId: z.string().min(1),
+  scheduledFor: z.string().min(1),
+  etaHours: z.number().optional().nullable(),
   role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
 });
 
@@ -125,6 +166,7 @@ const approvalDecisionInput = z.object({
   id: z.string().min(1),
   status: z.enum(["approved", "rejected", "clarification_requested"]),
   role: z.enum(["pm", "tenant", "contractor", "owner"]).optional(),
+  message: z.string().optional(),
 });
 
 const addDocumentMetadataInput = z.object({
@@ -141,36 +183,50 @@ const aiLanguageInput = z.enum(["DE", "EN"]);
 const structureIntakeInput = z.object({
   raw: z.string().min(1),
   language: aiLanguageInput.optional(),
+  regenerate: z.boolean().optional(),
 });
 
 const intakeFollowUpInput = z.object({
   raw: z.string().min(1),
   language: aiLanguageInput.optional(),
   step: z.number().int().min(0).optional(),
+  regenerate: z.boolean().optional(),
 });
 
 const classifyUrgencyInput = z.object({
   text: z.string().min(1),
   ticketId: z.string().min(1).optional().nullable(),
   language: aiLanguageInput.optional(),
+  regenerate: z.boolean().optional(),
 });
 
 const aiTicketInput = z.object({
   ticketId: z.string().min(1),
   language: aiLanguageInput.optional(),
   ticket: z.any().optional(),
+  regenerate: z.boolean().optional(),
 });
 
 const suggestContractorInput = z.object({
   category: z.string().min(1),
   ticketId: z.string().min(1).optional().nullable(),
   language: aiLanguageInput.optional(),
+  regenerate: z.boolean().optional(),
 });
 
 const translateTextInput = z.object({
   text: z.string().min(1),
   from: aiLanguageInput.optional(),
   to: aiLanguageInput,
+  regenerate: z.boolean().optional(),
+});
+
+const clearDemoDataInput = z.object({
+  confirm: z.literal("CLEAR_DEMO_DATA"),
+});
+
+const reloadDemoDataInput = z.object({
+  confirm: z.literal("RELOAD_DEMO_DATA"),
 });
 
 export const getMeFn = createServerFn({ method: "GET" })
@@ -181,6 +237,14 @@ export const getDashboardDataFn = createServerFn({ method: "GET" })
   .inputValidator(roleInput)
   .handler(({ data }) => getDashboardData(data));
 
+export const getAiInsightsFn = createServerFn({ method: "GET" })
+  .inputValidator(roleInput)
+  .handler(({ data }) => getAiInsights(data));
+
+export const searchGlobalFn = createServerFn({ method: "GET" })
+  .inputValidator(searchInput)
+  .handler(({ data }) => searchGlobal(data));
+
 export const listTicketsFn = createServerFn({ method: "GET" })
   .inputValidator(roleInput)
   .handler(({ data }) => listTickets(data));
@@ -190,7 +254,7 @@ export const getTicketByIdFn = createServerFn({ method: "GET" })
   .handler(({ data }) => getTicketById(data.id, data));
 
 export const listPropertiesFn = createServerFn({ method: "GET" })
-  .inputValidator(roleInput)
+  .inputValidator(listPropertiesInput)
   .handler(({ data }) => listProperties(data));
 
 export const getPropertyByIdFn = createServerFn({ method: "GET" })
@@ -198,7 +262,7 @@ export const getPropertyByIdFn = createServerFn({ method: "GET" })
   .handler(({ data }) => getPropertyById(data.id, data));
 
 export const listContractorsFn = createServerFn({ method: "GET" })
-  .inputValidator(roleInput)
+  .inputValidator(listContractorsInput)
   .handler(({ data }) => listContractors(data));
 
 export const getContractorByIdFn = createServerFn({ method: "GET" })
@@ -216,6 +280,17 @@ export const listApprovalsFn = createServerFn({ method: "GET" })
 export const listInvoicesFn = createServerFn({ method: "GET" })
   .inputValidator(roleInput)
   .handler(({ data }) => listInvoices(data));
+
+export const getFinancialSummaryFn = createServerFn({ method: "GET" })
+  .inputValidator(roleInput)
+  .handler(({ data }) => getFinancialSummary(data));
+
+export const listContractorScheduleFn = createServerFn({ method: "GET" })
+  .inputValidator(roleInput)
+  .handler(({ data }) => listContractorSchedule(data));
+
+export const getDemoDataStatusFn = createServerFn({ method: "GET" })
+  .handler(() => getDemoDataStatus());
 
 export const createTicketFn = createServerFn({ method: "POST" })
   .inputValidator(createTicketInput)
@@ -240,6 +315,10 @@ export const updateTicketStatusFn = createServerFn({ method: "POST" })
 export const assignContractorFn = createServerFn({ method: "POST" })
   .inputValidator(assignContractorInput)
   .handler(({ data }) => assignContractor(data));
+
+export const rescheduleAppointmentFn = createServerFn({ method: "POST" })
+  .inputValidator(rescheduleAppointmentInput)
+  .handler(({ data }) => rescheduleAppointment(data));
 
 export const markNotificationReadFn = createServerFn({ method: "POST" })
   .inputValidator(markNotificationReadInput)
@@ -292,3 +371,11 @@ export const detectMissingInfoFn = createServerFn({ method: "POST" })
 export const translateTextFn = createServerFn({ method: "POST" })
   .inputValidator(translateTextInput)
   .handler(({ data }) => translateText(data));
+
+export const clearDemoDataFn = createServerFn({ method: "POST" })
+  .inputValidator(clearDemoDataInput)
+  .handler(() => clearDemoData());
+
+export const reloadDemoDataFn = createServerFn({ method: "POST" })
+  .inputValidator(reloadDemoDataInput)
+  .handler(() => reloadDemoData());

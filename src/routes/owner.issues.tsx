@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
-import { tickets as mockTickets } from "@/lib/mockData";
 import { StatusBadge, UrgencyBadge } from "@/components/Badges";
 import { AlertOctagon, Clock, Building2 } from "lucide-react";
 import { useState } from "react";
@@ -18,8 +18,9 @@ const etaByUrgency: Record<string, { DE: string; EN: string }> = {
 
 function OwnerIssues() {
   const { t, lang } = useLang();
-  const { data: ticketData } = useTickets();
-  const tickets = ticketData && ticketData.length > 0 ? ticketData : mockTickets;
+  const ticketsQuery = useTickets();
+  const ticketData = ticketsQuery.data;
+  const tickets = ticketData ?? [];
   const open = tickets.filter((tk) => tk.status !== "resolved");
   const [filter, setFilter] = useState<"all" | "critical" | "high" | "medium">("all");
   const filtered = filter === "all" ? open : open.filter((tk) => tk.urgency === filter);
@@ -34,6 +35,12 @@ function OwnerIssues() {
   return (
     <AppShell title={t("odash.issues_title")} subtitle={t("odash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
+        {ticketsQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Owner issues could not be loaded" : "Eigentuemer-Faelle konnten nicht geladen werden"}
+            description={lang === "EN" ? "The ticket read failed. This is different from an intentionally empty demo database." : "Die Ticket-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich geleerte Demo-Datenbank."}
+          />
+        )}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {([
             ["all", lang === "EN" ? "Open total" : "Offen gesamt", "text-primary bg-primary/10"],
@@ -96,7 +103,16 @@ function OwnerIssues() {
           ))}
 
           {filtered.length === 0 && (
-            <div className="p-10 text-center text-sm text-muted-foreground">{t("common.no_results")}</div>
+            <div className="p-8">
+              {open.length === 0 && !ticketsQuery.isLoading ? (
+                <EmptyDataState
+                  title={lang === "EN" ? "No open owner issues" : "Keine offenen Eigentuemer-Faelle"}
+                  description={lang === "EN" ? "There are no open ticket records. Reload mock data from the admin page to restore owner issue rows." : "Es gibt keine offenen Ticket-Datensaetze. Lade Mock-Daten im Adminbereich neu, um Eigentuemer-Faelle wiederherzustellen."}
+                />
+              ) : (
+                <div className="text-center text-sm text-muted-foreground">{t("common.no_results")}</div>
+              )}
+            </div>
           )}
         </div>
       </div>

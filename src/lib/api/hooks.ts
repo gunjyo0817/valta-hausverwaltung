@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   classifyUrgencyFn,
   addTicketEventFn,
+  clearDemoDataFn,
   addDocumentMetadataFn,
   assignContractorFn,
   approveTicketReplyFn,
@@ -11,12 +12,16 @@ import {
   generateIntakeFollowUpFn,
   generateReplyDraftFn,
   generateSummaryFn,
+  getAiInsightsFn,
+  getDemoDataStatusFn,
   getMeFn,
   getContractorByIdFn,
   getDashboardDataFn,
+  getFinancialSummaryFn,
   getPropertyByIdFn,
   getTicketByIdFn,
   listApprovalsFn,
+  listContractorScheduleFn,
   listContractorsFn,
   listInvoicesFn,
   listNotificationsFn,
@@ -25,6 +30,9 @@ import {
   markAllNotificationsReadFn,
   markNotificationReadFn,
   requestMissingInfoFn,
+  rescheduleAppointmentFn,
+  reloadDemoDataFn,
+  searchGlobalFn,
   structureIntakeFn,
   suggestContractorFn,
   translateTextFn,
@@ -33,20 +41,55 @@ import {
   updateTicketStatusFn,
 } from "./serverFns";
 import { useRole } from "@/lib/role";
-import type { ApprovalDto, NotificationDto, PropertyDto, TicketDto } from "./types";
+import type { ApprovalDto, NotificationDto, PropertyDto, Role, TicketDto } from "./types";
+
+type PropertyListOptions = {
+  query?: string;
+  status?: "all" | "healthy" | "attention" | "urgent";
+  city?: string;
+  limit?: number;
+  offset?: number;
+};
+
+type ContractorListOptions = {
+  query?: string;
+  specialtyKey?: string;
+  availability?: "all" | "available" | "unavailable";
+  limit?: number;
+  offset?: number;
+};
+
+function withDemoRole<TInput>(input: TInput, role: Role): TInput {
+  if (!input || typeof input !== "object" || !("data" in input)) return input;
+  const candidate = input as { data?: unknown };
+  if (!candidate.data || typeof candidate.data !== "object" || Array.isArray(candidate.data)) return input;
+  const data = candidate.data as Record<string, unknown>;
+  if ("role" in data) return input;
+  return {
+    ...(input as Record<string, unknown>),
+    data: {
+      ...data,
+      role,
+    },
+  } as TInput;
+}
 
 export const queryKeys = {
   me: (role: string) => ["me", role] as const,
   dashboard: (role: string) => ["dashboard", role] as const,
+  aiInsights: (role: string) => ["aiInsights", role] as const,
+  globalSearch: (role: string, query: string) => ["globalSearch", role, query] as const,
   tickets: (role: string) => ["tickets", role] as const,
   ticket: (role: string, id: string) => ["tickets", role, id] as const,
-  properties: (role: string) => ["properties", role] as const,
+  properties: (role: string, options?: PropertyListOptions) => ["properties", role, options ?? {}] as const,
   property: (role: string, id: string) => ["properties", role, id] as const,
-  contractors: (role: string) => ["contractors", role] as const,
+  contractors: (role: string, options?: ContractorListOptions) => ["contractors", role, options ?? {}] as const,
   contractor: (role: string, id: string) => ["contractors", role, id] as const,
   notifications: (role: string) => ["notifications", role] as const,
   approvals: (role: string) => ["approvals", role] as const,
   invoices: (role: string) => ["invoices", role] as const,
+  financialSummary: (role: string) => ["financialSummary", role] as const,
+  contractorSchedule: (role: string) => ["contractorSchedule", role] as const,
 };
 
 function useTicketMutation<TInput>(mutationFn: (input: TInput) => Promise<TicketDto | null>) {
@@ -54,14 +97,21 @@ function useTicketMutation<TInput>(mutationFn: (input: TInput) => Promise<Ticket
   const { role } = useRole();
 
   return useMutation({
-    mutationFn,
+    mutationFn: (input) => mutationFn(withDemoRole(input, role)),
     onSuccess: async (ticket) => {
+      if (ticket) {
+        queryClient.setQueriesData<TicketDto[]>({ queryKey: ["tickets"] }, (tickets) =>
+          tickets?.map((item) => (item.id === ticket.id ? ticket : item)),
+        );
+      }
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
         queryClient.invalidateQueries({ queryKey: ["tickets"] }),
         queryClient.invalidateQueries({ queryKey: ["properties"] }),
         queryClient.invalidateQueries({ queryKey: ["contractors"] }),
+        queryClient.invalidateQueries({ queryKey: ["contractorSchedule"] }),
         queryClient.invalidateQueries({ queryKey: ["notifications"] }),
+        queryClient.invalidateQueries({ queryKey: ["aiInsights"] }),
       ]);
       if (ticket) queryClient.setQueryData(queryKeys.ticket(role, ticket.id), ticket);
     },
@@ -86,6 +136,26 @@ export function useDashboardData() {
   });
 }
 
+export function useAiInsights() {
+  const { role } = useRole();
+
+  return useQuery({
+    queryKey: queryKeys.aiInsights(role),
+    queryFn: () => getAiInsightsFn({ data: { role } }),
+  });
+}
+
+export function useGlobalSearch(query: string) {
+  const { role } = useRole();
+  const normalized = query.trim();
+
+  return useQuery({
+    queryKey: queryKeys.globalSearch(role, normalized),
+    queryFn: () => searchGlobalFn({ data: { query: normalized, role, limit: 8 } }),
+    enabled: normalized.length >= 2,
+  });
+}
+
 export function useTickets() {
   const { role } = useRole();
 
@@ -105,12 +175,12 @@ export function useTicket(id: string) {
   });
 }
 
-export function useProperties() {
+export function useProperties(options: PropertyListOptions = {}) {
   const { role } = useRole();
 
   return useQuery({
-    queryKey: queryKeys.properties(role),
-    queryFn: () => listPropertiesFn({ data: { role } }),
+    queryKey: queryKeys.properties(role, options),
+    queryFn: () => listPropertiesFn({ data: { role, ...options } }),
   });
 }
 
@@ -124,12 +194,12 @@ export function useProperty(id: string) {
   });
 }
 
-export function useContractors() {
+export function useContractors(options: ContractorListOptions = {}) {
   const { role } = useRole();
 
   return useQuery({
-    queryKey: queryKeys.contractors(role),
-    queryFn: () => listContractorsFn({ data: { role } }),
+    queryKey: queryKeys.contractors(role, options),
+    queryFn: () => listContractorsFn({ data: { role, ...options } }),
   });
 }
 
@@ -170,12 +240,37 @@ export function useInvoices() {
   });
 }
 
+export function useFinancialSummary() {
+  const { role } = useRole();
+
+  return useQuery({
+    queryKey: queryKeys.financialSummary(role),
+    queryFn: () => getFinancialSummaryFn({ data: { role } }),
+  });
+}
+
+export function useContractorSchedule() {
+  const { role } = useRole();
+
+  return useQuery({
+    queryKey: queryKeys.contractorSchedule(role),
+    queryFn: () => listContractorScheduleFn({ data: { role } }),
+  });
+}
+
+export function useDemoDataStatus() {
+  return useQuery({
+    queryKey: ["demo-data-status"],
+    queryFn: () => getDemoDataStatusFn(),
+  });
+}
+
 function useNotificationMutation<TInput>(mutationFn: (input: TInput) => Promise<NotificationDto[]>) {
   const queryClient = useQueryClient();
   const { role } = useRole();
 
   return useMutation({
-    mutationFn,
+    mutationFn: (input) => mutationFn(withDemoRole(input, role)),
     onSuccess: (notifications) => {
       queryClient.setQueryData(queryKeys.notifications(role), notifications);
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
@@ -188,7 +283,7 @@ export function useCreateTicket() {
   const { role } = useRole();
 
   return useMutation({
-    mutationFn: createTicketFn,
+    mutationFn: (input: Parameters<typeof createTicketFn>[0]) => createTicketFn(withDemoRole(input, role)),
     onSuccess: async (ticket) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
@@ -196,6 +291,7 @@ export function useCreateTicket() {
         queryClient.invalidateQueries({ queryKey: ["properties"] }),
         queryClient.invalidateQueries({ queryKey: ["contractors"] }),
         queryClient.invalidateQueries({ queryKey: ["notifications"] }),
+        queryClient.invalidateQueries({ queryKey: ["aiInsights"] }),
       ]);
       queryClient.setQueryData(queryKeys.ticket(role, ticket.id), ticket);
     },
@@ -226,17 +322,23 @@ export function useUpdateContractorJob() {
   return useTicketMutation(updateContractorJobFn);
 }
 
+export function useRescheduleAppointment() {
+  return useTicketMutation(rescheduleAppointmentFn);
+}
+
 export function useUpdateApprovalDecision() {
   const queryClient = useQueryClient();
   const { role } = useRole();
 
   return useMutation({
-    mutationFn: updateApprovalDecisionFn,
+    mutationFn: (input: Parameters<typeof updateApprovalDecisionFn>[0]) => updateApprovalDecisionFn(withDemoRole(input, role)),
     onSuccess: async (approvals: ApprovalDto[]) => {
       queryClient.setQueryData(queryKeys.approvals(role), approvals);
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
         queryClient.invalidateQueries({ queryKey: ["notifications"] }),
+        queryClient.invalidateQueries({ queryKey: ["financialSummary"] }),
+        queryClient.invalidateQueries({ queryKey: ["aiInsights"] }),
       ]);
     },
   });
@@ -247,13 +349,14 @@ export function useAddDocumentMetadata() {
   const { role } = useRole();
 
   return useMutation({
-    mutationFn: addDocumentMetadataFn,
+    mutationFn: (input: Parameters<typeof addDocumentMetadataFn>[0]) => addDocumentMetadataFn(withDemoRole(input, role)),
     onSuccess: async (result, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
         queryClient.invalidateQueries({ queryKey: ["tickets"] }),
         queryClient.invalidateQueries({ queryKey: ["properties"] }),
         queryClient.invalidateQueries({ queryKey: ["notifications"] }),
+        queryClient.invalidateQueries({ queryKey: ["aiInsights"] }),
       ]);
 
       if (!result) return;
@@ -267,51 +370,65 @@ export function useAddDocumentMetadata() {
 }
 
 export function useStructureIntake() {
-  return useMutation({
-    mutationFn: structureIntakeFn,
-  });
+  return useAiMutation(structureIntakeFn);
 }
 
 export function useGenerateIntakeFollowUp() {
-  return useMutation({
-    mutationFn: generateIntakeFollowUpFn,
-  });
+  return useAiMutation(generateIntakeFollowUpFn);
 }
 
 export function useClassifyUrgency() {
-  return useMutation({
-    mutationFn: classifyUrgencyFn,
-  });
+  return useAiMutation(classifyUrgencyFn);
 }
 
 export function useGenerateSummary() {
-  return useMutation({
-    mutationFn: generateSummaryFn,
-  });
+  return useAiMutation(generateSummaryFn);
 }
 
 export function useSuggestContractor() {
-  return useMutation({
-    mutationFn: suggestContractorFn,
-  });
+  return useAiMutation(suggestContractorFn);
 }
 
 export function useGenerateReplyDraft() {
-  return useMutation({
-    mutationFn: generateReplyDraftFn,
-  });
+  return useAiMutation(generateReplyDraftFn);
 }
 
 export function useDetectMissingInfo() {
-  return useMutation({
-    mutationFn: detectMissingInfoFn,
-  });
+  return useAiMutation(detectMissingInfoFn);
 }
 
 export function useTranslateText() {
+  return useAiMutation(translateTextFn);
+}
+
+function useAiMutation<TInput, TResult>(mutationFn: (input: TInput) => Promise<TResult>) {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: translateTextFn,
+    mutationFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["aiInsights"] });
+    },
   });
+}
+
+function useDemoDataMutation<TInput>(mutationFn: (input: TInput) => Promise<unknown>) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+    },
+  });
+}
+
+export function useClearDemoData() {
+  return useDemoDataMutation(clearDemoDataFn);
+}
+
+export function useReloadDemoData() {
+  return useDemoDataMutation(reloadDemoDataFn);
 }
 
 export function useMarkNotificationRead() {

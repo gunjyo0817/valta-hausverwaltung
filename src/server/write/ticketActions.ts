@@ -1,9 +1,12 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 import type { HistoryItem, LocalizedText, Role, TicketStatus } from "@/lib/api/types";
 import { db } from "@/server/db/client";
-import { notifications, ticketEvents, tickets } from "@/server/db/schema";
+import { notifications, ticketAssignments, ticketEvents, tickets } from "@/server/db/schema";
 import { getTicketById } from "@/server/read/queries";
+import { syncTicketDerivedCounts } from "@/server/write/consistency";
+import { addDeliverySimulation } from "@/server/write/delivery";
+import { requireDemoWriteRole, requireTicketEventRole } from "@/server/write/authz";
 
 type TicketEventType = HistoryItem["type"];
 
@@ -58,11 +61,13 @@ async function nextSequence(ticketId: string) {
 }
 
 async function ensureTicket(ticketId: string) {
-  const [ticket] = await db.select({ id: tickets.id }).from(tickets).where(eq(tickets.id, ticketId)).limit(1);
+  const [ticket] = await db.select().from(tickets).where(eq(tickets.id, ticketId)).limit(1);
   if (!ticket) throw new Error(`Ticket not found: ${ticketId}`);
+  return ticket;
 }
 
 export async function addTicketEvent(input: AddTicketEventInput) {
+  const role = requireTicketEventRole(input.type, input.role);
   await ensureTicket(input.ticketId);
 
   const sequence = await nextSequence(input.ticketId);
@@ -78,32 +83,83 @@ export async function addTicketEvent(input: AddTicketEventInput) {
 
   if (input.status) {
     await db.update(tickets).set({ status: input.status, updatedAt: new Date() }).where(eq(tickets.id, input.ticketId));
+    if (input.status === "resolved") {
+      const [ticket] = await db.select().from(tickets).where(eq(tickets.id, input.ticketId)).limit(1);
+      if (ticket?.contractorId) {
+        await db
+          .update(ticketAssignments)
+          .set({ status: "completed", updatedAt: new Date() })
+          .where(and(eq(ticketAssignments.ticketId, input.ticketId), eq(ticketAssignments.contractorId, ticket.contractorId)));
+      }
+    }
+    await syncTicketDerivedCounts(input.ticketId);
   }
 
-  return getTicketById(input.ticketId, { role: input.role ?? "pm" });
+  if (input.type === "contractor" && role === "contractor") {
+    await addDeliverySimulation({
+      ticketId: input.ticketId,
+      channel: "in_app",
+      recipient: "pm",
+      subject: bi("Handwerker-Nachricht im Ticket erfasst.", "Contractor message recorded on the ticket."),
+      status: "sent",
+    });
+  }
+
+  return getTicketById(input.ticketId, { role });
 }
 
-export function approveTicketReply(input: ApproveTicketReplyInput) {
-  return addTicketEvent({
+export async function approveTicketReply(input: ApproveTicketReplyInput) {
+  const role = requireDemoWriteRole("approve ticket reply", input.role, ["pm"]);
+  await addTicketEvent({
     ticketId: input.ticketId,
     type: "manager",
     text: input.text,
-    role: input.role,
+    role,
     actorName: "Sarah Krüger",
   });
+  await addDeliverySimulation({
+    ticketId: input.ticketId,
+    channel: "email",
+    recipient: "tenant",
+    subject: bi("Antwort der Hausverwaltung wurde zugestellt.", "Property-management reply delivered."),
+    status: "sent",
+  });
+  await addDeliverySimulation({
+    ticketId: input.ticketId,
+    channel: "in_app",
+    recipient: "tenant",
+    subject: bi("Antwort im Mieterportal verfuegbar.", "Reply available in the tenant portal."),
+    status: "read",
+  });
+  return getTicketById(input.ticketId, { role });
 }
 
 export async function requestMissingInfo(input: RequestMissingInfoInput) {
+  const role = requireDemoWriteRole("request missing information", input.role, ["pm"]);
   const ticket = await addTicketEvent({
     ticketId: input.ticketId,
     type: "manager",
     text: input.text,
-    role: input.role,
+    role,
     actorName: "Sarah Krüger",
     status: "waiting",
   });
   await notifyTenantMissingInfo(input.ticketId);
-  return ticket;
+  await addDeliverySimulation({
+    ticketId: input.ticketId,
+    channel: "email",
+    recipient: "tenant",
+    subject: bi("Rueckfrage mit fehlenden Angaben wurde zugestellt.", "Missing-information request delivered."),
+    status: "sent",
+  });
+  await addDeliverySimulation({
+    ticketId: input.ticketId,
+    channel: "sms",
+    recipient: "tenant",
+    subject: bi("SMS-Hinweis zur Rueckfrage wurde versendet.", "SMS reminder for the information request sent."),
+    status: "sent",
+  });
+  return (await getTicketById(input.ticketId, { role })) ?? ticket;
 }
 
 export async function notifyTenantMissingInfo(ticketId: string) {
@@ -136,9 +192,24 @@ export async function notifyTenantMissingInfo(ticketId: string) {
 }
 
 export async function updateTicketStatus(input: UpdateTicketStatusInput) {
-  await ensureTicket(input.ticketId);
+  const role = requireDemoWriteRole("update ticket status", input.role, ["pm", "tenant"]);
+  const ticket = await ensureTicket(input.ticketId);
+  if (role === "tenant" && input.status !== "resolved") {
+    throw new Error("Demo authorization denied for tenant status update: tenants can only confirm resolved.");
+  }
+
+  if (ticket.status === input.status && !input.note?.trim()) {
+    return getTicketById(input.ticketId, { role });
+  }
 
   await db.update(tickets).set({ status: input.status, updatedAt: new Date() }).where(eq(tickets.id, input.ticketId));
+  if (input.status === "resolved" && ticket.contractorId) {
+    await db
+      .update(ticketAssignments)
+      .set({ status: "completed", updatedAt: new Date() })
+      .where(and(eq(ticketAssignments.ticketId, input.ticketId), eq(ticketAssignments.contractorId, ticket.contractorId)));
+  }
+  await syncTicketDerivedCounts(input.ticketId);
 
   await db
     .insert(notifications)
@@ -169,10 +240,10 @@ export async function updateTicketStatus(input: UpdateTicketStatusInput) {
       ticketId: input.ticketId,
       type: "system",
       text: input.note.trim(),
-      role: input.role,
+      role,
       actorName: "Sarah Krüger",
     });
   }
 
-  return getTicketById(input.ticketId, { role: input.role ?? "pm" });
+  return getTicketById(input.ticketId, { role });
 }

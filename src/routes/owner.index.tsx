@@ -1,21 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
-import { properties as mockProperties } from "@/lib/properties";
-import { tickets as mockTickets } from "@/lib/mockData";
-import { Building2, AlertOctagon, ShieldCheck, Wallet, Sparkles, ArrowRight, TrendingDown, TrendingUp } from "lucide-react";
-import { useApprovals, useProperties, useTickets, useUpdateApprovalDecision } from "@/lib/api";
+import { Building2, AlertOctagon, ShieldCheck, Wallet, Sparkles, ArrowRight } from "lucide-react";
+import { useApprovals, useFinancialSummary, useProperties, useTickets, useUpdateApprovalDecision } from "@/lib/api";
 
 export const Route = createFileRoute("/owner/")({ component: OwnerHome });
 
 function OwnerHome() {
   const { t, lang } = useLang();
-  const { data: propertyData } = useProperties();
-  const { data: ticketData } = useTickets();
-  const { data: approvalData } = useApprovals();
+  const propertiesQuery = useProperties();
+  const ticketsQuery = useTickets();
+  const approvalsQuery = useApprovals();
+  const financialSummaryQuery = useFinancialSummary();
+  const propertyData = propertiesQuery.data;
+  const ticketData = ticketsQuery.data;
+  const approvalData = approvalsQuery.data;
+  const financialSummary = financialSummaryQuery.data;
   const updateApproval = useUpdateApprovalDecision();
-  const properties = propertyData && propertyData.length > 0 ? propertyData : mockProperties;
-  const tickets = ticketData && ticketData.length > 0 ? ticketData : mockTickets;
+  const properties = propertyData ?? [];
+  const tickets = ticketData ?? [];
   const openCases = tickets.filter((tk) => tk.status !== "resolved").length;
   const totalUnits = properties.reduce((s, p) => s + p.units, 0);
   const hasApprovalData = Array.isArray(approvalData);
@@ -24,14 +28,10 @@ function OwnerHome() {
   const kpi = [
     { label: t("odash.kpi_units"), value: totalUnits, sub: `${properties.length} ${t("common.properties")}`, icon: Building2, color: "text-primary bg-primary/10" },
     { label: t("odash.kpi_open"), value: openCases, sub: t("common.critical"), icon: AlertOctagon, color: "text-destructive bg-destructive/10" },
-    { label: t("odash.kpi_approvals"), value: hasApprovalData ? (pendingApprovals?.length ?? 0) : 2, sub: "—", icon: ShieldCheck, color: "text-warning bg-warning/10" },
-    { label: t("odash.kpi_costs"), value: "€ 48.230", sub: "−12% YoY", icon: Wallet, color: "text-success bg-success/10" },
+    { label: t("odash.kpi_approvals"), value: hasApprovalData ? (pendingApprovals?.length ?? 0) : 0, sub: "—", icon: ShieldCheck, color: "text-warning bg-warning/10" },
+    { label: t("odash.kpi_costs"), value: financialSummary?.ytdSpendLabel ?? "€ 0", sub: `${financialSummary?.budgetUtilization ?? 0}% ${lang === "EN" ? "budget" : "Budget"}`, icon: Wallet, color: "text-success bg-success/10" },
   ];
 
-  const fallbackApprovals = [
-    { id: "AP-104", title: { DE: "Heizungsanlage Lindenstr. 22 – Tausch", EN: "Heating system Lindenstr. 22 — replacement" }, amount: "€ 12.400", urgency: "high", reason: { DE: "3 wiederkehrende Ausfälle in 30 Tagen.", EN: "3 recurring failures in 30 days." } },
-    { id: "AP-103", title: { DE: "Dachsanierung Parkallee 110", EN: "Roof repair Parkallee 110" }, amount: "€ 8.900", urgency: "medium", reason: { DE: "Angebot von Dachdecker Hansen vorliegend.", EN: "Quote from roofer Hansen available." } },
-  ];
   const approvals =
     hasApprovalData
       ? (pendingApprovals ?? []).slice(0, 2).map((approval) => ({
@@ -41,11 +41,17 @@ function OwnerHome() {
           urgency: approval.urgency,
           reason: approval.summary,
         }))
-      : fallbackApprovals;
+      : [];
 
   return (
     <AppShell title={t("odash.title")} subtitle={t("odash.sub")}>
       <div className="p-6 md:p-8 space-y-6">
+        {(propertiesQuery.isError || ticketsQuery.isError || approvalsQuery.isError || financialSummaryQuery.isError) && (
+          <DataErrorState
+            title={lang === "EN" ? "Owner dashboard data could not be loaded" : "Eigentuemer-Dashboard konnte nicht geladen werden"}
+            description={lang === "EN" ? "At least one backend read failed. This is different from an intentionally empty demo database." : "Mindestens eine Backend-Abfrage ist fehlgeschlagen. Das ist etwas anderes als eine absichtlich leere Demo-Datenbank."}
+          />
+        )}
         {/* KPIs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {kpi.map((k) => (
@@ -80,6 +86,13 @@ function OwnerHome() {
             </div>
             <p className="text-xs text-muted-foreground mb-4">{t("odash.health_sub")}</p>
             <div className="space-y-2">
+              {properties.length === 0 && !propertiesQuery.isLoading && (
+                <EmptyDataState
+                  title={lang === "EN" ? "No properties" : "Keine Objekte"}
+                  description={lang === "EN" ? "There are no property records to summarize. Reload mock data from the admin page to restore owner portfolio data." : "Es gibt keine Objekt-Datensaetze fuer diese Zusammenfassung. Lade Mock-Daten im Adminbereich neu, um Portfolio-Daten wiederherzustellen."}
+                  className="p-5"
+                />
+              )}
               {properties.slice(0, 4).map((p) => {
                 const open = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved").length;
                 const health = open === 0 ? "healthy" : open >= 2 ? "urgent" : "attention";
@@ -103,6 +116,13 @@ function OwnerHome() {
             <h3 className="text-sm font-semibold">{t("odash.approvals_title")}</h3>
             <p className="text-xs text-muted-foreground mb-3">{t("odash.approvals_sub")}</p>
             <div className="space-y-3">
+              {approvals.length === 0 && !approvalsQuery.isLoading && (
+                <EmptyDataState
+                  title={lang === "EN" ? "No approvals" : "Keine Freigaben"}
+                  description={lang === "EN" ? "There are no pending approval records." : "Es gibt keine offenen Freigabe-Datensaetze."}
+                  className="p-5"
+                />
+              )}
               {approvals.map((a) => (
                 <div key={a.id} className="rounded-lg border border-border p-3">
                   <div className="flex items-start justify-between gap-2">
@@ -124,20 +144,21 @@ function OwnerHome() {
         <div className="rounded-xl border border-border bg-surface p-5">
           <h3 className="text-sm font-semibold mb-3">{t("odash.cost_breakdown")}</h3>
           <div className="space-y-2.5">
-            {[
-              { label: { DE: "Heizung", EN: "Heating" }, value: 38, amount: "€ 18.320" },
-              { label: { DE: "Wasser/Sanitär", EN: "Plumbing" }, value: 24, amount: "€ 11.580" },
-              { label: { DE: "Elektrik", EN: "Electrical" }, value: 16, amount: "€ 7.720" },
-              { label: { DE: "Aufzug", EN: "Elevator" }, value: 12, amount: "€ 5.790" },
-              { label: { DE: "Sonstiges", EN: "Other" }, value: 10, amount: "€ 4.820" },
-            ].map((c) => (
-              <div key={c.amount} className="flex items-center gap-3">
-                <div className="text-xs text-muted-foreground w-24 shrink-0">{c.label[lang]}</div>
+            {(financialSummary?.categoryBreakdown ?? []).length === 0 && !financialSummaryQuery.isLoading && (
+              <EmptyDataState
+                title={lang === "EN" ? "No cost categories" : "Keine Kostenkategorien"}
+                description={lang === "EN" ? "There are no invoices to summarize." : "Es gibt keine Rechnungen fuer diese Zusammenfassung."}
+                className="p-5"
+              />
+            )}
+            {(financialSummary?.categoryBreakdown ?? []).map((c) => (
+              <div key={c.category.DE} className="flex items-center gap-3">
+                <div className="text-xs text-muted-foreground w-24 shrink-0">{c.category[lang]}</div>
                 <div className="flex-1 h-2 rounded-full bg-accent overflow-hidden">
-                  <div className="h-full bg-primary" style={{ width: `${c.value * 2}%` }} />
+                  <div className="h-full bg-primary" style={{ width: `${Math.min(100, c.pct)}%` }} />
                 </div>
-                <div className="text-xs font-medium w-20 text-right tabular-nums">{c.amount}</div>
-                <div className="text-[10px] text-success flex items-center gap-0.5 w-10 justify-end"><TrendingDown className="h-2.5 w-2.5" />−{Math.round(c.value / 3)}%</div>
+                <div className="text-xs font-medium w-20 text-right tabular-nums">{c.amountLabel}</div>
+                <div className="text-[10px] text-muted-foreground flex items-center gap-0.5 w-10 justify-end">{c.pct}%</div>
               </div>
             ))}
           </div>

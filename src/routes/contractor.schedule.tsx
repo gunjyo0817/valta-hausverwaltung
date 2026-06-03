@@ -1,163 +1,160 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AppShell } from "@/components/AppShell";
-import { useLang } from "@/lib/i18n";
-import { tickets as mockTickets } from "@/lib/mockData";
-import { UrgencyBadge } from "@/components/Badges";
-import { Calendar, MapPin, Clock, ChevronLeft, ChevronRight, User, Phone } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useTickets, useUpdateContractorJob } from "@/lib/api";
+import { Calendar, ChevronLeft, ChevronRight, Clock, MapPin, Phone, User } from "lucide-react";
+
+import { AppShell } from "@/components/AppShell";
+import { DataErrorState, EmptyDataState } from "@/components/DataState";
+import { UrgencyBadge } from "@/components/Badges";
+import { useLang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import { useContractorSchedule, useRescheduleAppointment, useUpdateContractorJob, type ContractorAppointmentDto } from "@/lib/api";
 
 export const Route = createFileRoute("/contractor/schedule")({ component: Schedule });
 
-type Appt = {
-  ticketIndex: number;
-  day: number;
-  start: string;
-  end: string;
-  tenant: string;
-};
+function localDateTimeValue(iso?: string | null) {
+  const date = iso ? new Date(iso) : new Date();
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 16);
+}
 
-type WeekDay = { de: string; en: string; date: string };
+function startOfIsoWeek(date: Date) {
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  const day = (result.getDay() + 6) % 7;
+  result.setDate(result.getDate() - day);
+  return result;
+}
 
-type Week = {
-  number: number;
-  label: { de: string; en: string };
-  days: WeekDay[];
-  appts: Appt[];
-};
+function weekNumber(date: Date) {
+  const value = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNumber = value.getUTCDay() || 7;
+  value.setUTCDate(value.getUTCDate() + 4 - dayNumber);
+  const yearStart = new Date(Date.UTC(value.getUTCFullYear(), 0, 1));
+  return Math.ceil((((value.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
 
-const weeks: Week[] = [
-  {
-    number: 22,
-    label: { de: "25.–29. Mai", en: "May 25–29" },
-    days: [
-      { de: "Mo", en: "Mon", date: "25.05" },
-      { de: "Di", en: "Tue", date: "26.05" },
-      { de: "Mi", en: "Wed", date: "27.05" },
-      { de: "Do", en: "Thu", date: "28.05" },
-      { de: "Fr", en: "Fri", date: "29.05" },
-    ],
-    appts: [
-      { ticketIndex: 0, day: 0, start: "09:00", end: "11:00", tenant: "Anna Becker" },
-      { ticketIndex: 1, day: 0, start: "14:00", end: "15:30", tenant: "Mehmet Yilmaz" },
-      { ticketIndex: 2, day: 1, start: "08:30", end: "10:00", tenant: "Sophia Klein" },
-      { ticketIndex: 3, day: 2, start: "11:00", end: "12:30", tenant: "Lukas Wagner" },
-      { ticketIndex: 4, day: 3, start: "09:00", end: "10:30", tenant: "Clara Hoffmann" },
-      { ticketIndex: 0, day: 3, start: "14:00", end: "16:00", tenant: "Anna Becker" },
-      { ticketIndex: 6, day: 4, start: "10:00", end: "11:00", tenant: "Elena Fischer" },
-    ],
-  },
-  {
-    number: 23,
-    label: { de: "1.–5. Juni", en: "Jun 1–5" },
-    days: [
-      { de: "Mo", en: "Mon", date: "01.06" },
-      { de: "Di", en: "Tue", date: "02.06" },
-      { de: "Mi", en: "Wed", date: "03.06" },
-      { de: "Do", en: "Thu", date: "04.06" },
-      { de: "Fr", en: "Fri", date: "05.06" },
-    ],
-    appts: [
-      { ticketIndex: 2, day: 0, start: "08:00", end: "09:30", tenant: "Sophia Klein" },
-      { ticketIndex: 4, day: 1, start: "10:00", end: "12:00", tenant: "Clara Hoffmann" },
-      { ticketIndex: 1, day: 1, start: "13:30", end: "15:00", tenant: "Mehmet Yilmaz" },
-      { ticketIndex: 6, day: 2, start: "09:30", end: "11:00", tenant: "Elena Fischer" },
-      { ticketIndex: 3, day: 3, start: "14:00", end: "15:30", tenant: "Lukas Wagner" },
-      { ticketIndex: 0, day: 4, start: "08:30", end: "10:30", tenant: "Anna Becker" },
-    ],
-  },
-  {
-    number: 24,
-    label: { de: "8.–12. Juni", en: "Jun 8–12" },
-    days: [
-      { de: "Mo", en: "Mon", date: "08.06" },
-      { de: "Di", en: "Tue", date: "09.06" },
-      { de: "Mi", en: "Wed", date: "10.06" },
-      { de: "Do", en: "Thu", date: "11.06" },
-      { de: "Fr", en: "Fri", date: "12.06" },
-    ],
-    appts: [
-      { ticketIndex: 1, day: 0, start: "09:00", end: "10:30", tenant: "Mehmet Yilmaz" },
-      { ticketIndex: 0, day: 1, start: "11:00", end: "12:30", tenant: "Anna Becker" },
-      { ticketIndex: 4, day: 2, start: "08:30", end: "10:00", tenant: "Clara Hoffmann" },
-      { ticketIndex: 2, day: 2, start: "13:00", end: "14:30", tenant: "Sophia Klein" },
-      { ticketIndex: 6, day: 4, start: "15:00", end: "16:30", tenant: "Elena Fischer" },
-    ],
-  },
-];
+function weekDays(weekStart: Date, lang: "DE" | "EN") {
+  return Array.from({ length: 5 }).map((_, index) => {
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + index);
+    return {
+      date,
+      key: date.toISOString().slice(0, 10),
+      day: new Intl.DateTimeFormat(lang === "EN" ? "en-US" : "de-DE", { weekday: "short" }).format(date),
+      label: new Intl.DateTimeFormat(lang === "EN" ? "en-US" : "de-DE", { day: "2-digit", month: "2-digit" }).format(date),
+    };
+  });
+}
 
-const CURRENT_WEEK_INDEX = 0;
+function appointmentDateKey(appointment: ContractorAppointmentDto) {
+  return appointment.scheduledFor ? new Date(appointment.scheduledFor).toISOString().slice(0, 10) : "unscheduled";
+}
 
 function Schedule() {
   const { t, lang } = useLang();
-  const { data } = useTickets();
+  const scheduleQuery = useContractorSchedule();
   const updateJob = useUpdateContractorJob();
-  const tickets = data && data.length > 0 ? data : mockTickets;
+  const reschedule = useRescheduleAppointment();
+  const appointments = scheduleQuery.data ?? [];
   const [view, setView] = useState<"today" | "week">("week");
-  const [weekIdx, setWeekIdx] = useState(CURRENT_WEEK_INDEX);
   const [mobileDay, setMobileDay] = useState(0);
-  const [animKey, setAnimKey] = useState(0);
-  const [startingTicketId, setStartingTicketId] = useState<string | null>(null);
+  const [editingTicketId, setEditingTicketId] = useState<string | null>(null);
+  const [nextDate, setNextDate] = useState("");
+  const [actionError, setActionError] = useState<string | null>(null);
 
-  const week = weeks[weekIdx];
-  const days = week.days;
-  const appts = week.appts;
-  const appointmentTicket = (appt: Appt) => {
-    const scheduledTicket = mockTickets[appt.ticketIndex];
-    if (!scheduledTicket || scheduledTicket.contractorId !== "c1") return undefined;
-    const currentTicket = tickets.find((ticket) => ticket.id === scheduledTicket.id) ?? scheduledTicket;
-    if (currentTicket.contractorId !== "c1" || currentTicket.status === "resolved") return undefined;
-    return currentTicket;
-  };
-  const visibleAppts = useMemo(() => appts.filter((appt) => Boolean(appointmentTicket(appt))), [appts, tickets]);
+  const currentWeek = weekNumber(new Date());
+  const availableWeeks = useMemo(() => {
+    const values = Array.from(new Set(appointments.filter((appt) => appt.scheduledFor).map((appt) => appt.weekNumber))).sort((a, b) => a - b);
+    return values.length > 0 ? values : [currentWeek];
+  }, [appointments, currentWeek]);
+  const [weekIdx, setWeekIdx] = useState(0);
+  const selectedWeek = availableWeeks[Math.min(weekIdx, availableWeeks.length - 1)] ?? currentWeek;
+  const weekStart = startOfIsoWeek(new Date(appointments.find((appt) => appt.weekNumber === selectedWeek)?.scheduledFor ?? new Date()));
+  const days = weekDays(weekStart, lang);
+  const todayKey = new Date().toISOString().slice(0, 10);
 
-  const today = visibleAppts.filter((a) => a.day === 0);
+  const visibleAppts = appointments.filter((appt) => appt.weekNumber === selectedWeek);
+  const today = appointments.filter((appt) => appointmentDateKey(appt) === todayKey);
   const list = view === "today" ? today : visibleAppts;
-  const mobileDayAppts = visibleAppts.filter((a) => a.day === mobileDay);
+  const mobileDayAppts = visibleAppts.filter((appt) => appointmentDateKey(appt) === days[mobileDay]?.key);
+  const propertiesCovered = new Set(visibleAppts.map((appt) => appt.ticket.tenant.building)).size;
 
   const changeWeek = (next: number) => {
-    const clamped = Math.max(0, Math.min(weeks.length - 1, next));
-    if (clamped === weekIdx) return;
-    setWeekIdx(clamped);
-    setAnimKey((k) => k + 1);
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    setWeekIdx(Math.max(0, Math.min(availableWeeks.length - 1, next)));
   };
-  const isCurrentWeek = weekIdx === CURRENT_WEEK_INDEX;
+
   const startJob = async (ticketId: string) => {
-    setStartingTicketId(ticketId);
+    setActionError(null);
     try {
       await updateJob.mutateAsync({ data: { ticketId, action: "start", role: "contractor" } });
     } catch (error) {
-      console.error("Contractor schedule action failed", error);
-    } finally {
-      setStartingTicketId(null);
+      setActionError(error instanceof Error ? error.message : (lang === "EN" ? "The job could not be started." : "Der Auftrag konnte nicht gestartet werden."));
+    }
+  };
+
+  const beginReschedule = (appointment: ContractorAppointmentDto) => {
+    setActionError(null);
+    setEditingTicketId(appointment.ticket.id);
+    setNextDate(localDateTimeValue(appointment.scheduledFor));
+  };
+
+  const submitReschedule = async (ticketId: string) => {
+    setActionError(null);
+    try {
+      await reschedule.mutateAsync({
+        data: {
+          ticketId,
+          scheduledFor: new Date(nextDate).toISOString(),
+          role: "contractor",
+        },
+      });
+      setEditingTicketId(null);
+      setNextDate("");
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : (lang === "EN" ? "The appointment could not be rescheduled." : "Der Termin konnte nicht verschoben werden."));
     }
   };
 
   return (
     <AppShell title={t("cdash.schedule_title")} subtitle={t("cdash.sub")}>
       <div className="p-4 md:p-8 space-y-5 md:space-y-6">
-        {/* Toolbar (desktop only) */}
+        {scheduleQuery.isError && (
+          <DataErrorState
+            title={lang === "EN" ? "Schedule data could not be loaded" : "Zeitplan konnte nicht geladen werden"}
+            description={lang === "EN" ? "The contractor schedule read failed. This is different from an empty demo database." : "Die Abfrage des Handwerker-Zeitplans ist fehlgeschlagen. Das ist etwas anderes als eine leere Demo-Datenbank."}
+          />
+        )}
+        {actionError && (
+          <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {lang === "EN" ? "Action failed: " : "Aktion fehlgeschlagen: "}
+            <span className="font-medium">{actionError}</span>
+          </div>
+        )}
+        {appointments.length === 0 && !scheduleQuery.isLoading && (
+          <EmptyDataState
+            title={lang === "EN" ? "No scheduled jobs" : "Keine geplanten Auftraege"}
+            description={lang === "EN" ? "There are no active scheduled jobs for this demo contractor. Reload mock data from the admin page to restore appointments." : "Fuer diesen Demo-Handwerker gibt es keine aktiven geplanten Auftraege. Lade Mock-Daten im Adminbereich neu, um Termine wiederherzustellen."}
+          />
+        )}
+
         <div className="hidden md:flex items-center gap-3 flex-wrap">
           <div className="inline-flex rounded-md border border-border bg-surface overflow-hidden text-xs">
-            <button onClick={() => setView("today")} className={`px-3 py-1.5 font-semibold ${view === "today" ? "bg-primary text-primary-foreground" : "hover:bg-accent"}`}>{t("cdash.today")}</button>
-            <button onClick={() => setView("week")} className={`px-3 py-1.5 font-semibold ${view === "week" ? "bg-primary text-primary-foreground" : "hover:bg-accent"}`}>{t("cdash.this_week")}</button>
+            <button onClick={() => setView("today")} className={cn("px-3 py-1.5 font-semibold", view === "today" ? "bg-primary text-primary-foreground" : "hover:bg-accent")}>{t("cdash.today")}</button>
+            <button onClick={() => setView("week")} className={cn("px-3 py-1.5 font-semibold", view === "week" ? "bg-primary text-primary-foreground" : "hover:bg-accent")}>{t("cdash.this_week")}</button>
           </div>
           <div className="inline-flex items-center gap-1 text-xs text-muted-foreground ml-auto">
             <button onClick={() => changeWeek(weekIdx - 1)} disabled={weekIdx === 0} className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border disabled:opacity-40"><ChevronLeft className="h-3.5 w-3.5" /></button>
-            <span className="font-semibold text-foreground px-2">KW {week.number} · {week.label[lang === "EN" ? "en" : "de"]} 2026</span>
-            <button onClick={() => changeWeek(weekIdx + 1)} disabled={weekIdx === weeks.length - 1} className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border disabled:opacity-40"><ChevronRight className="h-3.5 w-3.5" /></button>
-            {!isCurrentWeek && <button onClick={() => changeWeek(CURRENT_WEEK_INDEX)} className="ml-1 px-2 py-1 rounded-md border border-border hover:bg-accent text-foreground font-semibold">{lang === "EN" ? "Today" : "Heute"}</button>}
+            <span className="font-semibold text-foreground px-2">KW {selectedWeek}</span>
+            <button onClick={() => changeWeek(weekIdx + 1)} disabled={weekIdx >= availableWeeks.length - 1} className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-accent border border-border disabled:opacity-40"><ChevronRight className="h-3.5 w-3.5" /></button>
           </div>
         </div>
 
-        {/* KPIs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { label: lang === "EN" ? "Today" : "Heute", value: today.length, hint: lang === "EN" ? "appointments" : "Termine" },
             { label: lang === "EN" ? "This week" : "Diese Woche", value: visibleAppts.length, hint: lang === "EN" ? "scheduled" : "geplant" },
-            { label: lang === "EN" ? "Properties" : "Objekte", value: 5, hint: lang === "EN" ? "covered" : "betreut" },
-            { label: lang === "EN" ? "Avg. duration" : "Ø Dauer", value: "1h 25", hint: lang === "EN" ? "per job" : "pro Auftrag" },
+            { label: lang === "EN" ? "Properties" : "Objekte", value: propertiesCovered, hint: lang === "EN" ? "covered" : "betreut" },
+            { label: lang === "EN" ? "Avg. duration" : "Durchschn. Dauer", value: "1h 30", hint: lang === "EN" ? "per job" : "pro Auftrag" },
           ].map((k) => (
             <div key={k.label} className="rounded-xl border border-border bg-surface p-3 md:p-4">
               <div className="text-[11px] md:text-xs text-muted-foreground">{k.label}</div>
@@ -167,65 +164,22 @@ function Schedule() {
           ))}
         </div>
 
-        {/* MOBILE: day selector + agenda */}
         <div className="md:hidden space-y-4">
-          {/* Week navigation */}
-          <div className={`rounded-xl border bg-surface p-2.5 flex items-center gap-2 ${isCurrentWeek ? "border-primary/40 ring-1 ring-primary/20" : "border-border"}`}>
-            <button
-              onClick={() => changeWeek(weekIdx - 1)}
-              disabled={weekIdx === 0}
-              aria-label="Previous week"
-              className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <div className="flex-1 text-center min-w-0">
-              <div className="flex items-center justify-center gap-1.5">
-                <span className="text-sm font-semibold truncate">
-                  {lang === "EN" ? "Week" : "KW"} {week.number}
-                </span>
-                {isCurrentWeek && (
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">
-                    {lang === "EN" ? "Now" : "Aktuell"}
-                  </span>
-                )}
-              </div>
-              <div className="text-[11px] text-muted-foreground tabular-nums">
-                {week.label[lang === "EN" ? "en" : "de"]}
-              </div>
-            </div>
-            <button
-              onClick={() => changeWeek(weekIdx + 1)}
-              disabled={weekIdx === weeks.length - 1}
-              aria-label="Next week"
-              className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
+          <div className="rounded-xl border border-border bg-surface p-2.5 flex items-center gap-2">
+            <button onClick={() => changeWeek(weekIdx - 1)} disabled={weekIdx === 0} className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40"><ChevronLeft className="h-4 w-4" /></button>
+            <div className="flex-1 text-center text-sm font-semibold">KW {selectedWeek}</div>
+            <button onClick={() => changeWeek(weekIdx + 1)} disabled={weekIdx >= availableWeeks.length - 1} className="h-9 w-9 inline-flex items-center justify-center rounded-md border border-border hover:bg-accent disabled:opacity-40"><ChevronRight className="h-4 w-4" /></button>
           </div>
-          {!isCurrentWeek && (
-            <button
-              onClick={() => changeWeek(CURRENT_WEEK_INDEX)}
-              className="w-full text-xs font-semibold text-primary hover:underline -mt-2"
-            >
-              {lang === "EN" ? "↩ Jump to current week" : "↩ Zur aktuellen Woche"}
-            </button>
-          )}
 
-          <div key={animKey} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 animate-in fade-in slide-in-from-right-2 duration-300">
-
+          <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1">
             {days.map((d, i) => {
-              const count = visibleAppts.filter((a) => a.day === i).length;
+              const count = visibleAppts.filter((appt) => appointmentDateKey(appt) === d.key).length;
               const active = mobileDay === i;
               return (
-                <button
-                  key={d.date}
-                  onClick={() => setMobileDay(i)}
-                  className={`shrink-0 min-w-[64px] rounded-lg border px-3 py-2 text-center transition-colors ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface hover:border-primary/40"}`}
-                >
-                  <div className={`text-[10px] uppercase tracking-wider ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{lang === "DE" ? d.de : d.en}</div>
-                  <div className="text-sm font-semibold tabular-nums">{d.date}</div>
-                  <div className={`text-[10px] mt-0.5 ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{count} {lang === "EN" ? "jobs" : "Jobs"}</div>
+                <button key={d.key} onClick={() => setMobileDay(i)} className={cn("shrink-0 min-w-[64px] rounded-lg border px-3 py-2 text-center transition-colors", active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface hover:border-primary/40")}>
+                  <div className={cn("text-[10px] uppercase tracking-wider", active ? "text-primary-foreground/80" : "text-muted-foreground")}>{d.day}</div>
+                  <div className="text-sm font-semibold tabular-nums">{d.label}</div>
+                  <div className={cn("text-[10px] mt-0.5", active ? "text-primary-foreground/80" : "text-muted-foreground")}>{count} {lang === "EN" ? "jobs" : "Jobs"}</div>
                 </button>
               );
             })}
@@ -233,7 +187,7 @@ function Schedule() {
 
           <div className="flex items-center gap-2 text-sm">
             <Calendar className="h-4 w-4 text-primary" />
-            <span className="font-semibold">{lang === "DE" ? days[mobileDay].de : days[mobileDay].en}, {days[mobileDay].date}</span>
+            <span className="font-semibold">{days[mobileDay]?.day}, {days[mobileDay]?.label}</span>
             <span className="ml-auto text-xs text-muted-foreground">{mobileDayAppts.length} {lang === "EN" ? "appointments" : "Termine"}</span>
           </div>
 
@@ -242,90 +196,40 @@ function Schedule() {
               {lang === "EN" ? "No appointments scheduled." : "Keine Termine geplant."}
             </div>
           )}
-
-          <div key={`list-${animKey}-${mobileDay}`} className="space-y-3 animate-in fade-in duration-200">
-            {mobileDayAppts.map((a, j) => {
-              const tk = appointmentTicket(a);
-              if (!tk) return null;
-              return (
-                <div key={j} className="rounded-xl border border-border bg-surface p-4 space-y-3">
-                  <div className="flex items-start justify-between gap-2 flex-wrap">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 text-xs">
-                        <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
-                        <span className="font-semibold tabular-nums">{a.start} – {a.end}</span>
-                        <span className="text-[10px] font-mono text-muted-foreground">· {tk.id}</span>
-                      </div>
-                      <div className="mt-1.5 text-sm font-semibold">{tk.title[lang]}</div>
-                    </div>
-                    <UrgencyBadge urgency={tk.urgency} />
-                  </div>
-
-                  <div className="space-y-1 text-xs text-muted-foreground">
-                    <div className="flex items-start gap-1.5"><MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" /><span>{tk.tenant.building}</span></div>
-                    <div className="flex items-center gap-1.5"><User className="h-3.5 w-3.5 shrink-0" /><span className="text-foreground">{a.tenant}</span></div>
-                    <div className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 shrink-0" /><span>{tk.tenant.phone}</span></div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    <Link to="/ticket/$id" params={{ id: tk.id }} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">
-                      {lang === "EN" ? "Open job" : "Auftrag öffnen"}
-                    </Link>
-                    <a
-                      href={`https://maps.google.com/?q=${encodeURIComponent(tk.tenant.building)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition"
-                    >
-                      <MapPin className="h-3.5 w-3.5" />
-                      {lang === "EN" ? "Directions" : "Route"}
-                    </a>
-                    <button onClick={() => void startJob(tk.id)} disabled={updateJob.isPending} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
-                      {startingTicketId === tk.id && updateJob.isPending ? t("common.loading") : (lang === "EN" ? "Mark in progress" : "Starten")}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="space-y-3">
+            {mobileDayAppts.map((appt) => <AppointmentCard key={appt.assignmentId} appointment={appt} lang={lang} t={t} editingTicketId={editingTicketId} nextDate={nextDate} setNextDate={setNextDate} beginReschedule={beginReschedule} submitReschedule={submitReschedule} startJob={startJob} busy={updateJob.isPending || reschedule.isPending} />)}
           </div>
         </div>
 
-        {/* DESKTOP: week grid / today list */}
         <div className="hidden md:block">
           {view === "week" ? (
             <div className="rounded-xl border border-border bg-surface overflow-hidden">
               <div className="grid grid-cols-5 border-b border-border bg-surface-muted">
                 {days.map((d) => (
-                  <div key={d.date} className="px-3 py-3 text-center border-r border-border last:border-r-0">
-                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{lang === "DE" ? d.de : d.en}</div>
-                    <div className="text-sm font-semibold">{d.date}</div>
+                  <div key={d.key} className="px-3 py-3 text-center border-r border-border last:border-r-0">
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{d.day}</div>
+                    <div className="text-sm font-semibold">{d.label}</div>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-5 min-h-[420px]">
-                {days.map((d, i) => {
-                  const dayAppts = visibleAppts.filter((a) => a.day === i);
+                {days.map((day) => {
+                  const dayAppts = visibleAppts.filter((appt) => appointmentDateKey(appt) === day.key);
                   return (
-                    <div key={d.date} className="border-r border-border last:border-r-0 p-2 space-y-2">
-                      {dayAppts.length === 0 && (
-                        <div className="text-[11px] text-muted-foreground/60 text-center py-6">—</div>
-                      )}
-                      {dayAppts.map((a, j) => {
-                        const tk = appointmentTicket(a);
-                        if (!tk) return null;
-                        return (
-                          <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="block rounded-lg border border-border bg-surface hover:border-primary/40 hover:shadow-soft transition-all p-2.5">
-                            <div className="flex items-center justify-between gap-2">
-                              <span className="text-[10px] font-mono text-muted-foreground">{tk.id}</span>
-                              <UrgencyBadge urgency={tk.urgency} />
-                            </div>
-                            <div className="mt-1 text-xs font-semibold line-clamp-2">{tk.title[lang]}</div>
-                            <div className="mt-1.5 text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="h-2.5 w-2.5" /> {a.start} – {a.end}</div>
-                            <div className="text-[10px] text-muted-foreground flex items-center gap-1"><MapPin className="h-2.5 w-2.5" /> {tk.tenant.building.split(",")[0]}</div>
-                            <div className="text-[10px] text-muted-foreground flex items-center gap-1 truncate"><User className="h-2.5 w-2.5" /> {a.tenant}</div>
-                          </Link>
-                        );
-                      })}
+                    <div key={day.key} className="border-r border-border last:border-r-0 p-2 space-y-2">
+                      {dayAppts.length === 0 && <div className="text-[11px] text-muted-foreground/60 text-center py-6">-</div>}
+                      {dayAppts.map((appt) => (
+                        <Link key={appt.assignmentId} to="/ticket/$id" params={{ id: appt.ticket.id }} className="block rounded-lg border border-border bg-surface hover:border-primary/40 hover:shadow-soft transition-all p-2.5">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-mono text-muted-foreground">{appt.ticket.id}</span>
+                            <UrgencyBadge urgency={appt.ticket.urgency} />
+                          </div>
+                          <div className="mt-1 text-xs font-semibold line-clamp-2">{appt.ticket.title[lang]}</div>
+                          <div className="mt-1.5 text-[10px] text-muted-foreground flex items-center gap-1"><Clock className="h-2.5 w-2.5" /> {appt.timeLabel[lang]} - {appt.endTimeLabel[lang]}</div>
+                          <div className="text-[10px] text-muted-foreground flex items-center gap-1"><MapPin className="h-2.5 w-2.5" /> {appt.ticket.tenant.building.split(",")[0]}</div>
+                          <div className="text-[10px] text-muted-foreground flex items-center gap-1 truncate"><User className="h-2.5 w-2.5" /> {appt.ticket.tenant.name}</div>
+                        </Link>
+                      ))}
                     </div>
                   );
                 })}
@@ -339,24 +243,7 @@ function Schedule() {
                 <span className="ml-auto text-xs text-muted-foreground">{today.length} {lang === "EN" ? "appointments" : "Termine"}</span>
               </div>
               <div className="divide-y divide-border">
-                {list.map((a, j) => {
-                  const tk = appointmentTicket(a);
-                  if (!tk) return null;
-                  return (
-                    <Link key={j} to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 items-center gap-3">
-                      <div className="col-span-2 text-sm font-semibold tabular-nums">{a.start}<span className="text-muted-foreground"> – {a.end}</span></div>
-                      <div className="col-span-5 min-w-0">
-                        <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
-                        <div className="text-[11px] text-muted-foreground truncate flex items-center gap-1"><MapPin className="h-3 w-3" />{tk.tenant.building}</div>
-                      </div>
-                      <div className="col-span-3 min-w-0">
-                        <div className="text-xs flex items-center gap-1.5"><User className="h-3 w-3 text-muted-foreground" />{a.tenant}</div>
-                        <div className="text-xs flex items-center gap-1.5 text-muted-foreground"><Phone className="h-3 w-3" />{tk.tenant.phone}</div>
-                      </div>
-                      <div className="col-span-2 flex justify-end"><UrgencyBadge urgency={tk.urgency} /></div>
-                    </Link>
-                  );
-                })}
+                {list.map((appt) => <AppointmentRow key={appt.assignmentId} appointment={appt} lang={lang} />)}
               </div>
             </div>
           )}
@@ -366,3 +253,90 @@ function Schedule() {
   );
 }
 
+function AppointmentCard({
+  appointment,
+  lang,
+  t,
+  editingTicketId,
+  nextDate,
+  setNextDate,
+  beginReschedule,
+  submitReschedule,
+  startJob,
+  busy,
+}: {
+  appointment: ContractorAppointmentDto;
+  lang: "DE" | "EN";
+  t: (key: string) => string;
+  editingTicketId: string | null;
+  nextDate: string;
+  setNextDate: (value: string) => void;
+  beginReschedule: (appointment: ContractorAppointmentDto) => void;
+  submitReschedule: (ticketId: string) => void;
+  startJob: (ticketId: string) => void;
+  busy: boolean;
+}) {
+  const tk = appointment.ticket;
+  const editing = editingTicketId === tk.id;
+
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4 space-y-3">
+      <div className="flex items-start justify-between gap-2 flex-wrap">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 text-xs">
+            <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span className="font-semibold tabular-nums">{appointment.timeLabel[lang]} - {appointment.endTimeLabel[lang]}</span>
+            <span className="text-[10px] font-mono text-muted-foreground">· {tk.id}</span>
+          </div>
+          <div className="mt-1.5 text-sm font-semibold">{tk.title[lang]}</div>
+        </div>
+        <UrgencyBadge urgency={tk.urgency} />
+      </div>
+
+      <div className="space-y-1 text-xs text-muted-foreground">
+        <div className="flex items-start gap-1.5"><MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0" /><span>{tk.tenant.building}</span></div>
+        <div className="flex items-center gap-1.5"><User className="h-3.5 w-3.5 shrink-0" /><span className="text-foreground">{tk.tenant.name}</span></div>
+        <div className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 shrink-0" /><span>{tk.tenant.phone}</span></div>
+      </div>
+
+      {editing && (
+        <div className="rounded-lg border border-border bg-background p-3 space-y-2">
+          <input type="datetime-local" value={nextDate} onChange={(event) => setNextDate(event.target.value)} className="w-full rounded-md border border-border bg-surface px-2 py-2 text-xs outline-none focus:ring-2 focus:ring-ring" />
+          <button onClick={() => submitReschedule(tk.id)} disabled={busy || !nextDate} className="w-full rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+            {busy ? t("common.loading") : (lang === "EN" ? "Save new time" : "Neuen Termin speichern")}
+          </button>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2 pt-1">
+        <Link to="/ticket/$id" params={{ id: tk.id }} className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition">
+          {lang === "EN" ? "Open job" : "Auftrag oeffnen"}
+        </Link>
+        <button onClick={() => startJob(tk.id)} disabled={busy} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
+          {lang === "EN" ? "Mark in progress" : "Starten"}
+        </button>
+        <button onClick={() => beginReschedule(appointment)} disabled={busy} className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-2 text-xs hover:bg-accent transition disabled:opacity-50">
+          {lang === "EN" ? "Reschedule" : "Verschieben"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AppointmentRow({ appointment, lang }: { appointment: ContractorAppointmentDto; lang: "DE" | "EN" }) {
+  const tk = appointment.ticket;
+  return (
+    <Link to="/ticket/$id" params={{ id: tk.id }} className="grid grid-cols-12 px-4 py-3 hover:bg-accent/30 items-center gap-3">
+      <div className="col-span-2 text-sm font-semibold tabular-nums">{appointment.timeLabel[lang]}<span className="text-muted-foreground"> - {appointment.endTimeLabel[lang]}</span></div>
+      <div className="col-span-5 min-w-0">
+        <div className="text-sm font-semibold truncate">{tk.title[lang]}</div>
+        <div className="text-[11px] text-muted-foreground truncate flex items-center gap-1"><MapPin className="h-3 w-3" />{tk.tenant.building}</div>
+      </div>
+      <div className="col-span-3 min-w-0">
+        <div className="text-xs flex items-center gap-1.5"><User className="h-3 w-3 text-muted-foreground" />{tk.tenant.name}</div>
+        <div className="text-xs flex items-center gap-1.5 text-muted-foreground"><Phone className="h-3 w-3" />{tk.tenant.phone}</div>
+      </div>
+      <div className="col-span-2 flex justify-end"><UrgencyBadge urgency={tk.urgency} /></div>
+    </Link>
+  );
+}

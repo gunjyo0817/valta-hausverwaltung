@@ -30,6 +30,7 @@ import { Route as ContractorsIdRouteImport } from './routes/contractors.$id'
 import { Route as ContractorScheduleRouteImport } from './routes/contractor.schedule'
 import { Route as ContractorMessagesRouteImport } from './routes/contractor.messages'
 import { Route as ContractorCompletedRouteImport } from './routes/contractor.completed'
+import { Route as AdminDemoDataRouteImport } from './routes/admin.demo-data'
 import { Route as TenantTicketsIdRouteImport } from './routes/tenant.tickets.$id'
 
 const PropertiesRoute = PropertiesRouteImport.update({
@@ -137,6 +138,11 @@ const ContractorCompletedRoute = ContractorCompletedRouteImport.update({
   path: '/contractor/completed',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminDemoDataRoute = AdminDemoDataRouteImport.update({
+  id: '/admin/demo-data',
+  path: '/admin/demo-data',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TenantTicketsIdRoute = TenantTicketsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/demo-data': typeof AdminDemoDataRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/demo-data': typeof AdminDemoDataRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -200,6 +208,7 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/portal': typeof PortalRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/demo-data': typeof AdminDemoDataRoute
   '/contractor/completed': typeof ContractorCompletedRoute
   '/contractor/messages': typeof ContractorMessagesRoute
   '/contractor/schedule': typeof ContractorScheduleRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
+    | '/admin/demo-data'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
+    | '/admin/demo-data'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/portal'
     | '/properties'
+    | '/admin/demo-data'
     | '/contractor/completed'
     | '/contractor/messages'
     | '/contractor/schedule'
@@ -299,6 +311,7 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   PortalRoute: typeof PortalRoute
   PropertiesRoute: typeof PropertiesRouteWithChildren
+  AdminDemoDataRoute: typeof AdminDemoDataRoute
   ContractorCompletedRoute: typeof ContractorCompletedRoute
   ContractorMessagesRoute: typeof ContractorMessagesRoute
   ContractorScheduleRoute: typeof ContractorScheduleRoute
@@ -462,6 +475,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContractorCompletedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/demo-data': {
+      id: '/admin/demo-data'
+      path: '/admin/demo-data'
+      fullPath: '/admin/demo-data'
+      preLoaderRoute: typeof AdminDemoDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tenant/tickets/$id': {
       id: '/tenant/tickets/$id'
       path: '/$id'
@@ -516,6 +536,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   PortalRoute: PortalRoute,
   PropertiesRoute: PropertiesRouteWithChildren,
+  AdminDemoDataRoute: AdminDemoDataRoute,
   ContractorCompletedRoute: ContractorCompletedRoute,
   ContractorMessagesRoute: ContractorMessagesRoute,
   ContractorScheduleRoute: ContractorScheduleRoute,

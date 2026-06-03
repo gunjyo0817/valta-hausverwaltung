@@ -9,6 +9,7 @@ import {
   tickets,
 } from "@/server/db/schema";
 import { getPropertyById, getTicketById } from "@/server/read/queries";
+import { requireDemoWriteRole } from "@/server/write/authz";
 
 export type AddDocumentMetadataInput = {
   scope: "ticket" | "property";
@@ -36,10 +37,39 @@ async function nextTicketEventSequence(ticketId: string) {
   return (latest?.sequence ?? 0) + 1;
 }
 
+const allowedDocumentTypes = [
+  "image/",
+  "application/pdf",
+  "text/plain",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+];
+
+function assertDocumentMetadata(input: AddDocumentMetadataInput) {
+  if (!allowedDocumentTypes.some((type) => input.type === type || input.type.startsWith(type))) {
+    throw new Error(`Unsupported document type: ${input.type}`);
+  }
+
+  if (input.url && !input.url.startsWith("data:") && !input.url.startsWith("http://") && !input.url.startsWith("https://")) {
+    throw new Error("Unsupported document URL.");
+  }
+
+  if (input.url && input.url.length > 14_000_000) {
+    throw new Error("Document URL is too large for demo storage.");
+  }
+}
+
 export async function addDocumentMetadata(input: AddDocumentMetadataInput) {
+  const role = input.scope === "property"
+    ? requireDemoWriteRole("add property document", input.role, ["pm"])
+    : requireDemoWriteRole("add ticket attachment", input.role, ["pm", "tenant", "contractor"]);
+  assertDocumentMetadata(input);
+
   const id = `${input.scope}-${input.targetId}-doc-${Date.now()}`;
   const isTicket = input.scope === "ticket";
-  const label = nowLabel(input.role);
+  const label = nowLabel(role);
 
   await db.insert(documents).values({
     id,
@@ -67,8 +97,8 @@ export async function addDocumentMetadata(input: AddDocumentMetadataInput) {
     await db.insert(ticketEvents).values({
       id: `${input.targetId}-event-${sequence}`,
       ticketId: input.targetId,
-      type: input.role === "tenant" ? "tenant" : "manager",
-      actorName: input.role === "tenant" ? ((ticket.tenantSnapshot as { name?: string }).name ?? "Tenant") : "Sarah Krüger",
+      type: role === "tenant" ? "tenant" : role === "contractor" ? "contractor" : "manager",
+      actorName: role === "tenant" ? ((ticket.tenantSnapshot as { name?: string }).name ?? "Tenant") : role === "contractor" ? "Demo Contractor" : "Sarah Krüger",
       atLabel: label,
       text: {
         DE: `Anhang hinzugefügt: ${input.name}`,
@@ -81,7 +111,7 @@ export async function addDocumentMetadata(input: AddDocumentMetadataInput) {
       .insert(notifications)
       .values({
         id: `${input.targetId}-attachment-${Date.now()}`,
-        recipientUserId: input.role === "tenant" ? "demo-pm" : "demo-tenant",
+        recipientUserId: role === "tenant" || role === "contractor" ? "demo-pm" : "demo-tenant",
         type: "photos",
         title: { DE: "Neuer Anhang", EN: "New attachment" },
         description: { DE: input.name, EN: input.name },
@@ -89,14 +119,14 @@ export async function addDocumentMetadata(input: AddDocumentMetadataInput) {
         context: ticket.tenantSnapshot?.building as string | undefined,
         timeLabel: label,
         unread: true,
-        targetPath: input.role === "tenant" ? "/ticket/$id" : "/tenant/tickets/$id",
+        targetPath: role === "tenant" || role === "contractor" ? "/ticket/$id" : "/tenant/tickets/$id",
         targetParams: { id: input.targetId },
         action: { DE: "Anhang ansehen", EN: "View attachment" },
       })
       .onConflictDoNothing();
 
-    return getTicketById(input.targetId, { role: input.role ?? "pm" });
+    return getTicketById(input.targetId, { role });
   }
 
-  return getPropertyById(input.targetId, { role: input.role ?? "pm" });
+  return getPropertyById(input.targetId, { role });
 }
