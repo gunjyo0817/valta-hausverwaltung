@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { useProperties, useTickets, type PropertyDto } from "@/lib/api";
 import { Search, Building2, AlertTriangle, MapPin, Users, Timer, Filter, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isOpenTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/properties")({
   head: () => ({
@@ -78,7 +79,7 @@ function PropertiesListPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((p) => {
             const s = statusStyle(p.status);
-            const openTk = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved").length;
+            const openTk = tickets.filter((tk) => tk.propertyId === p.id && isOpenTicket(tk)).length;
             return (
               <Link key={p.id} to="/properties/$id" params={{ id: p.id }} className="rounded-xl border border-border bg-surface p-4 shadow-soft hover:shadow-card hover:border-primary/30 transition-all group">
                 <div className="flex items-start gap-3">

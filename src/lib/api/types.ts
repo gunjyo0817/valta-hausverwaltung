@@ -226,6 +226,7 @@ export type AiInsightsDto = {
   };
   topPerformers: ContractorDto[];
   ticketCount: number;
+  activeTicketCount: number;
 };
 
 export type GlobalSearchResultDto = {

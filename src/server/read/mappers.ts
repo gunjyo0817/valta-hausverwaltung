@@ -28,6 +28,7 @@ import type {
   tickets,
   units,
 } from "@/server/db/schema";
+import { isHighOrCriticalTicket, isOpenTicket } from "@/lib/ticketStatus";
 
 type TicketRow = typeof tickets.$inferSelect;
 type TicketEventRow = typeof ticketEvents.$inferSelect;
@@ -279,7 +280,7 @@ export function mapDashboard(input: {
   notifications: NotificationDto[];
   avgResponseMin?: number;
 }): DashboardDto {
-  const activeTickets = input.tickets.filter((ticket) => ticket.status !== "resolved");
+  const activeTickets = input.tickets.filter(isOpenTicket);
   const ticketsWithContractor = input.tickets.filter((ticket) => ticket.contractorId);
 
   return {
@@ -287,8 +288,8 @@ export function mapDashboard(input: {
       openTickets: activeTickets.length,
       avgResponseMin: input.avgResponseMin ?? 0,
       aiResolved: input.tickets.filter((ticket) => ticket.confidence >= 80).length + input.aiActivity.length,
-      urgent: activeTickets.filter((ticket) => ticket.urgency === "critical" || ticket.urgency === "high").length,
-      pendingContractor: activeTickets.length - ticketsWithContractor.filter((ticket) => ticket.status !== "resolved").length,
+      urgent: activeTickets.filter(isHighOrCriticalTicket).length,
+      pendingContractor: activeTickets.length - ticketsWithContractor.filter(isOpenTicket).length,
     },
     activeTickets,
     aiActivity: input.aiActivity,

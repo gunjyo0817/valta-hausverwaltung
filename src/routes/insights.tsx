@@ -197,7 +197,7 @@ function InsightsPage() {
           )}
         </section>
 
-        <p className="text-[11px] text-muted-foreground">{t("ins.demo_note").replace("{n}", String(insights?.ticketCount ?? 0))}</p>
+        <p className="text-[11px] text-muted-foreground">{t("ins.demo_note").replace("{n}", String(insights?.activeTicketCount ?? 0))}</p>
       </div>
     </AppShell>
   );

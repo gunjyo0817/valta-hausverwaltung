@@ -1,9 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { StatusBadge, UrgencyBadge, AIBadge } from "@/components/Badges";
 import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
+import { ROLE_HOME, useRole } from "@/lib/role";
 import { useDashboardData } from "@/lib/api";
+import { useEffect } from "react";
 import {
   Inbox,
   Timer,
@@ -28,7 +30,18 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const { t, lang } = useLang();
+  const { role } = useRole();
+  const navigate = useNavigate();
   const dashboardQuery = useDashboardData();
+
+  useEffect(() => {
+    if (role !== "pm") {
+      navigate({ to: ROLE_HOME[role] as any, replace: true });
+    }
+  }, [navigate, role]);
+
+  if (role !== "pm") return null;
+
   const { data } = dashboardQuery;
   const kpis = data?.kpis ?? {
     openTickets: 0,
@@ -44,12 +57,14 @@ function Dashboard() {
       at: notification.time[lang],
       text: notification.title,
     })) ?? [];
+  const hasDashboardRows = tickets.length > 0 || aiActivity.length > 0 || notifications.length > 0;
+  const noDataLabel = lang === "EN" ? "No live data" : "Keine Live-Daten";
   const kpiCards = [
-    { label: t("kpi.open"), value: kpis.openTickets, delta: t("kpi.open.delta"), icon: Inbox, tone: "primary" as const },
-    { label: t("kpi.response"), value: `${kpis.avgResponseMin} ${t("common.minutes_short")}`, delta: t("kpi.response.delta"), icon: Timer, tone: "success" as const },
-    { label: t("kpi.ai"), value: `${kpis.aiResolved}`, delta: t("kpi.ai.delta"), icon: Sparkles, tone: "ai" as const },
-    { label: t("kpi.urgent"), value: kpis.urgent, delta: t("kpi.urgent.delta"), icon: AlertTriangle, tone: "destructive" as const },
-    { label: t("kpi.pending"), value: kpis.pendingContractor, delta: t("kpi.pending.delta"), icon: Wrench, tone: "warning" as const },
+    { label: t("kpi.open"), value: kpis.openTickets, delta: hasDashboardRows ? t("kpi.open.delta") : noDataLabel, icon: Inbox, tone: "primary" as const },
+    { label: t("kpi.response"), value: `${kpis.avgResponseMin} ${t("common.minutes_short")}`, delta: hasDashboardRows ? t("kpi.response.delta") : noDataLabel, icon: Timer, tone: "success" as const },
+    { label: t("kpi.ai"), value: `${kpis.aiResolved}`, delta: hasDashboardRows ? t("kpi.ai.delta") : noDataLabel, icon: Sparkles, tone: "ai" as const },
+    { label: t("kpi.urgent"), value: kpis.urgent, delta: hasDashboardRows ? t("kpi.urgent.delta") : noDataLabel, icon: AlertTriangle, tone: "destructive" as const },
+    { label: t("kpi.pending"), value: kpis.pendingContractor, delta: hasDashboardRows ? t("kpi.pending.delta") : noDataLabel, icon: Wrench, tone: "warning" as const },
   ];
 
   return (

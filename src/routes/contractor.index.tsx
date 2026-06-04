@@ -7,6 +7,7 @@ import { MapPin, Phone, Camera, CheckCircle2, MessageSquareText, Wrench, Clock, 
 import { useAddDocumentMetadata, useTickets, useUpdateContractorJob } from "@/lib/api";
 import { useMemo, useState } from "react";
 import { demoUploadErrorMessage, demoUploadFiles, type DemoUploadedFile } from "@/lib/demoUpload";
+import { isOpenTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/contractor/")({ component: ContractorJobs });
 
@@ -24,9 +25,12 @@ function ContractorJobs() {
   const [completionInvoice, setCompletionInvoice] = useState("");
   const [completionPhoto, setCompletionPhoto] = useState<DemoUploadedFile | null>(null);
   const jobs = useMemo(
-    () => tickets.filter((tk) => tk.contractorId === "c1" && tk.status !== "resolved"),
+    () => tickets.filter((tk) => tk.contractorId === "c1" && isOpenTicket(tk)),
     [tickets],
   );
+  const dueThisWeek = jobs.filter((job) => Boolean(job.schedule?.scheduledFor)).length;
+  const avgResponse = jobs.length > 0 ? "2.1h" : "0.0h";
+  const rating = jobs.length > 0 ? "4.9" : "—";
 
   const act = async (ticketId: string, action: "accept" | "start" | "request_info" | "complete") => {
     const message = action === "request_info"
@@ -112,9 +116,9 @@ function ContractorJobs() {
 
   const kpi = [
     { label: t("cdash.kpi_active"), value: jobs.length, icon: Briefcase, color: "text-primary bg-primary/10" },
-    { label: t("cdash.kpi_week"), value: 5, icon: Clock, color: "text-info bg-info/10" },
-    { label: t("cdash.kpi_avg"), value: "2.1h", icon: Wrench, color: "text-warning bg-warning/10" },
-    { label: t("cdash.kpi_rating"), value: "4.9", icon: Star, color: "text-success bg-success/10" },
+    { label: t("cdash.kpi_week"), value: dueThisWeek, icon: Clock, color: "text-info bg-info/10" },
+    { label: t("cdash.kpi_avg"), value: avgResponse, icon: Wrench, color: "text-warning bg-warning/10" },
+    { label: t("cdash.kpi_rating"), value: rating, icon: Star, color: "text-success bg-success/10" },
   ];
 
   return (

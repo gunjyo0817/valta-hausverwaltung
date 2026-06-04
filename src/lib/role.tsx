@@ -9,6 +9,17 @@ function isRole(value: string | null): value is Role {
   return roles.includes(value as Role);
 }
 
+function readStoredRole(): Role {
+  if (typeof window === "undefined") return "pm";
+
+  try {
+    const stored = window.localStorage.getItem(ROLE_STORAGE_KEY);
+    return isRole(stored) ? stored : "pm";
+  } catch {
+    return "pm";
+  }
+}
+
 export const ROLE_HOME: Record<Role, string> = {
   pm: "/",
   tenant: "/tenant",
@@ -56,13 +67,16 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const [role, setRoleState] = useState<Role>("pm");
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(ROLE_STORAGE_KEY);
-    if (isRole(stored)) setRoleState(stored);
+    setRoleState(readStoredRole());
   }, []);
 
   const setRole = useCallback((nextRole: Role) => {
     setRoleState(nextRole);
-    window.localStorage.setItem(ROLE_STORAGE_KEY, nextRole);
+    try {
+      window.localStorage.setItem(ROLE_STORAGE_KEY, nextRole);
+    } catch {
+      // Demo role persistence is optional; keep the in-memory role usable.
+    }
   }, []);
 
   return <Ctx.Provider value={{ role, setRole }}>{children}</Ctx.Provider>;

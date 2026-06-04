@@ -1,12 +1,13 @@
 import { eq } from "drizzle-orm";
 
+import { isCriticalTicket, isOpenTicket, isResolvedTicket } from "@/lib/ticketStatus";
 import { db } from "@/server/db/client";
 import { contractors, properties, tickets } from "@/server/db/schema";
 
 export async function syncPropertyTicketCounts(propertyId: string) {
   const propertyTickets = await db.select().from(tickets).where(eq(tickets.propertyId, propertyId));
-  const openTickets = propertyTickets.filter((ticket) => ticket.status !== "resolved");
-  const criticalTickets = openTickets.filter((ticket) => ticket.urgency === "critical").length;
+  const openTickets = propertyTickets.filter(isOpenTicket);
+  const criticalTickets = openTickets.filter(isCriticalTicket).length;
   const status = criticalTickets > 0 ? "urgent" : openTickets.length > 0 ? "attention" : "healthy";
 
   await db
@@ -27,8 +28,8 @@ export async function syncContractorJobCounts(contractorId: string | null | unde
   await db
     .update(contractors)
     .set({
-      activeJobs: contractorTickets.filter((ticket) => ticket.status !== "resolved").length,
-      pastJobs: contractorTickets.filter((ticket) => ticket.status === "resolved").length,
+      activeJobs: contractorTickets.filter(isOpenTicket).length,
+      pastJobs: contractorTickets.filter(isResolvedTicket).length,
       updatedAt: new Date(),
     })
     .where(eq(contractors.id, contractorId));

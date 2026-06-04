@@ -29,6 +29,12 @@ import {
   mapTicket,
 } from "./mappers";
 import type { AiInsightsDto, FinancialSummaryDto, GlobalSearchResultDto, LocalizedText } from "@/lib/api/types";
+import {
+  isCriticalTicket,
+  isHighOrCriticalTicket,
+  isOpenTicket,
+  isResolvedTicket,
+} from "@/lib/ticketStatus";
 
 const ANNUAL_OWNER_BUDGET = 60000;
 
@@ -165,8 +171,8 @@ export async function listProperties(context?: DemoRoleContext & PropertyListOpt
 
   const mapped = scopedProperties.map((property) => {
     const propertyTickets = ticketsByProperty[property.id] ?? [];
-    const openTickets = propertyTickets.filter((ticket) => ticket.status !== "resolved");
-    const criticalTickets = openTickets.filter((ticket) => ticket.urgency === "critical").length;
+    const openTickets = propertyTickets.filter(isOpenTicket);
+    const criticalTickets = openTickets.filter(isCriticalTicket).length;
     return {
       ...mapProperty(property, unitsByProperty[property.id] ?? [], documentsByProperty[property.id] ?? []),
       openTickets: openTickets.length,
@@ -200,8 +206,8 @@ export async function getPropertyById(id: string, context?: DemoRoleContext) {
   ]);
 
   const propertyTickets = await db.select().from(tickets).where(eq(tickets.propertyId, id));
-  const openTickets = propertyTickets.filter((ticket) => ticket.status !== "resolved");
-  const criticalTickets = openTickets.filter((ticket) => ticket.urgency === "critical").length;
+  const openTickets = propertyTickets.filter(isOpenTicket);
+  const criticalTickets = openTickets.filter(isCriticalTicket).length;
 
   return {
     ...mapProperty(property, propertyUnits, propertyDocuments),
@@ -226,8 +232,8 @@ export async function listContractors(context?: DemoRoleContext & ContractorList
     const contractorTickets = ticketRows.filter((ticket) => ticket.contractorId === contractor.id);
     return {
       ...mapContractor(contractor),
-      activeJobs: contractorTickets.filter((ticket) => ticket.status !== "resolved").length,
-      pastJobs: contractorTickets.filter((ticket) => ticket.status === "resolved").length,
+      activeJobs: contractorTickets.filter(isOpenTicket).length,
+      pastJobs: contractorTickets.filter(isResolvedTicket).length,
     };
   });
 
@@ -250,8 +256,8 @@ export async function getContractorById(id: string, context?: DemoRoleContext) {
   const contractorTickets = await db.select().from(tickets).where(eq(tickets.contractorId, id));
   return {
     ...mapContractor(contractor),
-    activeJobs: contractorTickets.filter((ticket) => ticket.status !== "resolved").length,
-    pastJobs: contractorTickets.filter((ticket) => ticket.status === "resolved").length,
+    activeJobs: contractorTickets.filter(isOpenTicket).length,
+    pastJobs: contractorTickets.filter(isResolvedTicket).length,
   };
 }
 
@@ -419,8 +425,8 @@ export async function getAiInsights(_context?: DemoRoleContext): Promise<AiInsig
     db.select().from(aiSuggestions),
   ]);
 
-  const openTickets = ticketRows.filter((ticket) => ticket.status !== "resolved");
-  const resolvedTickets = ticketRows.filter((ticket) => ticket.status === "resolved");
+  const openTickets = ticketRows.filter(isOpenTicket);
+  const resolvedTickets = ticketRows.filter(isResolvedTicket);
   const automationRate = ticketRows.length === 0 ? 0 : Math.min(100, Math.round((suggestionRows.length / ticketRows.length) * 100));
   const avgResolutionHours = resolvedTickets.length > 0
     ? average(resolvedTickets.map((ticket) => Math.max(1, ticket.waitingHours)))
@@ -448,7 +454,7 @@ export async function getAiInsights(_context?: DemoRoleContext): Promise<AiInsig
   });
 
   const atRisk = openTickets
-    .filter((ticket) => ticket.waitingHours > 8 || ticket.urgency === "critical" || ticket.urgency === "high")
+    .filter((ticket) => ticket.waitingHours > 8 || isHighOrCriticalTicket(ticket))
     .sort((a, b) => {
       const urgencyWeight = { critical: 4, high: 3, medium: 2, low: 1 };
       return urgencyWeight[b.urgency] - urgencyWeight[a.urgency] || b.waitingHours - a.waitingHours;
@@ -491,6 +497,7 @@ export async function getAiInsights(_context?: DemoRoleContext): Promise<AiInsig
     aiPanel,
     topPerformers,
     ticketCount: ticketRows.length,
+    activeTicketCount: openTickets.length,
   };
 }
 

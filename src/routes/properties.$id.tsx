@@ -7,6 +7,7 @@ import { useLang } from "@/lib/i18n";
 import { useAddDocumentMetadata, useProperty, useTickets } from "@/lib/api";
 import { ArrowLeft, Building2, MapPin, Users, Sparkles, FileText, Download, MessageSquareText, ArrowUpRight, Wrench, ChevronRight, Upload } from "lucide-react";
 import { demoUploadErrorMessage, demoUploadFiles } from "@/lib/demoUpload";
+import { isOpenTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/properties/$id")({
   head: ({ params }) => ({
@@ -53,7 +54,7 @@ function PropertyDetail() {
       </AppShell>
     );
   }
-  const open = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved");
+  const open = tickets.filter((tk) => tk.propertyId === p.id && isOpenTicket(tk));
   const all = tickets.filter((tk) => tk.propertyId === p.id);
   const addPropertyDocumentMetadata = async (files: FileList | null) => {
     const selected = Array.from(files ?? []);

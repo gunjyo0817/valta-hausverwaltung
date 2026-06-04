@@ -4,6 +4,7 @@ import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { CheckCircle2, Clock, Star, Briefcase, MapPin, User } from "lucide-react";
 import { useTickets } from "@/lib/api";
+import { isResolvedTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/contractor/completed")({ component: Completed });
 
@@ -22,7 +23,7 @@ function Completed() {
   const { t, lang } = useLang();
   const ticketsQuery = useTickets();
   const { data } = ticketsQuery;
-  const completedTickets = (data ?? []).filter((ticket) => ticket.status === "resolved");
+  const completedTickets = (data ?? []).filter(isResolvedTicket);
   const displayJobs: Job[] = completedTickets.map((ticket) => ({
         id: ticket.id,
         title: ticket.title,

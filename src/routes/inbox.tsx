@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buildReplyDraft } from "@/lib/ticketCopy";
+import { isHighOrCriticalTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/inbox")({
   head: () => ({
@@ -62,7 +63,7 @@ function InboxPage() {
   const list = useMemo(() => {
     const filtered = (() => {
       if (filter === "all") return tickets;
-      if (filter === "critical") return tickets.filter((tk) => tk.urgency === "critical" || tk.urgency === "high");
+      if (filter === "critical") return tickets.filter(isHighOrCriticalTicket);
       if (filter === "new") return tickets.filter((tk) => tk.status === "new");
       if (filter === "waiting") return tickets.filter((tk) => tk.status === "waiting");
       if (filter === "resolved") return tickets.filter((tk) => tk.status === "resolved");

@@ -34,8 +34,8 @@ const dict = {
   "kpi.response.delta": { DE: "−38% MoM", EN: "−38% MoM" },
   "kpi.ai": { DE: "AI-Vorschläge übernommen", EN: "AI suggestions accepted" },
   "kpi.ai.delta": { DE: "diese Woche", EN: "this week" },
-  "kpi.urgent": { DE: "Kritische Fälle", EN: "Critical cases" },
-  "kpi.urgent.delta": { DE: "Sofort prüfen", EN: "Review now" },
+  "kpi.urgent": { DE: "Akute Fälle", EN: "Urgent cases" },
+  "kpi.urgent.delta": { DE: "Hoch oder kritisch", EN: "High or critical" },
   "kpi.pending": { DE: "Wartet auf Handwerker", EN: "Awaiting contractor" },
   "kpi.pending.delta": { DE: "2 überfällig", EN: "2 overdue" },
   "section.active": { DE: "Aktive Tickets", EN: "Active tickets" },
@@ -144,7 +144,7 @@ const dict = {
 
   // Inbox filters
   "filter.all": { DE: "Alle", EN: "All" },
-  "filter.critical": { DE: "Kritisch", EN: "Critical" },
+  "filter.critical": { DE: "Hoch/Kritisch", EN: "High/Critical" },
   "filter.new": { DE: "Neu", EN: "New" },
   "filter.waiting": { DE: "Wartet auf Info", EN: "Waiting" },
   "filter.in_progress": { DE: "In Bearbeitung", EN: "In progress" },

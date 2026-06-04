@@ -4,6 +4,7 @@ import { DataErrorState, EmptyDataState } from "@/components/DataState";
 import { useLang } from "@/lib/i18n";
 import { Building2, AlertOctagon, ShieldCheck, Wallet, Sparkles, ArrowRight } from "lucide-react";
 import { useApprovals, useFinancialSummary, useProperties, useTickets, useUpdateApprovalDecision } from "@/lib/api";
+import { isOpenTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/owner/")({ component: OwnerHome });
 
@@ -20,14 +21,24 @@ function OwnerHome() {
   const updateApproval = useUpdateApprovalDecision();
   const properties = propertyData ?? [];
   const tickets = ticketData ?? [];
-  const openCases = tickets.filter((tk) => tk.status !== "resolved").length;
+  const openCases = tickets.filter(isOpenTicket).length;
   const totalUnits = properties.reduce((s, p) => s + p.units, 0);
   const hasApprovalData = Array.isArray(approvalData);
   const pendingApprovals = approvalData?.filter((approval) => approval.status === "pending");
+  const hasOwnerSummaryData =
+    properties.length > 0 ||
+    tickets.length > 0 ||
+    (pendingApprovals?.length ?? 0) > 0 ||
+    (financialSummary?.categoryBreakdown.length ?? 0) > 0;
+  const ownerSummaryText = hasOwnerSummaryData
+    ? t("odash.summary_text")
+    : lang === "EN"
+      ? "There are no portfolio, ticket, approval, or invoice records to summarize. Reload mock data from the admin page to restore the owner overview."
+      : "Es gibt keine Objekt-, Ticket-, Freigabe- oder Rechnungsdaten fuer diese Zusammenfassung. Lade Mock-Daten im Adminbereich neu, um die Eigentuemer-Uebersicht wiederherzustellen.";
 
   const kpi = [
     { label: t("odash.kpi_units"), value: totalUnits, sub: `${properties.length} ${t("common.properties")}`, icon: Building2, color: "text-primary bg-primary/10" },
-    { label: t("odash.kpi_open"), value: openCases, sub: t("common.critical"), icon: AlertOctagon, color: "text-destructive bg-destructive/10" },
+    { label: t("odash.kpi_open"), value: openCases, sub: t("common.open_tickets"), icon: AlertOctagon, color: "text-destructive bg-destructive/10" },
     { label: t("odash.kpi_approvals"), value: hasApprovalData ? (pendingApprovals?.length ?? 0) : 0, sub: "—", icon: ShieldCheck, color: "text-warning bg-warning/10" },
     { label: t("odash.kpi_costs"), value: financialSummary?.ytdSpendLabel ?? "€ 0", sub: `${financialSummary?.budgetUtilization ?? 0}% ${lang === "EN" ? "budget" : "Budget"}`, icon: Wallet, color: "text-success bg-success/10" },
   ];
@@ -72,7 +83,7 @@ function OwnerHome() {
             <div className="h-9 w-9 rounded-lg bg-ai/15 text-ai flex items-center justify-center"><Sparkles className="h-4 w-4" /></div>
             <div className="flex-1">
               <div className="text-sm font-semibold">{t("odash.summary")}</div>
-              <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{t("odash.summary_text")}</p>
+              <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{ownerSummaryText}</p>
             </div>
           </div>
         </div>
@@ -94,7 +105,7 @@ function OwnerHome() {
                 />
               )}
               {properties.slice(0, 4).map((p) => {
-                const open = tickets.filter((tk) => tk.propertyId === p.id && tk.status !== "resolved").length;
+                const open = tickets.filter((tk) => tk.propertyId === p.id && isOpenTicket(tk)).length;
                 const health = open === 0 ? "healthy" : open >= 2 ? "urgent" : "attention";
                 const color = health === "healthy" ? "bg-success" : health === "urgent" ? "bg-destructive" : "bg-warning";
                 return (

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useTickets } from "@/lib/api";
 import { isDemoTenantTicket } from "@/lib/tenant-demo";
+import { isOpenTicket, isResolvedTicket } from "@/lib/ticketStatus";
 
 export const Route = createFileRoute("/tenant/tickets")({
   head: () => ({
@@ -26,13 +27,13 @@ function TenantTickets() {
   const tickets = ticketsQuery.data ?? [];
   const mine = tickets.filter(isDemoTenantTicket);
   const filtered = mine.filter((tk) =>
-    filter === "all" ? true : filter === "resolved" ? tk.status === "resolved" : tk.status !== "resolved",
+    filter === "all" ? true : filter === "resolved" ? isResolvedTicket(tk) : isOpenTicket(tk),
   );
 
   const tabs: Array<{ id: typeof filter; label: string; count: number }> = [
     { id: "all", label: lang === "EN" ? "All" : "Alle", count: mine.length },
-    { id: "active", label: lang === "EN" ? "Active" : "Aktiv", count: mine.filter((t) => t.status !== "resolved").length },
-    { id: "resolved", label: lang === "EN" ? "Resolved" : "Erledigt", count: mine.filter((t) => t.status === "resolved").length },
+    { id: "active", label: lang === "EN" ? "Active" : "Aktiv", count: mine.filter(isOpenTicket).length },
+    { id: "resolved", label: lang === "EN" ? "Resolved" : "Erledigt", count: mine.filter(isResolvedTicket).length },
   ];
 
   return (
