@@ -206,6 +206,7 @@ export type AiInsightsDto = {
   responseTrend: number[];
   volumeByCategory: Array<{
     label: LocalizedText;
+    count: number;
     value: number;
   }>;
   atRisk: Array<{

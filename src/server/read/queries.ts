@@ -437,15 +437,24 @@ export async function getAiInsights(_context?: DemoRoleContext): Promise<AiInsig
   }).length;
 
   const categoryCounts = new Map<string, number>();
-  for (const ticket of ticketRows) {
+  for (const ticket of openTickets) {
     const key = categoryKey(ticket.category);
     categoryCounts.set(key, (categoryCounts.get(key) ?? 0) + 1);
   }
-  const categoryEntries = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1]);
-  const hotspot = categoryEntries[0] ? parseCategoryKey(categoryEntries[0][0]) : { DE: "—", EN: "—" };
+  const categoryEntries = [...categoryCounts.entries()].sort((a, b) => (
+    b[1] - a[1] || parseCategoryKey(a[0]).DE.localeCompare(parseCategoryKey(b[0]).DE, "de-DE")
+  ));
+  const topCategoryCount = categoryEntries[0]?.[1] ?? 0;
+  const tiedTopCategories = categoryEntries.filter(([, count]) => count === topCategoryCount).length;
+  const hotspot = categoryEntries.length === 0
+    ? { DE: "—", EN: "—" }
+    : tiedTopCategories === 1
+      ? parseCategoryKey(categoryEntries[0][0])
+      : { DE: "Ausgeglichen", EN: "Balanced" };
   const volumeByCategory = categoryEntries.map(([key, count]) => ({
     label: parseCategoryKey(key),
-    value: ticketRows.length === 0 ? 0 : Math.round((count / ticketRows.length) * 100),
+    count,
+    value: openTickets.length === 0 ? 0 : Math.round((count / openTickets.length) * 100),
   }));
 
   const responseTrend = Array.from({ length: 8 }, (_, index) => {

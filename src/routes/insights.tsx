@@ -23,8 +23,8 @@ function InsightsPage() {
   const insights = insightsQuery.data;
   const responseTrend = insights?.responseTrend ?? [];
   const volumeByCategory = insights?.volumeByCategory ?? [];
-  const max = Math.max(1, ...volumeByCategory.map((c) => c.value));
   const responseMax = Math.max(1, ...responseTrend);
+  const categoryTotal = Math.max(0, insights?.activeTicketCount ?? 0);
 
   return (
     <AppShell title={t("ins.title")} subtitle={t("ins.sub")}>
@@ -87,22 +87,29 @@ function InsightsPage() {
             {volumeByCategory.length === 0 ? (
               <EmptyDataState
                 title={lang === "EN" ? "No categories" : "Keine Kategorien"}
-                description={lang === "EN" ? "No tickets are available to group by category." : "Es sind keine Tickets fuer eine Kategorien-Auswertung vorhanden."}
+                description={lang === "EN" ? "No open tickets are available to group by category." : "Es sind keine offenen Tickets fuer eine Kategorien-Auswertung vorhanden."}
                 className="p-5"
               />
             ) : (
               <ul className="space-y-2.5">
-                {volumeByCategory.map((c, index) => (
-                  <li key={c.label.DE}>
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span>{c.label[lang]}</span>
-                      <span className="text-muted-foreground">{c.value}%</span>
-                    </div>
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div className={`h-full ${categoryColors[index % categoryColors.length]} transition-all`} style={{ width: `${(c.value / max) * 100}%` }} />
-                    </div>
-                  </li>
-                ))}
+                {volumeByCategory.map((c, index) => {
+                  const count = c.count ?? 0;
+                  const shareLabel = categoryTotal > 0
+                    ? `${count} / ${categoryTotal} · ${c.value}%`
+                    : `${c.value}%`;
+
+                  return (
+                    <li key={c.label.DE}>
+                      <div className="flex items-center justify-between gap-3 text-xs mb-1">
+                        <span className="min-w-0 truncate">{c.label[lang]}</span>
+                        <span className="shrink-0 text-muted-foreground">{shareLabel}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className={`h-full ${categoryColors[index % categoryColors.length]} transition-all`} style={{ width: `${c.value}%` }} />
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </section>
