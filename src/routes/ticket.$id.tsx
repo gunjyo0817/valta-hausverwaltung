@@ -154,6 +154,7 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
+  const [aiRefreshMessage, setAiRefreshMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -322,6 +323,7 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
     const result = await generateSummary.mutateAsync({ data: { ticketId: tk.id, language: showLang, ticket: tk, regenerate: true } });
     setSummaryText(result.summary);
     setSummaryConfidence(result.confidence);
+    setAiRefreshMessage(lang === "EN" ? "Summary refreshed." : "Zusammenfassung aktualisiert.");
   };
 
   const regenerateReply = async () => {
@@ -329,12 +331,14 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
     setDraftText(result.text);
     setDraftConfidence(result.confidence);
     setSent(false);
+    setAiRefreshMessage(lang === "EN" ? "Reply draft refreshed." : "Antwortentwurf aktualisiert.");
   };
 
   const regenerateMissingInfo = async () => {
     const result = await detectMissing.mutateAsync({ data: { ticketId: tk.id, language: lang, ticket: tk, regenerate: true } });
     setMissingInfoText(result.text);
     setMissingInfoItems(result.items.length > 0 ? result.items : defaultMissingInfoItems);
+    setAiRefreshMessage(lang === "EN" ? "Missing-info request refreshed." : "Info-Anfrage aktualisiert.");
   };
 
   const regenerateContractor = async () => {
@@ -342,6 +346,7 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
     setContractorName(result.contractor || tk.contractorName || "—");
     setContractorReason(result.reason || t("inbox.recommended_basis"));
     setContractorConfidence(result.confidence);
+    setAiRefreshMessage(lang === "EN" ? "Contractor suggestion refreshed." : "Handwerker-Vorschlag aktualisiert.");
   };
 
   return (
@@ -381,6 +386,11 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
                   </button>
                 </div>
                 <p className="mt-2 text-sm leading-relaxed">{summaryText}</p>
+                {aiRefreshMessage && (
+                  <div className="mt-3 rounded-md bg-background/70 px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground">
+                    {aiRefreshMessage}
+                  </div>
+                )}
               </div>
               <p className="mt-4 text-sm text-foreground/80 leading-relaxed">{tk.description[showLang]}</p>
 
@@ -491,6 +501,11 @@ function TicketContent({ tk, prop }: { tk: TicketDto; prop?: PropertyDto | null 
                   {t("copilot.suggests_approve")}
                 </span>
               </div>
+              {aiRefreshMessage && (
+                <div className="mt-3 rounded-md bg-success/10 px-2.5 py-1.5 text-xs text-success-foreground">
+                  {aiRefreshMessage}
+                </div>
+              )}
             </div>
 
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-soft space-y-3">

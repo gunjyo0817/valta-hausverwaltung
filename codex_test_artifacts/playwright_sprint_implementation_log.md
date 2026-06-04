@@ -128,3 +128,42 @@ Behavior verified:
 - The stored demo role was reset to PM after verification.
 - The first implementation attempt produced React hydration mismatch warnings when the role was read synchronously from localStorage; this was fixed and the fresh Playwright pass reported 0 browser errors.
 - Browser console showed only the pre-existing TanStack route export warning for `src/routes/intake.tsx`.
+
+## Sprint 7: Demo Regression Data Hygiene
+
+Status: complete
+
+Code changes:
+
+- Updated `scripts/demo-regression.ts` so the mutation checks run inside a `try` block and always call `reloadDemoData()` in `finally`.
+- Added a final row-count assertion comparing the post-test demo data status to the seeded baseline captured after the initial reload.
+- Kept the existing success output, `Demo regression checks passed.`, but only after cleanup and row-count verification complete.
+
+Behavior verified:
+
+- `npm.cmd run build` completed successfully after the regression script change.
+- `npm.cmd run test:demo` completed successfully and printed `Demo regression checks passed.`
+- `npm.cmd run db:demo:status` reported the seeded baseline after the regression run: 7 tickets, 122 mutable rows, and 9 preserved identity rows.
+- Playwright MCP opened `/admin/demo-data` and verified 122 mutable rows, 7 tickets, and no `Regression test issue` text.
+- Playwright MCP opened `/` and `/inbox`; both showed seeded demo tickets and no `Regression test issue`, `kitchen sink`, or `VLT-2050`.
+- Browser console only showed the known `/favicon.ico` 404 and TanStack `src/routes/intake.tsx` route export warning covered by Sprint 8.
+
+## Sprint 8: Small Polish And Console Noise
+
+Status: complete
+
+Code changes:
+
+- Added `public/favicon.svg` and linked it from `src/routes/__root.tsx` with `rel="icon"` so browsers no longer fall back to a missing `/favicon.ico`.
+- Moved the shared intake UI from the route file into `src/components/IntakePage.tsx`.
+- Reduced `src/routes/intake.tsx` to a route-only module and updated `src/routes/tenant.new-request.tsx` to import `IntakePage` from the component module, removing the TanStack route export warning.
+- Added visible AI regenerate feedback in `src/routes/ticket.$id.tsx` so summary, reply draft, missing-info, and contractor suggestion refreshes show a success message even when deterministic fallback content is unchanged.
+
+Behavior verified:
+
+- `npm.cmd run build` completed successfully after the favicon, intake split, and ticket feedback changes.
+- Build output no longer reported the TanStack `src/routes/intake.tsx` code-splitting/export warning.
+- Playwright MCP loaded `/`; browser console reported 0 errors and 0 warnings.
+- Playwright MCP fetched `/favicon.svg` and verified a 200 response with `image/svg+xml`.
+- Playwright MCP opened `/ticket/VLT-2041`; summary, reply draft, missing-info, and contractor regenerate controls each produced visible `aktualisiert` feedback.
+- Playwright MCP opened `/tenant/new-request`; the moved intake component rendered, initial intake copy was present, and the browser console still reported 0 errors and 0 warnings.

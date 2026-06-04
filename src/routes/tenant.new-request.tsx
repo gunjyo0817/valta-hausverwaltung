@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { IntakePage } from "./intake";
+import { IntakePage } from "@/components/IntakePage";
 
 export const Route = createFileRoute("/tenant/new-request")({
   head: () => ({
